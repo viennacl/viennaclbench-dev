@@ -15,7 +15,7 @@
 #include <QObject>
 
 #include <QDebug>
-#include <qcustomplot.h>
+#include "qcustomplot.h"
 #include "benchmarkcopy.h"
 //#include "benchmarkvector.h"
 #include <ctime>
