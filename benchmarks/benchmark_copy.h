@@ -1,5 +1,5 @@
-#ifndef BENCHMARKCOPY_H
-#define BENCHMARKCOPY_H
+#ifndef BENCHMARK_COPY_H
+#define BENCHMARK_COPY_H
 
 #include <QObject>
 
@@ -11,11 +11,11 @@
 #include <QStringList>
 #include <QString>
 
-class BenchmarkCopy : public QObject
+class Benchmark_Copy : public QObject
 {
   Q_OBJECT
 public:
-  explicit BenchmarkCopy(QObject *parent = 0);
+  explicit Benchmark_Copy(QObject *parent = 0);
 
   template<typename ScalarType>
   void run_benchmark();
@@ -31,4 +31,4 @@ public slots:
   QVariant getJsonData();
 };
 
-#endif // BENCHMARKCOPY_H
+#endif // BENCHMARK_COPY_H

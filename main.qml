@@ -1,7 +1,7 @@
 import QtQuick 2.0
-import "qrc:/files/qml/jbQuick/Charts/"
-import "qrc:/files/qml/jbQuick/Charts/QChart.js" as Charts
-import "qrc:/files/qml/jbQuick/Charts/QChartGallery.js" as ChartsData
+import "qrc:/sourceFiles/qml/jbQuick/Charts/"
+import "qrc:/sourceFiles/qml/jbQuick/Charts/QChart.js" as Charts
+import "qrc:/sourceFiles/qml/jbQuick/Charts/QChartGallery.js" as ChartsData
 
 Rectangle {
     signal startBenchmark
@@ -30,9 +30,9 @@ Rectangle {
         }
         //create a new chart in its place
         Qt.createQmlObject("import QtQuick 2.0;
-    import 'qrc:/files/qml/jbQuick/Charts/'
-    import 'qrc:/files/qml/jbQuick/Charts/QChart.js' as Charts
-    import 'qrc:/files/qml/jbQuick/Charts/QChartGallery.js' as ChartsData
+    import 'qrc:/sourceFiles/qml/jbQuick/Charts/'
+    import 'qrc:/sourceFiles/qml/jbQuick/Charts/QChart.js' as Charts
+    import 'qrc:/sourceFiles/qml/jbQuick/Charts/QChartGallery.js' as ChartsData
 
 
     Chart {
@@ -138,9 +138,9 @@ Rectangle {
 
         Component.onCompleted: {
             Qt.createQmlObject("import QtQuick 2.0;
-import 'qrc:/files/qml/jbQuick/Charts/'
-import 'qrc:/files/qml/jbQuick/Charts/QChart.js' as Charts
-import 'qrc:/files/qml/jbQuick/Charts/QChartGallery.js' as ChartsData
+import 'qrc:/sourceFiles/qml/jbQuick/Charts/'
+import 'qrc:/sourceFiles/qml/jbQuick/Charts/QChart.js' as Charts
+import 'qrc:/sourceFiles/qml/jbQuick/Charts/QChartGallery.js' as ChartsData
 
 
 Chart {

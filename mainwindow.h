@@ -16,8 +16,7 @@
 
 #include <QDebug>
 #include "qcustomplot.h"
-#include "benchmarkcopy.h"
-//#include "benchmarkvector.h"
+#include "benchmark_controller.h"
 #include <ctime>
 
 namespace Ui {
@@ -37,8 +36,7 @@ public:
   void initQChartGraph();
 private:
   Ui::MainWindow *ui;
-  BenchmarkCopy benchmarkCopy;//controls benchmark execution
-  //    BenchmarkVector benchmarkVector;
+  Benchmark_Controller benchmarkController;
   int barCounter;//counts the total number of benchmarks
   QVector<double> barData;//benchmark bandwidth values
   QVector<QString> labels;//tracks the names of benchmarks
@@ -53,6 +51,7 @@ public slots:
   void resetData();
   void graphData();
   void parseBenchmarkResult(QString benchmarkName, double bandwidthValue);
+  void startBenchmarkExecution();
 };
 
 #endif // MAINWINDOW_H

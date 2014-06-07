@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ViennaCL Benchmark</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_3">
@@ -31,18 +31,11 @@
         <string>Using QCustomPlot</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="2" column="0">
-         <spacer name="horizontalSpacerLeft">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboBox"/>
+        </item>
+        <item row="0" column="0" colspan="4">
+         <widget class="QCustomPlot" name="benchmarkGraph" native="true"/>
         </item>
         <item row="2" column="3">
          <spacer name="horizontalSpacerRight">
@@ -57,22 +50,25 @@
           </property>
          </spacer>
         </item>
-        <item row="2" column="1">
-         <widget class="QPushButton" name="buttonCopyBenchmark">
-          <property name="text">
-           <string>Run Copy Benchmark</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="2">
-         <widget class="QPushButton" name="buttonResetData">
+         <widget class="QPushButton" name="buttonRunBenchmark">
           <property name="text">
-           <string>Reset Data</string>
+           <string>Run Benchmark</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QCustomPlot" name="benchmarkGraph" native="true"/>
+        <item row="2" column="0">
+         <spacer name="horizontalSpacerLeft">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

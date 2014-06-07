@@ -31,7 +31,7 @@
 #include <vector>
 #include "benchmark-utils.hpp"
 
-#include "benchmarkcopy.h"
+#include "benchmark_copy.h"
 
 #include <QDebug>
 
@@ -43,14 +43,14 @@ using std::endl;
 #define BENCHMARK_VECTOR_SIZE   10000000
 #define BENCHMARK_RUNS          10
 
-BenchmarkCopy::BenchmarkCopy(QObject *parent) :
+Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   QObject(parent)
 {
   connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );
 }
 
 template<typename ScalarType>
-void BenchmarkCopy::run_benchmark()
+void Benchmark_Copy::run_benchmark()
 {
 
   Timer timer;
@@ -157,7 +157,7 @@ void BenchmarkCopy::run_benchmark()
 
 }
 
-void BenchmarkCopy::execute(){
+void Benchmark_Copy::execute(){
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;
@@ -200,13 +200,13 @@ void BenchmarkCopy::execute(){
   emit benchmarkComplete();
 }
 
-void BenchmarkCopy::updateBenchmarkData(QString benchmarkName, double bandwidthValue)
+void Benchmark_Copy::updateBenchmarkData(QString benchmarkName, double bandwidthValue)
 {
   benchmarkNames.append(benchmarkName);
   dataPoints.append(bandwidthValue);
 }
 
-QVariant BenchmarkCopy::getJsonData(){
+QVariant Benchmark_Copy::getJsonData(){
   QJsonObject jsonObject;
   QJsonArray labels;
 
@@ -219,7 +219,7 @@ QVariant BenchmarkCopy::getJsonData(){
   foreach (double dataPoint, dataPoints) {
     dataPointsJsonArray.append(dataPoint);
   }
-  QString color = "rgba(220,220,220,0.5)";
+  QString color = "rgba(0,0,220,0.5)";
   QJsonObject chartBarData;
     chartBarData["fillColor"] = color;
     chartBarData["strokeColor"] = color;
