@@ -10,16 +10,24 @@ mailing list</a>.<br>
 <h2>Requirements - First Prototype</h2>
 -Qt 5.2.0 or higher<br>
 -Qt Creator 3.0.0 or higher<br>
--ViennaCL 1.5.1 or higher<br>
+-ViennaCL 1.5.2<br>
+-Boost 1.55<br>
 <h2>Build Process</h2>
-This is what needs to be done in order to run the first prototype:<br>
+The following are instructions on how to run the prototype with QtCreator:<br>
 1. open ViennaCL_Benchmark.pro with Qt Creator<br>
 2. wen prompted to configure project, select a kit that uses at least Qt 5.2.0. ( essentially any Qt version above 5.0.0 should work, but I only tested 5.2.0 ) and click Configure Project<br>
-3. edit ViennaCL_Benchmark.pro file: change the includepath and dependpath for ViennaCL<br>
-INCLUDEPATH += C:\ViennaCL-1.5.1 to INCLUDEPATH += yourPathToViennacl<br>
-INCLUDEPATH += C:\ViennaCL-1.5.1\examples\benchmarks to INCLUDEPATH += yourPathToViennacl\examples\benchmarks<br>
-DEPENDPATH += C:\ViennaCL-1.5.1 to DEPENDPATH += yourPathToViennacl<br>
-DEPENDPATH += C:\ViennaCL-1.5.1\examples\benchmarks to DEPENDPATH += yourPathToViennacl\examples\benchmarks<br>
+3. edit ViennaCL_Benchmark.pro file: change the project's include and depend paths for ViennaCL and Boost<br>
+INCLUDEPATH += C:\ViennaCL-1.5.2 to INCLUDEPATH += yourPathToViennacl<br>
+INCLUDEPATH += C:\ViennaCL-1.5.2\examples\benchmarks to INCLUDEPATH += yourPathToViennacl\examples\benchmarks<br>
+DEPENDPATH += C:\ViennaCL-1.5.2 to DEPENDPATH += yourPathToViennacl<br>
+DEPENDPATH += C:\ViennaCL-1.5.2\examples\benchmarks to DEPENDPATH += yourPathToViennacl\examples\benchmarks<br>
+INCLUDEPATH += C:\boost\boost_1_55_0 to INCLUDEPATH += yourPathToBoost<br>
+DEPENDPATH += C:\boost\boost_1_55_0 to DEPENDPATH += yourPathToBoost<br>
 4. you can now run the project (Ctrl+R); make sure you've selected a kit with at least Qt 5.2.0<br>
+<h2>Important Notice</h2>
+-Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait.<br>
+-Solver and Sparse benchmarks require adjusting paths to the data files they use. You can do that by changing the file path strings in benchmark_solver and benchmark_sparse files. For example: if (!readVectorFromFile<ScalarType>("C:/pathToYourTestDataFiles/rhs65025.txt", ublas_vec1))<br>
+<h2>Troubleshooting</h2>
+In case you get an error in QtGui/qopenglfunction.h : remove(or comment out) line 785 in that file (void (QOPENGLF_APIENTRYP MemoryBarrier)(GLbitfield barriers);); it is a known Qt bug (https://github.com/go-qml/qml/issues/56) and should be fixed in Qt 5.3<br>
 <h2>Additional Info</h2>
 I'll be working on making the build process automated in the near future. I'm running a <a href="http://zalomiga.ba/blog">devblog</a> dedicated to this project and will try to update it as much as possible. Check it out for detailed reports on the development process.
