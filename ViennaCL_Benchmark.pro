@@ -11,7 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = ViennaCL_Benchmark
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot.cpp \
@@ -47,22 +46,21 @@ FORMS    += mainwindow.ui
 #INCLUDEPATH += C:\ViennaCL-1.5.2
 #INCLUDEPATH += C:\ViennaCL-1.5.2\examples\benchmarks
 INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
-INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev\examples\benchmarks
+#INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev\examples\benchmarks
 INCLUDEPATH += C:\boost\boost_1_55_0
 #INCLUDEPATH += ../qml/jbQuick/Charts
 
 #DEPENDPATH += C:\ViennaCL-1.5.2
 #DEPENDPATH += C:\ViennaCL-1.5.2\examples\benchmarks
 DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
-DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev\examples\benchmarks
+#DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev\examples\benchmarks
 DEPENDPATH += C:\boost\boost_1_55_0
 
-#OTHER_FILES +=    testdata/mat65k.mtx \
-#    testdata/result65025.txt \
-#    testdata/rhs65025.txt
+testData.path = $$OUT_PWD/testdata
+testData.files += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
+INSTALLS += testData
 
-RESOURCES += dataFiles.qrc \
-    otherFiles.qrc
+RESOURCES += otherFiles.qrc \
 
 CONFIG += warn_off
 

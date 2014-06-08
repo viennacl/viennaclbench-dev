@@ -36,10 +36,10 @@ Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
 template<typename ScalarType>
 void Benchmark_Sparse::run_benchmark()
 {
-   Timer timer;
-   double exec_time;
+  Timer timer;
+  double exec_time;
 
-   //ScalarType std_result = 0;
+  //ScalarType std_result = 0;
 
   ScalarType std_factor1 = ScalarType(3.1415);
   ScalarType std_factor2 = ScalarType(42.0);
@@ -49,11 +49,12 @@ void Benchmark_Sparse::run_benchmark()
   boost::numeric::ublas::vector<ScalarType> ublas_vec1;
   boost::numeric::ublas::vector<ScalarType> ublas_vec2;
 
-//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/result65025.txt", ublas_vec1))
-  if (!readVectorFromFile<ScalarType>("C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/result65025.txt", ublas_vec1))
-{
+  QString filepath = QDir::currentPath()+"/testdata";
+
+  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString() , ublas_vec1))
+  {
     std::cout << "Error reading RHS file" << std::endl;
-//    return 0;
+    //    return 0;
   }
   std::cout << "done reading rhs results" << std::endl;
   ublas_vec2 = ublas_vec1;
@@ -69,11 +70,10 @@ void Benchmark_Sparse::run_benchmark()
 
   boost::numeric::ublas::compressed_matrix<ScalarType> ublas_matrix;
 
-//  if (!viennacl::io::read_matrix_market_file(ublas_matrix, ":/dataFiles/testdata/mat65k.mtx") )
-    if (!viennacl::io::read_matrix_market_file(ublas_matrix, "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/mat65k.mtx"))
+  if (!viennacl::io::read_matrix_market_file(ublas_matrix, (filepath+"/mat65k.mtx").toStdString() ) )
   {
     std::cout << "Error reading Matrix file" << std::endl;
-//    return 0;
+    //    return 0;
   }
   //unsigned int cg_mat_size = cg_mat.size();
   std::cout << "done reading matrix" << std::endl;
@@ -83,10 +83,10 @@ void Benchmark_Sparse::run_benchmark()
 
   //cpu to gpu:
   viennacl::copy(ublas_matrix, vcl_compressed_matrix_1);
-  #ifndef VIENNACL_EXPERIMENTAL_DOUBLE_PRECISION_WITH_STREAM_SDK_ON_GPU
+#ifndef VIENNACL_EXPERIMENTAL_DOUBLE_PRECISION_WITH_STREAM_SDK_ON_GPU
   viennacl::copy(ublas_matrix, vcl_compressed_matrix_4);
   viennacl::copy(ublas_matrix, vcl_compressed_matrix_8);
-  #endif
+#endif
   viennacl::copy(ublas_matrix, vcl_coordinate_matrix_128);
   viennacl::copy(ublas_matrix, vcl_ell_matrix_1);
   viennacl::copy(ublas_matrix, vcl_hyb_matrix_1);
@@ -101,7 +101,7 @@ void Benchmark_Sparse::run_benchmark()
   for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
   {
     ublas_vec1 = boost::numeric::ublas::prod(ublas_matrix, ublas_vec2);
-//    boost::numeric::ublas::axpy_prod(ublas_matrix, ublas_vec2, ublas_vec1, true);
+    //    boost::numeric::ublas::axpy_prod(ublas_matrix, ublas_vec2, ublas_vec1, true);
   }
   exec_time = timer.get();
   std::cout << "CPU time: " << exec_time << std::endl;

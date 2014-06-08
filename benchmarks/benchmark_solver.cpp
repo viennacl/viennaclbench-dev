@@ -126,8 +126,11 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   unsigned int solver_krylov_dim = 20;
   double solver_tolerance = 1e-6;
 
-//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/rhs65025.txt", ublas_vec1))
-    if (!readVectorFromFile<ScalarType>("C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/rhs65025.txt", ublas_vec1))
+  QString filepath = QDir::currentPath()+"/testdata";
+
+  if (!readVectorFromFile<ScalarType>( (filepath+"/rhs65025.txt").toStdString(), ublas_vec1))
+
+//  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/rhs65025.txt", ublas_vec1))
   {
     std::cout << "Error reading RHS file" << std::endl;
     //    return 0;
@@ -135,8 +138,8 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
 
   std::cout << "done reading rhs" << std::endl;
   ublas_vec2 = ublas_vec1;
-//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/result65025.txt", ublas_result))
-    if (!readVectorFromFile<ScalarType>("C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/result65025.txt", ublas_result))
+//  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/result65025.txt" , ublas_result))
+  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString() , ublas_result))
   {
     std::cout << "Error reading result file" << std::endl;
     //    return 0;
@@ -153,8 +156,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   viennacl::vector<ScalarType> vcl_result(ublas_vec1.size(), ctx);
 
   ublas::compressed_matrix<ScalarType> ublas_matrix;
-//  if (!viennacl::io::read_matrix_market_file(ublas_matrix, ":/dataFiles/testdata/mat65k.mtx"))
-    if (!viennacl::io::read_matrix_market_file(ublas_matrix, "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/mat65k.mtx"))
+  if (!viennacl::io::read_matrix_market_file(ublas_matrix, (filepath+"/mat65k.mtx").toStdString() ) )
   {
     qDebug()<<"error reading matrix file";
     std::cout << "Error reading Matrix file" << std::endl;
@@ -564,7 +566,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
 
   //  std::cout << "------- BiCGStab solver (ILUT preconditioner) via ViennaCL, coordinate_matrix ----------" << std::endl;
   //  totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, bicgstab_solver, vcl_ilut, bicgstab_ops);
-//  counter++;
+  //  counter++;
 
   std::cout << "------- BiCGStab solver (Jacobi preconditioner) using ublas ----------" << std::endl;
   totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, bicgstab_solver, ublas_jacobi, bicgstab_ops);

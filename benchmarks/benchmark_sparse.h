@@ -29,6 +29,8 @@
 #include "viennacl/io/matrix_market.hpp"
 #include "viennacl/linalg/ilu.hpp"
 
+#include <QString>
+#include <QDir>
 
 #include <iostream>
 #include <vector>

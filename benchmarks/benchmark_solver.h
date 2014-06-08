@@ -42,6 +42,9 @@
 #include "benchmarks/benchmark-utils.hpp"
 #include "benchmarks/io.hpp"
 
+#include <QString>
+#include <QDir>
+
 using namespace boost::numeric;
 
 #define BENCHMARK_RUNS          1
