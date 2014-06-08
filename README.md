@@ -21,7 +21,10 @@ INCLUDEPATH += C:\ViennaCL-1.5.2 to INCLUDEPATH += yourPathToViennacl<br>
 DEPENDPATH += C:\ViennaCL-1.5.2 to DEPENDPATH += yourPathToViennacl<br>
 INCLUDEPATH += C:\boost\boost_1_55_0 to INCLUDEPATH += yourPathToBoost<br>
 DEPENDPATH += C:\boost\boost_1_55_0 to DEPENDPATH += yourPathToBoost<br>
-4. you can now run the project (Ctrl+R); make sure you've selected a kit with at least Qt 5.2.0<br>
+4. in order to run solver and sparse benchmarks, you must add a make install step to your build process: <br>
+In QtCreator, under Projects>Build Steps>Make:>add to Make arguments: install<br>
+Do this for both debug and release modes<br>
+5. you can now run the project (Ctrl+R); make sure you've selected a kit with at least Qt 5.2.0<br>
 <h2>Important Notice</h2>
 -Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait.<br>
 -Solver and Sparse benchmarks currently do not work in release node. Fix will be applied soon.<br>
