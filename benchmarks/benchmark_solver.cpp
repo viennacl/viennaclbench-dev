@@ -127,11 +127,9 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   double solver_tolerance = 1e-6;
 
   QString filepath = QDir::currentPath()+"/testdata";
-  std::cout<<"kurac";
 
-//  if (!readVectorFromFile<ScalarType>( (filepath+"/rhs65025.txt").toStdString(), ublas_vec1))
-
-  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/rhs65025.txt", ublas_vec1))
+  if (!readVectorFromFile<ScalarType>( (filepath+"/rhs65025.txt").toStdString(), ublas_vec1))
+//  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/rhs65025.txt", ublas_vec1))
   {
     std::cout << "Error reading RHS file" << std::endl;
     //    return 0;
@@ -139,7 +137,8 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
 
   std::cout << "done reading rhs" << std::endl;
   ublas_vec2 = ublas_vec1;
-  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/result65025.txt" , ublas_result))
+  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString(), ublas_vec1))
+//  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/result65025.txt" , ublas_result))
   {
     std::cout << "Error reading result file" << std::endl;
     //    return 0;
