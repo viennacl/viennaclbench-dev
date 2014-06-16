@@ -15,7 +15,7 @@ set(CMAKE_AUTOMOC ON)
 add_definitions(-O2 -D_FILE_OFFSET_BITS=64 -fPIC) 
 
 file( GLOB_RECURSE MAKE_HEADERS_VISIBLE_SRC
-    *.hpp *.h *.cpp *.qrc)
+    *.hpp *.h *.cpp *.qrc *.ui)
 add_custom_target( MAKE_HEADERS_VISIBLE SOURCES ${MAKE_HEADERS_VISIBLE_SRC} )
 
 # Set release build:
@@ -24,6 +24,9 @@ IF(DEFINED CMAKE_BUILD_TYPE)
 ELSE()
  SET (CMAKE_BUILD_TYPE Release)
 ENDIF()
+
+#Include ViennaCL
+include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
 
 # Find the Qt libraries
 #find_package(Qt4 COMPONENTS Core Gui Quick Qml REQUIRED)
@@ -46,10 +49,20 @@ find_package(Boost)
   #  mainwindow.cpp mainwindow.h
    # )
 
+file(GLOB ViennaCL_Benchmark_Sources
+    "benchmarks/*.cpp"
+    "benchmarks/*.h"
+    "benchmarks/*.hpp"
+    "*.h"
+    "*.cpp"
+    "*.hpp"
+    "*.ui"
+)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
-    add_executable(ViennaCL_Benchmark main.cpp)
+#    add_executable(ViennaCL_Benchmark main.cpp mainwindow.cpp mainwindow.h mainwindow.ui)
+    add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources})
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES})
 qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
 target_link_libraries(ViennaCL_Benchmark)

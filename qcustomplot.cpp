@@ -10500,52 +10500,52 @@ void QCustomPlot::rescaleAxes(bool onlyVisiblePlottables)
 bool QCustomPlot::savePdf(const QString &fileName, bool noCosmeticPen, int width, int height, const QString &pdfCreator, const QString &pdfTitle)
 {
   bool success = false;
-#ifdef QT_NO_PRINTER
-  Q_UNUSED(fileName)
-  Q_UNUSED(noCosmeticPen)
-  Q_UNUSED(width)
-  Q_UNUSED(height)
-  qDebug() << Q_FUNC_INFO << "Qt was built without printer support (QT_NO_PRINTER). PDF not created.";
-#else
-  int newWidth, newHeight;
-  if (width == 0 || height == 0)
-  {
-    newWidth = this->width();
-    newHeight = this->height();
-  } else
-  {
-    newWidth = width;
-    newHeight = height;
-  }
+//#ifdef QT_NO_PRINTER
+//  Q_UNUSED(fileName)
+//  Q_UNUSED(noCosmeticPen)
+//  Q_UNUSED(width)
+//  Q_UNUSED(height)
+//  qDebug() << Q_FUNC_INFO << "Qt was built without printer support (QT_NO_PRINTER). PDF not created.";
+//#else
+//  int newWidth, newHeight;
+//  if (width == 0 || height == 0)
+//  {
+//    newWidth = this->width();
+//    newHeight = this->height();
+//  } else
+//  {
+//    newWidth = width;
+//    newHeight = height;
+//  }
   
-  QPrinter printer(QPrinter::ScreenResolution);
-  printer.setOutputFileName(fileName);
-  printer.setOutputFormat(QPrinter::PdfFormat);
-  printer.setFullPage(true);
-  printer.setColorMode(QPrinter::Color);
-  printer.printEngine()->setProperty(QPrintEngine::PPK_Creator, pdfCreator);
-  printer.printEngine()->setProperty(QPrintEngine::PPK_DocumentName, pdfTitle);
-  QRect oldViewport = viewport();
-  setViewport(QRect(0, 0, newWidth, newHeight));
-  printer.setPaperSize(viewport().size(), QPrinter::DevicePixel);
-  QCPPainter printpainter;
-  if (printpainter.begin(&printer))
-  {
-    printpainter.setMode(QCPPainter::pmVectorized);
-    printpainter.setMode(QCPPainter::pmNoCaching);
-    printpainter.setMode(QCPPainter::pmNonCosmetic, noCosmeticPen);
-    printpainter.setWindow(mViewport);
-    if (mBackgroundBrush.style() != Qt::NoBrush &&
-        mBackgroundBrush.color() != Qt::white &&
-        mBackgroundBrush.color() != Qt::transparent &&
-        mBackgroundBrush.color().alpha() > 0) // draw pdf background color if not white/transparent
-      printpainter.fillRect(viewport(), mBackgroundBrush);
-    draw(&printpainter);
-    printpainter.end();
-    success = true;
-  }
-  setViewport(oldViewport);
-#endif // QT_NO_PRINTER
+//  QPrinter printer(QPrinter::ScreenResolution);
+//  printer.setOutputFileName(fileName);
+//  printer.setOutputFormat(QPrinter::PdfFormat);
+//  printer.setFullPage(true);
+//  printer.setColorMode(QPrinter::Color);
+//  printer.printEngine()->setProperty(QPrintEngine::PPK_Creator, pdfCreator);
+//  printer.printEngine()->setProperty(QPrintEngine::PPK_DocumentName, pdfTitle);
+//  QRect oldViewport = viewport();
+//  setViewport(QRect(0, 0, newWidth, newHeight));
+//  printer.setPaperSize(viewport().size(), QPrinter::DevicePixel);
+//  QCPPainter printpainter;
+//  if (printpainter.begin(&printer))
+//  {
+//    printpainter.setMode(QCPPainter::pmVectorized);
+//    printpainter.setMode(QCPPainter::pmNoCaching);
+//    printpainter.setMode(QCPPainter::pmNonCosmetic, noCosmeticPen);
+//    printpainter.setWindow(mViewport);
+//    if (mBackgroundBrush.style() != Qt::NoBrush &&
+//        mBackgroundBrush.color() != Qt::white &&
+//        mBackgroundBrush.color() != Qt::transparent &&
+//        mBackgroundBrush.color().alpha() > 0) // draw pdf background color if not white/transparent
+//      printpainter.fillRect(viewport(), mBackgroundBrush);
+//    draw(&printpainter);
+//    printpainter.end();
+//    success = true;
+//  }
+//  setViewport(oldViewport);
+//#endif // QT_NO_PRINTER
   return success;
 }
 

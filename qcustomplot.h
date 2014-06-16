@@ -51,9 +51,9 @@
 #  include <QPrintEngine>
 #else
 #  include <QtNumeric>
-#  include <QtPrintSupport>
-#  include <QPrinter>
-//#  include <QtPrintSupport/QPrinter> //cmake compatibility fix
+//#  include <QtPrintSupport>
+//#  include <QPrinter>
+#  include <QtPrintSupport/QPrinter> //cmake compatibility fix
 #endif
 
 class QCPPainter;
