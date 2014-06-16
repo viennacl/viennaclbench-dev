@@ -19,11 +19,10 @@ SOURCES += main.cpp\
     benchmarks/benchmark_solver.cpp \
     benchmarks/benchmark_scheduler.cpp \
     benchmarks/benchmark_blas3.cpp \
-    benchmarks/benchmark_generatorblas1.cpp \
     benchmarks/benchmark_copy.cpp \
-    benchmarks/benchmark_generatorblas2.cpp \
-    benchmarks/benchmark_generatorblas3.cpp \
-    benchmark_controller.cpp
+    benchmark_controller.cpp \
+    benchmarks/benchmark_qr.cpp \
+    menuwidget.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -35,13 +34,14 @@ HEADERS  += mainwindow.h \
     benchmarks/io.hpp \
     benchmarks/benchmark_blas3.h \
     benchmarks/Random.hpp \
-    benchmarks/benchmark_generatorblas1.h \
     benchmarks/benchmark_copy.h \
-    benchmarks/benchmark_generatorblas2.h \
-    benchmarks/benchmark_generatorblas3.h \
-    benchmark_controller.h
+    benchmark_controller.h \
+    benchmarks/benchmark_qr.h \
+    menuwidget.h \
+    benchmarks/matrix_market.hpp
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    menuwidget.ui
 
 #INCLUDEPATH += C:\ViennaCL-1.5.2
 #INCLUDEPATH += C:\ViennaCL-1.5.2\examples\benchmarks

@@ -9,9 +9,9 @@
 #include <QGraphicsRectItem>
 #include <QPixmap>
 #include <QPainter>
-#include <QQuickView>
-#include <QQmlEngine>
-#include <QQmlContext>
+//#include <QQuickView>
+//#include <QQmlEngine>
+//#include <QQmlContext>
 #include <QObject>
 
 #include <QDebug>
@@ -33,7 +33,7 @@ public:
 
   void showResult(double value, QCustomPlot *customPlot);
   void initQCustomPlotGraph();
-  void initQChartGraph();
+//  void initQChartGraph();
 private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;

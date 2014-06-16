@@ -84,18 +84,26 @@ ScalarType Benchmark_Solver::diff_2(ublas::vector<ScalarType> & v1, viennacl::ve
 template <typename MatrixType, typename VectorType, typename SolverTag, typename PrecondTag>
 double Benchmark_Solver::run_solver(MatrixType const & matrix, VectorType const & rhs, VectorType const & ref_result, SolverTag const & solver, PrecondTag const & precond, long ops)
 {
+  std::cout << "in run solver"<< std::endl;
+
   double GFLOPs=0;
   Timer timer;
   VectorType result(rhs);
   VectorType residual(rhs);
   viennacl::backend::finish();
+  std::cout << "starting timer"<< std::endl;
 
   timer.start();
+  std::cout << "1"<< std::endl;
   for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
   {
+    std::cout << "loop " << runs <<std::endl;
     result = viennacl::linalg::solve(matrix, rhs, solver, precond);
   }
+  std::cout << "2"<< std::endl;
   viennacl::backend::finish();
+
+  std::cout << "finished timer"<< std::endl;
   double exec_time = timer.get();
   std::cout << "Exec. time: " << exec_time << std::endl;
   std::cout << "Est. "; GFLOPs = printOps(static_cast<double>(ops), exec_time / BENCHMARK_RUNS);
@@ -126,10 +134,31 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   unsigned int solver_krylov_dim = 20;
   double solver_tolerance = 1e-6;
 
-  QString filepath = QDir::currentPath()+"/testdata";
+  QString  absoluteAppRootPath = QDir::currentPath();
+  QString rhsPathString = absoluteAppRootPath + "/testdata/rhs65025.txt" ;
+const QByteArray rhsStringHolder = (QDir::toNativeSeparators(rhsPathString)).toUtf8();
+std::string rhsPath = rhsPathString.toStdString();
+//const char * rhsPath = rhsStringHolder.constData();
+//const char *rhsPath = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/rhs65025.txt";
+std::cout << "rhsPath:"<<rhsPath <<std::endl;
+//  QString matrixPath = absoluteAppRootPath + "/testdata/mat65k.mtx" ;
 
-  if (!readVectorFromFile<ScalarType>( (filepath+"/rhs65025.txt").toStdString(), ublas_vec1))
-//  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/rhs65025.txt", ublas_vec1))
+//  std::string rhsPath = absoluteAppRootPath.toStdString();
+//  rhsPath+= "/testdata/rhs65025.txt";
+//  std::string resultPath = absoluteAppRootPath.toStdString();
+//  resultPath+= "/testdata/result65025.txt";
+QString matrixString = absoluteAppRootPath + "/testdata/mat65k.mtx";
+  std::string matrixPath = absoluteAppRootPath.toStdString();
+  matrixPath+= "/testdata/mat65k.mtx";
+
+//  qDebug()<<"paths";
+//  std::cout<<rhsPath<<std::endl;
+  std::cout<<"matrixPath:"<<matrixPath<<std::endl;
+
+//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/rhs65025.txt", ublas_vec1))
+//    if (!readVectorFromFile<ScalarType>("C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/rhs65025.txt", ublas_vec1))
+
+  if (!readVectorFromFile<ScalarType>( rhsPathString , ublas_vec1))
   {
     std::cout << "Error reading RHS file" << std::endl;
     //    return 0;
@@ -137,8 +166,18 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
 
   std::cout << "done reading rhs" << std::endl;
   ublas_vec2 = ublas_vec1;
-  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString(), ublas_vec1))
-//  if (!readVectorFromFile<ScalarType>( "C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/testdata/result65025.txt" , ublas_result))
+//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/result65025.txt", ublas_result))
+//  const char * resultPath = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/result65025.txt";
+
+//  QString s = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/result65025.txt";
+    QString resultPathString = absoluteAppRootPath + "/testdata/rhs65025.txt";
+  const QByteArray resultStringHolder = (QDir::toNativeSeparators(resultPathString)).toUtf8();
+  const char * resultPath = resultStringHolder.constData();
+//  const char * resultPath = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/result65025.txt";
+  std::cout << "resultPath:"<<resultPath <<std::endl;
+    if (!readVectorFromFile<ScalarType>( resultPathString , ublas_result))
+
+//  if (!readVectorFromFile<ScalarType>( resultPath.c_str() , ublas_vec1))
   {
     std::cout << "Error reading result file" << std::endl;
     //    return 0;
@@ -155,10 +194,18 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   viennacl::vector<ScalarType> vcl_result(ublas_vec1.size(), ctx);
 
   ublas::compressed_matrix<ScalarType> ublas_matrix;
-  if (!viennacl::io::read_matrix_market_file(ublas_matrix, (filepath+"/mat65k.mtx").toStdString() ) )
+//  if (!viennaclbenchmark::io::read_matrix_market_file(ublas_matrix, ":/dataFiles/testdata/mat65k.mtx"))
+//    if (!viennaclbenchmark::io::read_matrix_market_file(ublas_matrix, "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/mat65k.mtx"))
+
+  long matrixFileReadStatus = viennacl::io::read_matrix_market_file(ublas_matrix, matrixString.toStdString() );
+
+  if ( matrixFileReadStatus != 0)
   {
-    qDebug()<<"error reading matrix file";
-    std::cout << "Error reading Matrix file" << std::endl;
+    std::cout << "matrix file read successfully, lines read:"<< matrixFileReadStatus << std::endl;
+  }
+  else
+  {
+    std::cout << "Error reading Matrix file, status:" << matrixFileReadStatus << std::endl;
   }
   //unsigned int cg_mat_size = cg_mat.size();
   std::cout << "done reading matrix" << std::endl;
@@ -565,7 +612,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
 
   //  std::cout << "------- BiCGStab solver (ILUT preconditioner) via ViennaCL, coordinate_matrix ----------" << std::endl;
   //  totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, bicgstab_solver, vcl_ilut, bicgstab_ops);
-  //  counter++;
+//  counter++;
 
   std::cout << "------- BiCGStab solver (Jacobi preconditioner) using ublas ----------" << std::endl;
   totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, bicgstab_solver, ublas_jacobi, bicgstab_ops);
@@ -605,7 +652,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   viennacl::linalg::gmres_tag gmres_solver(solver_tolerance, solver_iters, solver_krylov_dim);
 
   std::cout << "------- GMRES solver (no preconditioner) using ublas ----------" << std::endl;
-  totalGFLOPs = totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, gmres_solver, viennacl::linalg::no_precond(), gmres_ops);
+  totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, gmres_solver, viennacl::linalg::no_precond(), gmres_ops);
   counter++;
 
   std::cout << "------- GMRES solver (no preconditioner) via ViennaCL, compressed_matrix ----------" << std::endl;

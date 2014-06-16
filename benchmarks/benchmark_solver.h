@@ -35,12 +35,13 @@
 #include "viennacl/linalg/mixed_precision_cg.hpp"
 #endif
 
-#include "viennacl/io/matrix_market.hpp"
+//#include "viennacl/io/matrix_market.hpp"
 
 #include <iostream>
 #include <vector>
 #include "benchmarks/benchmark-utils.hpp"
 #include "benchmarks/io.hpp"
+#include "benchmarks/matrix_market.hpp"
 
 #include <QString>
 #include <QDir>

@@ -206,37 +206,37 @@ void Benchmark_Copy::updateBenchmarkData(QString benchmarkName, double bandwidth
   dataPoints.append(bandwidthValue);
 }
 
-QVariant Benchmark_Copy::getJsonData(){
-  QJsonObject jsonObject;
-  QJsonArray labels;
+//QVariant Benchmark_Copy::getJsonData(){
+//  QJsonObject jsonObject;
+//  QJsonArray labels;
 
-  foreach (QString benchmarkName, benchmarkNames) {
-    labels.append(benchmarkName);
-  }
-  jsonObject["labels"] = labels;
+//  foreach (QString benchmarkName, benchmarkNames) {
+//    labels.append(benchmarkName);
+//  }
+//  jsonObject["labels"] = labels;
 
-  QJsonArray dataPointsJsonArray;
-  foreach (double dataPoint, dataPoints) {
-    dataPointsJsonArray.append(dataPoint);
-  }
-  QString color = "rgba(0,0,220,0.5)";
-  QJsonObject chartBarData;
-    chartBarData["fillColor"] = color;
-    chartBarData["strokeColor"] = color;
-    chartBarData["data"] = dataPointsJsonArray;
+//  QJsonArray dataPointsJsonArray;
+//  foreach (double dataPoint, dataPoints) {
+//    dataPointsJsonArray.append(dataPoint);
+//  }
+//  QString color = "rgba(0,0,220,0.5)";
+//  QJsonObject chartBarData;
+//    chartBarData["fillColor"] = color;
+//    chartBarData["strokeColor"] = color;
+//    chartBarData["data"] = dataPointsJsonArray;
 
-    QJsonArray datasets;
-  datasets.append(chartBarData);
+//    QJsonArray datasets;
+//  datasets.append(chartBarData);
 
-  jsonObject["datasets"] = datasets;
+//  jsonObject["datasets"] = datasets;
 
-  QJsonDocument jsonDoc(jsonObject);
-//  qDebug()<<"json output";
-//  qDebug()<<jsonDoc.toBinaryData();
-  qDebug()<<"---toJson---";
-//  qDebug()<<jsonDoc.toJson(QJsonDocument::Compact);
-//  return jsonDoc.toJson();
-  dataPoints.clear();
-  benchmarkNames.clear();
-  return jsonDoc.toVariant();
-}
+//  QJsonDocument jsonDoc(jsonObject);
+////  qDebug()<<"json output";
+////  qDebug()<<jsonDoc.toBinaryData();
+//  qDebug()<<"---toJson---";
+////  qDebug()<<jsonDoc.toJson(QJsonDocument::Compact);
+////  return jsonDoc.toJson();
+//  dataPoints.clear();
+//  benchmarkNames.clear();
+//  return jsonDoc.toVariant();
+//}

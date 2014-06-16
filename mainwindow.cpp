@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  initQChartGraph();
+//  initQChartGraph();
 
 
   initQCustomPlotGraph();
@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //  Benchmark_Solver s; //working
 //  Benchmark_Scheduler s; //working
 //  Benchmark_Blas3 s; //working (extremely slow)
+//   Benchmark_Qr s; //testing
 //  s.execute();
 
   //connect reset button
@@ -74,27 +75,27 @@ void MainWindow::initQCustomPlotGraph(){
   ui->benchmarkGraph->legend->setSelectableParts(QCPLegend::spItems); // legend box shall not be selectable, only legend items
 }
 
-void MainWindow::initQChartGraph(){
-  QQuickView *view =  new QQuickView();
+//void MainWindow::initQChartGraph(){
+//  QQuickView *view =  new QQuickView();
 
-  Benchmark_Copy *benchmarkCopyQML = new Benchmark_Copy(this);
-  //connect our benchmarkCopy variable with QML
-  view->engine()->rootContext()->setContextProperty("benchmarkCopy",benchmarkCopyQML);
-  //load our QML file
-  view->setSource(QUrl("qrc:/sourceFiles/main.qml") );
+//  Benchmark_Copy *benchmarkCopyQML = new Benchmark_Copy(this);
+//  //connect our benchmarkCopy variable with QML
+//  view->engine()->rootContext()->setContextProperty("benchmarkCopy",benchmarkCopyQML);
+//  //load our QML file
+//  view->setSource(QUrl("qrc:/sourceFiles/main.qml") );
 
-  //add the loaded QML to an existing C++ GUI Widget
-  //    ui->qmlWidget = QWidget::createWindowContainer(view, static_cast<QWidget*>(ui->qmlWidget->parent()) );
-  ui->qmlWidget = QWidget::createWindowContainer(view, ui->tabQChart );
+//  //add the loaded QML to an existing C++ GUI Widget
+//  //    ui->qmlWidget = QWidget::createWindowContainer(view, static_cast<QWidget*>(ui->qmlWidget->parent()) );
+//  ui->qmlWidget = QWidget::createWindowContainer(view, ui->tabQChart );
 
-  //    ui->qmlWidget->setMinimumSize(ui->qmlWidget->parentWidget()->size() );
-  ui->qmlWidget->setMinimumSize(view->size());
+//  //    ui->qmlWidget->setMinimumSize(ui->qmlWidget->parentWidget()->size() );
+//  ui->qmlWidget->setMinimumSize(view->size());
 
   //get the root object//not necessary
   //    QObject *rootObject = static_cast<QObject*>( view.rootObject());
   //    QObject *qmlRoot = dynamic_cast<QObject*>(view.rootObject());
 
-}
+//}
 
 void MainWindow::resetData()
 {

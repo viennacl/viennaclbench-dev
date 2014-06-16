@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
 //  qDebug()<<jsonDoc.toVariant().toString();
 
   // set the value of the environment variable QML_IMPORT_TRACE as 1
-  QByteArray data = "1";
-  qputenv("QML_IMPORT_TRACE", data);
+//  QByteArray data = "1";
+//  qputenv("QML_IMPORT_TRACE", data);
 
 
   MainWindow w;

@@ -178,14 +178,26 @@
 
 #include <iostream>
 #include <fstream>
+#include <QFile>
+#include <QTextStream>
+#include <QString>
 
 template <class TYPE>
-bool readVectorFromFile(const std::string & filename, boost::numeric::ublas::vector<TYPE> & vec)
+bool readVectorFromFile(QString filename, boost::numeric::ublas::vector<TYPE> & vec)
 {
-  std::cout <<"in readVectorFromFile:"<< filename << std::endl;
-  std::ifstream file(filename.c_str());
-
-  if (!file) return false;
+  std::cout <<"reading file:"<< filename.toStdString() << std::endl;
+//  std::ifstream file(filename.c_str());
+  //  if (!file) return false;
+//  QFile dataFile (QString::fromStdString(filename));
+  QFile dataFile(filename);
+  if(!dataFile.exists()){
+    std::cout << "file does not exist" << std::endl;
+  }
+  if(!dataFile.open(QIODevice::ReadOnly)){
+    std::cout << "cannot open file" << std::endl;
+  }
+  QTextStream file(&dataFile);
+  std::cout << "returned file status:" << file.status() << std::endl;
 
   unsigned int size;
   file >> size;

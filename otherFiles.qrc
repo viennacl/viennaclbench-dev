@@ -1,11 +1,11 @@
 <RCC>
-    <qresource prefix="/sourceFiles">
+<!--    <qresource prefix="/sourceFiles">
         <file>main.qml</file>
         <file alias="qml/jbQuick/Charts/QChart.js">qml/jbQuick/Charts/QChart.js</file>
         <file alias="qml/jbQuick/Charts/QChartGallery.js">qml/jbQuick/Charts/QChartGallery.js</file>
         <file alias="qml/jbQuick/Charts/qmldir">qml/jbQuick/Charts/qmldir</file>
         <file alias="qml/jbQuick/Charts/QChart.qml">qml/jbQuick/Charts/QChart.qml</file>
-    </qresource>
+    </qresource>-->
     <qresource prefix="/resources">
         <file>images/viennacl-logo.png</file>
         <file>images/viennacl-logo.ico</file>

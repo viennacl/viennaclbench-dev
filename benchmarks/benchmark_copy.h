@@ -3,9 +3,9 @@
 
 #include <QObject>
 
-#include <QJsonArray>
-#include <QJsonDocument>
-#include <QJsonObject>
+//#include <QJsonArray>
+//#include <QJsonDocument>
+//#include <QJsonObject>
 
 #include <QVariant>
 #include <QStringList>
@@ -28,7 +28,7 @@ signals:
 public slots:
   void execute();
   void updateBenchmarkData(QString benchmarkName, double bandwidthValue);
-  QVariant getJsonData();
+//  QVariant getJsonData();
 };
 
 #endif // BENCHMARK_COPY_H

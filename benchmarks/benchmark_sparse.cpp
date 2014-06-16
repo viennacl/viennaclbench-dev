@@ -51,7 +51,7 @@ void Benchmark_Sparse::run_benchmark()
 
   QString filepath = QDir::currentPath()+"/testdata";
 
-  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString() , ublas_vec1))
+//  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString() , ublas_vec1))
   {
     std::cout << "Error reading RHS file" << std::endl;
     //    return 0;

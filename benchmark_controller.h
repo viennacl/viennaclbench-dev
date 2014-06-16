@@ -10,6 +10,7 @@
 #include "benchmarks/benchmark_vector.h"
 #include "benchmarks/benchmark_sparse.h"
 #include "benchmarks/benchmark_blas3.h"
+#include "benchmarks/benchmark_qr.h"
 
 class Benchmark_Controller : public QObject
 {
