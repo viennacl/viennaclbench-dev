@@ -45,13 +45,15 @@
 #include <QMargins>
 #include <qmath.h>
 #include <limits>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #  include <qnumeric.h>
 #  include <QPrinter>
 #  include <QPrintEngine>
 #else
 #  include <QtNumeric>
-#  include <QtPrintSupport/QPrinter>
+#  include <QtPrintSupport>
+#  include <QPrinter>
+//#  include <QtPrintSupport/QPrinter> //cmake compatibility fix
 #endif
 
 class QCPPainter;
