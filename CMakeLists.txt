@@ -26,7 +26,8 @@ ELSE()
 ENDIF()
 
 #Include ViennaCL
-include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
+find_package(ViennaCL QUIET REQUIRED)
+include_directories(${VIENNACL_INCLUDE_DIRS})
 
 # Find the Qt libraries
 #find_package(Qt4 COMPONENTS Core Gui Quick Qml REQUIRED)
