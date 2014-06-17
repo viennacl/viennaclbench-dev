@@ -52,23 +52,23 @@ find_package(Boost)
    # )
 
 file(GLOB ViennaCL_Benchmark_Sources
-    "benchmarks/*.cpp"
-    "*.cpp"
+    "src/benchmarks/*.cpp"
+    "src/*.cpp"
 )
 
 file(GLOB ViennaCL_Benchmark_Headers
-    "benchmarks/*.h"
-    "benchmarks/*.hpp"
-    "*.h"
-    "*.hpp"
+    "src/benchmarks/*.h"
+    "src/benchmarks/*.hpp"
+    "src/*.h"
+    "src/*.hpp"
 )
 
 set( BENCHMARK_UIS
-    mainwindow.ui)
+    src/mainwindow.ui)
 
 #ADD_DEFINITIONS( -Wall )
-add_definitions( -Wno-unused)
-
+#add_definitions( -Wno-unused)
+add_definitions( -Wextra)
 
 #Generate ui headers
 #qt5_wrap_ui(ui_headers ${ViennaCL_Benchmark_Headers} ${ViennaCL_Benchmark_Sources} ${BENCHMARK_UIS})

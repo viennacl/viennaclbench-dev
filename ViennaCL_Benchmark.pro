@@ -4,44 +4,44 @@
 #
 #-------------------------------------------------
 
-QT       += quick qml core gui
+QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ViennaCL_Benchmark
 TEMPLATE = app
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    qcustomplot.cpp \
-    benchmarks/benchmark_vector.cpp \
-    benchmarks/benchmark_sparse.cpp \
-    benchmarks/benchmark_solver.cpp \
-    benchmarks/benchmark_scheduler.cpp \
-    benchmarks/benchmark_blas3.cpp \
-    benchmarks/benchmark_copy.cpp \
-    benchmark_controller.cpp \
-    benchmarks/benchmark_qr.cpp \
-    menuwidget.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp \
+    src/qcustomplot.cpp \
+    src/benchmarks/benchmark_vector.cpp \
+    src/benchmarks/benchmark_sparse.cpp \
+    src/benchmarks/benchmark_solver.cpp \
+    src/benchmarks/benchmark_scheduler.cpp \
+    src/benchmarks/benchmark_blas3.cpp \
+    src/benchmarks/benchmark_copy.cpp \
+    src/benchmark_controller.cpp \
+    src/benchmarks/benchmark_qr.cpp \
+    src/menuwidget.cpp
 
-HEADERS  += mainwindow.h \
-    qcustomplot.h \
-    benchmarks/benchmark-utils.hpp \
-    benchmarks/benchmark_vector.h \
-    benchmarks/benchmark_sparse.h \
-    benchmarks/benchmark_solver.h \
-    benchmarks/benchmark_scheduler.h \
-    benchmarks/io.hpp \
-    benchmarks/benchmark_blas3.h \
-    benchmarks/Random.hpp \
-    benchmarks/benchmark_copy.h \
-    benchmark_controller.h \
-    benchmarks/benchmark_qr.h \
-    menuwidget.h \
-    benchmarks/matrix_market.hpp
+HEADERS  += src/mainwindow.h \
+    src/qcustomplot.h \
+    src/benchmarks/benchmark-utils.hpp \
+    src/benchmarks/benchmark_vector.h \
+    src/benchmarks/benchmark_sparse.h \
+    src/benchmarks/benchmark_solver.h \
+    src/benchmarks/benchmark_scheduler.h \
+    src/benchmarks/io.hpp \
+    src/benchmarks/benchmark_blas3.h \
+    src/benchmarks/Random.hpp \
+    src/benchmarks/benchmark_copy.h \
+    src/benchmark_controller.h \
+    src/benchmarks/benchmark_qr.h \
+    src/menuwidget.h \
+    src/benchmarks/matrix_market.hpp
 
-FORMS    += mainwindow.ui \
-    menuwidget.ui
+FORMS    += src/mainwindow.ui \
+    src/menuwidget.ui
 
 #INCLUDEPATH += C:\ViennaCL-1.5.2
 #INCLUDEPATH += C:\ViennaCL-1.5.2\examples\benchmarks
@@ -60,9 +60,9 @@ testData.path = $$OUT_PWD/testdata
 testData.files += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
 INSTALLS += testData
 
-RESOURCES += otherFiles.qrc \
+RESOURCES += src/resources/otherFiles.qrc \
 
-CONFIG += warn_off
+#CONFIG += warn_off
 
 #QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
 #QMAKE_CXXFLAGS_WARN_OFF -= -Wno-unused-local-typedefs
