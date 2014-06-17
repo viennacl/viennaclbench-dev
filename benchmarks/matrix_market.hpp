@@ -166,7 +166,7 @@ namespace viennacl
 //          for(int i=0;i<sizeof(buffer)/sizeof(char); i++){
 //            std::cout << buffer[i];
 //          }
-          std::cout << buffer << std::endl;
+//          std::cout << buffer << std::endl;
           ++linenum;
           detail::trim(buffer, 1024);
         }
