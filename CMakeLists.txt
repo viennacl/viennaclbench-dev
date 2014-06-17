@@ -26,6 +26,7 @@ ELSE()
 ENDIF()
 
 #Include ViennaCL
+include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
 find_package(ViennaCL QUIET REQUIRED)
 include_directories(${VIENNACL_INCLUDE_DIRS})
 
@@ -52,18 +53,31 @@ find_package(Boost)
 
 file(GLOB ViennaCL_Benchmark_Sources
     "benchmarks/*.cpp"
+    "*.cpp"
+)
+
+file(GLOB ViennaCL_Benchmark_Headers
     "benchmarks/*.h"
     "benchmarks/*.hpp"
     "*.h"
-    "*.cpp"
     "*.hpp"
-    "*.ui"
 )
+
+set( BENCHMARK_UIS
+    mainwindow.ui)
+
+#ADD_DEFINITIONS( -Wall )
+add_definitions( -Wno-unused)
+
+
+#Generate ui headers
+#qt5_wrap_ui(ui_headers ${ViennaCL_Benchmark_Headers} ${ViennaCL_Benchmark_Sources} ${BENCHMARK_UIS})
+qt5_wrap_ui(ui_headers ${BENCHMARK_UIS})
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 #    add_executable(ViennaCL_Benchmark main.cpp mainwindow.cpp mainwindow.h mainwindow.ui)
-    add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources})
+    add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${ui_headers} )
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES})
 qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
 target_link_libraries(ViennaCL_Benchmark)

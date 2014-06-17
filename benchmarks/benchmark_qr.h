@@ -18,7 +18,7 @@
 //#include <sys/time.h>
 //#include <time.h>
 //#include "benchmark-utils.hpp"
-///*#include "viennacl/scalar.hpp"
+//#include "viennacl/scalar.hpp"
 //#include "viennacl/matrix.hpp"
 //#include "viennacl/compressed_matrix.hpp"
 //#include "viennacl/linalg/cg.hpp"
@@ -26,7 +26,7 @@
 //#include "viennacl/linalg/inner_prod.hpp"
 //#include "viennacl/linalg/ilu.hpp"
 //#include "viennacl/linalg/norm_2.hpp"
-//#include "viennacl/io/matrix_market.hpp"*/
+//#include "viennacl/io/matrix_market.hpp"
 //#include "viennacl/linalg/qr.hpp"
 //#include "boost/numeric/ublas/vector.hpp"
 //#include "boost/numeric/ublas/matrix.hpp"
