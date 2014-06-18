@@ -134,53 +134,25 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   unsigned int solver_krylov_dim = 20;
   double solver_tolerance = 1e-6;
 
+  //create paths to data files, qt automatically takes care of / and \ characters
   QString  absoluteAppRootPath = QDir::currentPath();
-  QString rhsPathString = absoluteAppRootPath + "/testdata/rhs65025.txt" ;
-const QByteArray rhsStringHolder = (QDir::toNativeSeparators(rhsPathString)).toUtf8();
-std::string rhsPath = rhsPathString.toStdString();
-//const char * rhsPath = rhsStringHolder.constData();
-//const char *rhsPath = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/rhs65025.txt";
-std::cout << "rhsPath:"<<rhsPath <<std::endl;
-//  QString matrixPath = absoluteAppRootPath + "/testdata/mat65k.mtx" ;
-
-//  std::string rhsPath = absoluteAppRootPath.toStdString();
-//  rhsPath+= "/testdata/rhs65025.txt";
-//  std::string resultPath = absoluteAppRootPath.toStdString();
-//  resultPath+= "/testdata/result65025.txt";
-QString matrixString = absoluteAppRootPath + "/testdata/mat65k.mtx";
-  std::string matrixPath = absoluteAppRootPath.toStdString();
-  matrixPath+= "/testdata/mat65k.mtx";
-
-//  qDebug()<<"paths";
-//  std::cout<<rhsPath<<std::endl;
-  std::cout<<"matrixPath:"<<matrixPath<<std::endl;
-
-//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/rhs65025.txt", ublas_vec1))
-//    if (!readVectorFromFile<ScalarType>("C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/rhs65025.txt", ublas_vec1))
+  QString rhsPathString = absoluteAppRootPath + "/testdata/rhs65025.txt";
+  QString resultPathString = absoluteAppRootPath + "/testdata/result65025.txt";
+  QString matrixPathString = absoluteAppRootPath + "/testdata/mat65k.mtx";
 
   if (!readVectorFromFile<ScalarType>( rhsPathString , ublas_vec1))
   {
     std::cout << "Error reading RHS file" << std::endl;
-    //    return 0;
+    return;
   }
 
   std::cout << "done reading rhs" << std::endl;
   ublas_vec2 = ublas_vec1;
-//  if (!readVectorFromFile<ScalarType>(":/dataFiles/testdata/result65025.txt", ublas_result))
-//  const char * resultPath = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/result65025.txt";
 
-//  QString s = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/result65025.txt";
-    QString resultPathString = absoluteAppRootPath + "/testdata/rhs65025.txt";
-  const QByteArray resultStringHolder = (QDir::toNativeSeparators(resultPathString)).toUtf8();
-  const char * resultPath = resultStringHolder.constData();
-//  const char * resultPath = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/result65025.txt";
-  std::cout << "resultPath:"<<resultPath <<std::endl;
-    if (!readVectorFromFile<ScalarType>( resultPathString , ublas_result))
-
-//  if (!readVectorFromFile<ScalarType>( resultPath.c_str() , ublas_vec1))
+  if (!readVectorFromFile<ScalarType>( resultPathString , ublas_result))
   {
     std::cout << "Error reading result file" << std::endl;
-    //    return 0;
+    return;
   }
   std::cout << "done reading result" << std::endl;
 
@@ -194,10 +166,8 @@ QString matrixString = absoluteAppRootPath + "/testdata/mat65k.mtx";
   viennacl::vector<ScalarType> vcl_result(ublas_vec1.size(), ctx);
 
   ublas::compressed_matrix<ScalarType> ublas_matrix;
-//  if (!viennaclbenchmark::io::read_matrix_market_file(ublas_matrix, ":/dataFiles/testdata/mat65k.mtx"))
-//    if (!viennaclbenchmark::io::read_matrix_market_file(ublas_matrix, "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_5_2_0_MinGW_4_8_32bit-Debug/testdata/mat65k.mtx"))
 
-  long matrixFileReadStatus = viennacl::io::read_matrix_market_file(ublas_matrix, matrixString.toStdString() );
+  long matrixFileReadStatus = viennacl::io::read_matrix_market_file(ublas_matrix, matrixPathString.toStdString() );
 
   if ( matrixFileReadStatus != 0)
   {
@@ -207,7 +177,7 @@ QString matrixString = absoluteAppRootPath + "/testdata/mat65k.mtx";
   {
     std::cout << "Error reading Matrix file, status:" << matrixFileReadStatus << std::endl;
   }
-  //unsigned int cg_mat_size = cg_mat.size();
+
   std::cout << "done reading matrix" << std::endl;
 
   //cpu to gpu:
@@ -612,7 +582,7 @@ QString matrixString = absoluteAppRootPath + "/testdata/mat65k.mtx";
 
   //  std::cout << "------- BiCGStab solver (ILUT preconditioner) via ViennaCL, coordinate_matrix ----------" << std::endl;
   //  totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, bicgstab_solver, vcl_ilut, bicgstab_ops);
-//  counter++;
+  //  counter++;
 
   std::cout << "------- BiCGStab solver (Jacobi preconditioner) using ublas ----------" << std::endl;
   totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, bicgstab_solver, ublas_jacobi, bicgstab_ops);

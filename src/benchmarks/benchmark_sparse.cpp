@@ -49,12 +49,15 @@ void Benchmark_Sparse::run_benchmark()
   boost::numeric::ublas::vector<ScalarType> ublas_vec1;
   boost::numeric::ublas::vector<ScalarType> ublas_vec2;
 
-  QString filepath = QDir::currentPath()+"/testdata";
+  //create paths to data files, qt automatically takes care of / and \ characters
+  QString  absoluteAppRootPath = QDir::currentPath();
+  QString resultPathString = absoluteAppRootPath + "/testdata/result65025.txt" ;
+  QString matrixPathString = absoluteAppRootPath + "/testdata/mat65k.mtx";
 
-//  if (!readVectorFromFile<ScalarType>( (filepath+"/result65025.txt").toStdString() , ublas_vec1))
+  if (!readVectorFromFile<ScalarType>( resultPathString , ublas_vec1))
   {
     std::cout << "Error reading RHS file" << std::endl;
-    //    return 0;
+    return;
   }
   std::cout << "done reading rhs results" << std::endl;
   ublas_vec2 = ublas_vec1;
@@ -70,12 +73,12 @@ void Benchmark_Sparse::run_benchmark()
 
   boost::numeric::ublas::compressed_matrix<ScalarType> ublas_matrix;
 
-  if (!viennacl::io::read_matrix_market_file(ublas_matrix, (filepath+"/mat65k.mtx").toStdString() ) )
+  if (!viennacl::io::read_matrix_market_file(ublas_matrix, matrixPathString.toStdString() ) )
   {
     std::cout << "Error reading Matrix file" << std::endl;
-    //    return 0;
+    return;
   }
-  //unsigned int cg_mat_size = cg_mat.size();
+
   std::cout << "done reading matrix" << std::endl;
 
   viennacl::vector<ScalarType> vcl_vec1(ublas_vec1.size());

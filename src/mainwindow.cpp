@@ -13,14 +13,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
   initQCustomPlotGraph();
 
-  //  Benchmark_Sparse s; //working in debug
+  //  Benchmark_Sparse s; //working
   //  Benchmark_Copy s; //working
   //  Benchmark_Vector s; working
-  //  Benchmark_Solver s; //working in debug
+  //  Benchmark_Solver s; //working in debug only for Qt>=5
   //  Benchmark_Scheduler s; //working
   //  Benchmark_Blas3 s; //working (extremely slow)
-//     Benchmark_Qr s; //testing
-//    s.execute();
+  //  Benchmark_Qr s; //working (extremely slow in debug only)
+  //  s.execute();
 
   //connect reset button
   connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(resetData()) );
