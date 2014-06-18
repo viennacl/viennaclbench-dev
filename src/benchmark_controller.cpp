@@ -56,6 +56,14 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     delete benchmark;
 
   }
+  else if(benchmarkName == "Qr"){
+    Benchmark_Qr *benchmark = new Benchmark_Qr();
+    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
+    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    benchmark->execute();
+    delete benchmark;
+
+  }
   else{
     qDebug()<<"cannot resolve benchmark name";
 

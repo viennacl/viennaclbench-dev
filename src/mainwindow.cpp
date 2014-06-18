@@ -44,6 +44,7 @@ void MainWindow::initQCustomPlotGraph(){
   ui->comboBox->addItem("Solver");
   ui->comboBox->addItem("Sparse");
   ui->comboBox->addItem("Vector");
+  ui->comboBox->addItem("Qr");
 
   barCounter = 1 ;
 
