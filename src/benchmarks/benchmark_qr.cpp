@@ -68,6 +68,7 @@ void Benchmark_Qr::run_benchmark()
   elapsed = timer.get();
   std::cout << "Time for QR on CPU: " << elapsed << std::endl;
   std::cout << "Estimated GFLOPs: " << 2e-9 * num_ops_qr/ elapsed << std::endl;
+  emit resultSignal("QR on CPU", 2e-9 * num_ops_qr/ elapsed );
 
 
   //std::cout << "Inplace QR-factored A: " << A << std::endl;
@@ -77,6 +78,7 @@ void Benchmark_Qr::run_benchmark()
   elapsed = timer.get();
   std::cout << "Time for Q-recovery on CPU: " << elapsed << std::endl;
   std::cout << "Estimated GFLOPs: " << 2e-9 * num_ops_recovery / elapsed << std::endl;
+  emit resultSignal("Q-recovery on CPU", 2e-9 * num_ops_recovery / elapsed );
 
   /*std::cout << "R after recovery: " << R << std::endl;
     std::cout << "Q after recovery: " << Q << std::endl;
