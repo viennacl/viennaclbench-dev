@@ -536,7 +536,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, cg_solver, vcl_row_scaling_coo, cg_ops);
   counter++;
 
-  emit resultSignal("CG solver - average GFLOPs", totalGFLOPs/(double)counter);
+  emit resultSignal("CG solver - average", totalGFLOPs/(double)counter);
 
   ///////////////////////////////////////////////////////////////////////////////
   //////////////////////           BiCGStab solver             //////////////////
@@ -609,7 +609,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, bicgstab_solver, vcl_row_scaling_coo, bicgstab_ops);
   counter++;
 
-  emit resultSignal("BiCGStab solver - average GFLOPs", totalGFLOPs/(double)counter);
+  emit resultSignal("BiCGStab solver - average", totalGFLOPs/(double)counter);
 
   ///////////////////////////////////////////////////////////////////////////////
   ///////////////////////            GMRES solver             ///////////////////
@@ -672,13 +672,14 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, gmres_solver, vcl_row_scaling_coo, gmres_ops);
   counter++;
 
-  emit resultSignal("GMRES solver - average GFLOPs", totalGFLOPs/(double)counter);
+  emit resultSignal("GMRES solver - average", totalGFLOPs/(double)counter);
 
   //  return EXIT_SUCCESS;
 }
 
 void Benchmark_Solver::execute()
 {
+  emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;

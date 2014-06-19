@@ -158,6 +158,7 @@ void Benchmark_Copy::run_benchmark()
 }
 
 void Benchmark_Copy::execute(){
+  emit unitMeasureSignal("GB/s");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;

@@ -277,6 +277,7 @@ void Benchmark_Sparse::run_benchmark()
 
 void Benchmark_Sparse::execute()
 {
+  emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;

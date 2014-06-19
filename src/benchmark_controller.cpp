@@ -12,7 +12,8 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Blas3 *benchmark = new Benchmark_Blas3();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
-        benchmark->execute(); //execution is too slow
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
+        benchmark->execute(); //execution is too slow for blas3
     delete benchmark;
 
   }
@@ -20,6 +21,7 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Copy *benchmark = new Benchmark_Copy();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
     benchmark->execute();
     delete benchmark;
 
@@ -28,6 +30,7 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Scheduler *benchmark = new Benchmark_Scheduler();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
     benchmark->execute();
     delete benchmark;
 
@@ -36,6 +39,7 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Solver *benchmark = new Benchmark_Solver();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
     benchmark->execute();
     delete benchmark;
 
@@ -44,6 +48,7 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Sparse *benchmark = new Benchmark_Sparse();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
     benchmark->execute();
     delete benchmark;
 
@@ -52,6 +57,7 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Vector *benchmark = new Benchmark_Vector();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
     benchmark->execute();
     delete benchmark;
 
@@ -60,6 +66,7 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
     Benchmark_Qr *benchmark = new Benchmark_Qr();
     connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
     benchmark->execute();
     delete benchmark;
 
@@ -72,11 +79,15 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
 
 void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double bandwidthValue)
 {
-  qDebug()<<"resultSignalSlot of benchmarkController";
   emit resultSignal(benchmarkName, bandwidthValue);
 }
 
 void Benchmark_Controller::benchmarkCompleteSlot()
 {
   emit benchmarkComplete();
+}
+
+void Benchmark_Controller::unitMeasureSignalSlot(QString unitMeasureName)
+{
+  emit unitMeasureSignal(unitMeasureName);
 }

@@ -104,6 +104,7 @@ void Benchmark_Scheduler::run_benchmark()
 
 void Benchmark_Scheduler::execute()
 {
+  emit unitMeasureSignal("sec");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;

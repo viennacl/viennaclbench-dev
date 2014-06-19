@@ -8,9 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
 
-  //  initQChartGraph();
-
-
   initQCustomPlotGraph();
 
   //  Benchmark_Sparse s; //working
@@ -23,20 +20,23 @@ MainWindow::MainWindow(QWidget *parent) :
   //  s.execute();
 
   //connect reset button
-  connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(resetData()) );
+//  connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(resetData()) );
   //run benchmark button clicked -> execute benchmark
   connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
-  //got a benchmark result -> parse it and show it on the graph
+  //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
+  connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString)), this, SLOT(updateBenchmarkUnitMeasure(QString)) );
+  //received a benchmark result -> parse it and show it on the graph
   connect(&benchmarkController, SIGNAL(resultSignal(QString,double)), this, SLOT(parseBenchmarkResult(QString,double)) );
 
 }
 
-void MainWindow::startBenchmarkExecution(){/*
-  //run benchmark button clicked -> execute benchmark
-  connect(ui->buttonRunBenchmark, SIGNAL(clicked()), &benchmarkController, SLOT(execute()) );*/
+//execute the currently selected benchmark
+void MainWindow::startBenchmarkExecution(){
+  resetData();
   benchmarkController.executeSelectedBenchmark(ui->comboBox->currentText() );
-
 }
+
+//initialize the graph
 void MainWindow::initQCustomPlotGraph(){
   ui->comboBox->addItem("Blas3");
   ui->comboBox->addItem("Copy");
@@ -57,7 +57,7 @@ void MainWindow::initQCustomPlotGraph(){
   ui->benchmarkGraph->plotLayout()->insertRow(0);
   ui->benchmarkGraph->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->benchmarkGraph, "QCustomPlot"));
 
-  ui->benchmarkGraph->xAxis->setLabel("Gb/s");
+  ui->benchmarkGraph->xAxis->setLabel("GB/s");
   ui->benchmarkGraph->yAxis->setLabel("BENCHMARK");
   ui->benchmarkGraph->legend->setVisible(false);
 
@@ -76,30 +76,10 @@ void MainWindow::initQCustomPlotGraph(){
   ui->benchmarkGraph->legend->setSelectableParts(QCPLegend::spItems); // legend box shall not be selectable, only legend items
 }
 
-//void MainWindow::initQChartGraph(){
-//  QQuickView *view =  new QQuickView();
-
-//  Benchmark_Copy *benchmarkCopyQML = new Benchmark_Copy(this);
-//  //connect our benchmarkCopy variable with QML
-//  view->engine()->rootContext()->setContextProperty("benchmarkCopy",benchmarkCopyQML);
-//  //load our QML file
-//  view->setSource(QUrl("qrc:/sourceFiles/main.qml") );
-
-//  //add the loaded QML to an existing C++ GUI Widget
-//  //    ui->qmlWidget = QWidget::createWindowContainer(view, static_cast<QWidget*>(ui->qmlWidget->parent()) );
-//  ui->qmlWidget = QWidget::createWindowContainer(view, ui->tabQChart );
-
-//  //    ui->qmlWidget->setMinimumSize(ui->qmlWidget->parentWidget()->size() );
-//  ui->qmlWidget->setMinimumSize(view->size());
-
-//get the root object//not necessary
-//    QObject *rootObject = static_cast<QObject*>( view.rootObject());
-//    QObject *qmlRoot = dynamic_cast<QObject*>(view.rootObject());
-
-//}
-
+//reset the graph
 void MainWindow::resetData()
 {
+  qDebug()<<"resetting data";
   barCounter = 1;
   barData.clear();
   ticks.clear();
@@ -107,15 +87,14 @@ void MainWindow::resetData()
   ui->benchmarkGraph->clearGraphs();
   ui->benchmarkGraph->clearPlottables();
   ui->benchmarkGraph->clearItems();
-  ui->benchmarkGraph->xAxis->setRange(0,001);
-  ui->benchmarkGraph->yAxis->setTickVector(ticks);
-  ui->benchmarkGraph->yAxis->setTickVectorLabels(labels);
-  ui->benchmarkGraph->yAxis->setRange(0,001);
+  ui->benchmarkGraph->xAxis->setRange(0,1);
+//  ui->benchmarkGraph->yAxis->setTickVector(ticks);
+//  ui->benchmarkGraph->yAxis->setTickVectorLabels(labels);
+  ui->benchmarkGraph->yAxis->setRange(0,1);
   ui->benchmarkGraph->replot();
 }
 
-
-
+//parse the received benchmark result name and value
 void MainWindow::parseBenchmarkResult(QString benchmarkName, double bandwidthValue){
   qDebug()<<"inside parseBenchmarkResults SLOT";
   qDebug()<<"benchmarkName:"<<benchmarkName;
@@ -126,6 +105,13 @@ void MainWindow::parseBenchmarkResult(QString benchmarkName, double bandwidthVal
   showResult(bandwidthValue, ui->benchmarkGraph);
 }
 
+//set the benchmark's unit measure
+void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
+{
+  ui->benchmarkGraph->xAxis->setLabel(unitMeasureName);
+}
+
+//graph the result
 void MainWindow::showResult(double value, QCustomPlot *customPlot){
   //  customPlot->yAxis->setAutoTicks(false);
   //  customPlot->yAxis->setAutoTickLabels(false);
@@ -187,6 +173,7 @@ void MainWindow::showResult(double value, QCustomPlot *customPlot){
 }
 
 //predefined graph sample with random data
+//unused
 void MainWindow::graphData(){
   int n = 50; // number of points in graph
   double xScale = (rand()/(double)RAND_MAX + 0.5)*2;

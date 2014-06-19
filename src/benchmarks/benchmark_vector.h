@@ -24,6 +24,7 @@ public:
 signals:
   void resultSignal(QString benchmarkName, double bandwidthValue);
   void benchmarkComplete();
+  void unitMeasureSignal(QString unitMeasureName);
 public slots:
   void execute();
 

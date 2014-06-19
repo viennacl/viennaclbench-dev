@@ -9,9 +9,6 @@
 #include <QGraphicsRectItem>
 #include <QPixmap>
 #include <QPainter>
-//#include <QQuickView>
-//#include <QQmlEngine>
-//#include <QQmlContext>
 #include <QObject>
 
 #include <QDebug>
@@ -33,7 +30,6 @@ public:
 
   void showResult(double value, QCustomPlot *customPlot);
   void initQCustomPlotGraph();
-//  void initQChartGraph();
 private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
@@ -51,6 +47,7 @@ public slots:
   void resetData();
   void graphData();
   void parseBenchmarkResult(QString benchmarkName, double bandwidthValue);
+  void updateBenchmarkUnitMeasure(QString unitMeasureName);
   void startBenchmarkExecution();
 };
 

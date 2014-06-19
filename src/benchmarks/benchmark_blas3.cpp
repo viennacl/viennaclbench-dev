@@ -192,6 +192,7 @@ void Benchmark_Blas3::run_benchmark()
 
 void Benchmark_Blas3::execute()
 {
+  emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;

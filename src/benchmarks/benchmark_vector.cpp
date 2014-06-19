@@ -252,6 +252,7 @@ void Benchmark_Vector::run_benchmark()
 
 void Benchmark_Vector::execute()
 {
+  emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;

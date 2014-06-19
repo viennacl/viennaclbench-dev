@@ -20,11 +20,13 @@ public:
 signals:
   void resultSignal(QString benchmarkName, double bandwidthValue);
   void benchmarkComplete();
+  void unitMeasureSignal(QString);
 
 public slots:
   void executeSelectedBenchmark(QString benchmarkName);
   void resultSignalSlot(QString benchmarkName, double bandwidthValue);
   void benchmarkCompleteSlot();
+  void unitMeasureSignalSlot(QString unitMeasureName);
 
 };
 
