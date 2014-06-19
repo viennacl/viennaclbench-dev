@@ -26,15 +26,15 @@ DEPENDPATH += C:\boost\boost_1_55_0 to DEPENDPATH += yourPathToBoost<br>
 In QtCreator, under Projects>Build Steps>Make:>add to Make arguments: install<br>
 Do this for both debug and release modes<br>
 5. you can now run the project (Ctrl+R); make sure you've selected a kit with at least Qt 5.2.0<br>
-<h3>Qt Creator with the cmake build system (currently only supports Qt5):</h3>
-1. open CMakeLists.txt with Qt Creator<br>
-2. run cmake<br>
-3. compile<br>
-4. manually copy testdata folder from project root folder into the root folder where the project was compiled(will be automated soon)<br>
-5. you may now run the program<br>
+<h3>Qt Creator with the cmake build system (currently only supports Qt5):</h3>&nbsp;
+  1. open CMakeLists.txt with Qt Creator<br>
+  2. run cmake<br>
+  3. compile<br>
+  4. manually copy testdata folder from project root folder into the root folder where the project was compiled(will be automated soon)<br>
+  5. you may now run the program<br>
 <h2>Important Notice</h2>
--Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait.<br>
--Solver benchmark currently does not work in release node for Qt versions above 5. I'm working on a fix.<br>
+ -Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait.<br>
+ -Solver benchmark currently does not work in release node for Qt versions above 5. I'm working on a fix.<br>
 <h2>Troubleshooting</h2>
 In case you get an error in QtGui/qopenglfunction.h : remove(or comment out) line 785 in that file (void (QOPENGLF_APIENTRYP MemoryBarrier)(GLbitfield barriers);); it is a known Qt bug (https://github.com/go-qml/qml/issues/56) and should be fixed in Qt 5.3<br>
 <h2>Additional Info</h2>
