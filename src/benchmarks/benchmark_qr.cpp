@@ -63,7 +63,7 @@ void Benchmark_Qr::run_benchmark()
   std::cout << "init betas done" << std::endl;
   std::cout << "time before inplace_qr:" << QTime::currentTime().toString().toStdString() << std::endl;
   betas = viennacl::linalg::inplace_qr(A);
-  std::cout << "inplace_qr done" << std::endl;  
+  std::cout << "inplace_qr done" << std::endl;
   std::cout << "time after inplace_qr:" << QTime::currentTime().toString().toStdString() << std::endl;
   elapsed = timer.get();
   std::cout << "Time for QR on CPU: " << elapsed << std::endl;

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
 # Set package properties 
 project(ViennaCL_Benchmark)
@@ -25,23 +25,20 @@ ELSE()
  SET (CMAKE_BUILD_TYPE Release)
 ENDIF()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-
 #Include ViennaCL
 include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
 find_package(ViennaCL QUIET REQUIRED)
 include_directories(${VIENNACL_INCLUDE_DIRS})
 
+# Find the Qt libraries
+#find_package(Qt4 COMPONENTS Core Gui Quick Qml REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Quick REQUIRED)
+find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5Qml REQUIRED)
 
-# this command finds Qt4 libraries and sets all required variables
-# note that it's Qt4, not QT4 or qt4
-FIND_PACKAGE( Qt4 REQUIRED )
-  
-# (QT_USE_FILE is a variable defined by FIND_PACKAGE( Qt4 ) that contains a path to CMake script)
-INCLUDE( ${QT_USE_FILE} )
-  
-  
-  
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
@@ -66,27 +63,23 @@ file(GLOB ViennaCL_Benchmark_Headers
     "src/*.hpp"
 )
 
-#set( BENCHMARK_UIS_HEADERS
-#	src/mainwindow.h)
-
 set( BENCHMARK_UIS
     src/mainwindow.ui)
-	
 
 #ADD_DEFINITIONS( -Wall )
 #add_definitions( -Wno-unused)
 add_definitions( -Wextra)
 
 #Generate ui headers
-qt4_wrap_ui(ui_headers ${BENCHMARK_UIS})
-#qt4_wrap_cpp(cpp_ui_headers ${BENCHMARK_UIS_HEADERS})
+#qt5_wrap_ui(ui_headers ${ViennaCL_Benchmark_Headers} ${ViennaCL_Benchmark_Sources} ${BENCHMARK_UIS})
+qt5_wrap_ui(ui_headers ${BENCHMARK_UIS})
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 #    add_executable(ViennaCL_Benchmark main.cpp mainwindow.cpp mainwindow.h mainwindow.ui)
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${ui_headers} )
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES})
-qt4_use_modules(ViennaCL_Benchmark Core Gui)
+    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES})
+qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
 target_link_libraries(ViennaCL_Benchmark)
 
 endif()
