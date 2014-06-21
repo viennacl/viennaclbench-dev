@@ -10,7 +10,7 @@ mailing list</a>.<br>
 <h2>Requirements - First Prototype</h2>
 -Works with Qt4 (tested with 4.8.5) and Qt5 (tested with 5.2.0 and 5.3.0)<br>
 -Qt Creator with qmake; alternatively, a cmake build is now available<br>
--CMake 2.8.11<br>
+-CMake 2.8.11 (Qt5) or 2.6 (Qt4)<br>
 -ViennaCL 1.5.2<br>
 -Boost 1.55<br>
 <h2>Build Process</h2>
@@ -26,7 +26,7 @@ DEPENDPATH += C:\boost\boost_1_55_0 to DEPENDPATH += yourPathToBoost<br>
 In QtCreator, under Projects>Build Steps>Make:>add to Make arguments: install<br>
 Do this for both debug and release modes<br>
 5. you can now run the project (Ctrl+R); make sure you've selected a kit with at least Qt 5.2.0<br>
-<h3>Qt Creator with the cmake build system (currently only supports Qt5):</h3>&nbsp;
+<h3>Qt Creator with the cmake build system (default CMakeLists.txt is setup for Qt4, use CMakeLists_Qt5.txt to build with Qt5):</h3>&nbsp;
   1. open CMakeLists.txt with Qt Creator<br>
   2. run cmake<br>
   3. compile<br>
