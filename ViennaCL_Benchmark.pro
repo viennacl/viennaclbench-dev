@@ -22,7 +22,7 @@ SOURCES += src/main.cpp\
     src/benchmarks/benchmark_copy.cpp \
     src/benchmark_controller.cpp \
     src/benchmarks/benchmark_qr.cpp \
-    src/menuwidget.cpp
+    src/menulistwidget.cpp
 
 HEADERS  += src/mainwindow.h \
     src/qcustomplot.h \
@@ -37,11 +37,10 @@ HEADERS  += src/mainwindow.h \
     src/benchmarks/benchmark_copy.h \
     src/benchmark_controller.h \
     src/benchmarks/benchmark_qr.h \
-    src/menuwidget.h \
-    src/benchmarks/matrix_market.hpp
+    src/benchmarks/matrix_market.hpp \
+    src/menulistwidget.h
 
-FORMS    += src/mainwindow.ui \
-    src/menuwidget.ui
+FORMS    += src/mainwindow.ui
 
 #INCLUDEPATH += C:\ViennaCL-1.5.2
 #INCLUDEPATH += C:\ViennaCL-1.5.2\examples\benchmarks
@@ -61,6 +60,7 @@ testData.files += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025
 INSTALLS += testData
 
 RESOURCES += src/resources/otherFiles.qrc \
+    src/resources/icons.qrc
 
 #CONFIG += warn_off
 

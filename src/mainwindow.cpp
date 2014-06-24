@@ -7,7 +7,14 @@ MainWindow::MainWindow(QWidget *parent) :
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  connect(ui->actionAbout,SIGNAL(triggered()), qApp, SLOT(aboutQt()) );
 
+  //normalize size of each list menu item
+  for ( int i = 0; i < ui->menuListWidget->count(); i++ ) {
+      ui->menuListWidget->item(i)->setSizeHint(ui->menuListWidget->itemSizeHint());
+  }
+
+  //setup plot graph widget
   initQCustomPlotGraph();
 
   //  Benchmark_Sparse s; //working
@@ -19,8 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
   //  Benchmark_Qr s; //working (extremely slow in debug only)
   //  s.execute();
 
-  //connect reset button
-//  connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(resetData()) );
   //run benchmark button clicked -> execute benchmark
   connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
@@ -54,11 +59,11 @@ void MainWindow::initQCustomPlotGraph(){
   ui->benchmarkGraph->yAxis->setRange(0,0);
   ui->benchmarkGraph->axisRect()->setupFullAxesBox();
 
-  ui->benchmarkGraph->plotLayout()->insertRow(0);
-  ui->benchmarkGraph->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->benchmarkGraph, "QCustomPlot"));
+//  ui->benchmarkGraph->plotLayout()->insertRow(0);
+//  ui->benchmarkGraph->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->benchmarkGraph, ""));
 
   ui->benchmarkGraph->xAxis->setLabel("GB/s");
-  ui->benchmarkGraph->yAxis->setLabel("BENCHMARK");
+//  ui->benchmarkGraph->yAxis->setLabel("BENCHMARK");
   ui->benchmarkGraph->legend->setVisible(false);
 
   ui->benchmarkGraph->yAxis->setAutoTicks(false);
@@ -68,6 +73,9 @@ void MainWindow::initQCustomPlotGraph(){
   ui->benchmarkGraph->yAxis->grid()->setVisible(true);
   ui->benchmarkGraph->yAxis->setTickLabelRotation(0);
 
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
+  ui->benchmarkGraph->setBackground(backgroundBrush);
 
   QFont legendFont = font();
   legendFont.setPointSize(10);
@@ -96,7 +104,7 @@ void MainWindow::resetData()
 
 //parse the received benchmark result name and value
 void MainWindow::parseBenchmarkResult(QString benchmarkName, double bandwidthValue){
-  qDebug()<<"inside parseBenchmarkResults SLOT";
+//  qDebug()<<"inside parseBenchmarkResults SLOT";
   qDebug()<<"benchmarkName:"<<benchmarkName;
   qDebug()<<"bandwidthValue:"<<bandwidthValue;
   barData.append(bandwidthValue);
@@ -111,7 +119,8 @@ void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
   ui->benchmarkGraph->xAxis->setLabel(unitMeasureName);
 }
 
-//graph the result
+//main result diplay function
+//x and y axis are swapped to achieve horizontal bar display
 void MainWindow::showResult(double value, QCustomPlot *customPlot){
   //  customPlot->yAxis->setAutoTicks(false);
   //  customPlot->yAxis->setAutoTickLabels(false);

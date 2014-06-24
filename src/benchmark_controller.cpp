@@ -1,6 +1,11 @@
 #include "benchmark_controller.h"
 #include "QDebug"
 
+/*
+ * Central benchmark execution controller
+ * Basically acts as a central connection hub between the UI and benchmarks
+ * */
+
 Benchmark_Controller::Benchmark_Controller(QObject *parent) :
   QObject(parent)
 {

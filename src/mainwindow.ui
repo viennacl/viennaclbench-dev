@@ -13,83 +13,481 @@
   <property name="windowTitle">
    <string>ViennaCL Benchmark</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources/otherFiles.qrc">
+    <normaloff>:/resources/images/benchmarkIcon.ico</normaloff>:/resources/images/benchmarkIcon.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout_3">
+   <layout class="QGridLayout" name="mainGridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item row="0" column="0">
-     <widget class="QTabWidget" name="tabWidget">
-      <property name="tabPosition">
-       <enum>QTabWidget::North</enum>
-      </property>
-      <property name="tabShape">
-       <enum>QTabWidget::Rounded</enum>
-      </property>
-      <property name="currentIndex">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="tabQCustom">
-       <attribute name="title">
-        <string>Using QCustomPlot</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="2" column="1">
-         <widget class="QComboBox" name="comboBox"/>
+      <item>
+       <widget class="MenuListWidget" name="menuListWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QListWidget 
+{ 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(41, 41, 41, 255), stop:1 rgba(85, 85, 85, 255));  
+}
+
+QListWidget::item:hover 
+{ 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(200, 200, 200, 255));
+}
+
+QListWidget::item:selected 
+{ 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-top: 2px groove gray; 
+color: #404040;
+}
+QIcon
+{
+background: red;selection-color: red; 
+}
+
+
+QIcon::selected
+{
+background: red;selection-color: red; 
+}
+
+QListWidget::item 
+{ 
+padding: 10px; color: white; 
+border-bottom: 2px groove gray; 
+}</string>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="autoScroll">
+         <bool>false</bool>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="dragDropMode">
+         <enum>QAbstractItemView::NoDragDrop</enum>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectItems</enum>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="textElideMode">
+         <enum>Qt::ElideMiddle</enum>
+        </property>
+        <property name="movement">
+         <enum>QListView::Static</enum>
+        </property>
+        <property name="flow">
+         <enum>QListView::TopToBottom</enum>
+        </property>
+        <property name="isWrapping" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="layoutMode">
+         <enum>QListView::SinglePass</enum>
+        </property>
+        <property name="viewMode">
+         <enum>QListView::IconMode</enum>
+        </property>
+        <property name="selectionRectVisible">
+         <bool>true</bool>
+        </property>
+        <property name="currentRow">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Home</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignHCenter|AlignTop</set>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/icons.qrc">
+           <normaloff>:/icons/icons/home_w.png</normaloff>:/icons/icons/home_w.png</iconset>
+         </property>
         </item>
-        <item row="0" column="0" colspan="4">
-         <widget class="QCustomPlot" name="benchmarkGraph" native="true"/>
+        <item>
+         <property name="text">
+          <string>Benchmark</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/icons.qrc">
+           <normaloff>:/icons/icons/bar_chart.png</normaloff>:/icons/icons/bar_chart.png</iconset>
+         </property>
         </item>
-        <item row="2" column="3">
-         <spacer name="horizontalSpacerRight">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+        <item>
+         <property name="text">
+          <string>My Results</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/icons.qrc">
+           <normaloff>:/icons/icons/benchmarkIcon2.png</normaloff>:/icons/icons/benchmarkIcon2.png</iconset>
+         </property>
         </item>
-        <item row="2" column="2">
-         <widget class="QPushButton" name="buttonRunBenchmark">
-          <property name="text">
-           <string>Run Benchmark</string>
-          </property>
-         </widget>
+        <item>
+         <property name="text">
+          <string>Database</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/icons.qrc">
+           <normaloff>:/icons/icons/db.png</normaloff>:/icons/icons/db.png</iconset>
+         </property>
         </item>
-        <item row="2" column="0">
-         <spacer name="horizontalSpacerLeft">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tabQChart">
-       <attribute name="title">
-        <string>Using QCharts.js</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="QWidget" name="qmlWidget" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="homePage">
+         <property name="styleSheet">
+          <string notr="true">QWidget 
+{ 
+background: #F0F0F0; 
+}
+</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="1" column="1">
+           <spacer name="homeVerticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0">
+           <spacer name="homeHorizontalSpacerLeft">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="homeLabel">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="homeHorizontalSpacerRight">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="benchmarkPage">
+         <property name="styleSheet">
+          <string notr="true">QWidget 
+{ 
+background:#F0F0F0; 
+}
+</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QTabWidget" name="tabWidget">
+            <property name="styleSheet">
+             <string notr="true">QTabBar::tab{width: 250px;
+height: 35px;}</string>
+            </property>
+            <property name="tabShape">
+             <enum>QTabWidget::Rounded</enum>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tabBasic">
+             <attribute name="title">
+              <string>Basic View</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <item row="0" column="0" colspan="4">
+               <widget class="QCustomPlot" name="benchmarkGraph" native="true"/>
+              </item>
+              <item row="1" column="0">
+               <spacer name="horizontalSpacerLeft">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>326</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="1">
+               <widget class="QComboBox" name="comboBox">
+                <property name="frame">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="buttonRunBenchmark">
+                <property name="text">
+                 <string>Run Benchmark</string>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <spacer name="horizontalSpacerRight">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>326</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="tabExpert">
+             <attribute name="title">
+              <string>Expert View</string>
+             </attribute>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="myResultsPage">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QLabel" name="myResultsLabel">
+            <property name="text">
+             <string>My Result History</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="myResultsTable">
+            <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+            </property>
+            <row>
+             <property name="text">
+              <string>1.</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>2.</string>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>Date</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Result</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Note</string>
+             </property>
+            </column>
+            <item row="0" column="0">
+             <property name="text">
+              <string>23.06.2014</string>
+             </property>
+            </item>
+            <item row="0" column="1">
+             <property name="text">
+              <string>7560</string>
+             </property>
+            </item>
+            <item row="0" column="2">
+             <property name="text">
+              <string>Test1</string>
+             </property>
+            </item>
+            <item row="1" column="0">
+             <property name="text">
+              <string>24.06.2014</string>
+             </property>
+            </item>
+            <item row="1" column="1">
+             <property name="text">
+              <string>7850</string>
+             </property>
+            </item>
+            <item row="1" column="2">
+             <property name="text">
+              <string>Test2</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="databasePage">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="databaseLabel">
+            <property name="text">
+             <string>Online Result Database</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="databaseTable">
+            <row>
+             <property name="text">
+              <string>1.</string>
+             </property>
+            </row>
+            <row>
+             <property name="text">
+              <string>2.</string>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>Date</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Result</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Note</string>
+             </property>
+            </column>
+            <item row="0" column="0">
+             <property name="text">
+              <string>23.06.2014</string>
+             </property>
+            </item>
+            <item row="0" column="1">
+             <property name="text">
+              <string>7560</string>
+             </property>
+            </item>
+            <item row="0" column="2">
+             <property name="text">
+              <string>Test1</string>
+             </property>
+            </item>
+            <item row="1" column="0">
+             <property name="text">
+              <string>24.06.2014</string>
+             </property>
+            </item>
+            <item row="1" column="1">
+             <property name="text">
+              <string>7850</string>
+             </property>
+            </item>
+            <item row="1" column="2">
+             <property name="text">
+              <string>Test2</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -102,18 +500,43 @@
      <height>21</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QMenuBar{
+	background: qlineargradient(x1:0,x2:0,y1:0,y2:1,stop:0 #525252, stop:0.4 #323232);
+	color: white;
+}
+QMenuBar:item{
+	background: qlineargradient(x1:0,x2:0,y1:0,y2:1,stop:0 #525252, stop:0.4 #323232);
+	color: white;
+}
+QMenuBar:item:selected{
+	background: qlineargradient(x1:0,x2:0,y1:0,y2:1,stop:0 #787878, stop:0.4 #D8D8D8);
+	color: black;
+}</string>
+   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>
@@ -125,8 +548,16 @@
    <header>src/qcustomplot.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>MenuListWidget</class>
+   <extends>QListWidget</extends>
+   <header>src/menulistwidget.h</header>
+  </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources/icons.qrc"/>
+  <include location="resources/otherFiles.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionQuit</sender>
@@ -141,6 +572,22 @@
     <hint type="destinationlabel">
      <x>450</x>
      <y>243</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menuListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>400</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>535</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>
