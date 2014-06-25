@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/dataFiles">
-    <file>testdata/mat65k.mtx</file>
-    <file>testdata/result65025.txt</file>
-    <file>testdata/rhs65025.txt</file>
-    </qresource>
-</RCC>
