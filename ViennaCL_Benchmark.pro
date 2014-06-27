@@ -42,29 +42,36 @@ HEADERS  += src/mainwindow.h \
 
 FORMS    += src/mainwindow.ui
 
-#INCLUDEPATH += C:\ViennaCL-1.5.2
-#INCLUDEPATH += C:\ViennaCL-1.5.2\examples\benchmarks
-INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
-#INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev\examples\benchmarks
-INCLUDEPATH += C:\boost\boost_1_55_0
-#INCLUDEPATH += ../qml/jbQuick/Charts
 
-#DEPENDPATH += C:\ViennaCL-1.5.2
-#DEPENDPATH += C:\ViennaCL-1.5.2\examples\benchmarks
+#Add include folders
+INCLUDEPATH += "C:\Program\\\ Files\\\ (x86)\AMD\\\  APP\\\ SDK\2.9\include"
+INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
+INCLUDEPATH += C:\boost\boost_1_55_0
+
+DEPENDPATH += "C:\Program\\\ Files\\\ (x86)\AMD\\\  APP\\\ SDK\2.9\include"
 DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
-#DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev\examples\benchmarks
 DEPENDPATH += C:\boost\boost_1_55_0
 
+
+#Disable unused warnings that come from Boost and QCustomPlot
+#CONFIG += warn_off
+QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
+QMAKE_CXXFLAGS += -Wno-unused-parameter
+
+#Add benchmark data files
 testData.path = $$OUT_PWD/testdata
-testData.files += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
+testData.Files\\\ += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
 INSTALLS += testData
 
 RESOURCES += src/resources/otherFiles.qrc \
     src/resources/icons.qrc
 
-#CONFIG += warn_off
+#Enable OpenCL in ViennaCL
+#QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
 
-#QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
-#QMAKE_CXXFLAGS_WARN_OFF -= -Wno-unused-local-typedefs
-#QMAKE_CFLAGS += -Wno-unused
-#QMAKE_CFLAGS += -Wunused-local-typedefs
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\  APP\\\ SDK/2.9/lib/x86_64/ -lOpenCL
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\  APP\\\ SDK/2.9/lib/x86_64/ -lOpenCLd
+#else:unix: LIBS += -L$$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\  APP\\\ SDK/2.9/lib/x86_64/ -lOpenCL
+
+#INCLUDEPATH += $$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\ \\\ APP\\\ SDK/2.9/lib/x86_64
+#DEPENDPATH += $$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\ \\\ APP\\\ SDK/2.9/lib/x86_64

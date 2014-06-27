@@ -38,6 +38,7 @@ void Benchmark_Blas3::run_benchmark()
   // Set up some ViennaCL objects
   //
 #ifdef VIENNACL_WITH_OPENCL
+  std::cout << "OPENCL IS ENABLED!" << std::endl;
   viennacl::ocl::set_context_device_type(0, viennacl::ocl::gpu_tag());
 #endif
 
