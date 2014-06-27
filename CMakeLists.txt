@@ -1,11 +1,26 @@
+#USE_QT5 variable determines which qt will be used for building
+#ON - uses Qt5 (default)
+#OFF - uses Qt4
+SET(USE_QT5 ON CACHE BOOL "Use Qt5 is ON by default, set to OFF to use Qt4")
+
+IF(USE_QT5)
+cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
+ELSE()
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+ENDIF()
 
 # Set package properties 
 project(ViennaCL_Benchmark)
 
-#disable -rdynamic
+# Disable -rdynamic
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+
+#Handle warnings
+#add_definitions(-Wall)
+#add_definitions(-Wno-unused-local-typedefs)
+#add_definitions(-Wno-unused-parameter)
+add_definitions(-Wextra)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -14,7 +29,7 @@ set(CMAKE_AUTOMOC ON)
 
 add_definitions(-O2 -D_FILE_OFFSET_BITS=64 -fPIC) 
 
-#show all source files in project
+# Show all source files in project
 file( GLOB_RECURSE MAKE_HEADERS_VISIBLE_SRC
     *.hpp *.h *.cpp *.qrc *.ui)
 add_custom_target( MAKE_HEADERS_VISIBLE SOURCES ${MAKE_HEADERS_VISIBLE_SRC} )
@@ -28,23 +43,36 @@ ENDIF()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
-#Include ViennaCL
+# Include ViennaCL
 include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
 find_package(ViennaCL QUIET REQUIRED)
 include_directories(${VIENNACL_INCLUDE_DIRS})
 
+IF(USE_QT5)# Find the Qt5 libraries
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Quick REQUIRED)
+find_package(Qt5PrintSupport REQUIRED)
+find_package(Qt5Qml REQUIRED)
 
-# this command finds Qt4 libraries and sets all required variables
-# note that it's Qt4, not QT4 or qt4
-FIND_PACKAGE( Qt4 REQUIRED )
-  
+ELSE()# Find the Qt4 libraries and set required variables
+# Note that it's Qt4, not QT4 or qt4
+FIND_PACKAGE( Qt4 REQUIRED )  
 # (QT_USE_FILE is a variable defined by FIND_PACKAGE( Qt4 ) that contains a path to CMake script)
-INCLUDE( ${QT_USE_FILE} ) 
-  
+INCLUDE( ${QT_USE_FILE} )
+ENDIF()
+
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost)
+
+#find OpenCL
+#find_package(OpenCL REQUIRED)
+
+#set ViennaCL to use OpenCL
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVIENNACL_WITH_OPENCL")
 
 file(GLOB ViennaCL_Benchmark_Sources
     "src/benchmarks/*.cpp"
@@ -66,22 +94,31 @@ file(GLOB ViennaCL_Benchmark_Resources
     "src/resources/*.qrc"
 )
 
-#ADD_DEFINITIONS( -Wall )
-#add_definitions( -Wno-unused)
-add_definitions( -Wextra)
-
 #Generate ui headers
+IF(USE_QT5)
+qt5_wrap_ui(wrapped_ui_headers ${ViennaCL_Benchmark_Ui_Files})
+ELSE()
 qt4_wrap_ui(wrapped_ui_headers ${ViennaCL_Benchmark_Ui_Files} )
+ENDIF()
 
 #Add the resource files
+IF(USE_QT5)
+qt5_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
+ELSE()
 qt4_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
+ENDIF()
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 # Build the app!
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
+IF(USE_QT5)# Qt5-specific linkage and module usage
+    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES})
+    qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
+ELSE() # Qt4-specific linkage and module usage
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES})
-qt4_use_modules(ViennaCL_Benchmark Core Gui)
+    qt4_use_modules(ViennaCL_Benchmark Core Gui)
+ENDIF()
 target_link_libraries(ViennaCL_Benchmark)
 
 endif()
