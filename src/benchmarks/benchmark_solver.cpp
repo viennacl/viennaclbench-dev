@@ -464,10 +464,10 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, cg_solver, ublas_ilu0, cg_ops);
   counter++;
 
-
-  std::cout << "------- CG solver (ILU0 preconditioner) via ViennaCL, compressed_matrix ----------" << std::endl;
-  totalGFLOPs = run_solver(vcl_compressed_matrix, vcl_vec2, vcl_result, cg_solver, vcl_ilu0, cg_ops);
-  counter++;
+  //The Heisenbug
+  //  std::cout << "------- CG solver (ILU0 preconditioner) via ViennaCL, compressed_matrix ----------" << std::endl;
+  //  totalGFLOPs = run_solver(vcl_compressed_matrix, vcl_vec2, vcl_result, cg_solver, vcl_ilu0, cg_ops);
+  //  counter++;
 
 
 
@@ -580,9 +580,9 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   counter++;
 #endif
 
-  //  std::cout << "------- BiCGStab solver (ILUT preconditioner) via ViennaCL, coordinate_matrix ----------" << std::endl;
-  //  totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, bicgstab_solver, vcl_ilut, bicgstab_ops);
-  //  counter++;
+  std::cout << "------- BiCGStab solver (ILUT preconditioner) via ViennaCL, coordinate_matrix ----------" << std::endl;
+  totalGFLOPs = run_solver(vcl_coordinate_matrix, vcl_vec2, vcl_result, bicgstab_solver, vcl_ilut, bicgstab_ops);
+  counter++;
 
   std::cout << "------- BiCGStab solver (Jacobi preconditioner) using ublas ----------" << std::endl;
   totalGFLOPs = run_solver(ublas_matrix, ublas_vec2, ublas_result, bicgstab_solver, ublas_jacobi, bicgstab_ops);
