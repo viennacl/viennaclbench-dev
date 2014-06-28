@@ -9,7 +9,7 @@ mailing list</a>.<br>
 
 <h2>Requirements - First Prototype</h2>
 -Works with Qt4 (tested with 4.8.5) and Qt5 (tested with 5.2.0 and 5.3.0)<br>
--Qt Creator with qmake; alternatively, a cmake build is now available<br>
+-Qt Creator with QMake; alternatively, a CMake build is now available<br>
 -CMake 2.8.11 (Qt5) or 2.6 (Qt4)<br>
 -ViennaCL 1.5.2<br>
 -Boost 1.55<br>
@@ -26,16 +26,15 @@ DEPENDPATH += C:\boost\boost_1_55_0 to DEPENDPATH += yourPathToBoost<br>
 In QtCreator, under Projects>Build Steps>Make:>add to Make arguments: install<br>
 Do this for both debug and release modes<br>
 5. you can now run the project (Ctrl+R); make sure you've selected a kit with at least Qt 5.2.0<br>
-<h3>Qt Creator with the cmake build system (default CMakeLists.txt is setup for Qt4, use CMakeLists_Qt5.txt to build with Qt5):</h3>&nbsp;
+<h3>CMake build system - with Qt Creator</h3><h4>(default CMakeLists.txt now supports both Qt4 and Qt5. The build will default to Qt5, if you want to build with Qt4 set USE_QT5 variable to OFF. Separate Qt4 and Qt5 CMakeFiles will remain available in case of issues with the default CMakeFile):</h4>&nbsp;
   1. open CMakeLists.txt with Qt Creator<br>
   2. run cmake<br>
   3. compile<br>
-  4. manually copy testdata folder from project root folder into the root folder where the project was compiled(will be automated soon)<br>
+  4. manually copy testdata folder from project root folder into the root folder where the project was compiled(will be automated/removed soon)<br>
   5. you may now run the program<br>
 <h2>Important Notice</h2>
- -Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait.<br>
- -Solver benchmark currently does not work in release node for Qt versions above 5. I'm working on a fix.<br>
+ -Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait. OpenCL usage will soon be enabled, and this benchmark will then run properly.<br>
 <h2>Troubleshooting</h2>
-In case you get an error in QtGui/qopenglfunction.h : remove(or comment out) line 785 in that file (void (QOPENGLF_APIENTRYP MemoryBarrier)(GLbitfield barriers);); it is a known Qt bug (https://github.com/go-qml/qml/issues/56) and should be fixed in Qt 5.3<br>
+In case you get an error in QtGui/qopenglfunction.h : remove(or comment out) line 785 in that file (void (QOPENGLF_APIENTRYP MemoryBarrier)(GLbitfield barriers);); it is a known Qt bug (https://github.com/go-qml/qml/issues/56) and should be fixed in Qt 5.3 (recently tested with Qt 5.3 - the bug is now gone)<br>
 <h2>Additional Info</h2>
 I'm running a <a href="http://zalomiga.ba/blog">devblog</a> dedicated to this project and will try to update it as much as possible. Check it out for detailed reports and updates on the development process.
