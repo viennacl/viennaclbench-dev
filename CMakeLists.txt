@@ -69,10 +69,14 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost)
 
 #find OpenCL
-#find_package(OpenCL REQUIRED)
+find_package(OpenCL REQUIRED)
+#include_directories(${OPENCL_INCLUDE_DIR})
+#link_directories(${OPENCL_LIBRARIES})
+#link_directories("C:/AMDAPPSDK/2.9/lib/x86_64")
 
 #set ViennaCL to use OpenCL
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVIENNACL_WITH_OPENCL")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lOpenCL")
 
 file(GLOB ViennaCL_Benchmark_Sources
     "src/benchmarks/*.cpp"
@@ -108,15 +112,19 @@ ELSE()
 qt4_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
 ENDIF()
 
+#if(OPENCL_FOUND)
+#message(STATUS "FOUND OpenCL!")
+#endif()
+
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 # Build the app!
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
 IF(USE_QT5)# Qt5-specific linkage and module usage
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES})
+    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} )
     qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
 ELSE() # Qt4-specific linkage and module usage
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES})
+    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} )
     qt4_use_modules(ViennaCL_Benchmark Core Gui)
 ENDIF()
 target_link_libraries(ViennaCL_Benchmark)

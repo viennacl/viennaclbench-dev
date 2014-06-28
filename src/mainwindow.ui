@@ -278,7 +278,7 @@ height: 35px;}</string>
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tabBasic">
              <attribute name="title">
@@ -332,6 +332,21 @@ height: 35px;}</string>
                </spacer>
               </item>
              </layout>
+            </widget>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>Test</string>
+             </attribute>
+             <widget class="QCustomPlot" name="benchmarkGraph_2" native="true">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>130</y>
+                <width>391</width>
+                <height>291</height>
+               </rect>
+              </property>
+             </widget>
             </widget>
             <widget class="QWidget" name="tabExpert">
              <attribute name="title">

@@ -44,11 +44,11 @@ FORMS    += src/mainwindow.ui
 
 
 #Add include folders
-INCLUDEPATH += "C:\Program\\\ Files\\\ (x86)\AMD\\\  APP\\\ SDK\2.9\include"
+INCLUDEPATH += "C:\AMDAPPSDK\2.9\include"
 INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
 INCLUDEPATH += C:\boost\boost_1_55_0
 
-DEPENDPATH += "C:\Program\\\ Files\\\ (x86)\AMD\\\  APP\\\ SDK\2.9\include"
+DEPENDPATH += "C:\AMDAPPSDK\2.9\include"
 DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
 DEPENDPATH += C:\boost\boost_1_55_0
 
@@ -60,18 +60,20 @@ QMAKE_CXXFLAGS += -Wno-unused-parameter
 
 #Add benchmark data files
 testData.path = $$OUT_PWD/testdata
-testData.Files\\\ += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
+testData.files += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
 INSTALLS += testData
 
 RESOURCES += src/resources/otherFiles.qrc \
     src/resources/icons.qrc
 
 #Enable OpenCL in ViennaCL
-#QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
+QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
+#QMAKE_CXXFLAGS += -lOpenCL
 
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\  APP\\\ SDK/2.9/lib/x86_64/ -lOpenCL
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\  APP\\\ SDK/2.9/lib/x86_64/ -lOpenCLd
-#else:unix: LIBS += -L$$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\  APP\\\ SDK/2.9/lib/x86_64/ -lOpenCL
 
-#INCLUDEPATH += $$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\ \\\ APP\\\ SDK/2.9/lib/x86_64
-#DEPENDPATH += $$PWD/../../../../../Program\\\ Files\\\ (x86)/AMD\\\ \\\ APP\\\ SDK/2.9/lib/x86_64
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCL
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCLd
+else:unix: LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCL
+
+INCLUDEPATH += $$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64
+DEPENDPATH += $$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64
