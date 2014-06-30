@@ -44,14 +44,18 @@ FORMS    += src/mainwindow.ui
 
 
 #Add include folders
-INCLUDEPATH += "C:\AMDAPPSDK\2.9\include"
+INCLUDEPATH += C:\AMDAPPSDK\2.9\include
 INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
 INCLUDEPATH += C:\boost\boost_1_55_0
+#INCLUDEPATH += "C:\AMDAPPSDK\2.9\lib\x86_64"
 
-DEPENDPATH += "C:\AMDAPPSDK\2.9\include"
+DEPENDPATH += C:\AMDAPPSDK\2.9\include
 DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
 DEPENDPATH += C:\boost\boost_1_55_0
+#DEPENDPATH += "C:\AMDAPPSDK\2.9\lib\x86_64"
 
+LIBS+=  -L"C:\AMDAPPSDK\2.9\lib\x86_64"
+        -L"C:\AMDAPPSDK\2.9\bin\x86_64"
 
 #Disable unused warnings that come from Boost and QCustomPlot
 #CONFIG += warn_off
@@ -71,9 +75,9 @@ QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
 #QMAKE_CXXFLAGS += -lOpenCL
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCL
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCLd
-else:unix: LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCL
+#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCL
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCLd
+#else:unix: LIBS += -L$$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64/ -lOpenCL
 
-INCLUDEPATH += $$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64
-DEPENDPATH += $$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64
+#INCLUDEPATH += $$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64
+#DEPENDPATH += $$PWD/../../../../../AMDAPPSDK/2.9/lib/x86_64

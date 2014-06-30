@@ -34,7 +34,7 @@
 #include "benchmark_copy.h"
 
 #include <QDebug>
-
+#include <QThread>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -158,12 +158,15 @@ void Benchmark_Copy::run_benchmark()
 }
 
 void Benchmark_Copy::execute(){
+  qDebug()<<"starting copy execution";
+  qDebug()<<"copy benchmark thread id:"<<QThread::currentThreadId();
   emit unitMeasureSignal("GB/s");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "               Device Info" << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
 #ifdef VIENNACL_WITH_OPENCL
+  std::cout << "OPENCL IS ENABLED!" << std::endl;
   std::cout << viennacl::ocl::current_device().info() << std::endl;
 #endif
 

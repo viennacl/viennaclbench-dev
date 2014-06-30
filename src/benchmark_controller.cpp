@@ -1,6 +1,5 @@
 #include "benchmark_controller.h"
 #include "QDebug"
-
 /*
  * Central benchmark execution controller
  * Basically acts as a central connection hub between the UI and benchmarks
@@ -24,11 +23,20 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
   }
   else if(benchmarkName == "Copy"){
     Benchmark_Copy *benchmark = new Benchmark_Copy();
-    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
-    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    benchmark->moveToThread(&workerThread);
+    connect(&workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );
+    connect(&workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
+
     connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
-    benchmark->execute();
-    delete benchmark;
+    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
+
+    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(benchmarkComplete()), &workerThread, SLOT(terminate()) );
+
+    workerThread.start();
+
+//    benchmark->execute();
+//    delete benchmark;
 
   }
   else if(benchmarkName == "Scheduler"){
@@ -41,12 +49,12 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
 
   }
   else if(benchmarkName == "Solver"){
-    Benchmark_Solver *benchmark = new Benchmark_Solver();
-    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
-    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
-    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
-    benchmark->execute();
-    delete benchmark;
+//    Benchmark_Solver *benchmark = new Benchmark_Solver();
+//    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
+//    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+//    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
+//    benchmark->execute();
+//    delete benchmark;
 
   }
   else if(benchmarkName == "Sparse"){

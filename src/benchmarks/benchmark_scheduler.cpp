@@ -111,6 +111,7 @@ void Benchmark_Scheduler::execute()
   std::cout << "----------------------------------------------" << std::endl;
 
 #ifdef VIENNACL_WITH_OPENCL
+  std::cout << "OPENCL IS ENABLED!" << std::endl;
   std::cout << viennacl::ocl::current_device().info() << std::endl;
 #endif
 
@@ -125,6 +126,7 @@ void Benchmark_Scheduler::execute()
   std::cout << "   -------------------------------" << std::endl;
   run_benchmark<float>();
 #ifdef VIENNACL_WITH_OPENCL
+  std::cout << "OPENCL IS ENABLED!" << std::endl;
   if( viennacl::ocl::current_device().double_support() )
 #endif
   {

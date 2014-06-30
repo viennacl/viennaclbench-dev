@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QThread>
 
 #include "benchmarks/benchmark_copy.h"
 #include "benchmarks/benchmark_scheduler.h"
@@ -15,6 +16,7 @@
 class Benchmark_Controller : public QObject
 {
   Q_OBJECT
+  QThread workerThread;
 public:
   explicit Benchmark_Controller(QObject *parent = 0);
 signals:

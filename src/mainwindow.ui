@@ -340,8 +340,8 @@ height: 35px;}</string>
              <widget class="QCustomPlot" name="benchmarkGraph_2" native="true">
               <property name="geometry">
                <rect>
-                <x>230</x>
-                <y>130</y>
+                <x>80</x>
+                <y>380</y>
                 <width>391</width>
                 <height>291</height>
                </rect>
