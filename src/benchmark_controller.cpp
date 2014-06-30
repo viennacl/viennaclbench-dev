@@ -49,12 +49,12 @@ void Benchmark_Controller::executeSelectedBenchmark(QString benchmarkName)
 
   }
   else if(benchmarkName == "Solver"){
-//    Benchmark_Solver *benchmark = new Benchmark_Solver();
-//    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
-//    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
-//    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
-//    benchmark->execute();
-//    delete benchmark;
+    Benchmark_Solver *benchmark = new Benchmark_Solver();
+    connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
+    connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
+    connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
+    benchmark->execute();
+    delete benchmark;
 
   }
   else if(benchmarkName == "Sparse"){
