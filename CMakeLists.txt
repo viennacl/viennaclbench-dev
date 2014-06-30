@@ -70,9 +70,8 @@ find_package(Boost)
 
 #find OpenCL
 find_package(OpenCL REQUIRED)
-include_directories(${OPENCL_INCLUDE_DIR})
-
 #include_directories("C:/AMDAPPSDK/2.9/include")
+include_directories(${OPENCL_INCLUDE_DIR})
 #link_directories(${OPENCL_LIBRARIES})
 #set(OPENCL_LIBRARIES "C:/AMDAPPSDK/2.9/lib/x86/OpenCL.lib")
 #link_directories(${OPENCL_LIBRARIES})
@@ -80,8 +79,6 @@ include_directories(${OPENCL_INCLUDE_DIR})
 #set ViennaCL to use OpenCL
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVIENNACL_WITH_OPENCL")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lOpenCL")
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNDEBUG")
 
 file(GLOB ViennaCL_Benchmark_Sources
     "src/benchmarks/*.cpp"
