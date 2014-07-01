@@ -83,6 +83,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVIENNACL_WITH_OPENCL")
 file(GLOB ViennaCL_Benchmark_Sources
     "src/benchmarks/*.cpp"
     "src/*.cpp"
+    "src/ui/*.cpp"
 )
 
 file(GLOB ViennaCL_Benchmark_Headers
@@ -90,10 +91,12 @@ file(GLOB ViennaCL_Benchmark_Headers
     "src/benchmarks/*.hpp"
     "src/*.h"
     "src/*.hpp"
+    "src/ui/*.h"
+    "src/ui/*.hpp"
 )
 
 file(GLOB ViennaCL_Benchmark_Ui_Files
-    "src/*.ui"
+    "src/ui/*.ui"
 )
 
 file(GLOB ViennaCL_Benchmark_Resources

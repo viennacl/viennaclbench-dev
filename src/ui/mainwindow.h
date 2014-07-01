@@ -12,7 +12,7 @@
 #include <QObject>
 
 #include <QDebug>
-#include "src/qcustomplot.h"
+#include "src/ui/qcustomplot.h"
 #include "src/benchmark_controller.h"
 #include <ctime>
 

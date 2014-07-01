@@ -12,8 +12,9 @@ TARGET = ViennaCL_Benchmark
 TEMPLATE = app
 
 SOURCES += src/main.cpp\
-        src/mainwindow.cpp \
-    src/qcustomplot.cpp \
+    src/ui/mainwindow.cpp \
+    src/ui/menulistwidget.cpp \
+    src/ui/qcustomplot.cpp \
     src/benchmarks/benchmark_vector.cpp \
     src/benchmarks/benchmark_sparse.cpp \
     src/benchmarks/benchmark_solver.cpp \
@@ -22,11 +23,11 @@ SOURCES += src/main.cpp\
     src/benchmarks/benchmark_copy.cpp \
     src/benchmark_controller.cpp \
     src/benchmarks/benchmark_qr.cpp \
-    src/menulistwidget.cpp \
     src/benchmarks/abstractbenchmark.cpp
 
-HEADERS  += src/mainwindow.h \
-    src/qcustomplot.h \
+HEADERS  += src/ui/mainwindow.h \
+    src/ui/qcustomplot.h \
+    src/ui/menulistwidget.h \
     src/benchmarks/benchmark-utils.hpp \
     src/benchmarks/benchmark_vector.h \
     src/benchmarks/benchmark_sparse.h \
@@ -39,10 +40,9 @@ HEADERS  += src/mainwindow.h \
     src/benchmark_controller.h \
     src/benchmarks/benchmark_qr.h \
     src/benchmarks/matrix_market.hpp \
-    src/menulistwidget.h \
     src/benchmarks/abstractbenchmark.h
 
-FORMS    += src/mainwindow.ui
+FORMS    += src/ui/mainwindow.ui
 
 
 #Add include folders
