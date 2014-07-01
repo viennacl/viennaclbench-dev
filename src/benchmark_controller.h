@@ -5,6 +5,7 @@
 #include <QString>
 #include <QThread>
 
+#include "benchmarks/abstractbenchmark.h"
 #include "benchmarks/benchmark_copy.h"
 #include "benchmarks/benchmark_scheduler.h"
 #include "benchmarks/benchmark_solver.h"
@@ -30,6 +31,7 @@ public slots:
   void benchmarkCompleteSlot();
   void unitMeasureSignalSlot(QString unitMeasureName);
 
+  void createBenchmark(AbstractBenchmark *benchmark);
 };
 
 #endif // BENCHMARK_CONTROLLER_H
