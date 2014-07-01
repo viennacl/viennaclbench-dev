@@ -21,30 +21,11 @@
 *
 */
 
-#include "viennacl/scalar.hpp"
-#include "viennacl/vector.hpp"
-#include "viennacl/linalg/inner_prod.hpp"
-#include "viennacl/linalg/norm_2.hpp"
-
-#include <cstdlib>
-#include <iostream>
-#include <vector>
-#include "benchmark-utils.hpp"
-
 #include "benchmark_copy.h"
-
 #include <QDebug>
-#include <QThread>
-using std::cout;
-using std::cin;
-using std::endl;
-
-
-#define BENCHMARK_VECTOR_SIZE   10000000
-#define BENCHMARK_RUNS          10
 
 Benchmark_Copy::Benchmark_Copy(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
   connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );
 }

@@ -24,7 +24,7 @@
 #include "benchmark_blas3.h"
 
 Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
 }
 
@@ -90,11 +90,11 @@ void Benchmark_Blas3::run_benchmark()
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
-                        &(stl_A[0]) + stl_A.size(),
-                        vcl_A);
+        &(stl_A[0]) + stl_A.size(),
+        vcl_A);
     viennacl::fast_copy(&(stl_B[0]),
-                        &(stl_B[0]) + stl_B.size(),
-                        vcl_B);
+        &(stl_B[0]) + stl_B.size(),
+        vcl_B);
     vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
     viennacl::backend::finish();
     timer.start();
@@ -118,11 +118,11 @@ void Benchmark_Blas3::run_benchmark()
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
-                        &(stl_A[0]) + stl_A.size(),
-                        vcl_A);
+        &(stl_A[0]) + stl_A.size(),
+        vcl_A);
     viennacl::fast_copy(&(stl_B[0]),
-                        &(stl_B[0]) + stl_B.size(),
-                        vcl_B);
+        &(stl_B[0]) + stl_B.size(),
+        vcl_B);
     viennacl::project(vcl_C, r, r) = viennacl::linalg::prod(viennacl::project(vcl_A, r, r), viennacl::project(vcl_B, r, r));
     viennacl::backend::finish();
     timer.start();
@@ -146,11 +146,11 @@ void Benchmark_Blas3::run_benchmark()
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
-                        &(stl_A[0]) + stl_A.size(),
-                        vcl_A);
+        &(stl_A[0]) + stl_A.size(),
+        vcl_A);
     viennacl::fast_copy(&(stl_B[0]),
-                        &(stl_B[0]) + stl_B.size(),
-                        vcl_B);
+        &(stl_B[0]) + stl_B.size(),
+        vcl_B);
     viennacl::project(vcl_C, s, s) = viennacl::linalg::prod(viennacl::project(vcl_A, s, s), viennacl::project(vcl_B, s, s));
     viennacl::backend::finish();
     timer.start();
@@ -174,8 +174,8 @@ void Benchmark_Blas3::run_benchmark()
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
-                        &(stl_A[0]) + stl_A.size(),
-                        vcl_A);
+        &(stl_A[0]) + stl_A.size(),
+        vcl_A);
     viennacl::linalg::lu_factorize(vcl_A);
     viennacl::backend::finish();
     timer.start();
@@ -188,7 +188,7 @@ void Benchmark_Blas3::run_benchmark()
     emit resultSignal("LU factorization", 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time );
   }
 
-//  return EXIT_SUCCESS;
+  //  return EXIT_SUCCESS;
 }
 
 void Benchmark_Blas3::execute()

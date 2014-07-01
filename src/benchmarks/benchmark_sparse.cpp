@@ -15,21 +15,18 @@
    License:         MIT (X11), see file LICENSE in the base directory
 ============================================================================= */
 
-
 /*
 *   Benchmark:  Sparse matrix operations, i.e. matrix-vector products (sparse.cpp and sparse.cu are identical, the latter being required for compilation using CUDA nvcc)
 *
 */
 
 #include "benchmark_sparse.h"
-#include <QFile>
 #include <QDebug>
-#include <QUrl>
 
 #define BENCHMARK_RUNS          10
 
 Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
 }
 

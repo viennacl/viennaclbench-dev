@@ -1,6 +1,8 @@
 #ifndef BENCHMARK_VECTOR_H
 #define BENCHMARK_VECTOR_H
 
+#include "abstractbenchmark.h"
+
 #include "viennacl/scalar.hpp"
 #include "viennacl/vector.hpp"
 #include "viennacl/linalg/inner_prod.hpp"
@@ -8,12 +10,21 @@
 
 #include <iostream>
 #include <vector>
-#include "benchmark-utils.hpp"
+#include "src/benchmarks/benchmark-utils.hpp"
 
+//#define VIENNACL_DEBUG_ALL
+#ifndef NDEBUG
+#define NDEBUG
+#endif
 
-#include <QObject>
+using std::cout;
+using std::cin;
+using std::endl;
 
-class Benchmark_Vector : public QObject
+#define BENCHMARK_VECTOR_SIZE   3000000
+#define BENCHMARK_RUNS          10
+
+class Benchmark_Vector : public AbstractBenchmark
 {
   Q_OBJECT
 public:
@@ -22,9 +33,11 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
-  void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  /* Inherited signals:
+   * void resultSignal(QString benchmarkName, double bandwidthValue);
+   * void benchmarkComplete();
+   * void unitMeasureSignal(QString unitMeasureName);
+   * */
 public slots:
   void execute();
 

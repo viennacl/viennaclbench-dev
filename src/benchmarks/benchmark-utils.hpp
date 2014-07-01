@@ -20,18 +20,11 @@
 
 #include <iostream>
 
-//inline void printOps(double num_ops, double exec_time)
-//{
-//  std::cout << "GFLOPs: " << num_ops / (1000000 * exec_time * 1000) << std::endl;
-//}
-
 inline double printOps(double num_ops, double exec_time)
 {
   std::cout << "GFLOPs: " << num_ops / (1000000 * exec_time * 1000) << std::endl;
   return num_ops / (1000000 * exec_time * 1000);
 }
-
-
 
 
 #ifdef _WIN32

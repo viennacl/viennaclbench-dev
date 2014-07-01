@@ -21,11 +21,11 @@
 *
 */
 
-#include <QDebug>
 #include "benchmark_solver.h"
+#include <QDebug>
 
 Benchmark_Solver::Benchmark_Solver(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
 }
 
@@ -465,9 +465,9 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   counter++;
 
   //The Heisenbug
-    std::cout << "------- CG solver (ILU0 preconditioner) via ViennaCL, compressed_matrix ----------" << std::endl;
-    totalGFLOPs += run_solver(vcl_compressed_matrix, vcl_vec2, vcl_result, cg_solver, vcl_ilu0, cg_ops);
-    counter++;
+  std::cout << "------- CG solver (ILU0 preconditioner) via ViennaCL, compressed_matrix ----------" << std::endl;
+  totalGFLOPs += run_solver(vcl_compressed_matrix, vcl_vec2, vcl_result, cg_solver, vcl_ilu0, cg_ops);
+  counter++;
 
 
 

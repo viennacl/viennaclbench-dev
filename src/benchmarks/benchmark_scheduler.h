@@ -1,12 +1,11 @@
 #ifndef BENCHMARK_SCHEDULER_H
 #define BENCHMARK_SCHEDULER_H
 
-#include <QObject>
-
+#include "abstractbenchmark.h"
 
 //#define VIENNACL_DEBUG_ALL
 #ifndef NDEBUG
- #define NDEBUG
+#define NDEBUG
 #endif
 
 #include "viennacl/scalar.hpp"
@@ -27,7 +26,7 @@ using std::endl;
 
 #define BENCHMARK_VECTOR_SIZE   2
 #define BENCHMARK_RUNS          1000
-class Benchmark_Scheduler : public QObject
+class Benchmark_Scheduler : public AbstractBenchmark
 {
   Q_OBJECT
 public:
@@ -36,9 +35,11 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
-  void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  /* Inherited signals:
+   * void resultSignal(QString benchmarkName, double bandwidthValue);
+   * void benchmarkComplete();
+   * void unitMeasureSignal(QString unitMeasureName);
+   * */
 public slots:
   void execute();
 

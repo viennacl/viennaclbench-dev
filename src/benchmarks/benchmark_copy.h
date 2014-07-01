@@ -1,17 +1,36 @@
 #ifndef BENCHMARK_COPY_H
 #define BENCHMARK_COPY_H
 
-#include <QObject>
+#include "abstractbenchmark.h"
+
+#include "viennacl/scalar.hpp"
+#include "viennacl/vector.hpp"
+#include "viennacl/linalg/inner_prod.hpp"
+#include "viennacl/linalg/norm_2.hpp"
+
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+#include "src/benchmarks/benchmark-utils.hpp"
+
+using std::cout;
+using std::cin;
+using std::endl;
+
+#define BENCHMARK_VECTOR_SIZE   10000000
+#define BENCHMARK_RUNS          10
 
 //#include <QJsonArray>
 //#include <QJsonDocument>
 //#include <QJsonObject>
 
+#include <QThread>
+
 #include <QVariant>
 #include <QStringList>
 #include <QString>
 
-class Benchmark_Copy : public QObject
+class Benchmark_Copy : public AbstractBenchmark
 {
   Q_OBJECT
 public:
@@ -23,13 +42,15 @@ private:
   QStringList benchmarkNames;
   QList<double> dataPoints;
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
-  void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  /* Inherited signals:
+   * void resultSignal(QString benchmarkName, double bandwidthValue);
+   * void benchmarkComplete();
+   * void unitMeasureSignal(QString unitMeasureName);
+   * */
 public slots:
   void execute();
   void updateBenchmarkData(QString benchmarkName, double bandwidthValue);
-//  QVariant getJsonData();
+  //  QVariant getJsonData();
 };
 
 #endif // BENCHMARK_COPY_H

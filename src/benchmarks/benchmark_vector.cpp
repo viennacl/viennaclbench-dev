@@ -21,24 +21,10 @@
 *
 */
 
-////#define VIENNACL_DEBUG_ALL
-//#ifndef NDEBUG
-//#define NDEBUG
-//#endif
-
 #include "benchmark_vector.h"
 
-using std::cout;
-using std::cin;
-using std::endl;
-
-
-#define BENCHMARK_VECTOR_SIZE   3000000
-#define BENCHMARK_RUNS          10
-
-
 Benchmark_Vector::Benchmark_Vector(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
 }
 

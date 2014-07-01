@@ -15,18 +15,24 @@
    License:         MIT (X11), see file LICENSE in the base directory
 ============================================================================= */
 
+/*
+*
+*   Benchmark:   Performance of viennacl::linalg::inplace_qr(A);
+*
+*/
+
 #include "benchmark_qr.h"
 #include <QDebug>
-#include <QTime>
+
 Benchmark_Qr::Benchmark_Qr(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
-  qDebug()<<"qr constructor";
+  //  qDebug()<<"qr constructor";
 }
 
 void Benchmark_Qr::run_benchmark()
 {
-  qDebug()<<"qr run benchmark";
+  //  qDebug()<<"qr run benchmark";
   typedef float               ScalarType;
   typedef boost::numeric::ublas::matrix<ScalarType, boost::numeric::ublas::column_major>        MatrixType;
   typedef boost::numeric::ublas::vector<ScalarType>                   VectorType;
@@ -58,13 +64,13 @@ void Benchmark_Qr::run_benchmark()
   //std::cout << "A: " << A << std::endl;
   timer.start();
   //    std::vector<ScalarType> betas = viennacl::linalg::block_qr(A);
-  std::cout << "init betas" << std::endl;
+  //  std::cout << "init betas" << std::endl;
   std::vector<ScalarType> betas;
-  std::cout << "init betas done" << std::endl;
-  std::cout << "time before inplace_qr:" << QTime::currentTime().toString().toStdString() << std::endl;
+  //  std::cout << "init betas done" << std::endl;
+  //  std::cout << "time before inplace_qr:" << QTime::currentTime().toString().toStdString() << std::endl;
   betas = viennacl::linalg::inplace_qr(A);
-  std::cout << "inplace_qr done" << std::endl;
-  std::cout << "time after inplace_qr:" << QTime::currentTime().toString().toStdString() << std::endl;
+  //  std::cout << "inplace_qr done" << std::endl;
+  //  std::cout << "time after inplace_qr:" << QTime::currentTime().toString().toStdString() << std::endl;
   elapsed = timer.get();
   std::cout << "Time for QR on CPU: " << elapsed << std::endl;
   std::cout << "Estimated GFLOPs: " << 2e-9 * num_ops_qr/ elapsed << std::endl;

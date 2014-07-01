@@ -1,8 +1,7 @@
 #ifndef BENCHMARK_SOLVER_H
 #define BENCHMARK_SOLVER_H
 
-#include <QObject>
-
+#include "abstractbenchmark.h"
 
 #ifndef NDEBUG
 #define NDEBUG
@@ -51,7 +50,7 @@ using namespace boost::numeric;
 #define BENCHMARK_RUNS          1
 
 
-class Benchmark_Solver : public QObject
+class Benchmark_Solver : public AbstractBenchmark
 {
   Q_OBJECT
 public:
@@ -63,8 +62,8 @@ public:
   template<typename ScalarType>
   ScalarType diff_2(ublas::vector<ScalarType> &v1, viennacl::vector<ScalarType> &v2);
 
-//  template <typename MatrixType, typename VectorType, typename SolverTag, typename PrecondTag>
-//  void run_solver(const MatrixType &matrix, const VectorType &rhs, const VectorType &ref_result, const SolverTag &solver, const PrecondTag &precond, long ops);
+  //  template <typename MatrixType, typename VectorType, typename SolverTag, typename PrecondTag>
+  //  void run_solver(const MatrixType &matrix, const VectorType &rhs, const VectorType &ref_result, const SolverTag &solver, const PrecondTag &precond, long ops);
 
   template <typename MatrixType, typename VectorType, typename SolverTag, typename PrecondTag>
   double run_solver(const MatrixType &matrix, const VectorType &rhs, const VectorType &ref_result, const SolverTag &solver, const PrecondTag &precond, long ops);
@@ -72,9 +71,11 @@ public:
   template<typename ScalarType>
   void run_benchmark(viennacl::context ctx);
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
-  void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  /* Inherited signals:
+   * void resultSignal(QString benchmarkName, double bandwidthValue);
+   * void benchmarkComplete();
+   * void unitMeasureSignal(QString unitMeasureName);
+   * */
 public slots:
   void execute();
 

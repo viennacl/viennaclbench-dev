@@ -1,7 +1,7 @@
 #ifndef BENCHMARK_QR_H
 #define BENCHMARK_QR_H
 
-#include <QObject>
+#include "abstractbenchmark.h"
 
 #define VIENNACL_WITH_UBLAS
 #ifndef NDEBUG
@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <sys/time.h>
 #include <time.h>
-#include "benchmark-utils.hpp"
+#include "src/benchmarks/benchmark-utils.hpp"
 #include "viennacl/scalar.hpp"
 #include "viennacl/matrix.hpp"
 #include "viennacl/compressed_matrix.hpp"
@@ -37,7 +37,7 @@
 using namespace boost::numeric::ublas;
 //using namespace viennacl::linalg;
 
-class Benchmark_Qr : public QObject
+class Benchmark_Qr : public AbstractBenchmark
 {
   Q_OBJECT
 public:
@@ -45,9 +45,11 @@ public:
 
   void run_benchmark();
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
-  void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  /* Inherited signals:
+   * void resultSignal(QString benchmarkName, double bandwidthValue);
+   * void benchmarkComplete();
+   * void unitMeasureSignal(QString unitMeasureName);
+   * */
 public slots:
   void execute();
   //  void updateBenchmarkData(QString benchmarkName, double bandwidthValue);

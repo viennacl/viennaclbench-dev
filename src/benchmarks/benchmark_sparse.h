@@ -1,11 +1,11 @@
 #ifndef BENCHMARK_SPARSE_H
 #define BENCHMARK_SPARSE_H
 
-#include <QObject>
+#include "abstractbenchmark.h"
 
 #define VIENNACL_BUILD_INFO
 #ifndef NDEBUG
- #define NDEBUG
+#define NDEBUG
 #endif
 
 #define VIENNACL_WITH_UBLAS 0
@@ -16,7 +16,6 @@
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/operation_sparse.hpp>
 #include <boost/numeric/ublas/lu.hpp>
-
 
 #include "viennacl/scalar.hpp"
 #include "viennacl/vector.hpp"
@@ -37,7 +36,7 @@
 #include "src/benchmarks/benchmark-utils.hpp"
 #include "src/benchmarks/io.hpp"
 
-class Benchmark_Sparse : public QObject
+class Benchmark_Sparse : public AbstractBenchmark
 {
   Q_OBJECT
 public:
@@ -46,9 +45,11 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
-  void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  /* Inherited signals:
+   * void resultSignal(QString benchmarkName, double bandwidthValue);
+   * void benchmarkComplete();
+   * void unitMeasureSignal(QString unitMeasureName);
+   * */
 public slots:
   void execute();
 

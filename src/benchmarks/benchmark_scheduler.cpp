@@ -1,5 +1,3 @@
-
-
 /* =========================================================================
    Copyright (c) 2010-2014, Institute for Microelectronics,
                             Institute for Analysis and Scientific Computing,
@@ -26,7 +24,7 @@
 #include "benchmark_scheduler.h"
 
 Benchmark_Scheduler::Benchmark_Scheduler(QObject *parent) :
-  QObject(parent)
+  AbstractBenchmark(parent)
 {
 }
 
@@ -99,7 +97,7 @@ void Benchmark_Scheduler::run_benchmark()
   std::cout << "Result: " << vcl_vec2[0] << std::endl;
   emit resultSignal("Only execution", vcl_vec2[0] );
 
-//  return 0;
+  //  return 0;
 }
 
 void Benchmark_Scheduler::execute()
