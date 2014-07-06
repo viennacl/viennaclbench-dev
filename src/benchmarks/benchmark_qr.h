@@ -15,9 +15,9 @@
 #include <cmath>
 #include <algorithm>
 #include <stdio.h>
-#include <sys/time.h>
+//#include <sys/time.h>
 #include <time.h>
-#include "src/benchmarks/benchmark-utils.hpp"
+#include "benchmark-utils.hpp"
 #include "viennacl/scalar.hpp"
 #include "viennacl/matrix.hpp"
 #include "viennacl/compressed_matrix.hpp"

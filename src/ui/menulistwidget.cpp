@@ -1,5 +1,4 @@
 #include "menulistwidget.h"
-#include <QMouseEvent>
 
 /*
  * Sublass of QListWidget

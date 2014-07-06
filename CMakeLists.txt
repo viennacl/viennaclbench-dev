@@ -100,7 +100,7 @@ file(GLOB ViennaCL_Benchmark_Ui_Files
 )
 
 file(GLOB ViennaCL_Benchmark_Resources
-    "src/resources/*.qrc"
+    "src/ui/resources/*.qrc"
 )
 
 #Generate ui headers

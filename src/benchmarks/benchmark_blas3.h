@@ -27,9 +27,9 @@
 #include "viennacl/linalg/lu.hpp"
 
 // Some helper functions for this tutorial:
-#include "src/benchmarks/Random.hpp"
+#include "Random.hpp"
 
-#include "src/benchmarks/benchmark-utils.hpp"
+#include "benchmark-utils.hpp"
 
 #define BLAS3_MATRIX_SIZE   1920
 

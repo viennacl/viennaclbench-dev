@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/benchmarks/benchmark-utils.hpp"
+#include "benchmark-utils.hpp"
 
 //#define VIENNACL_DEBUG_ALL
 #ifndef NDEBUG

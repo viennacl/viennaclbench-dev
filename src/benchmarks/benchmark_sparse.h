@@ -33,8 +33,8 @@
 
 #include <iostream>
 #include <vector>
-#include "src/benchmarks/benchmark-utils.hpp"
-#include "src/benchmarks/io.hpp"
+#include "benchmark-utils.hpp"
+#include "io.hpp"
 
 class Benchmark_Sparse : public AbstractBenchmark
 {

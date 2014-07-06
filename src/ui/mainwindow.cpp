@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include "qtcategorybutton.h"
+#include <QTabWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
@@ -9,25 +11,36 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
   connect(ui->actionAbout,SIGNAL(triggered()), qApp, SLOT(aboutQt()) );
 
+  {
+    ui->collapseWidget->setText("Individual Test Results");
+//    ui->collapseWidget->setChildWidget(new QCustomPlot(this));
+
+    ui->collapseWidget->setChildWidget(new QTabWidget(this));
+  }
   //normalize size of each list menu item
   for ( int i = 0; i < ui->menuListWidget->count(); i++ ) {
       ui->menuListWidget->item(i)->setSizeHint(ui->menuListWidget->itemSizeHint());
   }
-
+  for ( int i = 0; i < ui->menuListWidget_2->count(); i++ ) {
+      ui->menuListWidget_2->item(i)->setSizeHint(ui->menuListWidget_2->itemSizeHint());
+  }
   //setup plot graph widget
-  initQCustomPlotGraph();
+  initBasicView();
+  initExpertView();
+  initHomeScreen();
 
-  //  Benchmark_Sparse s; //working
+//    Benchmark_Sparse s; //working
   //  Benchmark_Copy s; //working
-  //  Benchmark_Vector s; working
+//    Benchmark_Vector s; working
   //  Benchmark_Solver s; //working in debug only for Qt>=5
   //  Benchmark_Scheduler s; //working
-  //  Benchmark_Blas3 s; //working (extremely slow)
+    Benchmark_Blas3 s; //working (extremely slow)
   //  Benchmark_Qr s; //working (extremely slow in debug only)
-  //  s.execute();
+    s.execute();
+
 
   //run benchmark button clicked -> execute benchmark
-  connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
+//  connect(ui->buttonRunBenchmark, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
   connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString)), this, SLOT(updateBenchmarkUnitMeasure(QString)) );
   //received a benchmark result -> parse it and show it on the graph
@@ -35,53 +48,149 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+void MainWindow::initHomeScreen(){
+  ui->homeSystemInfoLabel->clear();
+#ifdef VIENNACL_WITH_OPENCL
+  QString systemInfoString;
+  systemInfoString.append("Type: ");
+  cl_device_type localDeviceType = viennacl::ocl::current_device().type();
+  if(localDeviceType & CL_DEVICE_TYPE_GPU){
+  systemInfoString.append("CPU");
+  }
+  else if(localDeviceType & CL_DEVICE_TYPE_CPU){
+    systemInfoString.append("CPU");
+  }
+  else if(localDeviceType & CL_DEVICE_TYPE_ACCELERATOR){
+    systemInfoString.append("Accelerator");
+  }
+  else if(localDeviceType & CL_DEVICE_TYPE_DEFAULT){
+    systemInfoString.append("(default)");
+  }
+  systemInfoString.append("\n");
+
+  systemInfoString.append("Name: ");
+  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().name( )) );
+  systemInfoString.append("\n");
+
+  systemInfoString.append("Vendor: ");
+  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().vendor() ) );
+  systemInfoString.append("\n");
+
+  systemInfoString.append("Global Memory Size: ");
+  systemInfoString.append(QString::number( ((uint64_t)viennacl::ocl::current_device().global_mem_size()/(1024*1024) ) ) );
+  systemInfoString.append(" MB");
+  systemInfoString.append("\n");
+
+  systemInfoString.append("Clock Frequency: ");
+  systemInfoString.append(QString::number(viennacl::ocl::current_device().max_clock_frequency()) );
+  systemInfoString.append(" MHz");
+  systemInfoString.append("\n");
+
+#ifdef CL_DEVICE_OPENCL_C_VERSION
+  systemInfoString.append("OpenCL C Version: ");
+  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().opencl_c_version() ) );
+  systemInfoString.append("\n");
+#endif
+
+  systemInfoString.append("Version: ");
+  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().version() ) );
+  systemInfoString.append("\n");
+
+  systemInfoString.append("Driver Version: ");
+  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().driver_version() ) );
+  systemInfoString.append("\n");
+
+  ui->homeSystemInfoLabel->setText(systemInfoString);
+#endif
+}
+
+void MainWindow::initBasicView(){
+    QVector<QString> temp;
+    temp.append("Vector");
+    temp.append("Sparse");
+    temp.append("Solver");
+    temp.append("Qr");
+    temp.append("Copy");
+    temp.append("Blas3");
+
+    QVector<double> ticksTemp;
+    ticksTemp.append(1);
+    ticksTemp.append(2);
+    ticksTemp.append(3);
+    ticksTemp.append(4);
+    ticksTemp.append(5);
+    ticksTemp.append(6);
+
+    ui->benchmarkGraph->yAxis->setTickVectorLabels(temp);
+    ui->benchmarkGraph->yAxis->setTickVector(ticksTemp);
+
+    ui->benchmarkGraph->yAxis->setAutoTickLabels(false);
+    ui->benchmarkGraph->yAxis->setAutoTicks(false);
+
+    ui->benchmarkGraph->xAxis->setAutoTickLabels(false);
+    ui->benchmarkGraph->xAxis->setAutoTicks(false);
+    ui->benchmarkGraph->xAxis->setTickVector(ticksTemp);
+    ui->benchmarkGraph->xAxis->setTickVectorLabels(temp);
+    ui->benchmarkGraph->replot();
+
+    barCounter = 1 ;
+
+    ui->benchmarkGraph->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom );
+
+    ui->benchmarkGraph->xAxis->setRange(0,0.1);
+    ui->benchmarkGraph->yAxis->setRange(0,0);
+    ui->benchmarkGraph->axisRect()->setupFullAxesBox();
+
+    ui->benchmarkGraph->xAxis->setLabel("GB/s");
+    ui->benchmarkGraph->legend->setVisible(false);
+
+    ui->benchmarkGraph->yAxis->setAutoTicks(false);
+    ui->benchmarkGraph->yAxis->setAutoTickLabels(false);
+    ui->benchmarkGraph->yAxis->setSubTickCount(0);
+    ui->benchmarkGraph->yAxis->setTickLength(0, 2);
+    ui->benchmarkGraph->yAxis->grid()->setVisible(true);
+    ui->benchmarkGraph->yAxis->setTickLabelRotation(0);
+
+    QColor backgroundColor(240,240,240);
+    QBrush backgroundBrush(backgroundColor);
+    ui->benchmarkGraph->setBackground(backgroundBrush);
+
+    connect(ui->basicBenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+    connect(ui->basicBenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+    for ( int i = 0; i < ui->basicBenchmarkListWidget->count(); i++ ) {
+      ui->basicBenchmarkListWidget->item(i)->setSelected(true);
+    }
+}
+
+
+
+void MainWindow::initExpertView(){
+}
+
 //execute the currently selected benchmark
 void MainWindow::startBenchmarkExecution(){
   resetData();
-  benchmarkController.executeSelectedBenchmark(ui->comboBox->currentText() );
+  //  benchmarkController.executeSelectedBenchmark(ui->comboBox->currentText() );
 }
 
-//initialize the graph
-void MainWindow::initQCustomPlotGraph(){
-  ui->comboBox->addItem("Blas3");
-  ui->comboBox->addItem("Copy");
-  ui->comboBox->addItem("Scheduler");
-  ui->comboBox->addItem("Solver");
-  ui->comboBox->addItem("Sparse");
-  ui->comboBox->addItem("Vector");
-  ui->comboBox->addItem("Qr");
-
-  barCounter = 1 ;
-
-  ui->benchmarkGraph->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom );
-
-  ui->benchmarkGraph->xAxis->setRange(0,0.1);
-  ui->benchmarkGraph->yAxis->setRange(0,0);
-  ui->benchmarkGraph->axisRect()->setupFullAxesBox();
-
-//  ui->benchmarkGraph->plotLayout()->insertRow(0);
-//  ui->benchmarkGraph->plotLayout()->addElement(0, 0, new QCPPlotTitle(ui->benchmarkGraph, ""));
-
-  ui->benchmarkGraph->xAxis->setLabel("GB/s");
-//  ui->benchmarkGraph->yAxis->setLabel("BENCHMARK");
-  ui->benchmarkGraph->legend->setVisible(false);
-
-  ui->benchmarkGraph->yAxis->setAutoTicks(false);
-  ui->benchmarkGraph->yAxis->setAutoTickLabels(false);
-  ui->benchmarkGraph->yAxis->setSubTickCount(0);
-  ui->benchmarkGraph->yAxis->setTickLength(0, 2);
-  ui->benchmarkGraph->yAxis->grid()->setVisible(true);
-  ui->benchmarkGraph->yAxis->setTickLabelRotation(0);
-
-  QColor backgroundColor(240,240,240);
-  QBrush backgroundBrush(backgroundColor);
-  ui->benchmarkGraph->setBackground(backgroundBrush);
-
-  QFont legendFont = font();
-  legendFont.setPointSize(10);
-  ui->benchmarkGraph->legend->setFont(legendFont);
-  ui->benchmarkGraph->legend->setSelectedFont(legendFont);
-  ui->benchmarkGraph->legend->setSelectableParts(QCPLegend::spItems); // legend box shall not be selectable, only legend items
+void MainWindow::updateBenchmarkListWidget(QListWidgetItem *item)
+{
+  if(ui->basicBenchmarkListWidget->row(item) == ALL){
+    if(item->isSelected()){
+      ui->basicBenchmarkListWidget->selectAll();
+    }
+    else{
+      ui->basicBenchmarkListWidget->clearSelection();
+    }
+  }
+  else{
+    if(item->isSelected()){
+      item->setIcon(QIcon(":/icons/icons/checkTrue.png"));
+    }
+    else{
+      item->setIcon(QIcon(":/icons/icons/checkFalse.png"));
+    }
+  }
 }
 
 //reset the graph
@@ -179,38 +288,6 @@ void MainWindow::showResult(double value, QCustomPlot *customPlot){
 
 
   customPlot->replot();
-}
-
-//predefined graph sample with random data
-//unused
-void MainWindow::graphData(){
-  int n = 50; // number of points in graph
-  double xScale = (rand()/(double)RAND_MAX + 0.5)*2;
-  double yScale = (rand()/(double)RAND_MAX + 0.5)*2;
-  double xOffset = (rand()/(double)RAND_MAX - 0.5)*4;
-  double yOffset = (rand()/(double)RAND_MAX - 0.5)*5;
-  double r1 = (rand()/(double)RAND_MAX - 0.5)*2;
-  double r2 = (rand()/(double)RAND_MAX - 0.5)*2;
-  double r3 = (rand()/(double)RAND_MAX - 0.5)*2;
-  double r4 = (rand()/(double)RAND_MAX - 0.5)*2;
-  QVector<double> x(n), y(n);
-  for (int i=0; i<n; i++)
-  {
-    x[i] = (i/(double)n-0.5)*10.0*xScale + xOffset;
-    y[i] = (sin(x[i]*r1*5)*sin(cos(x[i]*r2)*r4*3)+r3*cos(sin(x[i])*r4*2))*yScale + yOffset;
-  }
-
-  ui->benchmarkGraph->addGraph();
-  ui->benchmarkGraph->graph()->setName(QString("New graph %1").arg(ui->benchmarkGraph->graphCount()-1));
-  ui->benchmarkGraph->graph()->setData(x, y);
-  ui->benchmarkGraph->graph()->setLineStyle((QCPGraph::LineStyle)(rand()%5+1));
-  if (rand()%100 > 75)
-    ui->benchmarkGraph->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ScatterShape)(rand()%9+1)));
-  QPen graphPen;
-  graphPen.setColor(QColor(rand()%245+10, rand()%245+10, rand()%245+10));
-  graphPen.setWidthF(rand()/(double)RAND_MAX*2+1);
-  ui->benchmarkGraph->graph()->setPen(graphPen);
-  ui->benchmarkGraph->replot();
 }
 
 

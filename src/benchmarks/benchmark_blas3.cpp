@@ -201,6 +201,8 @@ void Benchmark_Blas3::execute()
 
 #ifdef VIENNACL_WITH_OPENCL
   std::cout << viennacl::ocl::current_device().info() << std::endl;
+  std::cout << "Starting FULL INFO" << std::endl;
+  std::cout << viennacl::ocl::current_device().full_info() << std::endl;
 #endif
 
 

@@ -2,6 +2,7 @@
 #define MENULISTWIDGET_H
 
 #include <QListWidget>
+#include <QMouseEvent>
 
 class MenuListWidget : public QListWidget
 {

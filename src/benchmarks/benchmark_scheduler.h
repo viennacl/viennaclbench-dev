@@ -17,7 +17,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/benchmarks/benchmark-utils.hpp"
+#include "benchmark-utils.hpp"
 
 using std::cout;
 using std::cin;
