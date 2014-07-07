@@ -133,7 +133,8 @@ IF(USE_QT5)# Qt5-specific linkage and module usage
     qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
 ELSE() # Qt4-specific linkage and module usage
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
-    qt4_use_modules(ViennaCL_Benchmark Core Gui)
+    #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
+    target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore)
 ENDIF()
 target_link_libraries(ViennaCL_Benchmark)
 
