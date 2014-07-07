@@ -22,6 +22,9 @@ SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
 #add_definitions(-Wno-unused-parameter)
 add_definitions(-Wextra)
 
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+
+
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
