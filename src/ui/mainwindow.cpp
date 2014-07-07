@@ -4,6 +4,12 @@
 #include "qtcategorybutton.h"
 #include <QTabWidget>
 
+#include <cstdlib>
+
+//include ViennaCL headers
+#include "viennacl/ocl/device.hpp"
+#include "viennacl/ocl/platform.hpp"
+
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
@@ -52,6 +58,40 @@ void MainWindow::initHomeScreen(){
   ui->homeSystemInfoLabel->clear();
 #ifdef VIENNACL_WITH_OPENCL
   QString systemInfoString;
+  typedef std::vector< viennacl::ocl::platform > platforms_type;
+  platforms_type platforms = viennacl::ocl::get_platforms();
+
+//  bool is_first_element = true;
+//  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
+
+//    typedef std::vector<viennacl::ocl::device> devices_type;
+//    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
+//    std::cout << "# Vendor and version: " << platform_iter->info() << std::endl;
+
+//    if (is_first_element)
+//    {
+//      std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
+//      is_first_element = false;
+//    }
+//    std::cout << "# Available Devices: " << std::endl;
+//    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
+//    {
+//        std::cout << std::endl;
+//std::cout << " !!!!!!!!!!!" << std::endl;
+//        std::cout << "  -----------------------------------------" << std::endl;
+//        std::cout << iter->full_info();
+////        std::cout << iter
+//        std::cout << "  -----------------------------------------" << std::endl;
+
+//        systemInfoString.append("Name: ");
+//        systemInfoString.append(QString::fromStdString(iter->name( )) );
+//        systemInfoString.append("\n");
+//    }
+
+//  }
+
+
+
   systemInfoString.append("Type: ");
   cl_device_type localDeviceType = viennacl::ocl::current_device().type();
   if(localDeviceType & CL_DEVICE_TYPE_GPU){

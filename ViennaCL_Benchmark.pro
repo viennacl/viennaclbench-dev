@@ -77,9 +77,11 @@ DEPENDPATH += .
 #Add Boost and ViennaCL include folders
 INCLUDEPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
 INCLUDEPATH += C:\boost\boost_1_55_0
+INCLUDEPATH += C:\boost\boost_1_55_0\stage\lib
 
 DEPENDPATH += C:\Users\Namik\Documents\GitHub\viennacl-dev
 DEPENDPATH += C:\boost\boost_1_55_0
+LIBS += "-LC:/boost/boost_1_55_0/stage/lib/"
 
 #Disable unused warnings that come from Boost and QCustomPlot
 #CONFIG += warn_off
@@ -87,10 +89,10 @@ DEPENDPATH += C:\boost\boost_1_55_0
 #QMAKE_CXXFLAGS += -Wno-unused-parameter
 
 #Define Boost variables
-DEFINES += BOOST_ALL_DYN_LINK=1
-DEFINES += Boost_USE_STATIC_LIBS=0
-DEFINES += Boost_USE_MULTITHREADED=1
-DEFINES += Boost_USE_STATIC_RUNTIME=0
+DEFINES += BOOST_ALL_DYN_LINK
+#DEFINES += Boost_USE_STATIC_LIBS=0
+#DEFINES += Boost_USE_MULTITHREADED=1
+#DEFINES += Boost_USE_STATIC_RUNTIME=0
 #QMAKE_CXXFLAGS += -DBOOST_ALL_DYN_LINK
 #QMAKE_CXXFLAGS += -DBoost_USE_STATIC_LIBS
 #QMAKE_CXXFLAGS += -DBoost_USE_MULTITHREADED
@@ -99,7 +101,6 @@ DEFINES += Boost_USE_STATIC_RUNTIME=0
 #set(Boost_USE_STATIC_LIBS OFF)
 #set(Boost_USE_MULTITHREADED ON)
 #set(Boost_USE_STATIC_RUNTIME OFF)
-
 
 #Find OpenCL root folder
 OPENCLROOT = $$(OPENCLROOT)
@@ -139,6 +140,9 @@ isEmpty(OPENCL_LIBRARIES){
 
 #Release
 win32:CONFIG(release, debug|release){
+    QMAKE_CXXFLAGS += /MD
+#    QMAKE_LIBDIR += C:\boost\boost_1_55_0\stage\lib
+    QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO
     #Enable OpenCL
     QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
     message("OpenCL library path: "$$OPENCL_LIBRARIES)
@@ -147,6 +151,7 @@ win32:CONFIG(release, debug|release){
 }
 #Debug
 else:win32:CONFIG(debug, debug|release){
+    QMAKE_CXXFLAGS += /MDd
     message("This is a Debug build")
     #Do not enable OpenCL
 }
