@@ -55,9 +55,6 @@ IF(USE_QT5)# Find the Qt5 libraries
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Gui REQUIRED)
-find_package(Qt5Quick REQUIRED)
-find_package(Qt5PrintSupport REQUIRED)
-find_package(Qt5Qml REQUIRED)
 
 ELSE()# Find the Qt4 libraries and set required variables
 # Note that it's Qt4, not QT4 or qt4
