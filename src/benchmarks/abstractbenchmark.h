@@ -13,6 +13,7 @@ class AbstractBenchmark : public QObject
 public:
   explicit AbstractBenchmark(QObject *parent = 0);
 signals:
+  void finalResultSignal(QString benchmarkName, double finalValue);
   void resultSignal(QString benchmarkName, double bandwidthValue);
   void benchmarkComplete();
   void unitMeasureSignal(QString unitMeasureName);

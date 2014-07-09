@@ -26,6 +26,8 @@
 Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   AbstractBenchmark(parent)
 {
+  finalResultCounter = 0;
+  finalResultValue = 0;
 }
 
 template<typename ScalarType>
@@ -76,7 +78,7 @@ void Benchmark_Blas3::run_benchmark()
 
   std::cout << " ------ Benchmark 1: Matrix-Matrix product ------ " << std::endl;
 
-
+double tempResultValue;
 #ifdef VIENNACL_WITH_OPENCL
   std::vector<viennacl::ocl::device> devices = viennacl::ocl::current_context().devices();
 #else
@@ -102,9 +104,12 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::backend::finish();
     exec_time = timer.get();
     std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time << std::endl;
+    tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
+    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("Matrix-Matrix product", 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time );
+    emit resultSignal("Matrix-Matrix product", tempResultValue );
+    finalResultValue += tempResultValue;
+    finalResultCounter++;
   }
 
   std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
@@ -130,9 +135,12 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::backend::finish();
     exec_time = timer.get();
     std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time << std::endl;
+    tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time ;
+    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("Matrix-Matrix product using ranges", 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time );
+    emit resultSignal("Matrix-Matrix product using ranges", tempResultValue );
+    finalResultValue += tempResultValue;
+    finalResultCounter++;
   }
 
   std::cout << " ------ Benchmark 3: Matrix-Matrix product using slices ------ " << std::endl;
@@ -158,9 +166,12 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::backend::finish();
     exec_time = timer.get();
     std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time << std::endl;
+    tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time;
+    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("Matrix-Matrix product using slices", 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time );
+    emit resultSignal("Matrix-Matrix product using slices", tempResultValue );
+    finalResultValue += tempResultValue;
+    finalResultCounter++;
   }
 
 
@@ -183,9 +194,12 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::backend::finish();
     exec_time = timer.get();
     std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time << std::endl;
+    tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time;
+    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("LU factorization", 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time );
+    emit resultSignal("LU factorization", tempResultValue );
+    finalResultValue += tempResultValue;
+    finalResultCounter++;
   }
 
   //  return EXIT_SUCCESS;
@@ -226,5 +240,6 @@ void Benchmark_Blas3::execute()
     std::cout << "   -------------------------------" << std::endl;
     run_benchmark<double>();
   }
+  emit finalResultSignal("Blas3", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }

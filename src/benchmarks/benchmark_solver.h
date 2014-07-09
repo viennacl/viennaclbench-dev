@@ -70,8 +70,12 @@ public:
 
   template<typename ScalarType>
   void run_benchmark(viennacl::context ctx);
+private:
+  double finalResultValue;
+  int finalResultCounter;
 signals:
   /* Inherited signals:
+   * void finalResultSignal(QString benchmarkName, double finalValue);
    * void resultSignal(QString benchmarkName, double bandwidthValue);
    * void benchmarkComplete();
    * void unitMeasureSignal(QString unitMeasureName);

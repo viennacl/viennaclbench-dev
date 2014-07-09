@@ -22,17 +22,16 @@
 */
 
 #include "benchmark_qr.h"
-#include <QDebug>
 
 Benchmark_Qr::Benchmark_Qr(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  //  qDebug()<<"qr constructor";
+  finalResultCounter = 0;
+  finalResultValue = 0;
 }
 
 void Benchmark_Qr::run_benchmark()
 {
-  //  qDebug()<<"qr run benchmark";
   typedef float               ScalarType;
   typedef boost::numeric::ublas::matrix<ScalarType, boost::numeric::ublas::column_major>        MatrixType;
   typedef boost::numeric::ublas::vector<ScalarType>                   VectorType;
@@ -75,6 +74,9 @@ void Benchmark_Qr::run_benchmark()
   std::cout << "Time for QR on CPU: " << elapsed << std::endl;
   std::cout << "Estimated GFLOPs: " << 2e-9 * num_ops_qr/ elapsed << std::endl;
   emit resultSignal("QR on CPU", 2e-9 * num_ops_qr/ elapsed );
+  finalResultValue += 2e-9 * num_ops_qr/ elapsed;
+  finalResultCounter++;
+
 
 
   //std::cout << "Inplace QR-factored A: " << A << std::endl;
@@ -85,6 +87,8 @@ void Benchmark_Qr::run_benchmark()
   std::cout << "Time for Q-recovery on CPU: " << elapsed << std::endl;
   std::cout << "Estimated GFLOPs: " << 2e-9 * num_ops_recovery / elapsed << std::endl;
   emit resultSignal("Q-recovery on CPU", 2e-9 * num_ops_recovery / elapsed );
+  finalResultValue += 2e-9 * num_ops_recovery / elapsed;
+  finalResultCounter++;
 
   /*std::cout << "R after recovery: " << R << std::endl;
     std::cout << "Q after recovery: " << Q << std::endl;
@@ -92,6 +96,7 @@ void Benchmark_Qr::run_benchmark()
 
     std::cout << "Q * R: " << prod(Q, R) << std::endl;*/
 
+  emit finalResultSignal("Qr", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 
 }

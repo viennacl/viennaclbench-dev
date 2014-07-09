@@ -27,6 +27,8 @@
 Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   AbstractBenchmark(parent)
 {
+  finalResultCounter = 0;
+  finalResultValue = 0;
   connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );
 }
 
@@ -73,6 +75,8 @@ void Benchmark_Copy::run_benchmark()
   std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
   std::cout << "  - Estimated effective bandwidth: " << BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9 << " GB/sec" << std::endl;
   emit resultSignal("viennacl::copy(), host to device", BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9);
+  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
+  finalResultCounter++;
 
   timer.start();
   viennacl::copy(vcl_vec1, std_vec1);
@@ -84,6 +88,8 @@ void Benchmark_Copy::run_benchmark()
   std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
   std::cout << "  - Estimated effective bandwidth: " << BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9 << " GB/sec" << std::endl;
   emit resultSignal("viennacl::copy(), device to host", BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9);
+  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
+  finalResultCounter++;
 
 
   //
@@ -99,6 +105,8 @@ void Benchmark_Copy::run_benchmark()
   std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
   std::cout << "  - Estimated effective bandwidth: " << BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9 << " GB/sec" << std::endl;
   emit resultSignal("viennacl::fast_copy(), host to device", BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9);
+  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
+  finalResultCounter++;
 
   timer.start();
   viennacl::fast_copy(vcl_vec1, std_vec1);
@@ -110,6 +118,8 @@ void Benchmark_Copy::run_benchmark()
   std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
   std::cout << "  - Estimated effective bandwidth: " << BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9 << " GB/sec" << std::endl;
   emit resultSignal("viennacl::fast_copy(), device to host", BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9);
+  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
+  finalResultCounter++;
 
   //
   // Benchmark async_copy operation:
@@ -124,6 +134,8 @@ void Benchmark_Copy::run_benchmark()
   std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
   std::cout << "  - Estimated effective bandwidth: " << BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9 << " GB/sec" << std::endl;
   emit resultSignal("viennacl::async_copy(), host to device", BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9);
+  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
+  finalResultCounter++;
 
   timer.start();
   viennacl::async_copy(vcl_vec1, std_vec1);
@@ -135,6 +147,8 @@ void Benchmark_Copy::run_benchmark()
   std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
   std::cout << "  - Estimated effective bandwidth: " << BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9 << " GB/sec" << std::endl;
   emit resultSignal("viennacl::async_copy(), device to host", BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9);
+  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
+  finalResultCounter++;
 
 }
 
@@ -182,6 +196,7 @@ void Benchmark_Copy::execute(){
     std::cout << "   -------------------------------" << std::endl;
     run_benchmark<double>();
   }
+  emit finalResultSignal("Copy", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }
 

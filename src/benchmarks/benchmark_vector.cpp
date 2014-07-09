@@ -26,6 +26,8 @@
 Benchmark_Vector::Benchmark_Vector(QObject *parent) :
   AbstractBenchmark(parent)
 {
+  finalResultCounter = 0;
+  finalResultValue = 0;
 }
 
 template<typename ScalarType>
@@ -51,6 +53,8 @@ void Benchmark_Vector::run_benchmark()
 
 
   ///////////// Vector operations /////////////////
+
+  double tempResultValue;
 
   std_vec1[0] = 1.0;
   std_vec2[0] = 1.0;
@@ -91,10 +95,11 @@ void Benchmark_Vector::run_benchmark()
   }
   exec_time = timer.get();
   std::cout << "CPU time: " << exec_time << std::endl;
-  std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result:" << std_result << std::endl;
-  emit resultSignal("Vector inner products - CPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
-
+  emit resultSignal("Vector inner products - CPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   std_result = viennacl::linalg::inner_prod(vcl_vec1, vcl_vec2); //startup calculation
   std_result = 0.0;
@@ -107,9 +112,11 @@ void Benchmark_Vector::run_benchmark()
   viennacl::backend::finish();
   exec_time = timer.get();
   std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result: " << vcl_factor2 << std::endl;
-  emit resultSignal("Vector inner products - GPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
+  emit resultSignal("Vector inner products - GPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   // inner product
   viennacl::backend::finish();
@@ -127,9 +134,11 @@ void Benchmark_Vector::run_benchmark()
   std_result = std::sqrt(std_result);
   exec_time = timer.get();
   std::cout << "CPU time: " << exec_time << std::endl;
-  std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result:" << std_result << std::endl;
-  emit resultSignal("Vector norm_2 - CPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
+  emit resultSignal("Vector norm_2 - CPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   std_result = viennacl::linalg::norm_2(vcl_vec1); //startup calculation
   std_result = 0.0;
@@ -142,9 +151,11 @@ void Benchmark_Vector::run_benchmark()
   viennacl::backend::finish();
   exec_time = timer.get();
   std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result: " << vcl_factor2 << std::endl;
-  emit resultSignal("Vector norm_2 - GPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
+  emit resultSignal("Vector norm_2 - GPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   // vector addition
 
@@ -157,8 +168,10 @@ void Benchmark_Vector::run_benchmark()
   }
   exec_time = timer.get();
   std::cout << "CPU time: " << exec_time << std::endl;
-  std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  emit resultSignal("Vector addition - CPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
+  std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  emit resultSignal("Vector addition - CPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   vcl_vec3 = vcl_vec1 + vcl_vec2; //startup calculation
   viennacl::backend::finish();
@@ -171,10 +184,10 @@ void Benchmark_Vector::run_benchmark()
   viennacl::backend::finish();
   exec_time = timer.get();
   std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  emit resultSignal("Vector addition - GPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
-
-
+  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  emit resultSignal("Vector addition - GPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
 
   // multiply add:
@@ -187,9 +200,10 @@ void Benchmark_Vector::run_benchmark()
   }
   exec_time = timer.get();
   std::cout << "CPU time: " << exec_time << std::endl;
-  std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  emit resultSignal("Vector multiply add - CPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
-
+  std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  emit resultSignal("Vector multiply add - CPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   vcl_vec1 += vcl_factor1 * vcl_vec2; //startup calculation
   viennacl::backend::finish();
@@ -201,9 +215,10 @@ void Benchmark_Vector::run_benchmark()
   viennacl::backend::finish();
   exec_time = timer.get();
   std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  emit resultSignal("Vector multiply add - GPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
-
+  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  emit resultSignal("Vector multiply add - GPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
 
 
@@ -217,8 +232,10 @@ void Benchmark_Vector::run_benchmark()
   }
   exec_time = timer.get();
   std::cout << "CPU time: " << exec_time << std::endl;
-  std::cout << "CPU "; printOps(6.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  emit resultSignal("Vector complicated expression - CPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
+  std::cout << "CPU "; tempResultValue = printOps(6.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  emit resultSignal("Vector complicated expression - CPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
   vcl_vec3 = vcl_vec2 / vcl_factor1 + vcl_factor2 * (vcl_vec1 - vcl_factor1*vcl_vec2); //startup calculation
   viennacl::backend::finish();
@@ -230,8 +247,10 @@ void Benchmark_Vector::run_benchmark()
   viennacl::backend::finish();
   exec_time = timer.get();
   std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; printOps(6.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  emit resultSignal("Vector complicated expression - GPU", printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS)) );
+  std::cout << "GPU "; tempResultValue = printOps(6.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+  emit resultSignal("Vector complicated expression - GPU", tempResultValue );
+  finalResultValue += tempResultValue;
+  finalResultCounter++;
 
 }
 
@@ -269,6 +288,7 @@ void Benchmark_Vector::execute()
     std::cout << "   -------------------------------" << std::endl;
     run_benchmark<double>();
   }
+  emit finalResultSignal("Vector", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }
 

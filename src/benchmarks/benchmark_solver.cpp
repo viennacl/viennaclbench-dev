@@ -22,11 +22,12 @@
 */
 
 #include "benchmark_solver.h"
-#include <QDebug>
 
 Benchmark_Solver::Benchmark_Solver(QObject *parent) :
   AbstractBenchmark(parent)
 {
+  finalResultCounter = 0;
+  finalResultValue = 0;
 }
 
 template <typename ScalarType>
@@ -55,37 +56,9 @@ ScalarType Benchmark_Solver::diff_2(ublas::vector<ScalarType> & v1, viennacl::ve
   return norm_2(v1 - v2_cpu) / norm_2(v1);
 }
 
-
-//template <typename MatrixType, typename VectorType, typename SolverTag, typename PrecondTag>
-//void Benchmark_Solver::run_solver(MatrixType const & matrix, VectorType const & rhs, VectorType const & ref_result, SolverTag const & solver, PrecondTag const & precond, long ops)
-//{
-//  Timer timer;
-//  VectorType result(rhs);
-//  VectorType residual(rhs);
-//  viennacl::backend::finish();
-
-//  timer.start();
-//  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
-//  {
-//    result = viennacl::linalg::solve(matrix, rhs, solver, precond);
-//  }
-//  viennacl::backend::finish();
-//  double exec_time = timer.get();
-//  std::cout << "Exec. time: " << exec_time << std::endl;
-//  std::cout << "Est. "; printOps(static_cast<double>(ops), exec_time / BENCHMARK_RUNS);
-//  residual -= viennacl::linalg::prod(matrix, result);
-//  std::cout << "Relative residual: " << viennacl::linalg::norm_2(residual) / viennacl::linalg::norm_2(rhs) << std::endl;
-//  std::cout << "Estimated rel. residual: " << solver.error() << std::endl;
-//  std::cout << "Iterations: " << solver.iters() << std::endl;
-//  result -= ref_result;
-//  std::cout << "Relative deviation from result: " << viennacl::linalg::norm_2(result) / viennacl::linalg::norm_2(ref_result) << std::endl;
-//}
-
 template <typename MatrixType, typename VectorType, typename SolverTag, typename PrecondTag>
 double Benchmark_Solver::run_solver(MatrixType const & matrix, VectorType const & rhs, VectorType const & ref_result, SolverTag const & solver, PrecondTag const & precond, long ops)
 {
-  std::cout << "in run solver"<< std::endl;
-
   double GFLOPs=0;
   Timer timer;
   VectorType result(rhs);
@@ -94,16 +67,12 @@ double Benchmark_Solver::run_solver(MatrixType const & matrix, VectorType const 
   std::cout << "starting timer"<< std::endl;
 
   timer.start();
-  std::cout << "1"<< std::endl;
   for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
   {
-    std::cout << "loop " << runs <<std::endl;
     result = viennacl::linalg::solve(matrix, rhs, solver, precond);
   }
-  std::cout << "2"<< std::endl;
   viennacl::backend::finish();
 
-  std::cout << "finished timer"<< std::endl;
   double exec_time = timer.get();
   std::cout << "Exec. time: " << exec_time << std::endl;
   std::cout << "Est. "; GFLOPs = printOps(static_cast<double>(ops), exec_time / BENCHMARK_RUNS);
@@ -537,6 +506,8 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   counter++;
 
   emit resultSignal("CG solver - average", totalGFLOPs/(double)counter);
+  finalResultValue += totalGFLOPs/(double)counter;
+  finalResultCounter++;
 
   ///////////////////////////////////////////////////////////////////////////////
   //////////////////////           BiCGStab solver             //////////////////
@@ -610,6 +581,8 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   counter++;
 
   emit resultSignal("BiCGStab solver - average", totalGFLOPs/(double)counter);
+  finalResultValue += totalGFLOPs/(double)counter;
+  finalResultCounter++;
 
   ///////////////////////////////////////////////////////////////////////////////
   ///////////////////////            GMRES solver             ///////////////////
@@ -673,6 +646,8 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
   counter++;
 
   emit resultSignal("GMRES solver - average", totalGFLOPs/(double)counter);
+  finalResultValue += totalGFLOPs/(double)counter;
+  finalResultCounter++;
 
   //  return EXIT_SUCCESS;
 }
@@ -733,5 +708,6 @@ void Benchmark_Solver::execute()
     std::cout << "   -------------------------------" << std::endl;
     run_benchmark<double>(ctx);
   }
+  emit finalResultSignal("Solver", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }

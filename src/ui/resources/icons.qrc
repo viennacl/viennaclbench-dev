@@ -7,5 +7,6 @@
         <file>icons/checkTrue.png</file>
         <file>icons/checkFalse.png</file>
         <file>icons/collapseArrow.png</file>
+        <file>icons/matrix.png</file>
     </qresource>
 </RCC>
