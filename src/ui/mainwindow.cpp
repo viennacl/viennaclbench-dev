@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
   //    s.execute();
 
   //connect quickstart button
-  connect(ui->homeQuickStartButon, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark) );
+  connect(ui->homeQuickStartButon, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark()) );
   //run benchmark button clicked -> execute benchmark
   connect(ui->basic_StartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
   //route incoming benchmark result info to appropriate plots
@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::quickstartFullBenchmark(){
   ui->basic_BenchmarkListWidget->selectAllItems();
+  ui->menuListWidget->setCurrentRow(1);
   startBenchmarkExecution();
 }
 
