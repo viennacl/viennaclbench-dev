@@ -28,12 +28,20 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //run benchmark button clicked -> execute benchmark
   connect(ui->basic_StartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
+  //route incoming benchmark result info to appropriate plots
+  connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), this, SLOT(setActiveBenchmarkPlot(int)) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
   connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString)), this, SLOT(updateBenchmarkUnitMeasure(QString)) );
   //received a benchmark result -> parse it and show it on the graph
   connect(&benchmarkController, SIGNAL(resultSignal(QString,double)), this, SLOT(parseBenchmarkResult(QString,double)) );
   //final benchmark result
   connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), this, SLOT(updateFinalResultPlot(QString,double)) );
+
+}
+
+void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){
+  basic_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
+  activeBenchmark = benchmarkIdNumber;
 }
 
 void MainWindow::updateFinalResultPlot(QString benchmarkName, double finalResult){
@@ -146,29 +154,69 @@ void MainWindow::initBasicView(){
   sparse_DetailedPlot = new QCustomPlot();
   vector_DetailedPlot = new QCustomPlot();
 
-  basic_DetailedPlotTab->addTab(blas3_DetailedPlot,"Blas3");
-  basic_DetailedPlotTab->addTab(copy_DetailedPlot,"Copy");
-  basic_DetailedPlotTab->addTab(qr_DetailedPlot,"Qr");
-  basic_DetailedPlotTab->addTab(solver_DetailedPlot,"Solver");
-  basic_DetailedPlotTab->addTab(sparse_DetailedPlot,"Sparse");
-  basic_DetailedPlotTab->addTab(vector_DetailedPlot,"Vector");
+  basic_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
+  basic_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
+  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
+  basic_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
+  basic_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
+  basic_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
+
+  basic_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
+  basic_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
+  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
+  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
+  basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
+  basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
 
   ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
   ui->basic_CollapseWidget->setText("Detailed Test Results");
 
+  //xAxis bottom
+  //yAxis left
+  //xAxis2 top
+  //yAxis2 right
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
+
+  foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
+    plot->axisRect()->setupFullAxesBox();
+    //Disable secondary axes
+    plot->yAxis2->setVisible(false);
+    plot->xAxis2->setVisible(false);
+
+    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom);
+    plot->legend->setVisible(false);
+
+    plot->yAxis->setTickLength( 0, 2);
+    plot->yAxis->grid()->setVisible(true);
+    plot->yAxis->setTickLabelRotation( 0 );
+
+    plot->yAxis->setAutoSubTicks(false);
+    plot->yAxis->setAutoTickLabels(false);
+    plot->yAxis->setAutoTicks(false);
+    plot->yAxis->setAutoTickStep(false);
+    QVector<double> emptyTickVector;
+    plot->yAxis->setTickVector(emptyTickVector);
+    QVector<QString> emptyTickVectorLabels;
+    plot->yAxis->setTickVectorLabels(emptyTickVectorLabels);
+
+    plot->xAxis->setAutoSubTicks(true);
+    plot->xAxis->setAutoTickLabels(true);
+    plot->xAxis->setAutoTicks(true);
+    plot->xAxis->setAutoTickStep(true);
+
+    plot->setBackground(backgroundBrush);
+  }
+
+
   ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
   ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 35, 0, 25 ));
   ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
+  //Disable secondary axes
+  ui->basic_FinalResultPlot->yAxis2->setVisible(false);
+  ui->basic_FinalResultPlot->xAxis2->setVisible(false);
   ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables);
   ui->basic_FinalResultPlot->legend->setVisible(false);
-
-  //  Plot mapping
-  //  Vector - 1
-  //  Sparse - 2
-  //  Solver - 3
-  //  Qr - 4
-  //  Copy - 5
-  //  Blas3 - 6
 
   QVector<QString> finalResultPlotLabels;
   finalResultPlotLabels.append("Vector - GFLOPs");
@@ -178,6 +226,14 @@ void MainWindow::initBasicView(){
   finalResultPlotLabels.append("Copy - GB/s");
   finalResultPlotLabels.append("Blas3 - GFLOPs");
 
+  //  Plot mapping
+  //  Vector - 1
+  //  Sparse - 2
+  //  Solver - 3
+  //  Qr - 4
+  //  Copy - 5
+  //  Blas3 - 6
+
   QVector<double> finalResultPlotTicks;
   finalResultPlotTicks.append(1);
   finalResultPlotTicks.append(2);
@@ -185,15 +241,6 @@ void MainWindow::initBasicView(){
   finalResultPlotTicks.append(4);
   finalResultPlotTicks.append(5);
   finalResultPlotTicks.append(6);
-
-  //xAxis bottom
-  //yAxis left
-  //xAxis2 top
-  //yAxis2 right
-
-  //Disable secondary axes
-  ui->basic_FinalResultPlot->yAxis2->setVisible(false);
-  ui->basic_FinalResultPlot->xAxis2->setVisible(false);
 
   ui->basic_FinalResultPlot->yAxis->setAutoTickLabels(false);
   ui->basic_FinalResultPlot->yAxis->setAutoTicks(false);
@@ -210,13 +257,9 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->xAxis->setAutoTickStep(true);
   ui->basic_FinalResultPlot->xAxis->setRange(0,1);
 
-  barCounter = 1 ;
-
-  QColor backgroundColor(240,240,240);
-  QBrush backgroundBrush(backgroundColor);
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
-  ui->basic_FinalResultPlot->replot();
+//  ui->basic_FinalResultPlot->replot();
 
   connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
   connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
@@ -232,7 +275,7 @@ void MainWindow::initExpertView(){
 
 //execute the currently selected benchmark
 void MainWindow::startBenchmarkExecution(){
-  resetData(ui->basic_FinalResultPlot);
+  resetAllPlots();
   QStringList selectedBenchmarkItems;
   for ( int i = 1; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
     if(ui->basic_BenchmarkListWidget->item(i)->isSelected() ){
@@ -246,7 +289,8 @@ void MainWindow::startBenchmarkExecution(){
 
 void MainWindow::updateBenchmarkListWidget(QListWidgetItem *item)
 {
-  if(ui->basic_BenchmarkListWidget->row(item) == ALL){
+  //item(0) is the 'All' benchmarks selection option
+  if(ui->basic_BenchmarkListWidget->row(item) == 0){
     if(item->isSelected()){
       ui->basic_BenchmarkListWidget->selectAllItems();
     }
@@ -260,44 +304,113 @@ void MainWindow::updateBenchmarkListWidget(QListWidgetItem *item)
       ui->basic_BenchmarkListWidget->checkSelectedItems();
     }
     else{
-      ui->basic_BenchmarkListWidget->item(ALL)->setSelected(false);
-      ui->basic_BenchmarkListWidget->item(ALL)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
+      ui->basic_BenchmarkListWidget->item(0)->setSelected(false);
+      ui->basic_BenchmarkListWidget->item(0)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
       item->setIcon(QIcon(":/icons/icons/checkFalse.png"));
     }
   }
 }
 
+void MainWindow::resetAllPlots(){
+  resetPlotData(ui->basic_FinalResultPlot);
+  //reset all plots
+  foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
+    resetPlotData(plot);
+    plot->yAxis->tickVector().clear();
+    plot->yAxis->tickVectorLabels().clear();
+    plot->yAxis->setRange(0,1);
+    plot->xAxis->tickVector().clear();
+    plot->xAxis->tickVectorLabels().clear();
+    plot->xAxis->setRange(0,1);
+    plot->replot();
+  }
+}
+
 //reset the graph
-void MainWindow::resetData(QCustomPlot *benchmarkGraph)
+void MainWindow::resetPlotData(QCustomPlot *benchmarkGraph)
 {
-  barCounter = 1;
-  barData.clear();
-  ticks.clear();
-  labels.clear();
   benchmarkGraph->clearGraphs();
   benchmarkGraph->clearPlottables();
   benchmarkGraph->clearItems();
   benchmarkGraph->xAxis->setRange(0,1);
-  //  benchmarkGraph->yAxis->setTickVector(ticks);
-  //  benchmarkGraph->yAxis->setTickVectorLabels(labels);
-  //  benchmarkGraph->yAxis->setRange(0,1);
   benchmarkGraph->replot();
-}
-
-//parse the received benchmark result name and value
-void MainWindow::parseBenchmarkResult(QString benchmarkName, double bandwidthValue){
-  //  barData.append(bandwidthValue);
-  //  ticks.append(barCounter++);
-  //  labels.append(benchmarkName);
-  //  showResult(bandwidthValue, ui->basic_FinalResultPlot);
 }
 
 //set the benchmark's unit measure
 void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
 {
-  //  ui->basicFinalResultPlot->xAxis->setLabel(unitMeasureName);
+    basic_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
 }
 
+//parse the received benchmark result name and value
+void MainWindow::parseBenchmarkResult(QString benchmarkName, double resultValue){
+//    barData.append(bandwidthValue);
+//    ticks.append(barCounter++);
+//    labels.append(benchmarkName);
+    plotResult(benchmarkName, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+}
+
+//main result diplay function
+//x and y axis are swapped to achieve horizontal bar display
+void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *customPlot){
+  //  customPlot->yAxis->setAutoTicks(false);
+  //  customPlot->yAxis->setAutoTickLabels(false);
+  //  customPlot->yAxis->setTickLabelRotation(60);
+  //  customPlot->yAxis->setTickVector(ticks);
+  //  customPlot->yAxis->setTickVectorLabels(labels);
+  //  customPlot->yAxis->setSubTickCount(0);
+  //  customPlot->yAxis->setTickLength(0, 2);
+  //  customPlot->yAxis->grid()->setVisible(true);
+  //  customPlot->yAxis->setTickLabelRotation(0);
+
+//  //increase xAxis scale to fit new result, if necessary
+//  qDebug()<<"y axis max range"<<customPlot->xAxis->range().upper;
+//  if(customPlot->xAxis->range().upper<value){
+//    customPlot->xAxis->setRange(0,value*1.1);
+//  }
+//  customPlot->xAxis->setTickStep( ((customPlot->xAxis->range().upper)/1.1)  /10);
+//  //increase yAxis scale to fit new benchmark result
+//  qDebug()<<"x axis max range"<<customPlot->yAxis->range().upper;
+//  if(customPlot->yAxis->range().upper<barCounter){
+//    customPlot->yAxis->setRange(0,barCounter);
+//  }
+  //  qDebug()<<"showResult";  
+
+  QVector<double> currentTickVector = customPlot->yAxis->tickVector();
+  QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
+
+  double currentValue = value;
+  double currentKey = currentTickVector.size();
+
+  qDebug()<<"current key"<<currentKey;
+  qDebug()<<"current value"<<currentValue;
+
+  QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
+  resultBar->addData(currentKey, currentValue);
+
+  currentTickVector.append(currentKey);
+  currentTickVectorLabels.append(benchmarkName);
+
+  customPlot->yAxis->setTickVector(currentTickVector);
+  customPlot->yAxis->setTickVectorLabels(currentTickVectorLabels);
+
+  customPlot->addPlottable(resultBar);
+
+  customPlot->rescaleAxes();
+
+  QCPItemText *text = new QCPItemText(customPlot);
+  customPlot->addItem(text);
+
+  //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
+  text->position->setType(QCPItemPosition::ptPlotCoords);
+  text->position->setCoords(  currentValue , currentKey );
+  text->setText(QString::number( currentValue ));
+
+  //  text->setFont(QFont(font().family(), 12)); // make font a bit larger
+  text->setPen(QPen(Qt::red)); // show black border around text
+
+  customPlot->replot();
+}
 
 void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
   //  Plot mapping
@@ -408,67 +521,6 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   customPlot->replot();
 }
 
-//main result diplay function
-//x and y axis are swapped to achieve horizontal bar display
-void MainWindow::plotResult(double value, QCustomPlot *customPlot){
-  //  customPlot->yAxis->setAutoTicks(false);
-  //  customPlot->yAxis->setAutoTickLabels(false);
-  //  customPlot->yAxis->setTickLabelRotation(60);
-  //  customPlot->yAxis->setTickVector(ticks);
-  //  customPlot->yAxis->setTickVectorLabels(labels);
-  //  customPlot->yAxis->setSubTickCount(0);
-  //  customPlot->yAxis->setTickLength(0, 2);
-  //  customPlot->yAxis->grid()->setVisible(true);
-  //  customPlot->yAxis->setTickLabelRotation(0);
-
-
-  //  ui->benchmarkGraph->yAxis->setTickVector(ticks);
-  //  ui->benchmarkGraph->yAxis->setTickVectorLabels(labels);
-  customPlot->yAxis->setTickVector(ticks);
-  customPlot->yAxis->setTickVectorLabels(labels);
-  customPlot->xAxis->setAutoTickStep(false);
-  //increase xAxis scale to fit new result, if necessary
-  qDebug()<<"y axis max range"<<customPlot->xAxis->range().upper;
-  if(customPlot->xAxis->range().upper<value){
-    customPlot->xAxis->setRange(0,value*1.1);
-  }
-  customPlot->xAxis->setTickStep( ((customPlot->xAxis->range().upper)/1.1)  /10);
-  //increase yAxis scale to fit new benchmark result
-  qDebug()<<"x axis max range"<<customPlot->yAxis->range().upper;
-  if(customPlot->yAxis->range().upper<barCounter){
-    customPlot->yAxis->setRange(0,barCounter);
-  }
-
-  //  qDebug()<<"showResult";
-  QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
-  //  qDebug()<<"initialized resultBar";
-  customPlot->addPlottable(resultBar);
-  //  qDebug()<<"setting name";
-  //  qDebug()<<"setting data";
-  resultBar->setData(ticks, barData );
-  //  qDebug()<<"add set";
-
-  double currentValue = barData.last();
-  double currentKey = ticks.last();
-
-  QCPItemText *text = new QCPItemText(ui->basic_FinalResultPlot);
-  ui->basic_FinalResultPlot->addItem(text);
-
-  qDebug()<<"last key"<<currentKey;
-  qDebug()<<"last value"<<currentValue;
-
-  //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
-  text->position->setType(QCPItemPosition::ptPlotCoords);
-  text->position->setCoords(  currentValue , currentKey );
-  text->setText(QString::number( currentValue ));
-
-  //  text->setFont(QFont(font().family(), 12)); // make font a bit larger
-  text->setPen(QPen(Qt::black)); // show black border around text
-
-
-
-  customPlot->replot();
-}
 
 
 MainWindow::~MainWindow()

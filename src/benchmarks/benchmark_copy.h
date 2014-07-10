@@ -45,6 +45,7 @@ private:
   int finalResultCounter;
 signals:
   /* Inherited signals:
+   * void benchmarkStarted(int benchmarkIdNumber);
    * void finalResultSignal(QString benchmarkName, double finalValue);
    * void resultSignal(QString benchmarkName, double bandwidthValue);
    * void benchmarkComplete();

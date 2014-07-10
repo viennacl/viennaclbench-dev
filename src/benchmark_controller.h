@@ -30,7 +30,9 @@ signals:
   void benchmarkComplete();
   void unitMeasureSignal(QString);
   void emptyBenchmarkQ();
+  void benchmarkStarted(int benchmarkIdNumber);
 public slots:
+  void benchmarkStartedSlot(int benchmarkIdNumber);
   void executeSelectedBenchmark(QStringList benchmarkNamesList);
   void finalResultSignalSlot(QString benchmarkName, double finalValue);
   void resultSignalSlot(QString benchmarkName, double bandwidthValue);

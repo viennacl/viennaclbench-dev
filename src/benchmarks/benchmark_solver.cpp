@@ -654,6 +654,7 @@ void  Benchmark_Solver::run_benchmark(viennacl::context ctx)
 
 void Benchmark_Solver::execute()
 {
+  emit benchmarkStarted(SOLVER);
   emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;

@@ -289,6 +289,7 @@ void Benchmark_Sparse::run_benchmark()
 
 void Benchmark_Sparse::execute()
 {
+  emit benchmarkStarted(SPARSE);
   emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;

@@ -153,8 +153,7 @@ void Benchmark_Copy::run_benchmark()
 }
 
 void Benchmark_Copy::execute(){
-  qDebug()<<"starting copy execution";
-  qDebug()<<"copy benchmark thread id:"<<QThread::currentThreadId();
+  emit benchmarkStarted(COPY);
   emit unitMeasureSignal("GB/s");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;

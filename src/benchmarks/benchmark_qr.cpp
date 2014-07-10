@@ -103,6 +103,7 @@ void Benchmark_Qr::run_benchmark()
 
 void Benchmark_Qr::execute()
 {
+  emit benchmarkStarted(QR);
   emit unitMeasureSignal("GFLOPs");
   run_benchmark();
 }

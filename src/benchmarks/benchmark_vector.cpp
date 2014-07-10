@@ -256,6 +256,7 @@ void Benchmark_Vector::run_benchmark()
 
 void Benchmark_Vector::execute()
 {
+  emit benchmarkStarted(VECTOR);
   emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;

@@ -12,7 +12,7 @@ Benchmark_Controller::Benchmark_Controller(QObject *parent) :
 
 //Starts execution of a new benchmark test in a separate thread
 void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
-  qDebug()<<"creating benchmark";
+  qDebug()<<"Creating Benchmark Object";
   QThread *workerThread = new QThread();
   benchmark->moveToThread(workerThread);
   connect(workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );
@@ -22,6 +22,7 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
   connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
   connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
   connect(benchmark, SIGNAL(finalResultSignal(QString, double)), this, SLOT(finalResultSignalSlot(QString, double)) );
+  connect(benchmark, SIGNAL(benchmarkStarted(int)), this, SLOT(benchmarkStartedSlot(int)) );
 
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(startNextBenchmark()) );
@@ -39,13 +40,17 @@ void Benchmark_Controller::enqueueBenchmarks(QStringList benchmarkNamesList){
   }
 }
 
+void Benchmark_Controller::benchmarkStartedSlot(int benchmarkIdNumber)
+{
+  emit benchmarkStarted(benchmarkIdNumber);
+}
+
 void Benchmark_Controller::startNextBenchmark(){
-  qDebug()<<"starting next benchmark";
   if(!benchmarkQ.isEmpty()){
     QString nextBenchmarkName;
     nextBenchmarkName = benchmarkQ.dequeue();
 
-    qDebug()<<"Next benchmark: "<<nextBenchmarkName;
+    qDebug()<<"String Next benchmark: "<<nextBenchmarkName;
     if(nextBenchmarkName == "Blas3"){
       //    Benchmark_Blas3 *benchmark = new Benchmark_Blas3();
       createBenchmark(new Benchmark_Blas3());

@@ -207,6 +207,7 @@ double tempResultValue;
 
 void Benchmark_Blas3::execute()
 {
+  emit benchmarkStarted(BLAS3);
   emit unitMeasureSignal("GFLOPs");
   std::cout << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
