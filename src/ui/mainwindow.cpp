@@ -12,9 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->menuListWidget, SIGNAL(currentRowChanged(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)) );
 
   //setup benchmark plots
+  initHomeScreen();
   initBasicView();
   initExpertView();
-  initHomeScreen();
+  initMatrixMarket();
 
   //    Benchmark_Sparse s; //working
   //  Benchmark_Copy s; //working
@@ -37,6 +38,14 @@ MainWindow::MainWindow(QWidget *parent) :
   //final benchmark result
   connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), this, SLOT(updateFinalResultPlot(QString,double)) );
 
+}
+
+void MainWindow::initMatrixMarket(){
+  QThread *workerThread = new QThread();
+  ui->webView->moveToThread(workerThread);
+  connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
+  workerThread->start();
+  ui->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
 }
 
 void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){

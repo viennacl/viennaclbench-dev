@@ -39,14 +39,14 @@
       <item>
        <widget class="MenuListWidget" name="menuListWidget">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+         <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>16777215</height>
          </size>
         </property>
@@ -192,12 +192,24 @@ border-bottom: 2px groove gray;
            <normaloff>:/icons/icons/db.png</normaloff>:/icons/icons/db.png</iconset>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>MatrixMarket</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+         </property>
+         <property name="icon">
+          <iconset resource="resources/icons.qrc">
+           <normaloff>:/icons/icons/matrix.gif</normaloff>:/icons/icons/matrix.gif</iconset>
+         </property>
+        </item>
        </widget>
       </item>
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -1019,6 +1031,19 @@ border-bottom: 2px groove gray;
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="matrixMarketPage">
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QWebView" name="webView">
+            <property name="url">
+             <url>
+              <string>about:blank</string>
+             </url>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -1077,6 +1102,11 @@ QMenuBar:item:selected{
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+  <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
    <header>src/ui/qcustomplot.h</header>
@@ -1100,8 +1130,8 @@ QMenuBar:item:selected{
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources/otherFiles.qrc"/>
   <include location="resources/icons.qrc"/>
+  <include location="resources/otherFiles.qrc"/>
  </resources>
  <connections/>
  <slots>

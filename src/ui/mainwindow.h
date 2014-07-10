@@ -13,6 +13,8 @@
 #include <QTabWidget>
 #include <QDebug>
 #include <QListWidgetItem>
+#include <QThread>
+#include <QtWebKitWidgets/QWebView>
 
 #include <cstdlib>
 #include <ctime>
@@ -43,6 +45,7 @@ public:
   void initHomeScreen();
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
+  void initMatrixMarket();
 private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;

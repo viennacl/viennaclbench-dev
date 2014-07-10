@@ -8,5 +8,6 @@
         <file>icons/checkFalse.png</file>
         <file>icons/collapseArrow.png</file>
         <file>icons/matrix.png</file>
+        <file>icons/matrix.gif</file>
     </qresource>
 </RCC>
