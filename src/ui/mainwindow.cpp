@@ -471,13 +471,19 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   //  //  text->setFont(QFont(font().family(), 12)); // make font a bit larger
   //  text->setPen(QPen(Qt::black)); // show black border around text
 
-
-
-  //  qDebug()<<"showResult";
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
   resultBar->addData(currentData);
-  //  qDebug()<<"initialized resultBar";
   customPlot->addPlottable(resultBar);
+
+  QCPItemText *text = new QCPItemText(customPlot);
+  customPlot->addItem(text);
+
+  //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
+  text->position->setType(QCPItemPosition::ptPlotCoords);
+  text->position->setCoords(  currentData.value , currentData.key );
+  text->setText(QString::number( currentData.value ));
+
+  text->setPen(QPen(Qt::red)); // show black border around text
 
   //  qDebug()<<"setting name";
   //  qDebug()<<"setting data";
