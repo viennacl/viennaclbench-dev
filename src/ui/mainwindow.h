@@ -72,6 +72,7 @@ public slots:
   void updateBenchmarkListWidget(QListWidgetItem* item);
   void updateFinalResultPlot(QString benchmarkName, double finalResult);
   void setActiveBenchmarkPlot(int benchmarkIdNumber);
+  void quickstartFullBenchmark();
 };
 
 #endif // MAINWINDOW_H

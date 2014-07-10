@@ -27,7 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //  Benchmark_Qr s; //working
   //    s.execute();
 
-
+  //connect quickstart button
+  connect(ui->homeQuickStartButon, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark) );
   //run benchmark button clicked -> execute benchmark
   connect(ui->basic_StartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
   //route incoming benchmark result info to appropriate plots
@@ -39,6 +40,11 @@ MainWindow::MainWindow(QWidget *parent) :
   //final benchmark result
   connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), this, SLOT(updateFinalResultPlot(QString,double)) );
 
+}
+
+void MainWindow::quickstartFullBenchmark(){
+  ui->basic_BenchmarkListWidget->selectAllItems();
+  startBenchmarkExecution();
 }
 
 void MainWindow::initMatrixMarket(){
