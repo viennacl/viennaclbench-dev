@@ -12,7 +12,7 @@ Benchmark_Controller::Benchmark_Controller(QObject *parent) :
 
 //Starts execution of a new benchmark test in a separate thread
 void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
-  qDebug()<<"Creating Benchmark Object";
+  qDebug()<<"Creating Benchmark Thread Object";
   QThread *workerThread = new QThread();
   benchmark->moveToThread(workerThread);
   connect(workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );

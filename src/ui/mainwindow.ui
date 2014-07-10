@@ -243,42 +243,6 @@ Driver Version:</string>
             </layout>
            </widget>
           </item>
-          <item row="0" column="2">
-           <spacer name="homeHorizontalSpacerRight">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="0">
-           <spacer name="homeHorizontalSpacerLeft">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="homeLabel">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0" colspan="3">
            <widget class="QGroupBox" name="homeAboutBox">
             <property name="title">
@@ -336,19 +300,6 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
             </layout>
            </widget>
           </item>
-          <item row="1" column="1">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="3" column="1">
            <widget class="QGroupBox" name="homeQuickStartBox">
             <property name="title">
@@ -377,6 +328,55 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
              </item>
             </layout>
            </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="homeHorizontalSpacerRight">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0">
+           <spacer name="homeHorizontalSpacerLeft">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="homeLabel">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -645,236 +645,6 @@ border-top: 2px groove gray;
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="tab">
-             <attribute name="title">
-              <string>Test Page</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout_7">
-              <item row="1" column="0" colspan="2">
-               <widget class="QGroupBox" name="groupBox_2">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="title">
-                 <string>Select benchmark tests</string>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-                <property name="checked">
-                 <bool>false</bool>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_4">
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QCheckBox" name="checkBoxAll_2">
-                   <property name="text">
-                    <string>All</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="3">
-                  <widget class="QCheckBox" name="checkBoxSolver_2">
-                   <property name="text">
-                    <string>Solver</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QCheckBox" name="checkBoxCopy_2">
-                   <property name="text">
-                    <string>Copy</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="4">
-                  <widget class="QCheckBox" name="checkBoxSparse_2">
-                   <property name="text">
-                    <string>Sparse</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="6">
-                  <widget class="QPushButton" name="buttonRunBenchmark_2">
-                   <property name="text">
-                    <string>Run Benchmark</string>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="2">
-                  <widget class="QCheckBox" name="checkBoxQr_2">
-                   <property name="text">
-                    <string>Qr</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QCheckBox" name="checkBoxBlas3_2">
-                   <property name="text">
-                    <string>Blas3</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="5">
-                  <widget class="QCheckBox" name="checkBoxVector_2">
-                   <property name="text">
-                    <string>Vector</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="7">
-                  <spacer name="horizontalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="QWidget" name="widget" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>100</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QListWidget" name="listWidget">
-                <property name="styleSheet">
-                 <string notr="true">QListWidget 
-{ 
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(41, 41, 41, 255), stop:1 rgba(85, 85, 85, 255));  
-}
-
-QListWidget::item:hover 
-{ 
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(200, 200, 200, 255));
-}
-
-QListWidget::item:selected 
-{ 
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-top: 2px groove gray; 
-color: #404040;
-}
-QIcon
-{
-background: red;selection-color: red; 
-}
-
-
-QIcon::selected
-{
-background: red;selection-color: red; 
-}
-
-QListWidget::item 
-{ 
-padding: 10px; color: white; 
-border-bottom: 2px groove gray; 
-}</string>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::MultiSelection</enum>
-                </property>
-                <property name="flow">
-                 <enum>QListView::TopToBottom</enum>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>All</string>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Blas3</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Copy</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Qr</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Solver</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Sparse</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Vector</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkFalse.png</normaloff>:/icons/icons/checkFalse.png</iconset>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="3" column="0" colspan="2">
-               <widget class="QTabWidget" name="tabWidget_2">
-                <widget class="QWidget" name="tab_2">
-                 <attribute name="title">
-                  <string>Tab 1</string>
-                 </attribute>
-                </widget>
-                <widget class="QWidget" name="tab_3">
-                 <attribute name="title">
-                  <string>Tab 2</string>
-                 </attribute>
-                </widget>
                </widget>
               </item>
              </layout>

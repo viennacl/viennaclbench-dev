@@ -49,10 +49,10 @@ void MainWindow::quickstartFullBenchmark(){
 }
 
 void MainWindow::initMatrixMarket(){
-  QThread *workerThread = new QThread();
-  ui->webView->moveToThread(workerThread);
-  connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
-  workerThread->start();
+//  QThread *workerThread = new QThread();
+//  ui->webView->moveToThread(workerThread);
+//  connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
+//  workerThread->start();
   ui->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
 }
 

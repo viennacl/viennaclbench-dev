@@ -4,5 +4,6 @@
         <file>images/viennacl-logo.ico</file>
         <file>images/benchmarkIcon.png</file>
         <file>images/benchmarkIcon.ico</file>
+        <file>images/splash-screen.jpg</file>
     </qresource>
 </RCC>
