@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->actionAbout,SIGNAL(triggered()), qApp, SLOT(aboutQt()) );
   connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()) );
   connect(ui->menuListWidget, SIGNAL(currentRowChanged(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)) );
+  ui->menuListWidget->setCurrentRow(0);
 
   //setup benchmark plots
   initHomeScreen();
