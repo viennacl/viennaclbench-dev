@@ -4,9 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkitwidgets
+QT       += core gui webkit
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
 TARGET = ViennaCL_Benchmark
 TEMPLATE = app

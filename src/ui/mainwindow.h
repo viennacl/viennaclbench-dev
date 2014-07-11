@@ -14,7 +14,11 @@
 #include <QDebug>
 #include <QListWidgetItem>
 #include <QThread>
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+#include <QtWebKit/QWebView>
+#else
 #include <QtWebKitWidgets/QWebView>
+#endif
 
 #include <cstdlib>
 #include <ctime>
