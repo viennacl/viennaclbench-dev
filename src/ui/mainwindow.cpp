@@ -72,34 +72,34 @@ void MainWindow::initHomeScreen(){
   typedef std::vector< viennacl::ocl::platform > platforms_type;
   platforms_type platforms = viennacl::ocl::get_platforms();
 
-  //  bool is_first_element = true;
-  //  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
+    bool is_first_element = true;
+    for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
 
-  //    typedef std::vector<viennacl::ocl::device> devices_type;
-  //    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
-  //    std::cout << "# Vendor and version: " << platform_iter->info() << std::endl;
+      typedef std::vector<viennacl::ocl::device> devices_type;
+      devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
+      std::cout << "# Vendor and version: " << platform_iter->info() << std::endl;
 
-  //    if (is_first_element)
-  //    {
-  //      std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
-  //      is_first_element = false;
-  //    }
-  //    std::cout << "# Available Devices: " << std::endl;
-  //    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
-  //    {
-  //        std::cout << std::endl;
-  //std::cout << " !!!!!!!!!!!" << std::endl;
-  //        std::cout << "  -----------------------------------------" << std::endl;
-  //        std::cout << iter->full_info();
-  ////        std::cout << iter
-  //        std::cout << "  -----------------------------------------" << std::endl;
+      if (is_first_element)
+      {
+        std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
+        is_first_element = false;
+      }
+      std::cout << "# Available Devices: " << std::endl;
+      for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
+      {
+          std::cout << std::endl;
+  std::cout << " !!!!!!!!!!!" << std::endl;
+          std::cout << "  -----------------------------------------" << std::endl;
+          std::cout << iter->full_info();
+  //        std::cout << iter
+          std::cout << "  -----------------------------------------" << std::endl;
 
-  //        systemInfoString.append("Name: ");
-  //        systemInfoString.append(QString::fromStdString(iter->name( )) );
-  //        systemInfoString.append("\n");
-  //    }
+          systemInfoString.append("Name: ");
+          systemInfoString.append(QString::fromStdString(iter->name( )) );
+          systemInfoString.append("\n");
+      }
 
-  //  }
+    }
 
 
 

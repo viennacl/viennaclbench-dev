@@ -127,11 +127,11 @@ if(Boost_FOUND)
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
 IF(USE_QT5)# Qt5-specific linkage and module usage
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${OPENCL_LIBRARIES})
-    qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets)
+    qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets WebKitWidgets)
 ELSE() # Qt4-specific linkage and module usage
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
-    target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore)
+    target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4:QtWebKit)
 ENDIF()
 target_link_libraries(ViennaCL_Benchmark)
 
