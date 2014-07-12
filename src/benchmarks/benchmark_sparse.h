@@ -3,7 +3,6 @@
 
 #include "abstractbenchmark.h"
 
-#define VIENNACL_BUILD_INFO
 #ifndef NDEBUG
 #define NDEBUG
 #endif

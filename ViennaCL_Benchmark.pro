@@ -49,8 +49,8 @@ HEADERS  += src/ui/mainwindow.h \
 FORMS    += src/ui/mainwindow.ui \
     src/ui/collapsewidget.ui
 
-RESOURCES += src/ui/resources/otherFiles.qrc \
-    src/ui/resources/icons.qrc
+RESOURCES += resources/otherFiles.qrc \
+    resources/icons.qrc
 
 #Add benchmark data files
 testData.path = $$OUT_PWD/testdata
