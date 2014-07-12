@@ -8,6 +8,9 @@
 #endif
 
 #define VIENNACL_WITH_UBLAS 0
+//#ifdef VIENNACL_WITH_UBLAS
+//#undef VIENNACL_WITH_UBLAS
+//#endif
 
 #include <boost/numeric/ublas/triangular.hpp>
 #include <boost/numeric/ublas/vector.hpp>

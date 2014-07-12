@@ -45,6 +45,8 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::scalar<ScalarType> vcl_factor1(std_factor1);
   viennacl::scalar<ScalarType> vcl_factor2(std_factor2);
 
+//  viennacl::vector<ScalarType> ublas_vec1;
+//  viennacl::vector<ScalarType> ublas_vec2;
   boost::numeric::ublas::vector<ScalarType> ublas_vec1;
   boost::numeric::ublas::vector<ScalarType> ublas_vec2;
 
@@ -70,6 +72,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::ell_matrix<ScalarType, 1> vcl_ell_matrix_1;
   viennacl::hyb_matrix<ScalarType, 1> vcl_hyb_matrix_1;
 
+//  viennacl::compressed_matrix<ScalarType> ublas_matrix;
   boost::numeric::ublas::compressed_matrix<ScalarType> ublas_matrix;
 
   if (!viennacl::io::read_matrix_market_file(ublas_matrix, matrixPathString.toStdString() ) )
@@ -104,6 +107,7 @@ void Benchmark_Sparse::run_benchmark()
   timer.start();
   for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
   {
+//    ublas_vec1 = viennacl::linalg::prod(ublas_matrix, ublas_vec2);
     ublas_vec1 = boost::numeric::ublas::prod(ublas_matrix, ublas_vec2);
     //    boost::numeric::ublas::axpy_prod(ublas_matrix, ublas_vec2, ublas_vec1, true);
   }
@@ -146,6 +150,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::copy(ublas_vec1, vcl_vec1);
   std::cout << "ublas..." << std::endl;
   timer.start();
+//  viennacl::linalg::inplace_solve(trans(ublas_matrix), ublas_vec1, viennacl::linalg::unit_lower_tag());
   boost::numeric::ublas::inplace_solve(trans(ublas_matrix), ublas_vec1, boost::numeric::ublas::unit_lower_tag());
   std::cout << "Time elapsed: " << timer.get() << std::endl;
   std::cout << "ViennaCL..." << std::endl;
@@ -155,6 +160,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::backend::finish();
   std::cout << "Time elapsed: " << timer.get() << std::endl;
 
+//  ublas_vec1 = viennacl::linalg::prod(ublas_matrix, ublas_vec2);
   ublas_vec1 = boost::numeric::ublas::prod(ublas_matrix, ublas_vec2);
 
   viennacl::backend::finish();
