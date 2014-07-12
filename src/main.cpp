@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
   splashScreen->showMessage("Loading GUI");
   qApp->processEvents();
   MainWindow w;
-  QTimer::singleShot(2500, &w, SLOT(show()) );
-
+  QTimer::singleShot(2000, &w, SLOT(show()) );
+  QTimer::singleShot(2000, splashScreen, SLOT(deleteLater()) );
   return a.exec();
 }
