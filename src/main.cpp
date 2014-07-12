@@ -1,6 +1,7 @@
 #include "ui/mainwindow.h"
 #include <QApplication>
 #include <QSplashScreen>
+#include <QTimer>
 
 int main(int argc, char *argv[])
 {
@@ -12,8 +13,7 @@ int main(int argc, char *argv[])
   splashScreen->showMessage("Loading GUI");
   qApp->processEvents();
   MainWindow w;
-  w.show();
-  splashScreen->finish(&w);
+  QTimer::singleShot(2500, &w, SLOT(show()) );
 
   return a.exec();
 }
