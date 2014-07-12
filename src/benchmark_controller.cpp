@@ -65,7 +65,7 @@ void Benchmark_Controller::startNextBenchmark(){
     }
     else if(nextBenchmarkName == "Solver"){
       //    Benchmark_Solver *benchmark = new Benchmark_Solver();
-      createBenchmark(new Benchmark_Solver());
+//      createBenchmark(new Benchmark_Solver());
     }
     else if(nextBenchmarkName == "Sparse"){
       //    Benchmark_Sparse *benchmark = new Benchmark_Sparse();
@@ -77,7 +77,7 @@ void Benchmark_Controller::startNextBenchmark(){
     }
     else if(nextBenchmarkName == "Qr"){
       //    Benchmark_Qr *benchmark = new Benchmark_Qr();
-      createBenchmark(new Benchmark_Qr());
+//      createBenchmark(new Benchmark_Qr());
     }
     else{
       qDebug()<<"Error parsing benchmark name";

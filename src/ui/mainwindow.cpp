@@ -156,6 +156,7 @@ void MainWindow::initHomeScreen(){
 }
 
 void MainWindow::initBasicView(){
+  qDebug()<<"init basic view";
   //normalize size of each list menu item
   for ( int i = 0; i < ui->menuListWidget->count(); i++ ) {
     ui->menuListWidget->item(i)->setSizeHint(ui->menuListWidget->itemSizeHint());
@@ -166,24 +167,28 @@ void MainWindow::initBasicView(){
 
   blas3_DetailedPlot = new QCustomPlot();
   copy_DetailedPlot = new QCustomPlot();
-  qr_DetailedPlot = new QCustomPlot();
-  solver_DetailedPlot = new QCustomPlot();
+//  qr_DetailedPlot = new QCustomPlot();
+//  solver_DetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
   vector_DetailedPlot = new QCustomPlot();
 
+  qDebug()<<"plot vectors";
   basic_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
   basic_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
-  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
-  basic_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
+//  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
+//  basic_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
   basic_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
   basic_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
+  qDebug()<<"after plot vectors";
+
 
   basic_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
   basic_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
-  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
-  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
+//  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
+//  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
   basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
   basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
+  qDebug()<<"after plot tabs";
 
   ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
   ui->basic_CollapseWidget->setText("Detailed Test Results");
@@ -194,6 +199,7 @@ void MainWindow::initBasicView(){
   //yAxis2 right
   QColor backgroundColor(240,240,240);
   QBrush backgroundBrush(backgroundColor);
+  qDebug()<<" before foreach";
 
   foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
     plot->axisRect()->setupFullAxesBox();
@@ -238,26 +244,22 @@ void MainWindow::initBasicView(){
   QVector<QString> finalResultPlotLabels;
   finalResultPlotLabels.append("Vector - GFLOPs");
   finalResultPlotLabels.append("Sparse - GFLOPs");
-  finalResultPlotLabels.append("Solver - GFLOPs");
-  finalResultPlotLabels.append("Qr - GFLOPs");
+//  finalResultPlotLabels.append("Solver - GFLOPs");
+//  finalResultPlotLabels.append("Qr - GFLOPs");
   finalResultPlotLabels.append("Copy - GB/s");
   finalResultPlotLabels.append("Blas3 - GFLOPs");
 
   //  Plot mapping
   //  Vector - 1
   //  Sparse - 2
-  //  Solver - 3
-  //  Qr - 4
-  //  Copy - 5
-  //  Blas3 - 6
+  //  Copy - 3
+  //  Blas3 - 4
 
   QVector<double> finalResultPlotTicks;
   finalResultPlotTicks.append(1);
   finalResultPlotTicks.append(2);
   finalResultPlotTicks.append(3);
   finalResultPlotTicks.append(4);
-  finalResultPlotTicks.append(5);
-  finalResultPlotTicks.append(6);
 
   ui->basic_FinalResultPlot->yAxis->setAutoTickLabels(false);
   ui->basic_FinalResultPlot->yAxis->setAutoTicks(false);
@@ -265,7 +267,7 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
   ui->basic_FinalResultPlot->yAxis->setSubTickCount( 0 );
   ui->basic_FinalResultPlot->yAxis->setTickLength( 0, 2);
-  ui->basic_FinalResultPlot->yAxis->setRange( 0.5, 7.0);
+  ui->basic_FinalResultPlot->yAxis->setRange( 0.5, 5.0);
   ui->basic_FinalResultPlot->yAxis->grid()->setVisible(true);
   ui->basic_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
 
@@ -433,17 +435,15 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   //  Plot mapping
   //  Vector - 1
   //  Sparse - 2
-  //  Solver - 3
-  //  Qr - 4
-  //  Copy - 5
-  //  Blas3 - 6
+  //  Copy - 3
+  //  Blas3 - 4
   QCPBarData currentData;
   currentData.value = value;
   if(benchmarkName == "Blas3"){
-    currentData.key = 6;
+    currentData.key = 4;
   }
   else if(benchmarkName == "Copy"){
-    currentData.key = 5;
+    currentData.key = 3;
   }
   else if(benchmarkName == "Qr"){
     currentData.key = 4;

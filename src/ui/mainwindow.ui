@@ -14,7 +14,7 @@
    <string>ViennaCL Benchmark</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources/otherFiles.qrc">
+   <iconset resource="../../resources/otherFiles.qrc">
     <normaloff>:/resources/images/benchmarkIcon.ico</normaloff>:/resources/images/benchmarkIcon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -152,7 +152,7 @@ border-bottom: 2px groove gray;
           <set>AlignHCenter|AlignTop</set>
          </property>
          <property name="icon">
-          <iconset resource="resources/icons.qrc">
+          <iconset resource="../../resources/icons.qrc">
            <normaloff>:/icons/icons/home_w.png</normaloff>:/icons/icons/home_w.png</iconset>
          </property>
         </item>
@@ -164,7 +164,7 @@ border-bottom: 2px groove gray;
           <set>AlignHCenter|AlignVCenter|AlignCenter</set>
          </property>
          <property name="icon">
-          <iconset resource="resources/icons.qrc">
+          <iconset resource="../../resources/icons.qrc">
            <normaloff>:/icons/icons/bar_chart.png</normaloff>:/icons/icons/bar_chart.png</iconset>
          </property>
         </item>
@@ -176,7 +176,7 @@ border-bottom: 2px groove gray;
           <set>AlignHCenter|AlignVCenter|AlignCenter</set>
          </property>
          <property name="icon">
-          <iconset resource="resources/icons.qrc">
+          <iconset resource="../../resources/icons.qrc">
            <normaloff>:/icons/icons/benchmarkIcon2.png</normaloff>:/icons/icons/benchmarkIcon2.png</iconset>
          </property>
         </item>
@@ -188,7 +188,7 @@ border-bottom: 2px groove gray;
           <set>AlignHCenter|AlignVCenter|AlignCenter</set>
          </property>
          <property name="icon">
-          <iconset resource="resources/icons.qrc">
+          <iconset resource="../../resources/icons.qrc">
            <normaloff>:/icons/icons/db.png</normaloff>:/icons/icons/db.png</iconset>
          </property>
         </item>
@@ -200,7 +200,7 @@ border-bottom: 2px groove gray;
           <set>AlignHCenter|AlignVCenter|AlignCenter</set>
          </property>
          <property name="icon">
-          <iconset resource="resources/icons.qrc">
+          <iconset resource="../../resources/icons.qrc">
            <normaloff>:/icons/icons/matrix.gif</normaloff>:/icons/icons/matrix.gif</iconset>
          </property>
         </item>
@@ -361,7 +361,7 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
+             <pixmap resource="../../resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
             </property>
            </widget>
           </item>
@@ -417,13 +417,13 @@ height: 35px;}</string>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>325</height>
+                  <height>255</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>325</height>
+                  <height>255</height>
                  </size>
                 </property>
                </widget>
@@ -479,13 +479,13 @@ height: 35px;}</string>
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
-                  <height>300</height>
+                  <height>250</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>100</width>
-                  <height>300</height>
+                  <height>250</height>
                  </size>
                 </property>
                 <property name="baseSize">
@@ -587,7 +587,7 @@ border-top: 2px groove gray;
                   </brush>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/icons.qrc">
+                  <iconset resource="../../resources/icons.qrc">
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
@@ -596,7 +596,7 @@ border-top: 2px groove gray;
                   <string>Blas3</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/icons.qrc">
+                  <iconset resource="../../resources/icons.qrc">
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
@@ -605,25 +605,7 @@ border-top: 2px groove gray;
                   <string>Copy</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Qr</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Solver</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources/icons.qrc">
+                  <iconset resource="../../resources/icons.qrc">
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
@@ -632,7 +614,7 @@ border-top: 2px groove gray;
                   <string>Sparse</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/icons.qrc">
+                  <iconset resource="../../resources/icons.qrc">
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
@@ -641,7 +623,7 @@ border-top: 2px groove gray;
                   <string>Vector</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources/icons.qrc">
+                  <iconset resource="../../resources/icons.qrc">
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
@@ -900,8 +882,8 @@ QMenuBar:item:selected{
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources/icons.qrc"/>
-  <include location="resources/otherFiles.qrc"/>
+  <include location="../../resources/icons.qrc"/>
+  <include location="../../resources/otherFiles.qrc"/>
  </resources>
  <connections/>
  <slots>

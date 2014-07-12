@@ -63,8 +63,8 @@ private:
   QVector<QCustomPlot*> basic_DetailedPlotsVector;
   QCustomPlot *blas3_DetailedPlot;
   QCustomPlot *copy_DetailedPlot;
-  QCustomPlot *qr_DetailedPlot;
-  QCustomPlot *solver_DetailedPlot;
+//  QCustomPlot *qr_DetailedPlot;
+//  QCustomPlot *solver_DetailedPlot;
   QCustomPlot *sparse_DetailedPlot;
   QCustomPlot *vector_DetailedPlot;
 

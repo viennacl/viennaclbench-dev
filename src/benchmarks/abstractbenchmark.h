@@ -7,7 +7,7 @@
  * Abstract benchmark interface class for easier handling of benchmark classes
  * */
 
-enum{ BLAS3, COPY, QR, SOLVER, SPARSE, VECTOR, SCHEDULER, ALL };//benchmarkIdNumber
+enum{ BLAS3, COPY, SPARSE, VECTOR, QR, SOLVER, SCHEDULER, ALL };//benchmarkIdNumber
 
 class AbstractBenchmark : public QObject
 {

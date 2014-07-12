@@ -9,12 +9,13 @@
 
 #include "benchmarks/abstractbenchmark.h"
 #include "benchmarks/benchmark_copy.h"
-#include "benchmarks/benchmark_scheduler.h"
-#include "benchmarks/benchmark_solver.h"
 #include "benchmarks/benchmark_vector.h"
 #include "benchmarks/benchmark_sparse.h"
 #include "benchmarks/benchmark_blas3.h"
-#include "benchmarks/benchmark_qr.h"
+
+#include "benchmarks/benchmark_scheduler.h"
+//#include "benchmarks/benchmark_solver.h"
+//#include "benchmarks/benchmark_qr.h"
 
 class Benchmark_Controller : public QObject
 {
