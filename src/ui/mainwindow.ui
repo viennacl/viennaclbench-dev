@@ -786,7 +786,7 @@ border-top: 2px groove gray;
         <widget class="QWidget" name="matrixMarketPage">
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="0" column="0">
-           <widget class="MatrixMarket_WebView" name="matrixMarket_WebView" native="true"/>
+           <widget class="MatrixMarket_Widget" name="matrixMarket_Widget" native="true"/>
           </item>
          </layout>
         </widget>
@@ -870,9 +870,9 @@ QMenuBar:item:selected{
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>MatrixMarket_WebView</class>
+   <class>MatrixMarket_Widget</class>
    <extends>QWidget</extends>
-   <header>src/matrixmarket_webview.h</header>
+   <header>src/ui/matrixmarket_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

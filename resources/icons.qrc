@@ -9,5 +9,7 @@
         <file>icons/collapseArrow.png</file>
         <file>icons/matrix.png</file>
         <file>icons/matrix.gif</file>
+        <file>icons/backArrow.png</file>
+        <file>icons/forwardArrow.png</file>
     </qresource>
 </RCC>

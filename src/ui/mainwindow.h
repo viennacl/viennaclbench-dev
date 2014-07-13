@@ -28,7 +28,7 @@
 #include "../benchmark_controller.h"
 #include "benchmarklistwidget.h"
 #include "collapsewidget.h"
-#include "../matrixmarket_webview.h"
+#include "matrixmarket_widget.h"
 
 #include "viennacl/ocl/device.hpp"
 #include "viennacl/ocl/platform.hpp"

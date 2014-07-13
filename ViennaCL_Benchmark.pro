@@ -12,9 +12,6 @@ TARGET = ViennaCL_Benchmark
 TEMPLATE = app
 
 SOURCES += src/main.cpp\
-    src/ui/mainwindow.cpp \
-    src/ui/menulistwidget.cpp \
-    src/ui/qcustomplot.cpp \
     src/benchmarks/benchmark_vector.cpp \
     src/benchmarks/benchmark_sparse.cpp \
     src/benchmarks/benchmark_solver.cpp \
@@ -24,13 +21,16 @@ SOURCES += src/main.cpp\
     src/benchmark_controller.cpp \
     src/benchmarks/benchmark_qr.cpp \
     src/benchmarks/abstractbenchmark.cpp \
+    src/ui/mainwindow.cpp \
+    src/ui/menulistwidget.cpp \
+    src/ui/qcustomplot.cpp \
     src/ui/benchmarklistwidget.cpp \
     src/ui/collapsewidget.cpp \
-    src/matrixmarket_webview.cpp
+    src/ui/matrixmarket_webview.cpp \
+    src/ui/splashscreen.cpp \
+    src/ui/matrixmarket_widget.cpp
 
-HEADERS  += src/ui/mainwindow.h \
-    src/ui/qcustomplot.h \
-    src/ui/menulistwidget.h \
+HEADERS  +=    src/benchmark_controller.h \
     src/benchmarks/benchmark-utils.hpp \
     src/benchmarks/benchmark_vector.h \
     src/benchmarks/benchmark_sparse.h \
@@ -40,16 +40,21 @@ HEADERS  += src/ui/mainwindow.h \
     src/benchmarks/benchmark_blas3.h \
     src/benchmarks/Random.hpp \
     src/benchmarks/benchmark_copy.h \
-    src/benchmark_controller.h \
     src/benchmarks/benchmark_qr.h \
     src/benchmarks/matrix_market.hpp \
     src/benchmarks/abstractbenchmark.h \
+    src/ui/mainwindow.h \
+    src/ui/qcustomplot.h \
+    src/ui/menulistwidget.h \
     src/ui/benchmarklistwidget.h \
     src/ui/collapsewidget.h \
-    src/matrixmarket_webview.h
+    src/ui/matrixmarket_webview.h \
+    src/ui/splashscreen.h \
+    src/ui/matrixmarket_widget.h
 
 FORMS    += src/ui/mainwindow.ui \
-    src/ui/collapsewidget.ui
+    src/ui/collapsewidget.ui \
+    src/ui/matrixmarket_widget.ui
 
 RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
@@ -75,6 +80,10 @@ INCLUDEPATH += $$OUT_PWD/src/benchmarks
 DEPENDPATH += $$OUT_PWD/src/benchmarks
 INCLUDEPATH += .
 DEPENDPATH += .
+
+INCLUDEPATH += src/libarchive
+DEPENDPATH += src/libarchive
+LIBS += "-L$$PWD/src/libarchiveDLL/" -llibarchive
 
 #Set Boost and ViennaCL include paths
 BOOSTROOT = C:\boost\boost_1_55_0

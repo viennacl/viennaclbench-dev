@@ -55,21 +55,21 @@ void MainWindow::initMatrixMarket(){
   //  workerThread->start();
   //enable cache
   QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
-  ui->matrixMarket_WebView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
-  //  ui->matrixMarket_WebView->settings()->enablePersistentStorage(QDir::homePath());
-  ui->matrixMarket_WebView->settings()->enablePersistentStorage(QDir::currentPath());
+  ui->matrixMarket_Widget->webView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+  //  ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(QDir::homePath());
+  ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(QDir::currentPath());
   qDebug()<<"Saving web cache in: "<<QDir::currentPath();
-  ui->matrixMarket_WebView->settings()->setMaximumPagesInCache(10);
+  ui->matrixMarket_Widget->webView->settings()->setMaximumPagesInCache(10);
   //web page with all matrices contains around 2700 matrices...
   //needs MOAR cache
-  ui->matrixMarket_WebView->settings()->setOfflineWebApplicationCacheQuota(22111000);
+  ui->matrixMarket_Widget->webView->settings()->setOfflineWebApplicationCacheQuota(22111000);
   //lead the matrix market web page
-  ui->matrixMarket_WebView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
-  connect(ui->matrixMarket_WebView, SIGNAL(loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
+  ui->matrixMarket_Widget->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
+  connect(ui->matrixMarket_Widget->webView, SIGNAL(loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
 }
 
 void MainWindow::modifyMatrixMarketWeb(){
-//  qDebug()<<"---HTML---"<<ui->matrixMarket_WebView->page()->mainFrame()->toHtml();
+//  qDebug()<<"---HTML---"<<ui->matrixMarket_Widget->webView->page()->mainFrame()->toHtml();
 }
 
 void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){
