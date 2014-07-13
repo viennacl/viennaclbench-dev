@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit
+QT       += core gui webkit network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
@@ -25,7 +25,8 @@ SOURCES += src/main.cpp\
     src/benchmarks/benchmark_qr.cpp \
     src/benchmarks/abstractbenchmark.cpp \
     src/ui/benchmarklistwidget.cpp \
-    src/ui/collapsewidget.cpp
+    src/ui/collapsewidget.cpp \
+    src/matrixmarket_webview.cpp
 
 HEADERS  += src/ui/mainwindow.h \
     src/ui/qcustomplot.h \
@@ -44,7 +45,8 @@ HEADERS  += src/ui/mainwindow.h \
     src/benchmarks/matrix_market.hpp \
     src/benchmarks/abstractbenchmark.h \
     src/ui/benchmarklistwidget.h \
-    src/ui/collapsewidget.h
+    src/ui/collapsewidget.h \
+    src/matrixmarket_webview.h
 
 FORMS    += src/ui/mainwindow.ui \
     src/ui/collapsewidget.ui

@@ -22,7 +22,7 @@
         <string>Collapse</string>
        </property>
        <property name="icon">
-        <iconset resource="resources/icons.qrc">
+        <iconset resource="../../resources/icons.qrc">
          <normaloff>:/icons/icons/collapseArrow.png</normaloff>:/icons/icons/collapseArrow.png</iconset>
        </property>
        <property name="flat">
@@ -74,7 +74,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="resources/icons.qrc"/>
+  <include location="../../resources/icons.qrc"/>
  </resources>
  <connections/>
 </ui>

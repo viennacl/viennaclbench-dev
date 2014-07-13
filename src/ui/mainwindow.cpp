@@ -49,11 +49,27 @@ void MainWindow::quickstartFullBenchmark(){
 }
 
 void MainWindow::initMatrixMarket(){
-//  QThread *workerThread = new QThread();
-//  ui->webView->moveToThread(workerThread);
-//  connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
-//  workerThread->start();
-  ui->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
+  //  QThread *workerThread = new QThread();
+  //  ui->webView->moveToThread(workerThread);
+  //  connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
+  //  workerThread->start();
+  //enable cache
+  QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+  ui->matrixMarket_WebView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
+  //  ui->matrixMarket_WebView->settings()->enablePersistentStorage(QDir::homePath());
+  ui->matrixMarket_WebView->settings()->enablePersistentStorage(QDir::currentPath());
+  qDebug()<<"Saving web cache in: "<<QDir::currentPath();
+  ui->matrixMarket_WebView->settings()->setMaximumPagesInCache(10);
+  //web page with all matrices contains around 2700 matrices...
+  //needs MOAR cache
+  ui->matrixMarket_WebView->settings()->setOfflineWebApplicationCacheQuota(22111000);
+  //lead the matrix market web page
+  ui->matrixMarket_WebView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
+  connect(ui->matrixMarket_WebView, SIGNAL(loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
+}
+
+void MainWindow::modifyMatrixMarketWeb(){
+//  qDebug()<<"---HTML---"<<ui->matrixMarket_WebView->page()->mainFrame()->toHtml();
 }
 
 void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){
@@ -72,34 +88,34 @@ void MainWindow::initHomeScreen(){
   typedef std::vector< viennacl::ocl::platform > platforms_type;
   platforms_type platforms = viennacl::ocl::get_platforms();
 
-    bool is_first_element = true;
-    for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
+  bool is_first_element = true;
+  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
 
-      typedef std::vector<viennacl::ocl::device> devices_type;
-      devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
-      std::cout << "# Vendor and version: " << platform_iter->info() << std::endl;
+    typedef std::vector<viennacl::ocl::device> devices_type;
+    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
+    std::cout << "# Vendor and version: " << platform_iter->info() << std::endl;
 
-      if (is_first_element)
-      {
-        std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
-        is_first_element = false;
-      }
-      std::cout << "# Available Devices: " << std::endl;
-      for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
-      {
-          std::cout << std::endl;
-  std::cout << " !!!!!!!!!!!" << std::endl;
-          std::cout << "  -----------------------------------------" << std::endl;
-          std::cout << iter->full_info();
-  //        std::cout << iter
-          std::cout << "  -----------------------------------------" << std::endl;
-
-          systemInfoString.append("Name: ");
-          systemInfoString.append(QString::fromStdString(iter->name( )) );
-          systemInfoString.append("\n");
-      }
-
+    if (is_first_element)
+    {
+      std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
+      is_first_element = false;
     }
+    std::cout << "# Available Devices: " << std::endl;
+    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
+    {
+      std::cout << std::endl;
+      std::cout << " !!!!!!!!!!!" << std::endl;
+      std::cout << "  -----------------------------------------" << std::endl;
+      std::cout << iter->full_info();
+      //        std::cout << iter
+      std::cout << "  -----------------------------------------" << std::endl;
+
+      systemInfoString.append("Name: ");
+      systemInfoString.append(QString::fromStdString(iter->name( )) );
+      systemInfoString.append("\n");
+    }
+
+  }
 
 
 
@@ -156,7 +172,6 @@ void MainWindow::initHomeScreen(){
 }
 
 void MainWindow::initBasicView(){
-  qDebug()<<"init basic view";
   //normalize size of each list menu item
   for ( int i = 0; i < ui->menuListWidget->count(); i++ ) {
     ui->menuListWidget->item(i)->setSizeHint(ui->menuListWidget->itemSizeHint());
@@ -167,28 +182,24 @@ void MainWindow::initBasicView(){
 
   blas3_DetailedPlot = new QCustomPlot();
   copy_DetailedPlot = new QCustomPlot();
-//  qr_DetailedPlot = new QCustomPlot();
-//  solver_DetailedPlot = new QCustomPlot();
+  //  qr_DetailedPlot = new QCustomPlot();
+  //  solver_DetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
   vector_DetailedPlot = new QCustomPlot();
 
-  qDebug()<<"plot vectors";
   basic_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
   basic_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
-//  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
-//  basic_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
+  //  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
+  //  basic_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
   basic_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
   basic_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
-  qDebug()<<"after plot vectors";
-
 
   basic_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
   basic_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
-//  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
-//  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
+  //  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
+  //  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
   basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
   basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
-  qDebug()<<"after plot tabs";
 
   ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
   ui->basic_CollapseWidget->setText("Detailed Test Results");
@@ -199,7 +210,6 @@ void MainWindow::initBasicView(){
   //yAxis2 right
   QColor backgroundColor(240,240,240);
   QBrush backgroundBrush(backgroundColor);
-  qDebug()<<" before foreach";
 
   foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
     plot->axisRect()->setupFullAxesBox();
@@ -244,8 +254,8 @@ void MainWindow::initBasicView(){
   QVector<QString> finalResultPlotLabels;
   finalResultPlotLabels.append("Vector - GFLOPs");
   finalResultPlotLabels.append("Sparse - GFLOPs");
-//  finalResultPlotLabels.append("Solver - GFLOPs");
-//  finalResultPlotLabels.append("Qr - GFLOPs");
+  //  finalResultPlotLabels.append("Solver - GFLOPs");
+  //  finalResultPlotLabels.append("Qr - GFLOPs");
   finalResultPlotLabels.append("Copy - GB/s");
   finalResultPlotLabels.append("Blas3 - GFLOPs");
 
@@ -278,7 +288,7 @@ void MainWindow::initBasicView(){
 
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
-//  ui->basic_FinalResultPlot->replot();
+  //  ui->basic_FinalResultPlot->replot();
 
   connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
   connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
@@ -358,15 +368,15 @@ void MainWindow::resetPlotData(QCustomPlot *benchmarkGraph)
 //set the benchmark's unit measure
 void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
 {
-    basic_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
+  basic_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
 }
 
 //parse the received benchmark result name and value
 void MainWindow::parseBenchmarkResult(QString benchmarkName, double resultValue){
-//    barData.append(bandwidthValue);
-//    ticks.append(barCounter++);
-//    labels.append(benchmarkName);
-    plotResult(benchmarkName, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+  //    barData.append(bandwidthValue);
+  //    ticks.append(barCounter++);
+  //    labels.append(benchmarkName);
+  plotResult(benchmarkName, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
 }
 
 //main result diplay function
@@ -382,18 +392,18 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   //  customPlot->yAxis->grid()->setVisible(true);
   //  customPlot->yAxis->setTickLabelRotation(0);
 
-//  //increase xAxis scale to fit new result, if necessary
-//  qDebug()<<"y axis max range"<<customPlot->xAxis->range().upper;
-//  if(customPlot->xAxis->range().upper<value){
-//    customPlot->xAxis->setRange(0,value*1.1);
-//  }
-//  customPlot->xAxis->setTickStep( ((customPlot->xAxis->range().upper)/1.1)  /10);
-//  //increase yAxis scale to fit new benchmark result
-//  qDebug()<<"x axis max range"<<customPlot->yAxis->range().upper;
-//  if(customPlot->yAxis->range().upper<barCounter){
-//    customPlot->yAxis->setRange(0,barCounter);
-//  }
-  //  qDebug()<<"showResult";  
+  //  //increase xAxis scale to fit new result, if necessary
+  //  qDebug()<<"y axis max range"<<customPlot->xAxis->range().upper;
+  //  if(customPlot->xAxis->range().upper<value){
+  //    customPlot->xAxis->setRange(0,value*1.1);
+  //  }
+  //  customPlot->xAxis->setTickStep( ((customPlot->xAxis->range().upper)/1.1)  /10);
+  //  //increase yAxis scale to fit new benchmark result
+  //  qDebug()<<"x axis max range"<<customPlot->yAxis->range().upper;
+  //  if(customPlot->yAxis->range().upper<barCounter){
+  //    customPlot->yAxis->setRange(0,barCounter);
+  //  }
+  //  qDebug()<<"showResult";
 
   QVector<double> currentTickVector = customPlot->yAxis->tickVector();
   QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();

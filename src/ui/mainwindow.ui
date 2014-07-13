@@ -209,7 +209,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -786,13 +786,7 @@ border-top: 2px groove gray;
         <widget class="QWidget" name="matrixMarketPage">
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="0" column="0">
-           <widget class="QWebView" name="webView">
-            <property name="url">
-             <url>
-              <string>about:blank</string>
-             </url>
-            </property>
-           </widget>
+           <widget class="MatrixMarket_WebView" name="matrixMarket_WebView" native="true"/>
           </item>
          </layout>
         </widget>
@@ -854,11 +848,6 @@ QMenuBar:item:selected{
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
-   <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
-  </customwidget>
-  <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
    <header>src/ui/qcustomplot.h</header>
@@ -878,6 +867,12 @@ QMenuBar:item:selected{
    <class>CollapseWidget</class>
    <extends>QWidget</extends>
    <header>src/ui/collapsewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MatrixMarket_WebView</class>
+   <extends>QWidget</extends>
+   <header>src/matrixmarket_webview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

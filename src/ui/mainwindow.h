@@ -19,6 +19,7 @@
 #else
 #include <QtWebKitWidgets/QWebView>
 #endif
+#include <QWebFrame>
 
 #include <cstdlib>
 #include <ctime>
@@ -27,6 +28,7 @@
 #include "../benchmark_controller.h"
 #include "benchmarklistwidget.h"
 #include "collapsewidget.h"
+#include "../matrixmarket_webview.h"
 
 #include "viennacl/ocl/device.hpp"
 #include "viennacl/ocl/platform.hpp"
@@ -77,6 +79,7 @@ public slots:
   void updateFinalResultPlot(QString benchmarkName, double finalResult);
   void setActiveBenchmarkPlot(int benchmarkIdNumber);
   void quickstartFullBenchmark();
+  void modifyMatrixMarketWeb();
 };
 
 #endif // MAINWINDOW_H
