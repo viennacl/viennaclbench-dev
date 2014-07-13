@@ -46,6 +46,12 @@ ENDIF()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
+# Include Libarchive
+include_directories("src/libarchive")
+set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/src/libarchiveDLL/)
+message(${LIBARCHIVE_LIBRARY})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
+
 # Include ViennaCL
 include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
 find_package(ViennaCL QUIET REQUIRED)
@@ -100,7 +106,7 @@ file(GLOB ViennaCL_Benchmark_Ui_Files
 )
 
 file(GLOB ViennaCL_Benchmark_Resources
-    "src/ui/resources/*.qrc"
+    "resources/*.qrc"
 )
 
 #Generate ui headers
@@ -126,10 +132,10 @@ if(Boost_FOUND)
 # Build the app!
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
 IF(USE_QT5)# Qt5-specific linkage and module usage
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${OPENCL_LIBRARIES})
+    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${OPENCL_LIBRARIES} ${LIBARCHIVE_LIBRARY})
     qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets WebKitWidgets)
 ELSE() # Qt4-specific linkage and module usage
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
+    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} ${LIBARCHIVE_LIBRARY})
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4:QtWebKit)
 ENDIF()
