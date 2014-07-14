@@ -41,11 +41,13 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
 void MatrixMarket_WebView::downloadSlot(QNetworkRequest request)
 {
   qDebug()<<"Download requested: "<<request.url();
-  currentDownload = downloadManager.get(request);
+  downloadManager = new QNetworkAccessManager();
+  currentDownload = downloadManager->get(request);
 
   connect(currentDownload, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(currentDownloadProgressSlot(qint64,qint64)) );
   connect(currentDownload, SIGNAL(finished()), currentDownload, SLOT(deleteLater()) );
-  connect(&downloadManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(processDownloadedFile(QNetworkReply*)) );
+  connect(downloadManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(processDownloadedFile(QNetworkReply*)) );
+  connect(downloadManager, SIGNAL(finished()), downloadManager, SLOT(deleteLater()) );
 }
 
 void MatrixMarket_WebView::currentDownloadProgressSlot(qint64 bytesReceived, qint64 bytesTotal){

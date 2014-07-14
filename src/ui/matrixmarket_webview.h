@@ -12,9 +12,9 @@ class MatrixMarket_WebView : public QWebView
   Q_OBJECT
 public:
   explicit MatrixMarket_WebView(QWidget *parent = 0);
-  QNetworkReply * currentDownload;
+  QNetworkReply *currentDownload;
 private:
-  QNetworkAccessManager downloadManager;
+  QNetworkAccessManager *downloadManager;
 
 signals:
   void currentDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
