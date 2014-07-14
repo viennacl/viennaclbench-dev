@@ -106,7 +106,7 @@ void MainWindow::initHomeScreen(){
       std::cout << std::endl;
       std::cout << " !!!!!!!!!!!" << std::endl;
       std::cout << "  -----------------------------------------" << std::endl;
-      std::cout << iter->full_info();
+//      std::cout << iter->full_info();
       //        std::cout << iter
       std::cout << "  -----------------------------------------" << std::endl;
 
