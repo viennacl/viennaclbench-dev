@@ -271,80 +271,80 @@ int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
 
-  FILE *a, *b, *c;
-   int ret;
+//  FILE *a, *b, *c;
+//   int ret;
 
-   //ZIP
-   a = fopen("test.txt", "rb");
-   b = fopen("b_compressedData.zip", "wb");
-   if(a != NULL && b != NULL){
-       ret = def(a, b, Z_DEFAULT_COMPRESSION);
-       printf("%d\n", ret);
+//   //ZIP
+//   a = fopen("test.txt", "rb");
+//   b = fopen("b_compressedData.zip", "wb");
+//   if(a != NULL && b != NULL){
+//       ret = def(a, b, Z_DEFAULT_COMPRESSION);
+//       printf("%d\n", ret);
 
-       if (ret != Z_OK) zerr(ret);
+//       if (ret != Z_OK) zerr(ret);
 
-       fclose(a);
-       fclose(b);
-   }
+//       fclose(a);
+//       fclose(b);
+//   }
 
-   switch(ret){
-   case Z_OK:
-     std::cout << "Return code:" <<ret<< " Z_OK" <<std::endl;
-     break;
-   case Z_MEM_ERROR:
-     std::cout << "Return code:" <<ret<< " Z_MEM_ERROR" <<std::endl;
-     break;
-   case Z_DATA_ERROR:
-     std::cout << "Return code:" <<ret<< " Z_DATA_ERROR" <<std::endl;
-     break;
-   case Z_ERRNO:
-     std::cout << "Return code:" <<ret<< " Z_ERRNO" <<std::endl;
-     break;
-   case Z_VERSION_ERROR:
-     std::cout << "Return code:" <<ret<< " Z_VERSION_ERROR" <<std::endl;
-     break;
-   case  Z_BUF_ERROR:
-     std::cout << "Return code:" <<ret<< " Z_BUF_ERROR" <<std::endl;
-     break;
-   default:
-     std::cout << "Return code:" <<ret<<std::endl;
-   }
+//   switch(ret){
+//   case Z_OK:
+//     std::cout << "Return code:" <<ret<< " Z_OK" <<std::endl;
+//     break;
+//   case Z_MEM_ERROR:
+//     std::cout << "Return code:" <<ret<< " Z_MEM_ERROR" <<std::endl;
+//     break;
+//   case Z_DATA_ERROR:
+//     std::cout << "Return code:" <<ret<< " Z_DATA_ERROR" <<std::endl;
+//     break;
+//   case Z_ERRNO:
+//     std::cout << "Return code:" <<ret<< " Z_ERRNO" <<std::endl;
+//     break;
+//   case Z_VERSION_ERROR:
+//     std::cout << "Return code:" <<ret<< " Z_VERSION_ERROR" <<std::endl;
+//     break;
+//   case  Z_BUF_ERROR:
+//     std::cout << "Return code:" <<ret<< " Z_BUF_ERROR" <<std::endl;
+//     break;
+//   default:
+//     std::cout << "Return code:" <<ret<<std::endl;
+//   }
 
 
-   //UNZIP
-   b = fopen("test.tar", "r");
-   c = fopen("c_uncompressedData.txt", "w");
-   if(c != NULL && b != NULL){
-       ret = inf(b, c);
-       printf("%d\n", ret);
-       if (ret != Z_OK) zerr(ret);
+//   //UNZIP
+//   b = fopen("test.tar", "r");
+//   c = fopen("c_uncompressedData.txt", "w");
+//   if(c != NULL && b != NULL){
+//       ret = inf(b, c);
+//       printf("%d\n", ret);
+//       if (ret != Z_OK) zerr(ret);
 
-       fclose(b);
-       fclose(c);
-   }
+//       fclose(b);
+//       fclose(c);
+//   }
 
-       switch(ret){
-       case Z_OK:
-         std::cout << "Return code:" <<ret<< " Z_OK" <<std::endl;
-         break;
-       case Z_MEM_ERROR:
-         std::cout << "Return code:" <<ret<< " Z_MEM_ERROR" <<std::endl;
-         break;
-       case Z_DATA_ERROR:
-         std::cout << "Return code:" <<ret<< " Z_DATA_ERROR" <<std::endl;
-         break;
-       case Z_ERRNO:
-         std::cout << "Return code:" <<ret<< " Z_ERRNO" <<std::endl;
-         break;
-       case Z_VERSION_ERROR:
-         std::cout << "Return code:" <<ret<< " Z_VERSION_ERROR" <<std::endl;
-         break;
-       case  Z_BUF_ERROR:
-         std::cout << "Return code:" <<ret<< " Z_BUF_ERROR" <<std::endl;
-         break;
-       default:
-         std::cout << "Return code:" <<ret<<std::endl;
-       }
+//       switch(ret){
+//       case Z_OK:
+//         std::cout << "Return code:" <<ret<< " Z_OK" <<std::endl;
+//         break;
+//       case Z_MEM_ERROR:
+//         std::cout << "Return code:" <<ret<< " Z_MEM_ERROR" <<std::endl;
+//         break;
+//       case Z_DATA_ERROR:
+//         std::cout << "Return code:" <<ret<< " Z_DATA_ERROR" <<std::endl;
+//         break;
+//       case Z_ERRNO:
+//         std::cout << "Return code:" <<ret<< " Z_ERRNO" <<std::endl;
+//         break;
+//       case Z_VERSION_ERROR:
+//         std::cout << "Return code:" <<ret<< " Z_VERSION_ERROR" <<std::endl;
+//         break;
+//       case  Z_BUF_ERROR:
+//         std::cout << "Return code:" <<ret<< " Z_BUF_ERROR" <<std::endl;
+//         break;
+//       default:
+//         std::cout << "Return code:" <<ret<<std::endl;
+//       }
 
 
 
