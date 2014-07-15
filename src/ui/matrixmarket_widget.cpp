@@ -15,6 +15,11 @@ MatrixMarket_Widget::MatrixMarket_Widget(QWidget *parent) :
   connect(webView, SIGNAL(loadProgress(int)), ui->progressBar, SLOT(setValue(int)) );
   connect(webView, SIGNAL(currentDownloadProgress(qint64,qint64)), this, SLOT(updateDownloadProgressBar(qint64,qint64)) );
 //  connect(webView->currentDownload, SIGNAL())
+  connect(ui->homeMMButton, SIGNAL(clicked()), this, SLOT(loadHomePage()) );
+}
+
+void MatrixMarket_Widget::loadHomePage(){
+  webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
 }
 
 void MatrixMarket_Widget::updateDownloadProgressBar(qint64 bytesReceived, qint64 bytesTotal){

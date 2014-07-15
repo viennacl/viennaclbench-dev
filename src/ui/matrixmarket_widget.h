@@ -19,6 +19,7 @@ public:
 
 public slots:
   void updateDownloadProgressBar(qint64 bytesReceived, qint64 bytesTotal);
+  void loadHomePage();
 private:
   Ui::MatrixMarket_Widget *ui;
 };
