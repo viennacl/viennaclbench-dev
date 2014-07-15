@@ -69,6 +69,7 @@ private:
 //  QCustomPlot *solver_DetailedPlot;
   QCustomPlot *sparse_DetailedPlot;
   QCustomPlot *vector_DetailedPlot;
+  QString jsString;
 
 public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
