@@ -6,7 +6,6 @@
 
 //#include "archive.h"
 //#include "archive_entry.h"
-//#include "libarchive-nonposix.h"
 
 //#include <fcntl.h>
 //#include <stdio.h>
@@ -506,29 +505,29 @@ int main(int argc, char *argv[])
 
 
 
-  //    struct archive *a;
-  //    struct archive_entry *entry;
-  //    int r;
+//      struct archive *a;
+//      struct archive_entry *entry;
+//      int r;
 
-  //    a = archive_read_new();
-  //    archive_read_support_compression_all(a);//same as filter_all...
-  //    archive_read_support_filter_all(a);
-  //    archive_read_support_format_all(a);
-  //    r = archive_read_open_filename(a, "test.tar", 10240);
-  //    if (r != ARCHIVE_OK){
-  //      std::cout << "archive is not ok" << std::endl;
-  //    }
-  //    else{
-  //      while(archive_read_next_header(a, &entry) == ARCHIVE_OK){
-  //        printf( "%s\\n", archive_entry_pathname(entry) );
-  //        archive_read_data_skip(a);
-  //      }
-  //      r = archive_read_free(a);
-  //      if(r != ARCHIVE_OK){
-  //        std::cout << "archive is not ok 2" << std::endl;
-  //      }
-  //    }
-  //    exit(1);
+//      a = archive_read_new();
+////      archive_read_support_compression_all(a);//same as filter_all...
+//      archive_read_support_filter_all(a);
+//      archive_read_support_format_all(a);
+//      r = archive_read_open_filename(a, "test.gz", 10240);
+//      if (r != ARCHIVE_OK){
+//        std::cout << "archive is not ok" << std::endl;
+//      }
+//      else{
+//        while(archive_read_next_header(a, &entry) == ARCHIVE_OK){
+//          printf( "%s\\n", archive_entry_pathname(entry) );
+//          archive_read_data_skip(a);
+//        }
+//        r = archive_read_free(a);
+//        if(r != ARCHIVE_OK){
+//          std::cout << "archive is not ok 2" << std::endl;
+//        }
+//      }
+//      exit(1);
 
   //  const char *filename = "mplate.tar.gz";
   //  const char *filename2 = "C:/Users/Namik/Documents/GitHub/build-ViennaCL_Benchmark-Qt_4_8_5-Release/MatrixMarket/mplate.tar.gz";
