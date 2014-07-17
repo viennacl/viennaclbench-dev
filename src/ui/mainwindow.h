@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QLabel>
+#include <QVBoxLayout>
 #include <QString>
 #include <QVector>
 #include <QMainWindow>

@@ -209,7 +209,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>4</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -220,55 +220,7 @@ background: #F0F0F0;
 </string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="3" column="2">
-           <widget class="QGroupBox" name="homeSystemInfoBox">
-            <property name="title">
-             <string>System Info</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <item>
-              <widget class="QLabel" name="homeSystemInfoLabel">
-               <property name="text">
-                <string>Type:
-Name:
-Vendor:
-Global Memory Size:
-Clock Frequency
-OpenCL C Version:
-Version:
-Driver Version:</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="3">
-           <widget class="QGroupBox" name="homeAboutBox">
-            <property name="title">
-             <string>About</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <item row="1" column="0">
-              <widget class="QLabel" name="homeAboutLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Welcome to ViennaCL Benchmark GUI. 
-This program uses the ViennaCL computing library to benchmark the performance of your GPU.
-ViennaCL is a free open-source linear algebra library for computations on many-core architectures (GPUs, MIC) and multi-core CPUs.
-The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QGroupBox" name="homeOptionsBox">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The ViennaCL project will greatly benefit from your uploaded benchmark results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -300,37 +252,8 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
             </layout>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QGroupBox" name="homeQuickStartBox">
-            <property name="title">
-             <string>Quick Start</string>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QPushButton" name="homeQuickStartButon">
-               <property name="text">
-                <string>Run Full Benchmark</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <spacer name="homeHorizontalSpacerRight">
+          <item row="0" column="0">
+           <spacer name="homeHorizontalSpacerLeft">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -342,8 +265,21 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
             </property>
            </spacer>
           </item>
-          <item row="0" column="0">
-           <spacer name="homeHorizontalSpacerLeft">
+          <item row="1" column="1">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="2">
+           <spacer name="homeHorizontalSpacerRight">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -365,18 +301,67 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+          <item row="4" column="2">
+           <widget class="QGroupBox" name="homeQuickStartBox">
+            <property name="title">
+             <string>Quick Start</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QPushButton" name="homeQuickStartButon">
+               <property name="text">
+                <string>Run Benchmark</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QGroupBox" name="homeAboutBox">
+            <property name="title">
+             <string>About</string>
             </property>
-           </spacer>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="1" column="0">
+              <widget class="QLabel" name="homeAboutLabel">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Welcome to ViennaCL Benchmark GUI. 
+This program uses the ViennaCL computing library to benchmark the performance of your GPU.
+ViennaCL is a free open-source linear algebra library for computations on many-core architectures (GPUs, MIC) and multi-core CPUs.
+The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <widget class="QGroupBox" name="homeSystemInfoBox">
+            <property name="title">
+             <string>System Info</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3"/>
+           </widget>
           </item>
          </layout>
         </widget>

@@ -96,93 +96,109 @@ void MainWindow::updateFinalResultPlot(QString benchmarkName, double finalResult
 }
 
 void MainWindow::initHomeScreen(){
-  ui->homeSystemInfoLabel->clear();
-#ifdef VIENNACL_WITH_OPENCL
-  QString systemInfoString;
+  #ifdef VIENNACL_WITH_OPENCL
+  QVBoxLayout *systemInfoLayout = new QVBoxLayout();
+
   typedef std::vector< viennacl::ocl::platform > platforms_type;
   platforms_type platforms = viennacl::ocl::get_platforms();
-
   bool is_first_element = true;
+
+  //---PLATFORMS---
+  QVBoxLayout *platformsLayout = new QVBoxLayout();
   for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
+    QGroupBox *platformBox = new QGroupBox(QString::fromStdString(platform_iter->info()) );
 
     typedef std::vector<viennacl::ocl::device> devices_type;
     devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
-    std::cout << "# Vendor and version: " << platform_iter->info() << std::endl;
 
     if (is_first_element)
     {
       std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
+      platformBox->setTitle(platformBox->title()+" (default)");
       is_first_element = false;
     }
-    std::cout << "# Available Devices: " << std::endl;
+    //---DEVICES---
+    QVBoxLayout *devicesLayout = new QVBoxLayout();
     for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
     {
-      std::cout << std::endl;
-      std::cout << " !!!!!!!!!!!" << std::endl;
-      std::cout << "  -----------------------------------------" << std::endl;
-//      std::cout << iter->full_info();
-      //        std::cout << iter
-      std::cout << "  -----------------------------------------" << std::endl;
+//      std::cout << " !!!!!!!!!!!" << std::endl;
+//      std::cout << "  -----------------------------------------" << std::endl;
+      std::cout << iter->full_info();
 
-      systemInfoString.append("Name: ");
-      systemInfoString.append(QString::fromStdString(iter->name( )) );
-      systemInfoString.append("\n");
-    }
+      QString typeString;
+      typeString.append("Type: ");
 
-  }
+      cl_device_type localDeviceType = iter->type();
+      if(localDeviceType & CL_DEVICE_TYPE_GPU){
+        typeString.append("GPU");
+      }
+      else if(localDeviceType & CL_DEVICE_TYPE_CPU){
+        typeString.append("CPU");
+      }
+      else if(localDeviceType & CL_DEVICE_TYPE_ACCELERATOR){
+        typeString.append("Accelerator");
+      }
+      else if(localDeviceType & CL_DEVICE_TYPE_DEFAULT){
+        typeString.append("(default)");
+      }
+      devicesLayout->addWidget(new QLabel(typeString) );
 
+      QString nameString;
+      nameString.append("Name: " + QString::fromStdString(iter->name()) );
+      devicesLayout->addWidget(new QLabel( nameString ) );
 
+      QString vendorString;
+      vendorString.append("Vendor: " + QString::fromStdString(iter->vendor()) );
+      devicesLayout->addWidget(new QLabel( vendorString ) );
 
-  systemInfoString.append("Type: ");
-  cl_device_type localDeviceType = viennacl::ocl::current_device().type();
-  if(localDeviceType & CL_DEVICE_TYPE_GPU){
-    systemInfoString.append("CPU");
-  }
-  else if(localDeviceType & CL_DEVICE_TYPE_CPU){
-    systemInfoString.append("CPU");
-  }
-  else if(localDeviceType & CL_DEVICE_TYPE_ACCELERATOR){
-    systemInfoString.append("Accelerator");
-  }
-  else if(localDeviceType & CL_DEVICE_TYPE_DEFAULT){
-    systemInfoString.append("(default)");
-  }
-  systemInfoString.append("\n");
+      QString memoryString;
+      memoryString.append("Global Memory Size: " + QString::number( ((uint64_t)iter->global_mem_size()/(1024*1024)) ) + " MB" );
+      devicesLayout->addWidget(new QLabel( memoryString ) );
 
-  systemInfoString.append("Name: ");
-  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().name( )) );
-  systemInfoString.append("\n");
-
-  systemInfoString.append("Vendor: ");
-  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().vendor() ) );
-  systemInfoString.append("\n");
-
-  systemInfoString.append("Global Memory Size: ");
-  systemInfoString.append(QString::number( ((uint64_t)viennacl::ocl::current_device().global_mem_size()/(1024*1024) ) ) );
-  systemInfoString.append(" MB");
-  systemInfoString.append("\n");
-
-  systemInfoString.append("Clock Frequency: ");
-  systemInfoString.append(QString::number(viennacl::ocl::current_device().max_clock_frequency()) );
-  systemInfoString.append(" MHz");
-  systemInfoString.append("\n");
+      QString clockString;
+      clockString.append("Clock Frequency: " + QString::number(iter->max_clock_frequency()) + " MHz" );
+      devicesLayout->addWidget(new QLabel( clockString ) );
 
 #ifdef CL_DEVICE_OPENCL_C_VERSION
-  systemInfoString.append("OpenCL C Version: ");
-  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().opencl_c_version() ) );
-  systemInfoString.append("\n");
+      QString openclCString;
+      openclCString.append("OpenCL C Version: " + QString::fromStdString(iter->opencl_c_version() ) );
+      devicesLayout->addWidget(new QLabel( openclCString ) );
 #endif
 
-  systemInfoString.append("Version: ");
-  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().version() ) );
-  systemInfoString.append("\n");
+      QString openclString;
+      openclString.append("Version: " + QString::fromStdString(iter->version() ) );
+      devicesLayout->addWidget(new QLabel( openclString ) );
 
-  systemInfoString.append("Driver Version: ");
-  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().driver_version() ) );
-  systemInfoString.append("\n");
+      QString driverString;
+      driverString.append("Driver Version: " + QString::fromStdString(iter->driver_version() ) );
+      devicesLayout->addWidget(new QLabel( driverString ) );
 
-  ui->homeSystemInfoLabel->setText(systemInfoString);
-#endif
+    }//---DEVICES---END
+    platformBox->setLayout(devicesLayout);
+    systemInfoLayout->addWidget(platformBox);
+
+//    ui->homeSystemInfoBox->layout()->addWidget(platformBox);
+
+  }//---PLATFORMS---END
+delete ui->homeSystemInfoBox->layout();
+  ui->homeSystemInfoBox->setLayout(systemInfoLayout);
+
+//#ifdef CL_DEVICE_OPENCL_C_VERSION
+//  systemInfoString.append("OpenCL C Version: ");
+//  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().opencl_c_version() ) );
+//  systemInfoString.append("\n");
+//#endif
+
+//  systemInfoString.append("Version: ");
+//  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().version() ) );
+//  systemInfoString.append("\n");
+
+//  systemInfoString.append("Driver Version: ");
+//  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().driver_version() ) );
+//  systemInfoString.append("\n");
+
+//  ui->homeSystemInfoLabel->setText(systemInfoString);
+  #endif
 }
 
 void MainWindow::initBasicView(){
