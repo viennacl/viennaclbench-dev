@@ -22,14 +22,15 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
   filename = filename.right(filename.length() - filename.lastIndexOf("/"));
   QString downloadFolder = QDir::currentPath() + "/MatrixMarket";
 
-//  qDebug()<<"Folder: "<<downloadFolder;
-//  qDebug()<<"Downloaded filename: "<<filename;
+  //  qDebug()<<"Folder: "<<downloadFolder;
+  //  qDebug()<<"Downloaded filename: "<<filename;
   QString fullPath = downloadFolder + filename;
   qDebug()<<"Fullpath: "<<fullPath;
   QFile mmFileToSave( fullPath );
   if(mmFileToSave.open(QIODevice::WriteOnly)){
     mmFileToSave.write(mmFile);
     qDebug()<<"File saved. Path: "<<fullPath;
+    ArchiveExtractor::extractFile(fullPath);
   }
   else{
     qDebug()<<"Cannot save file";

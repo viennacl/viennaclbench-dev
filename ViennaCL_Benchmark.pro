@@ -11,7 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 TARGET = ViennaCL_Benchmark
 TEMPLATE = app
 
-SOURCES += src/main.cpp\
+SOURCES += src/main.cpp \
+    src/archiveextractor.cpp \
     src/benchmarks/benchmark_vector.cpp \
     src/benchmarks/benchmark_sparse.cpp \
     src/benchmarks/benchmark_solver.cpp \
@@ -31,6 +32,7 @@ SOURCES += src/main.cpp\
     src/ui/matrixmarket_widget.cpp
 
 HEADERS  +=    src/benchmark_controller.h \
+    src/archiveextractor.h \
     src/benchmarks/benchmark-utils.hpp \
     src/benchmarks/benchmark_vector.h \
     src/benchmarks/benchmark_sparse.h \

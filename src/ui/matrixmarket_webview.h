@@ -6,6 +6,7 @@
 #include <QNetworkRequest>
 #include <QMouseEvent>
 #include <QDir>
+#include "../archiveextractor.h"
 
 class MatrixMarket_WebView : public QWebView
 {
