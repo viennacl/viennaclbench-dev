@@ -8,11 +8,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
   jsString = "for (var index = 0, elems = document.body.getElementsByTagName('a'); index < elems.length; ++index) {"
-           "if( elems[index].href.indexOf('.mat') != -1 ){"
-       "elems[index].parentNode.removeChild(elems[index]);}"
-       "else if(elems[index].href.indexOf('/RB/') != -1 ) {"
-       "elems[index].parentNode.removeChild(elems[index]);}"
-       "}";
+      "if( elems[index].href.indexOf('.mat') != -1 ){"
+      "elems[index].parentNode.removeChild(elems[index]);}"
+      "else if(elems[index].href.indexOf('/RB/') != -1 ) {"
+      "elems[index].parentNode.removeChild(elems[index]);}"
+      "}";
 
   connect(ui->actionAbout,SIGNAL(triggered()), qApp, SLOT(aboutQt()) );
   connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()) );
@@ -73,16 +73,16 @@ void MainWindow::initMatrixMarket(){
   ui->matrixMarket_Widget->webView->settings()->setOfflineWebApplicationCacheQuota(22111000);
   //lead the matrix market web page
   ui->matrixMarket_Widget->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
-//  connect(ui->matrixMarket_Widget->webView, SIGNAL( loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
+  //  connect(ui->matrixMarket_Widget->webView, SIGNAL( loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
   connect(ui->matrixMarket_Widget->webView, SIGNAL(loadProgress(int)), this, SLOT(modifyMatrixMarketWeb()) );
 }
 
 void MainWindow::modifyMatrixMarketWeb(){
-//  qDebug()<<"---HTML---"<<ui->matrixMarket_Widget->webView->page()->mainFrame()->toHtml();
-//  qDebug()<<"load finished";
-//  if (ui->matrixMarket_Widget->webView->page()->settings()->testAttribute( QWebSettings::JavascriptEnabled ) ){
-//    qDebug()<<"js enabled";
-//  }
+  //  qDebug()<<"---HTML---"<<ui->matrixMarket_Widget->webView->page()->mainFrame()->toHtml();
+  //  qDebug()<<"load finished";
+  //  if (ui->matrixMarket_Widget->webView->page()->settings()->testAttribute( QWebSettings::JavascriptEnabled ) ){
+  //    qDebug()<<"js enabled";
+  //  }
   ui->matrixMarket_Widget->webView->page()->mainFrame()->evaluateJavaScript(jsString);
 }
 
@@ -96,7 +96,7 @@ void MainWindow::updateFinalResultPlot(QString benchmarkName, double finalResult
 }
 
 void MainWindow::initHomeScreen(){
-  #ifdef VIENNACL_WITH_OPENCL
+#ifdef VIENNACL_WITH_OPENCL
   QVBoxLayout *systemInfoLayout = new QVBoxLayout();
 
   typedef std::vector< viennacl::ocl::platform > platforms_type;
@@ -121,10 +121,6 @@ void MainWindow::initHomeScreen(){
     QVBoxLayout *devicesLayout = new QVBoxLayout();
     for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
     {
-//      std::cout << " !!!!!!!!!!!" << std::endl;
-//      std::cout << "  -----------------------------------------" << std::endl;
-      std::cout << iter->full_info();
-
       QString typeString;
       typeString.append("Type: ");
 
@@ -180,7 +176,7 @@ void MainWindow::initHomeScreen(){
   }//---PLATFORMS---END
   delete ui->homeSystemInfoBox->layout();
   ui->homeSystemInfoBox->setLayout(systemInfoLayout);
-  #endif
+#endif
 }
 
 void MainWindow::initBasicView(){

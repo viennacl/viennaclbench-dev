@@ -81,9 +81,10 @@ DEPENDPATH += $$OUT_PWD/src/benchmarks
 INCLUDEPATH += .
 DEPENDPATH += .
 
-INCLUDEPATH += src/libarchive/include3.0.3
-DEPENDPATH += src/libarchive/include3.0.3
-LIBS += "-L$$PWD/src/libarchiveDLL/" -llibarchive
+#Add Libarchive includes and dlls
+INCLUDEPATH += libarchive/include
+DEPENDPATH += libarchive/include
+LIBS += "-L$$PWD/libarchive/bin/" -llibarchive
 
 #Set Boost and ViennaCL include paths
 BOOSTROOT = C:\boost\boost_1_55_0
