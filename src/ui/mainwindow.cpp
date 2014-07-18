@@ -177,27 +177,9 @@ void MainWindow::initHomeScreen(){
     platformBox->setLayout(devicesLayout);
     systemInfoLayout->addWidget(platformBox);
 
-//    ui->homeSystemInfoBox->layout()->addWidget(platformBox);
-
   }//---PLATFORMS---END
-delete ui->homeSystemInfoBox->layout();
+  delete ui->homeSystemInfoBox->layout();
   ui->homeSystemInfoBox->setLayout(systemInfoLayout);
-
-//#ifdef CL_DEVICE_OPENCL_C_VERSION
-//  systemInfoString.append("OpenCL C Version: ");
-//  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().opencl_c_version() ) );
-//  systemInfoString.append("\n");
-//#endif
-
-//  systemInfoString.append("Version: ");
-//  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().version() ) );
-//  systemInfoString.append("\n");
-
-//  systemInfoString.append("Driver Version: ");
-//  systemInfoString.append(QString::fromStdString(viennacl::ocl::current_device().driver_version() ) );
-//  systemInfoString.append("\n");
-
-//  ui->homeSystemInfoLabel->setText(systemInfoString);
   #endif
 }
 
