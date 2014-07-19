@@ -8,7 +8,8 @@
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  ArchiveExtractor::extractFile(QString("MatrixMarket/gearbox.tar.gz"));
+  ArchiveExtractor::extractFileToWorkFolder(QString("MatrixMarket/gearbox.tar.gz"));
+  ArchiveExtractor::extractFileToUserHomeFolder(QString("MatrixMarket/gearbox.tar.gz"));
   SplashScreen *splashScreen = new SplashScreen();
   splashScreen->setPixmap(QPixmap(":/resources/images/splash-screen.jpg"));
   splashScreen->show();

@@ -1,4 +1,5 @@
 #include "archiveextractor.h"
+#include <QDebug>
 
 /*
  * ArchiveExtractor class provides easy decompression of .tar.gz files
@@ -11,8 +12,46 @@ ArchiveExtractor::ArchiveExtractor(QObject *parent) :
 {
 }
 
-void ArchiveExtractor::extractFile(QString filePath)
-{
+/*
+ * Checks if user's home folder contains the appropriate folder for matrix file storage
+ * */
+bool ArchiveExtractor::checkUserHomeFolder(){
+  QDir userHomeFolder = QDir::home();
+//  qDebug()<<"User's home folder: " << userHomeFolder.absolutePath();
+  QDir benchmarkFolder(userHomeFolder.absolutePath() + "/ViennaCL Benchmark");
+//  qDebug()<<"User's benchmarkFolder folder: " << benchmarkFolder.absolutePath();
+  QDir matrixMarketFolder(benchmarkFolder.absolutePath() + "/MatrixMarket");
+//  qDebug()<<"User's matrixMarketFolder folder: " << matrixMarketFolder.absolutePath();
+  //check for ViennaCL Benchmark folder
+  if(!benchmarkFolder.exists()){//does not exist
+    //create it
+    if(userHomeFolder.mkdir("ViennaCL Benchmark")){
+      qDebug()<<"ViennaCL Benchmark folder created";
+    }
+    else{
+      qDebug()<<"Error creating ViennaCL Benchmark folder";
+      return false;
+    }
+  }
+  //check for MatrixMarket folder
+  if(!matrixMarketFolder.exists()){//does not exists
+    //create it
+    if(benchmarkFolder.mkdir("MatrixMarket")){
+      qDebug()<<"MatrixMarket folder created";
+    }
+    else{
+      qDebug()<<"Error creating MatrixMarket folder";
+      return false;
+    }
+  }
+  return true;
+}
+
+/*
+ * Extracts the selected .tar.gz archive to the selected folder
+ * will try to create the target folder if it does not exist
+ * */
+void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
   struct archive *a;
   struct archive *ext;
   struct archive_entry *entry;
@@ -80,11 +119,31 @@ void ArchiveExtractor::extractFile(QString filePath)
       msg(archive_entry_pathname(entry));
       std::cout << std::endl;
     }
+    QString currentPath(archive_entry_pathname( entry ));
+//    std::cout << currentPath.toStdString() << std::endl;
+
+    QDir targetFolder(targetFolderPath);
+    if(!targetFolder.exists()){//target folder does not exist
+      //attempt to create it
+      if(!targetFolder.mkpath(targetFolderPath)){//failed to create target folder
+        //break procedure
+        std::cout << "ERROR: Target folder does not exist and cannot be created" << std::endl;
+        return;
+      }
+    }
+    QString destinationPath = targetFolderPath;
+//    std::cout <<"destinationPath: " << destinationPath.toStdString() <<std::endl;
+
+    QString newPath = destinationPath + currentPath;
+//    std::cout << "newPath: " << newPath.toStdString() << std::endl;
+
+    archive_entry_set_pathname( entry, newPath.toUtf8().constData() );
+//    std::cout << "checking newPathname: " << archive_entry_pathname( entry ) << std::endl;
     if (verbose && do_extract){
-      msg("About to start extracting\n");
+//      msg("About to start extracting\n");
     }
     if (do_extract){
-      std::cout << "Extracting" << std::endl;
+      std::cout << "Extracting..." << std::endl;
       r = archive_write_header(ext, entry);
       if (r != ARCHIVE_OK) errmsg(archive_error_string(a));
       else copy_data(a, ext);
@@ -95,10 +154,28 @@ void ArchiveExtractor::extractFile(QString filePath)
   }
   archive_read_close(a);
   archive_read_free(a);
+  archive_write_close(ext);
+  archive_write_free(ext);
 }
 
-int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw)
-{
+/*
+ * Extract the selected .tar.gz archive to the current user's home folder
+ * */
+void ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
+  QString userHomeFolder = QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";
+  if(checkUserHomeFolder()){
+    extractFileToTargetFolder(filePath, userHomeFolder);
+  }
+}
+
+/*
+ * Extracts the selected .tar.gz archive to the program's current working directory
+ * */
+void ArchiveExtractor::extractFileToWorkFolder(QString filePath){
+  extractFileToTargetFolder(filePath, QDir::currentPath()+"/");
+}
+
+int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
   int r;
   const void *buff;
   size_t size;
@@ -127,18 +204,15 @@ int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw)
  * Reporting functions
  * */
 
-void ArchiveExtractor::msg(const char *m)
-{
+void ArchiveExtractor::msg(const char *m){
   std::cout << m;
 }
 
-void ArchiveExtractor::errmsg(const char *m)
-{
+void ArchiveExtractor::errmsg(const char *m){
   std::cout << "Error: " << m;
 }
 
-void ArchiveExtractor::warn(const char *f, const char *m)
-{
+void ArchiveExtractor::warn(const char *f, const char *m){
   errmsg(f);
   errmsg(" failed: ");
   errmsg(m);

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>971</width>
+    <width>1125</width>
     <height>800</height>
    </rect>
   </property>
@@ -209,7 +209,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -252,19 +252,6 @@ background: #F0F0F0;
             </layout>
            </widget>
           </item>
-          <item row="0" column="0">
-           <spacer name="homeHorizontalSpacerLeft">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="1" column="1">
            <spacer name="verticalSpacer">
             <property name="orientation">
@@ -277,29 +264,6 @@ background: #F0F0F0;
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="0" column="2">
-           <spacer name="homeHorizontalSpacerRight">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="homeLabel">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="../../resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
-            </property>
-           </widget>
           </item>
           <item row="4" column="2">
            <widget class="QGroupBox" name="homeQuickStartBox">
@@ -363,6 +327,19 @@ The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
             <layout class="QVBoxLayout" name="verticalLayout_3"/>
            </widget>
           </item>
+          <item row="0" column="0" colspan="3">
+           <widget class="QLabel" name="homeLabel">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="pixmap">
+             <pixmap resource="../../resources/otherFiles.qrc">:/resources/images/viennacl-logo.png</pixmap>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="benchmarkPage">
@@ -391,29 +368,7 @@ height: 35px;}</string>
               <string>Basic View</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_2">
-              <item row="0" column="1">
-               <widget class="QCustomPlot" name="basic_FinalResultPlot" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>255</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>255</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0" colspan="2">
+              <item row="9" column="0" colspan="3">
                <widget class="CollapseWidget" name="basic_CollapseWidget" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -423,34 +378,89 @@ height: 35px;}</string>
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
-               <widget class="QPushButton" name="basic_StartBenchmarkButton">
-                <property name="text">
-                 <string>Start Benchmark</string>
+              <item row="7" column="0">
+               <widget class="QGroupBox" name="groupBox">
+                <property name="styleSheet">
+                 <string notr="true">QGroupBox
+{
+	border: 0px;
+	padding-top: 10px;
+}
+QPushButton 
+{ 
+background: rgba(240,240,240,255);
+border: 0px;
+}
+
+QPushButton:checked 
+{ 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-bottom: 1px groove gray; 
+border-left: 1px groove gray; 
+border-right: 1px groove gray; 
+border-top: 1px groove gray; 
+}</string>
                 </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="basic_FinalResultLabel">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+                <property name="title">
+                 <string>Precision</string>
                 </property>
-                <property name="font">
-                 <font>
-                  <pointsize>13</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                  <underline>false</underline>
-                  <strikeout>false</strikeout>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Final Result:</string>
-                </property>
+                <layout class="QGridLayout" name="gridLayout_4">
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="pushButton">
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string>Double</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>false</bool>
+                   </property>
+                   <property name="default">
+                    <bool>true</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="pushButton_2">
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string>Single</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>true</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </widget>
               </item>
               <item row="0" column="0">
@@ -612,6 +622,70 @@ border-top: 2px groove gray;
                    <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
                  </property>
                 </item>
+               </widget>
+              </item>
+              <item row="0" column="1" colspan="2">
+               <widget class="QCustomPlot" name="basic_FinalResultPlot" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>255</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>255</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="2">
+               <widget class="QLabel" name="basic_FinalResultLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>13</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                  <underline>false</underline>
+                  <strikeout>false</strikeout>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Final Result:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="1">
+               <widget class="QPushButton" name="basic_StartBenchmarkButton">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>Start Benchmark</string>
+                </property>
                </widget>
               </item>
              </layout>
@@ -786,7 +860,7 @@ border-top: 2px groove gray;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>971</width>
+     <width>1125</width>
      <height>21</height>
     </rect>
    </property>

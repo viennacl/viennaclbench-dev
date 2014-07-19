@@ -2,6 +2,8 @@
 #define ARCHIVEEXTRACTOR_H
 
 #include <QObject>
+#include <QString>
+#include <QDir>
 #include "archive.h"
 #include "archive_entry.h"
 #include <iostream>
@@ -12,7 +14,10 @@ class ArchiveExtractor : public QObject
 public:
   explicit ArchiveExtractor(QObject *parent = 0);
 
-  static void extractFile(QString filePath);
+  static void extractFileToWorkFolder(QString filePath);
+  static void extractFileToUserHomeFolder(QString filePath);
+  static bool checkUserHomeFolder();
+  static void extractFileToTargetFolder(QString filePath, QString targetFolderPath);
 private:
   static const int verbose = 1;
 

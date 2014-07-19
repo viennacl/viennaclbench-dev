@@ -30,7 +30,7 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
   if(mmFileToSave.open(QIODevice::WriteOnly)){
     mmFileToSave.write(mmFile);
     qDebug()<<"File saved. Path: "<<fullPath;
-    ArchiveExtractor::extractFile(fullPath);
+    ArchiveExtractor::extractFileToWorkFolder(fullPath);
   }
   else{
     qDebug()<<"Cannot save file";
