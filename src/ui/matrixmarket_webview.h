@@ -1,9 +1,17 @@
 #ifndef MATRIXMARKET_WEBVIEW_H
 #define MATRIXMARKET_WEBVIEW_H
 
-#include <QWebView>
+#include <QObject>
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+#include <QtWebKit/QWebView>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QNetworkRequest>
+#else
+#include <QtWebKitWidgets/QWebView>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#endif
 #include <QMouseEvent>
 #include <QDir>
 #include "../archiveextractor.h"

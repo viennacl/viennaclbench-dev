@@ -18,10 +18,11 @@
 #include <QThread>
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
+#include <QtWebKit/QWebFrame>
 #else
 #include <QtWebKitWidgets/QWebView>
-#endif
 #include <QWebFrame>
+#endif
 
 #include <cstdlib>
 #include <ctime>
