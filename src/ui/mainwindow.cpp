@@ -118,9 +118,12 @@ void MainWindow::initHomeScreen(){
       is_first_element = false;
     }
     //---DEVICES---
+    int deviceCounter = 0;
     QVBoxLayout *devicesLayout = new QVBoxLayout();
     for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
     {
+      devicesLayout->addWidget(new QLabel (QString("---Device #" + QString::number(++deviceCounter) )) );
+
       QString typeString;
       typeString.append("Type: ");
 
@@ -170,6 +173,7 @@ void MainWindow::initHomeScreen(){
       devicesLayout->addWidget(new QLabel( driverString ) );
 
     }//---DEVICES---END
+    deviceCounter = 0;
     platformBox->setLayout(devicesLayout);
     systemInfoLayout->addWidget(platformBox);
 

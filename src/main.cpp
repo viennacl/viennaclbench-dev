@@ -8,6 +8,7 @@
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
+//  QStandardPaths::writableLocation(QStandardPaths::DataLocation); //Introduced in Qt5...
   ArchiveExtractor::extractFileToWorkFolder(QString("MatrixMarket/gearbox.tar.gz"));
   ArchiveExtractor::extractFileToUserHomeFolder(QString("MatrixMarket/gearbox.tar.gz"));
   SplashScreen *splashScreen = new SplashScreen();
