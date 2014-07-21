@@ -47,9 +47,9 @@ ENDIF()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # Include Libarchive
-include_directories("src/libarchive")
-set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/src/libarchiveDLL/)
-#message(${LIBARCHIVE_LIBRARY})
+include_directories("libarchive/include")
+set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/lib/libarchive.so)
+#message("libarchive dir:" ${LIBARCHIVE_LIBRARY})
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
 
 # Include ViennaCL
@@ -137,9 +137,9 @@ IF(USE_QT5)# Qt5-specific linkage and module usage
 ELSE() # Qt4-specific linkage and module usage
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
-    target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4:QtWebKit)
+    target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
-target_link_libraries(ViennaCL_Benchmark)
+target_link_libraries(ViennaCL_Benchmark ${LIBARCHIVE_LIBRARY})
 
 endif()
 
