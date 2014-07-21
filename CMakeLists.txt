@@ -48,8 +48,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # Include Libarchive
 include_directories("libarchive/include")
+IF(WIN32)
+set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/bin/libarchive.dll)
+message("Including Libarchive for Windows: " ${LIBARCHIVE_LIBRARY})
+ELSE()
 set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/lib/libarchive.so)
-#message("libarchive dir:" ${LIBARCHIVE_LIBRARY})
+ENDIF()
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
 
 # Include ViennaCL
