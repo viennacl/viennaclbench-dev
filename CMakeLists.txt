@@ -47,13 +47,38 @@ ENDIF()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # Include Libarchive
-include_directories("libarchive/include")
-IF(WIN32)
-set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/bin/libarchive.dll)
-message("Including Libarchive for Windows: " ${LIBARCHIVE_LIBRARY})
-ELSE()
-set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/lib/libarchive.so)
-ENDIF()
+set(ZLIB_INCLUDE_DIR C:/zlib/include) #hard-coded until zlib is included as a submodule
+set(ZLIB_LIBRARY C:/zlib/bin/zlib1.dll)
+add_subdirectory(external/libarchive)
+include_directories("external/libarchive/libarchive/")
+include_directories("external/libarchive/test_utils/")
+
+#include(ExternalProject)#CMake's MAGIC module... required for ExternalProject_Add function to work... I just love these undocumented mysterious commands, variables, functions and such... freaking unbelievable.
+#set(LibarchiveCMakeArgs
+#    -DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/external/libarchive-build
+#    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#    -DZLIB_INCLUDE_DIR=${ZLIB_INCLUDE_DIR}
+#    -DZLIB_LIBRARY=${ZLIB_LIBRARY}
+#)
+#ExternalProject_Add(LibarchiveProject
+#                    PREFIX ${CMAKE_SOURCE_DIR}/external/libarchive
+#                    SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/libarchive
+#                    BINARY_DIR ${CMAKE_SOURCE_DIR}/external/libarchive-build
+#                    DOWNLOAD_COMMAND ""
+#                    UPDATE_COMMAND ""
+#                    CMAKE_ARGS ${LibarchiveCMakeArgs}
+##${USE_PROJECT_CMAKE_MODULE_PATH}
+#                    INSTALL_COMMAND ""
+#)
+#add_external(libarchive)
+
+#include_directories("libarchive/include")
+#IF(WIN32)
+#set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/bin/libarchive.dll)
+#message("Including Libarchive for Windows: " ${LIBARCHIVE_LIBRARY})
+#ELSE()
+#set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/lib/libarchive.so)
+#ENDIF()
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
 
 # Include ViennaCL
@@ -135,6 +160,7 @@ if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
 # Build the app!
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
+#    add_dependencies(ViennaCL_Benchmark libarchive)
 IF(USE_QT5)# Qt5-specific linkage and module usage
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${OPENCL_LIBRARIES} )
     qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets WebKitWidgets)
@@ -143,8 +169,7 @@ ELSE() # Qt4-specific linkage and module usage
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
-target_link_libraries(ViennaCL_Benchmark ${LIBARCHIVE_LIBRARY})
-
+target_link_libraries(ViennaCL_Benchmark ${libarchive})
 endif()
 
 
