@@ -11,7 +11,12 @@ int main(int argc, char *argv[])
 //  QStandardPaths::writableLocation(QStandardPaths::DataLocation); //Introduced in Qt5...
 //  ArchiveExtractor::extractFileToWorkFolder(QString("MatrixMarket/gearbox.tar.gz"));
 //  ArchiveExtractor::extractFileToUserHomeFolder(QString("MatrixMarket/gearbox.tar.gz"));
-  ArchiveExtractor::extractFileToWorkFolder("C:/non valid file.txt");
+  ArchiveExtractor::extractFileToTargetFolder("C:/Users/Namik/ViennaCL Benchmark/MatrixMarket/685_bus.tar.gz", "C:/kurac/");
+  qDebug()<<"1";
+  ArchiveExtractor::extractFileToWorkFolder("C:/Users/Namik/ViennaCL Benchmark/MatrixMarket/685_bus.tar.gz");
+    qDebug()<<"2";
+  ArchiveExtractor::extractFileToUserHomeFolder("C:/Users/Namik/ViennaCL Benchmark/MatrixMarket/685_bus.tar.gz");
+    qDebug()<<"3";
   SplashScreen *splashScreen = new SplashScreen();
   splashScreen->setPixmap(QPixmap(":/resources/images/splash-screen.jpg"));
   splashScreen->show();

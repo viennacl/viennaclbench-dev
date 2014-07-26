@@ -17,9 +17,12 @@ public:
   explicit ArchiveExtractor(QObject *parent = 0);
 
   static void extractFileToWorkFolder(QString filePath);
+  static void extractFileToWorkFolder(const char * filePath);
   static void extractFileToUserHomeFolder(QString filePath);
-  static bool checkUserHomeFolder();
+  static void extractFileToUserHomeFolder(const char * filePath);
   static void extractFileToTargetFolder(QString filePath, QString targetFolderPath);
+  static void extractFileToTargetFolder(const char *filePath, const char *targetFolderPath);
+  static bool checkUserHomeFolder();
   static QString getMatrixMarketUserFolder();
 private:
   static const int verbose = 1;

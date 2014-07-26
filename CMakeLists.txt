@@ -16,6 +16,9 @@ project(ViennaCL_Benchmark)
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
 
+# Disable fPIC
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
+
 #Handle warnings
 #add_definitions(-Wall)
 #add_definitions(-Wno-unused-local-typedefs)
@@ -47,10 +50,10 @@ ENDIF()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 # Include Libarchive
+add_subdirectory(external/libarchive)
 set(ZLIB_INCLUDE_DIR C:/zlib/include) #hard-coded until zlib is included as a submodule
 set(ZLIB_LIBRARY C:/zlib/bin/zlib1.dll)
 set(BUILD_TESTING 0)
-add_subdirectory(external/libarchive)
 include_directories("external/libarchive/libarchive/")
 include_directories("external/libarchive/test_utils/")
 include_directories("C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/external/libarchive/test_utils/")

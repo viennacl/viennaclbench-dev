@@ -63,6 +63,15 @@ bool ArchiveExtractor::checkUserHomeFolder(){
   return true;
 }
 
+
+/*
+ * Extracts the selected .tar.gz archive to the selected folder
+ * will try to create the target folder if it does not exist
+ * */
+void ArchiveExtractor::extractFileToTargetFolder(const char *filePath, const char * targetFolderPath){
+  ArchiveExtractor::extractFileToTargetFolder(QString(filePath), QString(targetFolderPath));
+}
+
 /*
  * Extracts the selected .tar.gz archive to the selected folder
  * will try to create the target folder if it does not exist
@@ -78,7 +87,6 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
     return;
   }
   delete selectedFile;
-  return;
   struct archive *a;
   struct archive *ext;
   struct archive_entry *entry;
@@ -121,9 +129,11 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
 
   QFileInfo *fileInfo = new QFileInfo(filePath);
   qDebug()<<"resolved filename: "<<fileInfo->fileName();
-  const char *filename = fileInfo->fileName().toUtf8().constData();
+//  const char *filename = fileInfo->fileName().toUtf8().constData();
+  const char *filename = filePath.toUtf8().constData();
+  qDebug()<<filename;
   delete fileInfo;
-  return;
+  qDebug()<<filename;
 
   //toggle extraction
   bool do_extract = true;
@@ -151,7 +161,7 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
       std::cout << std::endl;
     }
     QString currentPath(archive_entry_pathname( entry ));
-//    std::cout << currentPath.toStdString() << std::endl;
+    std::cout << currentPath.toStdString() << std::endl;
 
     QDir targetFolder(targetFolderPath);
     if(!targetFolder.exists()){//target folder does not exist
@@ -163,13 +173,13 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
       }
     }
     QString destinationPath = targetFolderPath;
-//    std::cout <<"destinationPath: " << destinationPath.toStdString() <<std::endl;
+    std::cout <<"destinationPath: " << destinationPath.toStdString() <<std::endl;
 
     QString newPath = destinationPath + currentPath;
-//    std::cout << "newPath: " << newPath.toStdString() << std::endl;
+    std::cout << "newPath: " << newPath.toStdString() << std::endl;
 
     archive_entry_set_pathname( entry, newPath.toUtf8().constData() );
-//    std::cout << "checking newPathname: " << archive_entry_pathname( entry ) << std::endl;
+    std::cout << "checking newPathname: " << archive_entry_pathname( entry ) << std::endl;
     if (verbose && do_extract){
 //      msg("About to start extracting\n");
     }
@@ -192,6 +202,14 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
 /*
  * Extract the selected .tar.gz archive to the current user's home folder
  * */
+void ArchiveExtractor::extractFileToUserHomeFolder(const char *filePath)
+{
+  ArchiveExtractor::extractFileToUserHomeFolder(QString(filePath));
+}
+
+/*
+ * Extract the selected .tar.gz archive to the current user's home folder
+ * */
 void ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
   QString userHomeFolder = ArchiveExtractor::getMatrixMarketUserFolder();/* QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";*/
   qDebug()<<"returned user home folder"<<userHomeFolder;
@@ -203,9 +221,18 @@ void ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
 /*
  * Extracts the selected .tar.gz archive to the program's current working directory
  * */
+void ArchiveExtractor::extractFileToWorkFolder(const char *filePath)
+{
+  ArchiveExtractor::extractFileToWorkFolder(QString(filePath));
+}
+
+/*
+ * Extracts the selected .tar.gz archive to the program's current working directory
+ * */
 void ArchiveExtractor::extractFileToWorkFolder(QString filePath){
   extractFileToTargetFolder(filePath, QDir::currentPath()+"/");
 }
+
 
 int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
   int r;
