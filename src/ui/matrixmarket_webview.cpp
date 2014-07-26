@@ -34,12 +34,14 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
   }
   QString filename =  reply->url().toString();
   filename = filename.right(filename.length() - filename.lastIndexOf("/") - 1);// - 1 is to avoid getting double // characters (i.e. C:/folder//filename.txt)
+  qDebug()<<"filename: "<<filename;
 
   QString downloadFolder = ArchiveExtractor::getMatrixMarketUserFolder();
   if(downloadFolder.isNull()){
     qDebug()<<"ERROR: Attempted to extract into non-existing user matrix market folder";
     return;
   }
+  qDebug()<<"downloadFolder: "<<downloadFolder;
 
   QString fullPath = downloadFolder + filename;
   qDebug()<<"Fullpath: "<<fullPath;

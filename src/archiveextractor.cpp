@@ -68,11 +68,17 @@ bool ArchiveExtractor::checkUserHomeFolder(){
  * will try to create the target folder if it does not exist
  * */
 void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
-  QFile selectedFile(filePath);
-  if(!selectedFile.exists()){
+  qDebug()<<"in extract file";
+  qDebug()<<"filepath received: "<<filePath;
+  qDebug()<<"targetfolde received: "<<targetFolderPath;
+  QFile *selectedFile = new QFile(filePath);
+  if(!selectedFile->exists()){
     qDebug()<<"ERROR: File marked for decompression does not exist!";
+    delete selectedFile;
     return;
   }
+  delete selectedFile;
+  return;
   struct archive *a;
   struct archive *ext;
   struct archive_entry *entry;
@@ -113,7 +119,11 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
   //      flags |= ARCHIVE_EXTRACT_NO_AUTODIR;
   //      flags |= ARCHIVE_EXTRACT_NO_OVERWRITE_NEWER;
 
-  const char *filename = filePath.toUtf8().constData();
+  QFileInfo *fileInfo = new QFileInfo(filePath);
+  qDebug()<<"resolved filename: "<<fileInfo->fileName();
+  const char *filename = fileInfo->fileName().toUtf8().constData();
+  delete fileInfo;
+  return;
 
   //toggle extraction
   bool do_extract = true;
@@ -183,8 +193,9 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
  * Extract the selected .tar.gz archive to the current user's home folder
  * */
 void ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
-  QString userHomeFolder = QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";
-  if(checkUserHomeFolder()){
+  QString userHomeFolder = ArchiveExtractor::getMatrixMarketUserFolder();/* QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";*/
+  qDebug()<<"returned user home folder"<<userHomeFolder;
+  if(!userHomeFolder.isNull()){
     extractFileToTargetFolder(filePath, userHomeFolder);
   }
 }

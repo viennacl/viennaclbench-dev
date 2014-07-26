@@ -5,6 +5,7 @@
 #include <QString>
 #include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include "archive.h"
 #include "archive_entry.h"
 #include <iostream>
