@@ -1,0 +1,39 @@
+body{
+	background: #F0F0F0;
+  width: 95%;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+}
+table, tbody{
+  width: 100%;
+  font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+/*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+font-size: 12px;
+text-align: left;
+border-collapse: collapse;
+margin: 20px;
+}
+
+th {
+  font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  color: #4f6b72;
+  border-bottom: 1px solid #C1DAD7;
+  border-top: 1px solid #C1DAD7;
+  border-left: 1px solid #C1DAD7;
+  border-right: 1px solid #C1DAD7;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 6px 6px 6px 12px;
+  background: #CAE8EA;
+  cursor: pointer;
+}
+
+
+td {
+  border-left: 1px solid #C1DAD7;
+  border-right: 1px solid #C1DAD7;
+  border-bottom: 1px solid #C1DAD7;
+  padding: 6px 6px 6px 12px;
+  color: #4f6b72;
+  background: white;
+}

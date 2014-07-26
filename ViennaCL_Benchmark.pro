@@ -60,6 +60,7 @@ FORMS    += src/ui/mainwindow.ui \
 
 RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
+    resources/mmFiles.qrc
 
 #Add benchmark data files
 testData.path = $$OUT_PWD/testdata

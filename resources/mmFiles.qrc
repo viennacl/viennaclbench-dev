@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/mmFiles">
+        <file>matrixmarket/full.html</file>
+        <file>matrixmarket/index.html</file>
+        <file>matrixmarket/displayTime.js</file>
+        <file>matrixmarket/lzw.js</file>
+        <file>matrixmarket/sorttable.js</file>
+        <file>matrixmarket/stylesheet.css</file>
+        <file>matrixmarket/compressedMatrixList_basic.json.js</file>
+        <file>matrixmarket/groups.html</file>
+        <file>matrixmarket/compressMatrixList.js</file>
+    </qresource>
+</RCC>

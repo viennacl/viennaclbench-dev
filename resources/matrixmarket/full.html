@@ -1,0 +1,79 @@
+<html lang="EN">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>MatrixMarket - All Matrices</title>
+
+<script src="displayTime.js"></script>
+<script src="sorttable.js"></script>
+<script src="lzw.js"></script>
+<script src="compressMatrixList.js"></script>
+<script src="compressedMatrixList_basic.json.js"></script>
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+<script type="text/javascript">
+// console.log(compressedMatrixList);
+
+//generates complete matrix list content from a compressed js array called compressedMatrixList
+//compressedMatrixList contains compressed complete html entries for each matrix
+//that html is decompressedd and gathered into the fullHtml variable
+//fullHtml variable is appended to the main matrix table resulting in the complete matrix table
+function editMatrixtable(){
+	// console.log("1 " +displayTime());
+	var uncompressedMatrixList = LZW.decompress(compressedMatrixList);
+	// console.log("2 " +displayTime());
+	var matrixList = JSON.parse(uncompressedMatrixList);
+	// console.log("3 " +displayTime());
+	// compressedMatrixList = null;
+	// uncompressedMatrixList = null;
+	// console.log("4 " +displayTime());
+  var l = Object.keys(matrixList).length;
+  var fullHtml = "";
+  for( var index = 1; index < l; index++){
+    fullHtml += "<tr>";
+    fullHtml += matrixList[index];
+    fullHtml += "</tr>";
+  }
+  document.getElementById("matrixListTbody").innerHTML +=fullHtml;
+	// console.log("5 " +displayTime());
+  // matrixList = null;
+}
+//attach an event listener to modify the marix table after static html has been loaded
+window.onload = editMatrixtable;
+</script>
+
+</head>
+
+<body>
+<li><a href="index.html">MatrixMarket Home</a><hr>
+<p>List of all available matrices, sorted by ID.
+Click on a column header to sort by that column.</p><p>
+</p></li><li><a href="groups.html">View a list of all matrix groups.</a>
+<p><table cellspacing="0" cellpadding="0" id="matrixListTable" class="sortable">
+<tbody id="matrixListTbody">
+<tr>
+<th>matrix</th>
+<th>graph</th>
+<th>Group and Name</th>
+<th class="sorttable_numeric">id</th>
+<th>Download and Run</th>
+<th class="sorttable_numeric"># rows</th>
+<th class="sorttable_numeric"># cols</th>
+<th class="sorttable_numeric">nonzeros</th>
+<th>type</th>
+<th>sym</th>
+<th>spd?</th>
+</tr>
+
+</tbody></table>
+
+</p>
+
+<!-- <p><i>Maintained by Tim Davis, last updated 12-Mar-2014.<br>Matrix pictures by <a href="http://www.cise.ufl.edu/research/sparse/CSparse/CSparse/MATLAB/CSparse/cspy.m">cspy</a> a MATLAB function in the <a href="http://www.cise.ufl.edu/research/sparse/CSparse">CSparse</a> package.
+<br>See  to download directly into MATLAB.
+
+</i></p> -->
+
+</li>
+</body>
+</html>

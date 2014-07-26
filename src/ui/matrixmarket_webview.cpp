@@ -4,9 +4,23 @@
 MatrixMarket_WebView::MatrixMarket_WebView(QWidget *parent) :
   QWebView(parent)
 {
-  this->page()->setForwardUnsupportedContent(true);
-  connect(this->page(), SIGNAL(downloadRequested(QNetworkRequest)), this, SLOT(downloadSlot(QNetworkRequest)) );
-  connect(this->page(), SIGNAL(unsupportedContent(QNetworkReply*)), this, SLOT(unsupportedContentSlot(QNetworkReply*)) );
+  this->page()->setForwardUnsupportedContent(true);//enable non-html content processing
+  this->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);//enable custom processing of external links
+  connect(this, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)) );//process external links
+  connect(this->page(), SIGNAL(downloadRequested(QNetworkRequest)), this, SLOT(downloadSlot(QNetworkRequest)) );//process non-html download requests
+  connect(this->page(), SIGNAL(unsupportedContent(QNetworkReply*)), this, SLOT(unsupportedContentSlot(QNetworkReply*)) );//detect non-html files (i.e. .tar.gz matrix files)
+}
+
+void MatrixMarket_WebView::linkClickedSlot(QUrl url){
+  qDebug()<<"link clicked";
+  if(url.toString().endsWith(".tar.gz")){
+    //accept .tar.gz links and open them with MatrixMarket browser
+    this->load(url);
+  }
+  else{
+    //redirect all other external links to system default browser
+    QDesktopServices::openUrl(url);
+  }
 }
 
 void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
@@ -19,18 +33,21 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
     qDebug()<<"Download successful, bytes downloaded:"<<mmFile.size();
   }
   QString filename =  reply->url().toString();
-  filename = filename.right(filename.length() - filename.lastIndexOf("/"));
-  QString downloadFolder = QDir::currentPath() + "/MatrixMarket";
+  filename = filename.right(filename.length() - filename.lastIndexOf("/") - 1);// - 1 is to avoid getting double // characters (i.e. C:/folder//filename.txt)
 
-  //  qDebug()<<"Folder: "<<downloadFolder;
-  //  qDebug()<<"Downloaded filename: "<<filename;
+  QString downloadFolder = ArchiveExtractor::getMatrixMarketUserFolder();
+  if(downloadFolder.isNull()){
+    qDebug()<<"ERROR: Attempted to extract into non-existing user matrix market folder";
+    return;
+  }
+
   QString fullPath = downloadFolder + filename;
   qDebug()<<"Fullpath: "<<fullPath;
   QFile mmFileToSave( fullPath );
   if(mmFileToSave.open(QIODevice::WriteOnly)){
     mmFileToSave.write(mmFile);
     qDebug()<<"File saved. Path: "<<fullPath;
-    ArchiveExtractor::extractFileToWorkFolder(fullPath);
+    ArchiveExtractor::extractFileToUserHomeFolder(fullPath);
   }
   else{
     qDebug()<<"Cannot save file";
@@ -48,7 +65,7 @@ void MatrixMarket_WebView::downloadSlot(QNetworkRequest request)
   connect(currentDownload, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(currentDownloadProgressSlot(qint64,qint64)) );
   connect(currentDownload, SIGNAL(finished()), currentDownload, SLOT(deleteLater()) );
   connect(downloadManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(processDownloadedFile(QNetworkReply*)) );
-  connect(downloadManager, SIGNAL(finished()), downloadManager, SLOT(deleteLater()) );
+  connect(downloadManager, SIGNAL(finished(QNetworkReply*)), downloadManager, SLOT(deleteLater()) );
 }
 
 void MatrixMarket_WebView::currentDownloadProgressSlot(qint64 bytesReceived, qint64 bytesTotal){

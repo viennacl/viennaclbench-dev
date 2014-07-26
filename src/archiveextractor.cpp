@@ -13,7 +13,23 @@ ArchiveExtractor::ArchiveExtractor(QObject *parent) :
 }
 
 /*
+ * Returns the user home folder in which matrix market files are to be stored
+ * If the folder does not exist or cannot be created, returns a null string
+ * */
+QString ArchiveExtractor::getMatrixMarketUserFolder(){
+  if(checkUserHomeFolder()){
+    return QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";
+  }
+  else{
+    return "";
+  }
+}
+
+/*
  * Checks if user's home folder contains the appropriate folder for matrix file storage
+ * Attempts to create a matrix market folder in case one does not already exist
+ * Returns true if a /ViennaCL Benchmark/MatrixMarket/ exists in the user home folder
+ * Returns false if the folder does not exist or cannot be created
  * */
 bool ArchiveExtractor::checkUserHomeFolder(){
   QDir userHomeFolder = QDir::home();
@@ -52,6 +68,11 @@ bool ArchiveExtractor::checkUserHomeFolder(){
  * will try to create the target folder if it does not exist
  * */
 void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
+  QFile selectedFile(filePath);
+  if(!selectedFile.exists()){
+    qDebug()<<"ERROR: File marked for decompression does not exist!";
+    return;
+  }
   struct archive *a;
   struct archive *ext;
   struct archive_entry *entry;

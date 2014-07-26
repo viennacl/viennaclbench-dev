@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QDir>
+#include <QFile>
 #include "archive.h"
 #include "archive_entry.h"
 #include <iostream>
@@ -18,6 +19,7 @@ public:
   static void extractFileToUserHomeFolder(QString filePath);
   static bool checkUserHomeFolder();
   static void extractFileToTargetFolder(QString filePath, QString targetFolderPath);
+  static QString getMatrixMarketUserFolder();
 private:
   static const int verbose = 1;
 

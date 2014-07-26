@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
 //  QStandardPaths::writableLocation(QStandardPaths::DataLocation); //Introduced in Qt5...
 //  ArchiveExtractor::extractFileToWorkFolder(QString("MatrixMarket/gearbox.tar.gz"));
 //  ArchiveExtractor::extractFileToUserHomeFolder(QString("MatrixMarket/gearbox.tar.gz"));
+  ArchiveExtractor::extractFileToWorkFolder("C:/non valid file.txt");
   SplashScreen *splashScreen = new SplashScreen();
   splashScreen->setPixmap(QPixmap(":/resources/images/splash-screen.jpg"));
   splashScreen->show();

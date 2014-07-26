@@ -12,6 +12,8 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #endif
+
+#include <QDesktopServices>
 #include <QMouseEvent>
 #include <QDir>
 #include "../archiveextractor.h"
@@ -34,6 +36,7 @@ public slots:
   void mouseReleaseEvent(QMouseEvent *e);
   void processDownloadedFile(QNetworkReply *reply);
   void currentDownloadProgressSlot(qint64 bytesReceived, qint64 bytesTotal);
+  void linkClickedSlot(QUrl url);
 };
 
 #endif // MATRIXMARKET_WEBVIEW_H

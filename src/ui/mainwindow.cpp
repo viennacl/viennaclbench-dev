@@ -63,6 +63,7 @@ void MainWindow::initMatrixMarket(){
   //enable cache
   QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
   QWebSettings::globalSettings()->setAttribute(QWebSettings::JavaEnabled, true);
+  QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
   ui->matrixMarket_Widget->webView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
   //  ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(QDir::homePath());
   ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(QDir::currentPath());
@@ -72,7 +73,10 @@ void MainWindow::initMatrixMarket(){
   //needs MOAR cache
   ui->matrixMarket_Widget->webView->settings()->setOfflineWebApplicationCacheQuota(22111000);
   //lead the matrix market web page
-  ui->matrixMarket_Widget->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
+//  ui->matrixMarket_Widget->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
+  ui->matrixMarket_Widget->webView->load(QUrl("qrc:///mmFiles/matrixmarket/index.html"));
+//    ui->matrixMarket_Widget->webView->load(QUrl("http://localhost/MatrixMarket/index.html"));
+
   //  connect(ui->matrixMarket_Widget->webView, SIGNAL( loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
   connect(ui->matrixMarket_Widget->webView, SIGNAL(loadProgress(int)), this, SLOT(modifyMatrixMarketWeb()) );
 }
@@ -83,7 +87,7 @@ void MainWindow::modifyMatrixMarketWeb(){
   //  if (ui->matrixMarket_Widget->webView->page()->settings()->testAttribute( QWebSettings::JavascriptEnabled ) ){
   //    qDebug()<<"js enabled";
   //  }
-  ui->matrixMarket_Widget->webView->page()->mainFrame()->evaluateJavaScript(jsString);
+//  ui->matrixMarket_Widget->webView->page()->mainFrame()->evaluateJavaScript(jsString);
 }
 
 void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){

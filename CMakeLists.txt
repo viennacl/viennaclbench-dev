@@ -49,9 +49,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 # Include Libarchive
 set(ZLIB_INCLUDE_DIR C:/zlib/include) #hard-coded until zlib is included as a submodule
 set(ZLIB_LIBRARY C:/zlib/bin/zlib1.dll)
+set(BUILD_TESTING 0)
 add_subdirectory(external/libarchive)
 include_directories("external/libarchive/libarchive/")
 include_directories("external/libarchive/test_utils/")
+include_directories("C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/external/libarchive/test_utils/")
 
 #include(ExternalProject)#CMake's MAGIC module... required for ExternalProject_Add function to work... I just love these undocumented mysterious commands, variables, functions and such... freaking unbelievable.
 #set(LibarchiveCMakeArgs
