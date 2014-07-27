@@ -77,9 +77,7 @@ void ArchiveExtractor::extractFileToTargetFolder(const char *filePath, const cha
  * will try to create the target folder if it does not exist
  * */
 void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
-  qDebug()<<"in extract file";
-  qDebug()<<"filepath received: "<<filePath;
-  qDebug()<<"targetfolde received: "<<targetFolderPath;
+  //check if the selected archive file exist
   QFile *selectedFile = new QFile(filePath);
   if(!selectedFile->exists()){
     qDebug()<<"ERROR: File marked for decompression does not exist!";
@@ -128,12 +126,15 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
   //      flags |= ARCHIVE_EXTRACT_NO_OVERWRITE_NEWER;
 
   QFileInfo *fileInfo = new QFileInfo(filePath);
-  qDebug()<<"resolved filename: "<<fileInfo->fileName();
-//  const char *filename = fileInfo->fileName().toUtf8().constData();
-  const char *filename = filePath.toUtf8().constData();
-  qDebug()<<filename;
+//  qDebug()<<"resolved filename: "<<fileInfo->fileName();
   delete fileInfo;
-  qDebug()<<filename;
+
+  //MEMORY LEAK!!! (Pointers be dangerous, man. :)
+  //  const char *filename = fileInfo->fileName().toUtf8().constData();
+  //AVOID IT BY CONVERTING TO A QBYTEARRAY FIRST!
+  QByteArray byteArray = filePath.toUtf8();
+  const char *filename = byteArray.constData();
+  //That's better :D
 
   //toggle extraction
   bool do_extract = true;
@@ -172,14 +173,11 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
         return;
       }
     }
-    QString destinationPath = targetFolderPath;
-    std::cout <<"destinationPath: " << destinationPath.toStdString() <<std::endl;
 
-    QString newPath = destinationPath + currentPath;
+    QString newPath = targetFolderPath + currentPath;
     std::cout << "newPath: " << newPath.toStdString() << std::endl;
 
     archive_entry_set_pathname( entry, newPath.toUtf8().constData() );
-    std::cout << "checking newPathname: " << archive_entry_pathname( entry ) << std::endl;
     if (verbose && do_extract){
 //      msg("About to start extracting\n");
     }
@@ -212,7 +210,6 @@ void ArchiveExtractor::extractFileToUserHomeFolder(const char *filePath)
  * */
 void ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
   QString userHomeFolder = ArchiveExtractor::getMatrixMarketUserFolder();/* QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";*/
-  qDebug()<<"returned user home folder"<<userHomeFolder;
   if(!userHomeFolder.isNull()){
     extractFileToTargetFolder(filePath, userHomeFolder);
   }
