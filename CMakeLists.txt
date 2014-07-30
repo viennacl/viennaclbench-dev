@@ -48,15 +48,14 @@ ELSE()
 ENDIF()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/libarchive/")
+include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/test_utils/")
 
 # Include Libarchive
-add_subdirectory(external/libarchive)
+add_subdirectory("${PROJECT_SOURCE_DIR}/external/libarchive")
 set(ZLIB_INCLUDE_DIR C:/zlib/include) #hard-coded until zlib is included as a submodule
 set(ZLIB_LIBRARY C:/zlib/bin/zlib1.dll)
 set(BUILD_TESTING 0)
-include_directories("external/libarchive/libarchive/")
-include_directories("external/libarchive/test_utils/")
-include_directories("C:/Users/Namik/Documents/GitHub/viennacl-benchmark-gui/external/libarchive/test_utils/")
 
 #include(ExternalProject)#CMake's MAGIC module... required for ExternalProject_Add function to work... I just love these undocumented mysterious commands, variables, functions and such... freaking unbelievable.
 #set(LibarchiveCMakeArgs
@@ -174,7 +173,7 @@ ELSE() # Qt4-specific linkage and module usage
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
-target_link_libraries(ViennaCL_Benchmark ${libarchive})
+target_link_libraries(ViennaCL_Benchmark archive)
 endif()
 
 
