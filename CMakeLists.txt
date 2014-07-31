@@ -52,9 +52,10 @@ include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/libarchive/")
 include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/test_utils/")
 
 # Include Libarchive
-add_subdirectory("${PROJECT_SOURCE_DIR}/external/libarchive")
+# zlib location needs to be defined BEFORE configuring libarchive
 set(ZLIB_INCLUDE_DIR C:/zlib/include) #hard-coded until zlib is included as a submodule
 set(ZLIB_LIBRARY C:/zlib/bin/zlib1.dll)
+add_subdirectory("${PROJECT_SOURCE_DIR}/external/libarchive")
 set(BUILD_TESTING 0)
 
 #include(ExternalProject)#CMake's MAGIC module... required for ExternalProject_Add function to work... I just love these undocumented mysterious commands, variables, functions and such... freaking unbelievable.
@@ -74,7 +75,6 @@ set(BUILD_TESTING 0)
 ##${USE_PROJECT_CMAKE_MODULE_PATH}
 #                    INSTALL_COMMAND ""
 #)
-#add_external(libarchive)
 
 #include_directories("libarchive/include")
 #IF(WIN32)
@@ -83,7 +83,7 @@ set(BUILD_TESTING 0)
 #ELSE()
 #set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/lib/libarchive.so)
 #ENDIF()
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
+##set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
 
 # Include ViennaCL
 include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
