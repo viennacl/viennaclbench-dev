@@ -35,6 +35,7 @@ class Benchmark_Copy : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Copy(QObject *parent = 0);
+  Benchmark_Copy(bool precision);
 
   template<typename ScalarType>
   void run_benchmark();

@@ -29,7 +29,14 @@ Benchmark_Copy::Benchmark_Copy(QObject *parent) :
 {
   finalResultCounter = 0;
   finalResultValue = 0;
-  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );
+  setPrecision(DOUBLE_PRECISION);
+  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
+}
+
+Benchmark_Copy::Benchmark_Copy(bool precision)
+{
+  Benchmark_Copy();
+  setPrecision(precision);
 }
 
 template<typename ScalarType>
@@ -180,21 +187,31 @@ void Benchmark_Copy::execute(){
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "## Benchmark :: Vector" << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
-  std::cout << std::endl;
-  std::cout << "   -------------------------------" << std::endl;
-  std::cout << "   # benchmarking single-precision" << std::endl;
-  std::cout << "   -------------------------------" << std::endl;
-  run_benchmark<float>();
-#ifdef VIENNACL_WITH_OPENCL
-  if( viennacl::ocl::current_device().double_support() )
-#endif
-  {
+
+  if(getPrecision() == SINGLE_PRECISION)
+  {//Single
     std::cout << std::endl;
     std::cout << "   -------------------------------" << std::endl;
-    std::cout << "   # benchmarking double-precision" << std::endl;
+    std::cout << "   # benchmarking single-precision" << std::endl;
     std::cout << "   -------------------------------" << std::endl;
-    run_benchmark<double>();
+    run_benchmark<float>();
   }
+
+  else if( getPrecision() == DOUBLE_PRECISION)
+  {//Double
+#ifdef VIENNACL_WITH_OPENCL
+    if( viennacl::ocl::current_device().double_support() )
+#endif
+      //what if current device does not support double precision?
+    {
+      std::cout << std::endl;
+      std::cout << "   -------------------------------" << std::endl;
+      std::cout << "   # benchmarking double-precision" << std::endl;
+      std::cout << "   -------------------------------" << std::endl;
+      run_benchmark<double>();
+    }
+  }
+
   emit finalResultSignal("Copy", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }

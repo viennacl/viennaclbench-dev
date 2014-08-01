@@ -8,6 +8,7 @@
 Benchmark_Controller::Benchmark_Controller(QObject *parent) :
   QObject(parent)
 {
+  precision = DOUBLE_PRECISION;
 }
 
 //Starts execution of a new benchmark test in a separate thread
@@ -52,31 +53,24 @@ void Benchmark_Controller::startNextBenchmark(){
 
     qDebug()<<"String Next benchmark: "<<nextBenchmarkName;
     if(nextBenchmarkName == "Blas3"){
-      //    Benchmark_Blas3 *benchmark = new Benchmark_Blas3();
-      createBenchmark(new Benchmark_Blas3());
+      createBenchmark(new Benchmark_Blas3( getPrecision() ));
     }
     else if(nextBenchmarkName == "Copy"){
-      //    Benchmark_Copy *benchmark = new Benchmark_Copy();
-      createBenchmark(new Benchmark_Copy());
+      createBenchmark(new Benchmark_Copy( getPrecision() ));
     }
     else if(nextBenchmarkName == "Scheduler"){
-      //    Benchmark_Scheduler *benchmark = new Benchmark_Scheduler();
-      createBenchmark(new Benchmark_Scheduler());
+//      createBenchmark(new Benchmark_Scheduler( getPrecision() ));
     }
     else if(nextBenchmarkName == "Solver"){
-      //    Benchmark_Solver *benchmark = new Benchmark_Solver();
-//      createBenchmark(new Benchmark_Solver());
+//      createBenchmark(new Benchmark_Solver( getPrecision() ));
     }
     else if(nextBenchmarkName == "Sparse"){
-      //    Benchmark_Sparse *benchmark = new Benchmark_Sparse();
-      createBenchmark(new Benchmark_Sparse());
+      createBenchmark(new Benchmark_Sparse( getPrecision() ));
     }
     else if(nextBenchmarkName == "Vector"){
-      //    Benchmark_Vector *benchmark = new Benchmark_Vector();
-      createBenchmark(new Benchmark_Vector());
+      createBenchmark(new Benchmark_Vector( getPrecision() ));
     }
     else if(nextBenchmarkName == "Qr"){
-      //    Benchmark_Qr *benchmark = new Benchmark_Qr();
 //      createBenchmark(new Benchmark_Qr());
     }
     else{
@@ -89,8 +83,19 @@ void Benchmark_Controller::startNextBenchmark(){
   }
 }
 
-void Benchmark_Controller::executeSelectedBenchmark(QStringList benchmarkNamesList)
+void Benchmark_Controller::setPrecision(bool p)
 {
+  this->precision = p;
+}
+
+bool Benchmark_Controller::getPrecision()
+{
+  return this->precision;
+}
+
+void Benchmark_Controller::executeSelectedBenchmark(QStringList benchmarkNamesList, bool precision)
+{
+  setPrecision(precision);
   if(!benchmarkNamesList.isEmpty()){
     enqueueBenchmarks(benchmarkNamesList);
     startNextBenchmark();

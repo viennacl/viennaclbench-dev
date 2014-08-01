@@ -25,6 +25,7 @@ public:
   void enqueueBenchmarks(QStringList benchmarkNames);
 private:
   QQueue<QString> benchmarkQ;
+  bool precision; // false(0) - SINGLE | true(1) - DOUBLE
 signals:
   void resultSignal(QString benchmarkName, double bandwidthValue);
   void finalResultSignal(QString benchmarkName, double finalValue);
@@ -33,8 +34,10 @@ signals:
   void emptyBenchmarkQ();
   void benchmarkStarted(int benchmarkIdNumber);
 public slots:
+  void setPrecision(bool p);
+  bool getPrecision();
   void benchmarkStartedSlot(int benchmarkIdNumber);
-  void executeSelectedBenchmark(QStringList benchmarkNamesList);
+  void executeSelectedBenchmark(QStringList benchmarkNamesList, bool precision);
   void finalResultSignalSlot(QString benchmarkName, double finalValue);
   void resultSignalSlot(QString benchmarkName, double bandwidthValue);
   void benchmarkCompleteSlot();

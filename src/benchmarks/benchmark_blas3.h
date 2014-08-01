@@ -38,6 +38,7 @@ class Benchmark_Blas3 : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Blas3(QObject *parent = 0);
+  Benchmark_Blas3(bool precision);
 
   template<typename ScalarType>
   void run_benchmark();

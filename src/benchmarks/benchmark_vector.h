@@ -29,6 +29,7 @@ class Benchmark_Vector : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Vector(QObject *parent = 0);
+  Benchmark_Vector(bool precision);
 
   template<typename ScalarType>
   void run_benchmark();

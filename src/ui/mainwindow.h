@@ -55,6 +55,7 @@ public:
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
   void initMatrixMarket();
+  bool getPrecision();
 private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
@@ -84,6 +85,8 @@ public slots:
   void setActiveBenchmarkPlot(int benchmarkIdNumber);
   void quickstartFullBenchmark();
   void modifyMatrixMarketWeb();
+  void updateSinglePrecisionButtons();
+  void updateDoublePrecisionButtons();
 };
 
 #endif // MAINWINDOW_H

@@ -28,6 +28,13 @@ Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
 {
   finalResultCounter = 0;
   finalResultValue = 0;
+  setPrecision(DOUBLE_PRECISION);
+}
+
+Benchmark_Blas3::Benchmark_Blas3(bool precision)
+{
+  Benchmark_Blas3();
+  setPrecision(precision);
 }
 
 template<typename ScalarType>
@@ -226,21 +233,31 @@ void Benchmark_Blas3::execute()
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "## Benchmark :: Dense Matrix-Matrix product " << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
-  std::cout << std::endl;
-  std::cout << "   -------------------------------" << std::endl;
-  std::cout << "   # benchmarking single-precision" << std::endl;
-  std::cout << "   -------------------------------" << std::endl;
-  run_benchmark<float>();
-#ifdef VIENNACL_WITH_OPENCL
-  if( viennacl::ocl::current_device().double_support() )
-#endif
-  {
+
+  if(getPrecision() == SINGLE_PRECISION)
+  {//Single
     std::cout << std::endl;
     std::cout << "   -------------------------------" << std::endl;
-    std::cout << "   # benchmarking double-precision" << std::endl;
+    std::cout << "   # benchmarking single-precision" << std::endl;
     std::cout << "   -------------------------------" << std::endl;
-    run_benchmark<double>();
+    run_benchmark<float>();
   }
+
+  else if( getPrecision() == DOUBLE_PRECISION)
+  {//Double
+#ifdef VIENNACL_WITH_OPENCL
+    if( viennacl::ocl::current_device().double_support() )
+#endif
+      //what if current device does not support double precision?
+    {
+      std::cout << std::endl;
+      std::cout << "   -------------------------------" << std::endl;
+      std::cout << "   # benchmarking double-precision" << std::endl;
+      std::cout << "   -------------------------------" << std::endl;
+      run_benchmark<double>();
+    }
+  }
+
   emit finalResultSignal("Blas3", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }

@@ -30,6 +30,13 @@ Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
 {
   finalResultCounter = 0;
   finalResultValue = 0;
+  setPrecision(DOUBLE_PRECISION);
+}
+
+Benchmark_Sparse::Benchmark_Sparse(bool precision)
+{
+  Benchmark_Sparse();
+  setPrecision(precision);
 }
 
 template<typename ScalarType>
@@ -45,8 +52,8 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::scalar<ScalarType> vcl_factor1(std_factor1);
   viennacl::scalar<ScalarType> vcl_factor2(std_factor2);
 
-//  viennacl::vector<ScalarType> ublas_vec1;
-//  viennacl::vector<ScalarType> ublas_vec2;
+  //  viennacl::vector<ScalarType> ublas_vec1;
+  //  viennacl::vector<ScalarType> ublas_vec2;
   boost::numeric::ublas::vector<ScalarType> ublas_vec1;
   boost::numeric::ublas::vector<ScalarType> ublas_vec2;
 
@@ -72,7 +79,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::ell_matrix<ScalarType, 1> vcl_ell_matrix_1;
   viennacl::hyb_matrix<ScalarType, 1> vcl_hyb_matrix_1;
 
-//  viennacl::compressed_matrix<ScalarType> ublas_matrix;
+  //  viennacl::compressed_matrix<ScalarType> ublas_matrix;
   boost::numeric::ublas::compressed_matrix<ScalarType> ublas_matrix;
 
   if (!viennacl::io::read_matrix_market_file(ublas_matrix, matrixPathString.toStdString() ) )
@@ -107,7 +114,7 @@ void Benchmark_Sparse::run_benchmark()
   timer.start();
   for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
   {
-//    ublas_vec1 = viennacl::linalg::prod(ublas_matrix, ublas_vec2);
+    //    ublas_vec1 = viennacl::linalg::prod(ublas_matrix, ublas_vec2);
     ublas_vec1 = boost::numeric::ublas::prod(ublas_matrix, ublas_vec2);
     //    boost::numeric::ublas::axpy_prod(ublas_matrix, ublas_vec2, ublas_vec1, true);
   }
@@ -150,7 +157,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::copy(ublas_vec1, vcl_vec1);
   std::cout << "ublas..." << std::endl;
   timer.start();
-//  viennacl::linalg::inplace_solve(trans(ublas_matrix), ublas_vec1, viennacl::linalg::unit_lower_tag());
+  //  viennacl::linalg::inplace_solve(trans(ublas_matrix), ublas_vec1, viennacl::linalg::unit_lower_tag());
   boost::numeric::ublas::inplace_solve(trans(ublas_matrix), ublas_vec1, boost::numeric::ublas::unit_lower_tag());
   std::cout << "Time elapsed: " << timer.get() << std::endl;
   std::cout << "ViennaCL..." << std::endl;
@@ -160,7 +167,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::backend::finish();
   std::cout << "Time elapsed: " << timer.get() << std::endl;
 
-//  ublas_vec1 = viennacl::linalg::prod(ublas_matrix, ublas_vec2);
+  //  ublas_vec1 = viennacl::linalg::prod(ublas_matrix, ublas_vec2);
   ublas_vec1 = boost::numeric::ublas::prod(ublas_matrix, ublas_vec2);
 
   viennacl::backend::finish();
@@ -310,21 +317,31 @@ void Benchmark_Sparse::execute()
   std::cout << "----------------------------------------------" << std::endl;
   std::cout << "## Benchmark :: Sparse" << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
-  std::cout << std::endl;
-  std::cout << "   -------------------------------" << std::endl;
-  std::cout << "   # benchmarking single-precision" << std::endl;
-  std::cout << "   -------------------------------" << std::endl;
-  run_benchmark<float>();
-#ifdef VIENNACL_WITH_OPENCL
-  if( viennacl::ocl::current_device().double_support() )
-#endif
-  {
+
+  if(getPrecision() == SINGLE_PRECISION)
+  {//Single
     std::cout << std::endl;
     std::cout << "   -------------------------------" << std::endl;
-    std::cout << "   # benchmarking double-precision" << std::endl;
+    std::cout << "   # benchmarking single-precision" << std::endl;
     std::cout << "   -------------------------------" << std::endl;
-    run_benchmark<double>();
+    run_benchmark<float>();
   }
+
+  else if( getPrecision() == DOUBLE_PRECISION)
+  {//Double
+#ifdef VIENNACL_WITH_OPENCL
+    if( viennacl::ocl::current_device().double_support() )
+#endif
+      //what if current device does not support double precision?
+    {
+      std::cout << std::endl;
+      std::cout << "   -------------------------------" << std::endl;
+      std::cout << "   # benchmarking double-precision" << std::endl;
+      std::cout << "   -------------------------------" << std::endl;
+      run_benchmark<double>();
+    }
+  }
+
   emit finalResultSignal("Sparse", finalResultValue/finalResultCounter);
   emit benchmarkComplete();
 }
