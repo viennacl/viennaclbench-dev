@@ -1,6 +1,8 @@
 #ifndef ARCHIVEEXTRACTOR_H
 #define ARCHIVEEXTRACTOR_H
 
+#define LIBARCHIVE_STATIC
+
 #include <QObject>
 #include <QString>
 #include <QDir>

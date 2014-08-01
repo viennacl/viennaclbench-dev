@@ -23,7 +23,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
 #add_definitions(-Wall)
 #add_definitions(-Wno-unused-local-typedefs)
 #add_definitions(-Wno-unused-parameter)
-add_definitions(-Wextra)
+#add_definitions(-Wextra)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -50,6 +50,7 @@ ENDIF()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/libarchive/")
 include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/test_utils/")
+include_directories("${PROJECT_SOURCE_DIR}/src")
 
 # Include zlib:
 add_subdirectory("${PROJECT_SOURCE_DIR}/external/zlib")
@@ -173,7 +174,12 @@ ELSE() # Qt4-specific linkage and module usage
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
-target_link_libraries(ViennaCL_Benchmark archive z)
+
+IF(WIN32)
+  target_link_libraries(ViennaCL_Benchmark archive_static zlibstatic)
+ELSE()
+  target_link_libraries(ViennaCL_Benchmark archive z)
+ENDIF()
 endif()
 
 
