@@ -50,6 +50,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/libarchive/")
 include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/test_utils/")
 include_directories("${PROJECT_SOURCE_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/external/viennacl-dev")
 
 # Include zlib:
 add_subdirectory("${PROJECT_SOURCE_DIR}/external/zlib")
@@ -62,11 +63,6 @@ set(ENABLE_TAR Off)
 set(ENABLE_CAT Off)
 set(ENABLE_CPIO Off)
 add_subdirectory("${PROJECT_SOURCE_DIR}/external/libarchive")
-
-# Include ViennaCL
-# VIENNACL_INCLUDE_DIR system environment variable is used to find ViennaCL
-find_package(ViennaCL QUIET REQUIRED)
-include_directories(${VIENNACL_INCLUDE_DIRS})
 
 IF(USE_QT5)# Find the Qt5 libraries
 find_package(Qt5Core REQUIRED)

@@ -89,16 +89,14 @@ INCLUDEPATH += libarchive/include
 DEPENDPATH += libarchive/include
 LIBS += "-L$$PWD/libarchive/bin/" -llibarchive
 
-#Set Boost and ViennaCL include paths
+#Set Boost include paths
 BOOSTROOT = C:\boost\boost_1_55_0
-VIENNACLROOT = C:\Users\Namik\Documents\GitHub\viennacl-dev
 
 #Add Boost and ViennaCL include folders
-INCLUDEPATH += $$VIENNACLROOT
+INCLUDEPATH += "./external/viennacl-dev"
 INCLUDEPATH += $$BOOSTROOT
 INCLUDEPATH += $$BOOSTROOT"\stage\lib"
 
-DEPENDPATH += $$VIENNACLROOT
 DEPENDPATH += $$BOOSTROOT
 LIBS += "-L$$BOOSTROOT'/stage/lib/'"
 
