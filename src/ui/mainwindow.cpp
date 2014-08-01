@@ -390,12 +390,12 @@ void MainWindow::resetAllPlots(){
   //reset all plots
   foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
     resetPlotData(plot);
-    plot->yAxis->tickVector().clear();
-    plot->yAxis->tickVectorLabels().clear();
-    plot->yAxis->setRange(0,1);
-    plot->xAxis->tickVector().clear();
-    plot->xAxis->tickVectorLabels().clear();
-    plot->xAxis->setRange(0,1);
+    plot->yAxis->setTickVector(QVector<double>() );
+    plot->yAxis->setTickVectorLabels(QVector<QString>() );
+    plot->yAxis->setRange(0,5);
+    plot->xAxis->setTickVector(QVector<double>() );
+    plot->xAxis->setTickVectorLabels(QVector<QString>() );
+    plot->xAxis->setRange(0,5);
     plot->replot();
   }
 }
