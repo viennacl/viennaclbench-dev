@@ -236,7 +236,7 @@ int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
   const void *buff;
   size_t size;
 #if ARCHIVE_VERSION_NUMBER >= 3000000
-  __int64 offset;
+  __LA_INT64_T offset;
 #else
   off_t offset;
 #endif
