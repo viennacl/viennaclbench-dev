@@ -27,7 +27,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
@@ -57,37 +56,15 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/external/zlib")
 
 # Include Libarchive
 set(ENABLE_ZLIB On)
+# Disable unnecessary building
+set(ENABLE_TEST Off)
+set(ENABLE_TAR Off)
+set(ENABLE_CAT Off)
+set(ENABLE_CPIO Off)
 add_subdirectory("${PROJECT_SOURCE_DIR}/external/libarchive")
 
-#include(ExternalProject)#CMake's MAGIC module... required for ExternalProject_Add function to work... I just love these undocumented mysterious commands, variables, functions and such... freaking unbelievable.
-#set(LibarchiveCMakeArgs
-#    -DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/external/libarchive-build
-#    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-#    -DZLIB_INCLUDE_DIR=${ZLIB_INCLUDE_DIR}
-#    -DZLIB_LIBRARY=${ZLIB_LIBRARY}
-#)
-#ExternalProject_Add(LibarchiveProject
-#                    PREFIX ${CMAKE_SOURCE_DIR}/external/libarchive
-#                    SOURCE_DIR ${CMAKE_SOURCE_DIR}/external/libarchive
-#                    BINARY_DIR ${CMAKE_SOURCE_DIR}/external/libarchive-build
-#                    DOWNLOAD_COMMAND ""
-#                    UPDATE_COMMAND ""
-#                    CMAKE_ARGS ${LibarchiveCMakeArgs}
-##${USE_PROJECT_CMAKE_MODULE_PATH}
-#                    INSTALL_COMMAND ""
-#)
-
-#include_directories("libarchive/include")
-#IF(WIN32)
-#set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/bin/libarchive.dll)
-#message("Including Libarchive for Windows: " ${LIBARCHIVE_LIBRARY})
-#ELSE()
-#set(LIBARCHIVE_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/libarchive/lib/libarchive.so)
-#ENDIF()
-##set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -llibarchive")
-
 # Include ViennaCL
-include_directories(" C:/Users/Namik/Documents/GitHub/viennacl-dev")
+# VIENNACL_INCLUDE_DIR system environment variable is used to find ViennaCL
 find_package(ViennaCL QUIET REQUIRED)
 include_directories(${VIENNACL_INCLUDE_DIRS})
 
@@ -110,15 +87,10 @@ find_package(Boost)
 
 #find OpenCL
 find_package(OpenCL REQUIRED)
-#include_directories("C:/AMDAPPSDK/2.9/include")
 include_directories(${OPENCL_INCLUDE_DIR})
-#link_directories(${OPENCL_LIBRARIES})
-#set(OPENCL_LIBRARIES "C:/AMDAPPSDK/2.9/lib/x86/OpenCL.lib")
-#link_directories(${OPENCL_LIBRARIES})
 
 #set ViennaCL to use OpenCL
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVIENNACL_WITH_OPENCL")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lOpenCL")
 
 file(GLOB ViennaCL_Benchmark_Sources
     "src/benchmarks/*.cpp"
@@ -157,29 +129,33 @@ ELSE()
 qt4_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
 ENDIF()
 
-#if(OPENCL_FOUND)
-#message(STATUS "FOUND OpenCL!")
-#endif()
-
-if(Boost_FOUND)
+if(Boost_FOUND)# Start the build process
     include_directories(${Boost_INCLUDE_DIRS})
-# Build the app!
     add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
-#    add_dependencies(ViennaCL_Benchmark libarchive)
-IF(USE_QT5)# Qt5-specific linkage and module usage
+
+# Link Qt
+IF(USE_QT5)# Qt5
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${OPENCL_LIBRARIES} )
     qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets WebKitWidgets)
-ELSE() # Qt4-specific linkage and module usage
+ELSE()# Qt4
     target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
 
+set(DYNAMIC_BUILD On) # Can we use this variable to switch between dynamic and static building?
+
+# Link Zlib and Libarchive
 IF(WIN32)
-  target_link_libraries(ViennaCL_Benchmark archive_static zlibstatic)
+    IF(DYNAMIC_BUILD)
+    target_link_libraries(ViennaCL_Benchmark archive zlib) # using "zlib" instead of "z" to link against Zlib on Windows
+    ELSE()
+    target_link_libraries(ViennaCL_Benchmark archive_static zlibstatic)
+    ENDIF()
 ELSE()
-  target_link_libraries(ViennaCL_Benchmark archive z)
+    target_link_libraries(ViennaCL_Benchmark archive z)
 ENDIF()
+
 endif()
 
 
