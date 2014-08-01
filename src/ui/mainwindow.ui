@@ -389,7 +389,10 @@ padding-top: 10px;
 QPushButton 
 { 
 background: rgba(240,240,240,255);
-border: 0px;
+border-bottom: 1px groove  rgba(240,240,240,255); 
+border-left: 1px groove  rgba(240,240,240,255); 
+border-right: 1px groove  rgba(240,240,240,255); 
+border-top: 1px groove  rgba(240,240,240,255); 
 }
 
 QPushButton:checked 
@@ -469,15 +472,11 @@ border-top: 1px groove gray;
                    <property name="text">
                     <string>Single</string>
                    </property>
-                   <property name="icon">
-                    <iconset resource="../../resources/icons.qrc">
-                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                   </property>
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
                    <property name="checked">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                    <property name="autoExclusive">
                     <bool>false</bool>

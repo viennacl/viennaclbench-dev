@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::updateSinglePrecisionButtons(){
+  ui->basic_SingleButton->setChecked(true);
   ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
   ui->basic_DoubleButton->setChecked(false);
@@ -60,6 +61,7 @@ void MainWindow::updateSinglePrecisionButtons(){
 
 }
 void MainWindow::updateDoublePrecisionButtons(){
+  ui->basic_DoubleButton->setChecked(true);
   ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
   ui->basic_SingleButton->setChecked(false);
