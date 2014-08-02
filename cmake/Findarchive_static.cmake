@@ -15,9 +15,10 @@ set(archive_static_LIB_SEARCH_PATH
 
 find_library(
     archive_static_LIBRARY
-    NAMES archive_static libarchive_static
+    NAMES archive_static libarchive_static libarchive.a
     HINTS 
- "${PROJECT_SOURCE_DIR}/external/libarchive/"
+"${PROJECT_SOURCE_DIR}/external/libarchive/"
+"${PROJECT_SOURCE_DIR}/external/libarchive/libarchive"
 "${PROJECT_SOURCE_DIR}/external/libarchive/libarchive/Release"
 "${PROJECT_SOURCE_DIR}/external/libarchive/libarchive/Debug"
     )

@@ -13,7 +13,7 @@ set(zlibstatic_LIB_SEARCH_PATH
 
 find_library(
     zlibstatic_LIBRARY
-    NAMES zlibstatic libzlib zlib
+    NAMES zlibstatic libz.a
     HINTS 
  "${PROJECT_SOURCE_DIR}/external/zlib/"
 "${PROJECT_SOURCE_DIR}/external/zlib/Release"
