@@ -45,29 +45,32 @@ Do this for both debug and release modes<br>
 
 <h3>CMake build system - outside Qt Creator (Windows)</h3>
 <b>Default CMakeLists.txt now supports both Qt4 and Qt5, with OpenCL support. The build will default to Qt5, but if you want to build with Qt4 set USE_QT5 variable to OFF.</b>
-Before you launch the CMake GUI, please make sure that the environment `CMAKE_PREFIX_PATH` to the respective build configuration of Qt, for example to `C:\Qt5\5.3\msvc2012_opengl`
+Before you launch the CMake GUI, please make sure that the environment `CMAKE_PREFIX_PATH` to the respective build configuration of Qt, for example to `C:\Qt5\5.3\msvc2012_opengl`.
+Also, make sure your Qt-libraries can be found by the system (see above).
 <br />
-  1. Open CMakeLists.txt with the CMake GUI<br>
-  2. Create a subfolder build/ and select this as your build directory. This ensures that the repository tree does not get cluttered with build files.
-  3. Click on 'Configure' and select your compiler. This should match the configuration you use with Qt when specifying the environment variable `CMAKE_PREFIX_PATH`. In the above example the compiler should be "Visual Studio 11". Note that by default Qt5 is shipped in 32bit, so you should *not* select 64-bit builds here.
-  4. Click on "Configure" and wait for all checks to complete (might take a little).
-  5. If CMake cannot detect the paths to Boost or OpenCL, specify them manually now.
-  6. Click on "Configure" again. You should not get any errors now.
-  7. Click on "Generate".
-  8. Open the generated project file in build/ with your version of Visual Studio. If you use MinGW, navigate to the build folder in the terminal.<br>
-  9. Compile the target `ViennaCL_Benchmark_Gui` in Visual Studio, or type 'make' in your MinGW terminal.<br>
-  10, If you get linker errors in Visual Studio for Boost, specify the location of the dll files manually in the project configuration.
-  11. You may now run the executable `ViennaCL_Benchmark`. Depending on your compiler, this may be located in the subfolder `Debug` or `Release`.<br>
+  1. Navigate into your project folder with the Git Bash and run `git submodule update --init` to clone the external repositories libarchive, zlib, and viennacl-dev.
+  2. Open CMakeLists.txt with the CMake GUI<br>
+  3. Create a subfolder build/ and select this as your build directory. This ensures that the repository tree does not get cluttered with build files.
+  4. Click on 'Configure' and select your compiler. This should match the configuration you use with Qt when specifying the environment variable `CMAKE_PREFIX_PATH`. In the above example the compiler should be "Visual Studio 11". Note that by default Qt5 is shipped in 32bit, so you should *not* select 64-bit builds here.
+  5. Click on "Configure" and wait for all checks to complete (might take a little).
+  6. If CMake cannot detect the paths to Boost or OpenCL, specify them manually now.
+  7. Click on "Configure" again. You should not get any errors now.
+  8. Click on "Generate".
+  9. Open the generated project file in build/ with your version of Visual Studio. If you use MinGW, navigate to the build folder in the terminal.<br>
+  10. Compile the target `ViennaCL_Benchmark_Gui` in Visual Studio, or type 'make' in your MinGW terminal.<br>
+  11, If you get linker errors in Visual Studio for Boost, specify the location of the dll files manually in the project configuration.
+  12. You may now run the executable `ViennaCL_Benchmark`. Depending on your compiler, this may be located in the subfolder `Debug` or `Release` of your build directory.<br>
 
 <h3>CMake build system - outside Qt Creator (Linux)</h3>
 Make sure you have `libboost-all-dev` (or similar) as well as `libqt5-dev` or `libqt4-dev` installed through your package manager.
 When using OpenCL you should also have `opencl-headers` and a proprietary graphics driver installed.
 <br />
   1. Change into the viennacl-benchmark-gui folder<br />
-  2. Create the build folder and change into it: `mkdir build && cd build`<br />
-  3. Run CMake. When using Qt5: `cmake ..` Use `cmake .. -DUSE_QT5=Off` if you only have Qt4 available on your system. <br />
-  4. Build everyting: `make`
-  5. Run the GUI: `./ViennaCL_Benchmark`
+  2. Run `git submodule update --init` to clone the external repositories libarchive, zlib, and viennacl-dev.
+  3. Create the build folder and change into it: `mkdir build && cd build`<br />
+  4. Run CMake. When using Qt5: `cmake ..` Use `cmake .. -DUSE_QT5=Off` if you only have Qt4 available on your system. <br />
+  5. Build everyting: `make`
+  6. Run the GUI: `./ViennaCL_Benchmark`
 
 
 
