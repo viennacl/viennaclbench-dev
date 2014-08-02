@@ -17,7 +17,9 @@ SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
 
 # Disable fPIC
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
+IF(MINGW)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
+ENDIF()
 
 #Handle warnings
 #add_definitions(-Wall)
@@ -32,7 +34,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
 
-add_definitions(-O2 -D_FILE_OFFSET_BITS=64 -fPIC) 
+IF(MINGW)
+  add_definitions(-O2 -D_FILE_OFFSET_BITS=64 -fPIC) 
+ENDIF()
 
 # Show all source files in project
 file( GLOB_RECURSE MAKE_HEADERS_VISIBLE_SRC
@@ -52,17 +56,10 @@ include_directories("${PROJECT_SOURCE_DIR}/external/libarchive/test_utils/")
 include_directories("${PROJECT_SOURCE_DIR}/src")
 include_directories("${PROJECT_SOURCE_DIR}/external/viennacl-dev")
 
-# Include zlib:
-add_subdirectory("${PROJECT_SOURCE_DIR}/external/zlib")
+# find zlib for libarchive:
+find_package(archive_static REQUIRED)
+find_package(zlibstatic REQUIRED)
 
-# Include Libarchive
-set(ENABLE_ZLIB On)
-# Disable unnecessary building
-set(ENABLE_TEST Off)
-set(ENABLE_TAR Off)
-set(ENABLE_CAT Off)
-set(ENABLE_CPIO Off)
-add_subdirectory("${PROJECT_SOURCE_DIR}/external/libarchive")
 
 IF(USE_QT5)# Find the Qt5 libraries
 find_package(Qt5Core REQUIRED)
@@ -139,19 +136,8 @@ ELSE()# Qt4
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
 
-set(DYNAMIC_BUILD On) # Can we use this variable to switch between dynamic and static building?
-
 # Link Zlib and Libarchive
-IF(WIN32)
-    IF(DYNAMIC_BUILD)
-    target_link_libraries(ViennaCL_Benchmark archive zlib) # using "zlib" instead of "z" to link against Zlib on Windows
-    ELSE()
-    target_link_libraries(ViennaCL_Benchmark archive_static zlibstatic)
-    ENDIF()
-ELSE()
-    target_link_libraries(ViennaCL_Benchmark archive z)
-ENDIF()
+target_link_libraries(ViennaCL_Benchmark ${archive_static_LIBRARY} ${zlibstatic_LIBRARY})
 
 endif()
-
 
