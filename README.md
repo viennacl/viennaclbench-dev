@@ -48,8 +48,16 @@ Do this for both debug and release modes<br>
 Before you launch the CMake GUI, please make sure that the environment `CMAKE_PREFIX_PATH` to the respective build configuration of Qt, for example to `C:\Qt5\5.3\msvc2012_opengl`.
 Also, make sure your Qt-libraries can be found by the system (see above).
 <br />
-  1. Navigate into your project folder with the Git Bash and run `git submodule update --init` to clone the external repositories libarchive, zlib, and viennacl-dev.
-  2. Open CMakeLists.txt with the CMake GUI<br>
+<h4>Preparing packages (only required once)</h4>
+  1. Navigate into your project folder with the Git Bash and run `git submodule update --init` to clone the external repository viennacl-dev.
+  2. Navigate to external and clone the release version of libarchive (we've seen build problems with the latest master branch): `git clone https://github.com/libarchive/libarchive && cd libarchive && git checkout v3.1.2`
+  3. Navigate back to external and clone zlib: `git clone https://github.com/madler/zlib`
+  4. Build zlib using CMake by using the project directory `/path/to/external/zlib` and *the same build directory*. Use the CMake GUI, click on 'Configure' twice and then on 'Generate', open the Visual Studio project file and compile the `zlibstatic` target. If you are using MinGW, call `make`.
+  5. Build libarchive using CMake by using the project directory `/path/to/external/zlib` and *the same build directory*. Set ZLIB_INCLUDE_DIR to `../external/zlib` and `ZLIB_LIBRARY` to the `zlibstatic.lib` in either `../external/zlib` or one of the subfolders (typically Release or Debug)
+  
+
+<h4>Building the GUI</h4>
+  2. Open CMakeLists.txt in the main repository folder with the CMake GUI<br>
   3. Create a subfolder build/ and select this as your build directory. This ensures that the repository tree does not get cluttered with build files.
   4. Click on 'Configure' and select your compiler. This should match the configuration you use with Qt when specifying the environment variable `CMAKE_PREFIX_PATH`. In the above example the compiler should be "Visual Studio 11". Note that by default Qt5 is shipped in 32bit, so you should *not* select 64-bit builds here.
   5. Click on "Configure" and wait for all checks to complete (might take a little).
@@ -66,11 +74,13 @@ Make sure you have `libboost-all-dev` (or similar) as well as `libqt5-dev` or `l
 When using OpenCL you should also have `opencl-headers` and a proprietary graphics driver installed.
 <br />
   1. Change into the viennacl-benchmark-gui folder<br />
-  2. Run `git submodule update --init` to clone the external repositories libarchive, zlib, and viennacl-dev.
-  3. Create the build folder and change into it: `mkdir build && cd build`<br />
-  4. Run CMake. When using Qt5: `cmake ..` Use `cmake .. -DUSE_QT5=Off` if you only have Qt4 available on your system. <br />
-  5. Build everyting: `make`
-  6. Run the GUI: `./ViennaCL_Benchmark`
+  2. Run `git submodule update --init` to clone the external repository viennacl-dev.
+  3. Grab and build zlib: `cd external && git clone https://github.com/madler/zlib && cd zlib && cmake . && make`
+  4. Grab and build libarchive: `cd .. && git clone https://github.com/libarchive/libarchive && cd libarchive && cmake . -DENABLE_BZip2=Off && make` 
+  5. Create the build folder in the main repository folder and change into it: `cd ../.. && mkdir build && cd build`<br />
+  6. Run CMake. When using Qt5: `cmake ..` Use `cmake .. -DUSE_QT5=Off` if you only have Qt4 available on your system. <br />
+  7. Build everyting: `make`
+  8. Run the GUI: `./ViennaCL_Benchmark`
 
 
 
