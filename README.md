@@ -49,11 +49,12 @@ Before you launch the CMake GUI, please make sure that the environment `CMAKE_PR
 Also, make sure your Qt-libraries can be found by the system (see above).
 <br />
 <h4>Preparing packages (only required once)</h4>
-  1. Navigate into your project folder with the Git Bash and run `git submodule update --init` to clone the external repository viennacl-dev.
-  2. Navigate to external and clone the release version of libarchive (we've seen build problems with the latest master branch): `git clone https://github.com/libarchive/libarchive && cd libarchive && git checkout v3.1.2`
-  3. Navigate back to external and clone zlib: `git clone https://github.com/madler/zlib`
-  4. Build zlib using CMake by using the project directory `/path/to/external/zlib` and *the same build directory*. Use the CMake GUI, click on 'Configure' twice and then on 'Generate', open the Visual Studio project file and compile the `zlibstatic` target. If you are using MinGW, call `make`.
-  5. Build libarchive using CMake by using the project directory `/path/to/external/zlib` and *the same build directory*. Set ZLIB_INCLUDE_DIR to `../external/zlib` and `ZLIB_LIBRARY` to the `zlibstatic.lib` in either `../external/zlib` or one of the subfolders (typically Release or Debug)
+1. Navigate into your project folder with the Git Bash and run `git submodule update --init` to clone the external repository viennacl-dev.
+2. Navigate to external and clone the release version of libarchive (we've seen build problems with the latest master branch): `git clone https://github.com/libarchive/libarchive`<br/>
+-If you are on <b>Windows</b> you'll have to use <b>Libarchive v3.1.2</b> (the latest master build fails on Windows). Navigate to external/libarchive and checkout version 3.1.2: `cd libarchive && git checkout v3.1.2`
+3. Navigate back to external and clone zlib: `git clone https://github.com/madler/zlib`<br/>
+4. Use CMake to build zlib within the project source directory `/projectSourceFolder/external/zlib` and *the same build directory*. Use the CMake GUI, click on 'Configure' twice and then on 'Generate', open the Visual Studio project file and compile the `zlibstatic` target. If you are using MinGW, call `make`.
+  5. Use CMake to build libarchive within the project source directory `/projectSourceFolder/external/zlib` and *the same build directory*. Use CMake GUI to set ZLIB_INCLUDE_DIR to `../external/zlib` and `ZLIB_LIBRARY` to the `zlibstatic.lib` in either `../external/zlib` or one of the subfolders (typically Release or Debug)
   
 
 <h4>Building the GUI</h4>
@@ -86,8 +87,6 @@ When using OpenCL you should also have `opencl-headers` and a proprietary graphi
 
 
 <h2>Important Notice</h2>
--When not using OpenCL: Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait; Solver benchmark crashes in Qt5 release builds without OpenCL.<br>
-<h2>Troubleshooting</h2>
-In case you get an error in QtGui/qopenglfunction.h : remove(or comment out) line 785 in that file `(void (QOPENGLF_APIENTRYP MemoryBarrier)(GLbitfield barriers););` it is a known Qt bug (https://github.com/go-qml/qml/issues/56) and should be fixed in Qt 5.3 (recently tested with Qt 5.3 - the bug is now gone)<br>
+-When not using OpenCL: Blas3 benchmark is extremely slow. Takes about 5 minutes to complete on my machine. Don't run it if you can't wait;<br>
 <h2>Additional Info</h2>
-e main developer Namik is running a <a href="http://zalomiga.ba/blog">devblog</a> dedicated to this project and tries to update it as much as possible. Check it out for detailed reports and updates on the development process.
+The main developer Namik is running a <a href="http://zalomiga.ba/blog">devblog</a> dedicated to this project and tries to update it as much as possible. Check it out for detailed reports and updates on the development process.
