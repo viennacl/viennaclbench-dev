@@ -11,5 +11,6 @@
         <file>icons/matrix.gif</file>
         <file>icons/backArrow.png</file>
         <file>icons/forwardArrow.png</file>
+        <file>icons/systemInfo.png</file>
     </qresource>
 </RCC>
