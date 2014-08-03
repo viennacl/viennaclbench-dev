@@ -1,2 +1,4 @@
 *.autosave
 *.user
+build/
+external/*/
