@@ -40,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->homeQuickStartButon, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark()) );
   //run benchmark button clicked -> execute benchmark
   connect(ui->basic_StartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
+  //stop benchmark button
+  connect(ui->basic_StopBenchmarkButton, SIGNAL(clicked()), this, SLOT(stopBenchmarkExecution()) );
+
   //route incoming benchmark result info to appropriate plots
   connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), this, SLOT(setActiveBenchmarkPlot(int)) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
@@ -48,10 +51,17 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(&benchmarkController, SIGNAL(resultSignal(QString,double)), this, SLOT(parseBenchmarkResult(QString,double)) );
   //final benchmark result
   connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), this, SLOT(updateFinalResultPlot(QString,double)) );
+  //show the start button once all benchmarks are done
+  connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), this, SLOT(showBenchmarkStartButton()) );
 
   connect(ui->basic_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
   connect(ui->basic_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
 
+}
+
+void MainWindow::showBenchmarkStartButton(){
+  ui->basic_StopBenchmarkButton->hide();
+  ui->basic_StartBenchmarkButton->show();
 }
 
 void MainWindow::initSystemInfo(){
@@ -85,67 +95,67 @@ void MainWindow::initSystemInfo(){
 
       QString fullInfoString;
       fullInfoString.append( QString::fromStdString(iter->full_info()) );
-//      std::cout << "FULL INFO "<< iter->full_info();
+      //      std::cout << "FULL INFO "<< iter->full_info();
 
-//      devicesLayout->addWidget(new QLabel( fullInfoString ) );
+      //      devicesLayout->addWidget(new QLabel( fullInfoString ) );
       QPlainTextEdit *deviceInfo = new QPlainTextEdit(this);
       deviceInfo->setReadOnly(true);
       deviceInfo->setPlainText(fullInfoString);
       devicesLayout->addWidget(deviceInfo);
 
 
-//      QString typeString;
-//      typeString.append("Type: ");
+      //      QString typeString;
+      //      typeString.append("Type: ");
 
-//      cl_device_type localDeviceType = iter->type();
-//      if(localDeviceType & CL_DEVICE_TYPE_GPU){
-//        typeString.append("GPU");
-//      }
-//      else if(localDeviceType & CL_DEVICE_TYPE_CPU){
-//        typeString.append("CPU");
-//      }
-//      else if(localDeviceType & CL_DEVICE_TYPE_ACCELERATOR){
-//        typeString.append("Accelerator");
-//      }
-//      else if(localDeviceType & CL_DEVICE_TYPE_DEFAULT){
-//        typeString.append("(default)");
-//      }
-//      devicesLayout->addWidget(new QLabel(typeString) );
+      //      cl_device_type localDeviceType = iter->type();
+      //      if(localDeviceType & CL_DEVICE_TYPE_GPU){
+      //        typeString.append("GPU");
+      //      }
+      //      else if(localDeviceType & CL_DEVICE_TYPE_CPU){
+      //        typeString.append("CPU");
+      //      }
+      //      else if(localDeviceType & CL_DEVICE_TYPE_ACCELERATOR){
+      //        typeString.append("Accelerator");
+      //      }
+      //      else if(localDeviceType & CL_DEVICE_TYPE_DEFAULT){
+      //        typeString.append("(default)");
+      //      }
+      //      devicesLayout->addWidget(new QLabel(typeString) );
 
 
-//      QString nameString;
-//      nameString.append("Name: " + QString::fromStdString(iter->name()) );
-//      devicesLayout->addWidget(new QLabel( nameString ) );
+      //      QString nameString;
+      //      nameString.append("Name: " + QString::fromStdString(iter->name()) );
+      //      devicesLayout->addWidget(new QLabel( nameString ) );
 
-//      QString vendorString;
-//      vendorString.append("Vendor: " + QString::fromStdString(iter->vendor()) );
-//      devicesLayout->addWidget(new QLabel( vendorString ) );
+      //      QString vendorString;
+      //      vendorString.append("Vendor: " + QString::fromStdString(iter->vendor()) );
+      //      devicesLayout->addWidget(new QLabel( vendorString ) );
 
-//      QString memoryString;
-//      memoryString.append("Global Memory Size: " + QString::number( ((uint64_t)iter->global_mem_size()/(1024*1024)) ) + " MB" );
-//      devicesLayout->addWidget(new QLabel( memoryString ) );
+      //      QString memoryString;
+      //      memoryString.append("Global Memory Size: " + QString::number( ((uint64_t)iter->global_mem_size()/(1024*1024)) ) + " MB" );
+      //      devicesLayout->addWidget(new QLabel( memoryString ) );
 
-//      QString clockString;
-//      clockString.append("Clock Frequency: " + QString::number(iter->max_clock_frequency()) + " MHz" );
-//      devicesLayout->addWidget(new QLabel( clockString ) );
+      //      QString clockString;
+      //      clockString.append("Clock Frequency: " + QString::number(iter->max_clock_frequency()) + " MHz" );
+      //      devicesLayout->addWidget(new QLabel( clockString ) );
 
-//#ifdef CL_DEVICE_OPENCL_C_VERSION
-//      QString openclCString;
-//      openclCString.append("OpenCL C Version: " + QString::fromStdString(iter->opencl_c_version() ) );
-//      devicesLayout->addWidget(new QLabel( openclCString ) );
-//#endif
+      //#ifdef CL_DEVICE_OPENCL_C_VERSION
+      //      QString openclCString;
+      //      openclCString.append("OpenCL C Version: " + QString::fromStdString(iter->opencl_c_version() ) );
+      //      devicesLayout->addWidget(new QLabel( openclCString ) );
+      //#endif
 
-//      QString openclString;
-//      openclString.append("Version: " + QString::fromStdString(iter->version() ) );
-//      devicesLayout->addWidget(new QLabel( openclString ) );
+      //      QString openclString;
+      //      openclString.append("Version: " + QString::fromStdString(iter->version() ) );
+      //      devicesLayout->addWidget(new QLabel( openclString ) );
 
-//      QString driverString;
-//      driverString.append("Driver Version: " + QString::fromStdString(iter->driver_version() ) );
-//      devicesLayout->addWidget(new QLabel( driverString ) );
+      //      QString driverString;
+      //      driverString.append("Driver Version: " + QString::fromStdString(iter->driver_version() ) );
+      //      devicesLayout->addWidget(new QLabel( driverString ) );
 
     }//---DEVICES---END
     deviceCounter = 0;
-//    devicesLayout->insertStretch(-1,1); //add a spacer at the end
+    //    devicesLayout->insertStretch(-1,1); //add a spacer at the end
     platformBox->setLayout(devicesLayout);
     systemInfoLayout->addWidget(platformBox);
 
@@ -160,7 +170,7 @@ void MainWindow::updateSinglePrecisionButtons(){
   ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
   ui->basic_DoubleButton->setChecked(false);
-  ui->basic_DoubleButton->setIcon(QIcon(""));
+  ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/empty.png"));
 
 }
 void MainWindow::updateDoublePrecisionButtons(){
@@ -168,7 +178,7 @@ void MainWindow::updateDoublePrecisionButtons(){
   ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
   ui->basic_SingleButton->setChecked(false);
-  ui->basic_SingleButton->setIcon(QIcon(""));
+  ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/empty.png"));
 
 }
 
@@ -329,7 +339,7 @@ void MainWindow::initHomeScreen(){
 
     platformBox->setLayout(devicesLayout);
     platformLayout->addWidget(platformBox);
-//    systemInfoLayout->addWidget(platformBox);
+    //    systemInfoLayout->addWidget(platformBox);
     systemInfoLayout->addLayout(platformLayout);
 
   }//---PLATFORMS---END
@@ -410,7 +420,7 @@ void MainWindow::initBasicView(){
 
 
   ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 35, 0, 25 ));
+  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 0, 40 ));
   ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
   //Disable secondary axes
   ui->basic_FinalResultPlot->yAxis2->setVisible(false);
@@ -457,6 +467,8 @@ void MainWindow::initBasicView(){
 
   //  ui->basic_FinalResultPlot->replot();
 
+  ui->basic_StopBenchmarkButton->hide();
+
   connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
   connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
   for ( int i = 0; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
@@ -478,18 +490,27 @@ bool MainWindow::getPrecision(){
   }
 }
 
+//stop the benchmarking process
+void MainWindow::stopBenchmarkExecution(){
+    benchmarkController.stopExecution();
+    ui->basic_StopBenchmarkButton->hide();
+    ui->basic_StartBenchmarkButton->show();
+}
+
 //execute the currently selected benchmark
 void MainWindow::startBenchmarkExecution(){
-  resetAllPlots();
-  QStringList selectedBenchmarkItems;
-  for ( int i = 1; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
-    if(ui->basic_BenchmarkListWidget->item(i)->isSelected() ){
-      selectedBenchmarkItems.append(ui->basic_BenchmarkListWidget->item(i)->text());
+    resetAllPlots();
+    QStringList selectedBenchmarkItems;
+    for ( int i = 1; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
+      if(ui->basic_BenchmarkListWidget->item(i)->isSelected() ){
+        selectedBenchmarkItems.append(ui->basic_BenchmarkListWidget->item(i)->text());
+      }
     }
-  }
-  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
+    qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
 
-  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, getPrecision() );
+    ui->basic_StopBenchmarkButton->show();
+    ui->basic_StartBenchmarkButton->hide();
+    benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, getPrecision() );
 }
 
 void MainWindow::updateBenchmarkListWidget(QListWidgetItem *item)

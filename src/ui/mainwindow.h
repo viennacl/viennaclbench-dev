@@ -91,6 +91,8 @@ public slots:
   void modifyMatrixMarketWeb();
   void updateSinglePrecisionButtons();
   void updateDoublePrecisionButtons();
+  void stopBenchmarkExecution();
+  void showBenchmarkStartButton();
 };
 
 #endif // MAINWINDOW_H

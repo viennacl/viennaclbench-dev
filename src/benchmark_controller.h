@@ -22,10 +22,12 @@ class Benchmark_Controller : public QObject
   Q_OBJECT
 public:
   explicit Benchmark_Controller(QObject *parent = 0);
-  void enqueueBenchmarks(QStringList benchmarkNames);
+  void stopExecution();
 private:
   QQueue<QString> benchmarkQ;
+  void enqueueBenchmarks(QStringList benchmarkNames);
   bool precision; // false(0) - SINGLE | true(1) - DOUBLE
+  QThread *currentBenchmarkThread;
 signals:
   void resultSignal(QString benchmarkName, double bandwidthValue);
   void finalResultSignal(QString benchmarkName, double finalValue);
@@ -44,6 +46,7 @@ public slots:
   void unitMeasureSignalSlot(QString unitMeasureName);
   void startNextBenchmark();
   void createBenchmark(AbstractBenchmark *benchmark);
+  void workerFinishedSlot();
 };
 
 #endif // BENCHMARK_CONTROLLER_H

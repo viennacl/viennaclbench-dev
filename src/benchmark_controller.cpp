@@ -15,9 +15,12 @@ Benchmark_Controller::Benchmark_Controller(QObject *parent) :
 void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
   qDebug()<<"Creating Benchmark Thread Object";
   QThread *workerThread = new QThread();
+  currentBenchmarkThread = workerThread;
   benchmark->moveToThread(workerThread);
+
   connect(workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );
   connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
+  connect(workerThread, SIGNAL(finished()), this, SLOT(workerFinishedSlot()) );
   connect(workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
 
   connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
@@ -33,12 +36,27 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
 
 }
 
+void Benchmark_Controller::workerFinishedSlot(){
+  qDebug()<<"worker thread finished";
+}
+
 void Benchmark_Controller::enqueueBenchmarks(QStringList benchmarkNamesList){
   if(!benchmarkNamesList.isEmpty()){
     foreach(QString benchmark, benchmarkNamesList){
       benchmarkQ.enqueue(benchmark);
     }
   }
+}
+
+void Benchmark_Controller::stopExecution()
+{
+  qDebug()<<"---STOPPING BENCHMARK EXECUTION---";
+  currentBenchmarkThread->terminate();
+  currentBenchmarkThread->wait();
+//  currentBenchmarkThread->exit();
+//  currentBenchmarkThread->quit();
+  benchmarkQ.clear();
+
 }
 
 void Benchmark_Controller::benchmarkStartedSlot(int benchmarkIdNumber)
@@ -79,7 +97,7 @@ void Benchmark_Controller::startNextBenchmark(){
   }
   else{
     qDebug()<<"Benchmark queue is empty";
-    emit emptyBenchmarkQ();
+    emit emptyBenchmarkQ(); //no more benchmarks to run
   }
 }
 
@@ -117,6 +135,7 @@ void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double bandwi
 
 void Benchmark_Controller::benchmarkCompleteSlot()
 {
+  qDebug()<<"A benchmark has been completed;";
   emit benchmarkComplete();
 }
 
