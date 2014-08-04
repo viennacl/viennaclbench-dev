@@ -231,9 +231,33 @@ void MainWindow::initHomeScreen(){
   bool is_first_element = true;
 
   //---PLATFORMS---
-  QVBoxLayout *platformsLayout = new QVBoxLayout();
   for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
-    QGroupBox *platformBox = new QGroupBox(QString::fromStdString(platform_iter->info()) );
+    QVBoxLayout *platformLayout = new QVBoxLayout();
+
+
+    QString platformName( QString::fromStdString(platform_iter->info()) );
+    QPixmap *platformIcon;
+
+    if(platformName.contains("Advanced Micro Devices")){
+      //set AMD icon
+      platformIcon = new QPixmap( QString(":/icons/icons/amdLogoGreen.png") );
+    }
+    else if(platformName.contains("Intel(R) Corporation")){
+      //set Intel icon
+      platformIcon = new QPixmap( QString(":/icons/icons/intelLogo.png") );
+    }
+    else{
+      //set nVidia icon
+      platformIcon = new QPixmap( QString(":/icons/icons/nvidiaLogoBlack.png") );
+    }
+
+    QLabel *platformIconLabel = new QLabel();
+    platformIconLabel->setAlignment(Qt::AlignHCenter);
+    platformIconLabel->setPixmap( platformIcon->scaledToHeight(50, Qt::SmoothTransformation) );
+
+    platformLayout->addWidget( platformIconLabel );
+
+    QGroupBox *platformBox = new QGroupBox( platformName );
 
     typedef std::vector<viennacl::ocl::device> devices_type;
     devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
@@ -302,8 +326,11 @@ void MainWindow::initHomeScreen(){
     }//---DEVICES---END
     deviceCounter = 0;
     devicesLayout->insertStretch(-1,1); //add a spacer at the end
+
     platformBox->setLayout(devicesLayout);
-    systemInfoLayout->addWidget(platformBox);
+    platformLayout->addWidget(platformBox);
+//    systemInfoLayout->addWidget(platformBox);
+    systemInfoLayout->addLayout(platformLayout);
 
   }//---PLATFORMS---END
   delete ui->homeSystemInfoBox->layout();

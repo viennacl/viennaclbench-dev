@@ -5,5 +5,7 @@
         <file>images/benchmarkIcon.png</file>
         <file>images/benchmarkIcon.ico</file>
         <file>images/splash-screen.jpg</file>
+        <file>images/benchmarkTestLogo.png</file>
+        <file>images/ViennaCL_Benchmark_experimentLogo.png</file>
     </qresource>
 </RCC>

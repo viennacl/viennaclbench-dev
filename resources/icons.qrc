@@ -12,5 +12,13 @@
         <file>icons/backArrow.png</file>
         <file>icons/forwardArrow.png</file>
         <file>icons/systemInfo.png</file>
+        <file>icons/amdLogoBlack.png</file>
+        <file>icons/amdLogoWhite.png</file>
+        <file>icons/intelLogo.png</file>
+        <file>icons/nvidiaLogoBlack.png</file>
+        <file>icons/nvidiaLogoWhite.png</file>
+        <file>icons/amdLogoGreen.png</file>
+        <file>icons/start.png</file>
+        <file>icons/stop.png</file>
     </qresource>
 </RCC>
