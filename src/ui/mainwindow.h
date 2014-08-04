@@ -17,6 +17,7 @@
 #include <QListWidgetItem>
 #include <QThread>
 #include <QSpacerItem>
+#include <QPlainTextEdit>
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
@@ -58,6 +59,7 @@ public:
   void resetAllPlots();
   void initMatrixMarket();
   bool getPrecision();
+  void initSystemInfo();
 private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
