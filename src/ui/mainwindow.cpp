@@ -121,7 +121,7 @@ void MainWindow::updateFinalResultPlot(QString benchmarkName, double finalResult
 
 void MainWindow::initHomeScreen(){
 #ifdef VIENNACL_WITH_OPENCL
-  QVBoxLayout *systemInfoLayout = new QVBoxLayout();
+  QHBoxLayout *systemInfoLayout = new QHBoxLayout();
 
   typedef std::vector< viennacl::ocl::platform > platforms_type;
   platforms_type platforms = viennacl::ocl::get_platforms();

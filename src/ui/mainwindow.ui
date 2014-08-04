@@ -218,7 +218,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
