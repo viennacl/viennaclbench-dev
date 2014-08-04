@@ -18,7 +18,7 @@ ArchiveExtractor::ArchiveExtractor(QObject *parent) :
  * */
 QString ArchiveExtractor::getMatrixMarketUserFolder(){
   if(checkUserHomeFolder()){
-    return QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";
+    return QDir::home().absolutePath() + "/ViennaCL-Benchmark/MatrixMarket/";
   }
   else{
     return "";
@@ -34,18 +34,18 @@ QString ArchiveExtractor::getMatrixMarketUserFolder(){
 bool ArchiveExtractor::checkUserHomeFolder(){
   QDir userHomeFolder = QDir::home();
 //  qDebug()<<"User's home folder: " << userHomeFolder.absolutePath();
-  QDir benchmarkFolder(userHomeFolder.absolutePath() + "/ViennaCL Benchmark");
+  QDir benchmarkFolder(userHomeFolder.absolutePath() + "/ViennaCL-Benchmark");
 //  qDebug()<<"User's benchmarkFolder folder: " << benchmarkFolder.absolutePath();
   QDir matrixMarketFolder(benchmarkFolder.absolutePath() + "/MatrixMarket");
 //  qDebug()<<"User's matrixMarketFolder folder: " << matrixMarketFolder.absolutePath();
   //check for ViennaCL Benchmark folder
   if(!benchmarkFolder.exists()){//does not exist
     //create it
-    if(userHomeFolder.mkdir("ViennaCL Benchmark")){
-      qDebug()<<"ViennaCL Benchmark folder created";
+    if(userHomeFolder.mkdir("ViennaCL-Benchmark")){
+      qDebug()<<"ViennaCL-Benchmark folder created";
     }
     else{
-      qDebug()<<"Error creating ViennaCL Benchmark folder";
+      qDebug()<<"Error creating ViennaCL-Benchmark folder";
       return false;
     }
   }
