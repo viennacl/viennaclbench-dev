@@ -16,6 +16,8 @@
 #include <QDebug>
 #include <QListWidgetItem>
 #include <QThread>
+#include <QSpacerItem>
+
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
 #include <QtWebKit/QWebFrame>

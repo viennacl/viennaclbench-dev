@@ -198,6 +198,7 @@ void MainWindow::initHomeScreen(){
 
     }//---DEVICES---END
     deviceCounter = 0;
+    devicesLayout->insertStretch(-1,1); //add a spacer at the end
     platformBox->setLayout(devicesLayout);
     systemInfoLayout->addWidget(platformBox);
 
