@@ -7,13 +7,16 @@ MatrixMarket_Widget::MatrixMarket_Widget(QWidget *parent) :
 {
   ui->setupUi(this);
   webView = ui->matrixMarket_WebView;
-//  ui->progressBar->hide();
+  //connect navigation buttons
   connect(ui->backButton, SIGNAL(clicked()), webView, SLOT(back()) );
+  connect(ui->stopButton, SIGNAL(clicked()), webView, SLOT(stop()) );
   connect(ui->forwardButton, SIGNAL(clicked()), webView, SLOT(forward()) );
 //  connect(webView, SIGNAL(loadStarted()), ui->progressBar, SLOT(show()) );
 //  connect(webView, SIGNAL(loadFinished(bool)), ui->progressBar, SLOT(hide()) );
+  //connect page load progress signals
   connect(webView, SIGNAL(loadProgress(int)), ui->progressBar, SLOT(setValue(int)) );
   connect(webView, SIGNAL(currentDownloadProgress(qint64,qint64)), this, SLOT(updateDownloadProgressBar(qint64,qint64)) );
+
 //  connect(webView->currentDownload, SIGNAL())
   connect(ui->homeMMButton, SIGNAL(clicked()), this, SLOT(loadHomePage()) );
 }
