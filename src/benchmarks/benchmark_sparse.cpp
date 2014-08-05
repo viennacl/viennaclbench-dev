@@ -23,7 +23,7 @@
 #include "benchmark_sparse.h"
 #include <QDebug>
 
-#define BENCHMARK_RUNS          10
+#include "viennacl/tools/matrix_generation.hpp"
 
 Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   AbstractBenchmark(parent)
@@ -82,13 +82,23 @@ void Benchmark_Sparse::run_benchmark()
   //  viennacl::compressed_matrix<ScalarType> ublas_matrix;
   boost::numeric::ublas::compressed_matrix<ScalarType> ublas_matrix;
 
-  if (!viennacl::io::read_matrix_market_file(ublas_matrix, matrixPathString.toStdString() ) )
-  {
-    std::cout << "Error reading Matrix file" << std::endl;
-    return;
-  }
+//  if (!viennacl::io::read_matrix_market_file(ublas_matrix, matrixPathString.toStdString() ) )
+//  {
+//    std::cout << "Error reading Matrix file" << std::endl;
+//    return;
+//  }
 
-  std::cout << "done reading matrix" << std::endl;
+//  std::cout << "done reading matrix" << std::endl;
+
+  std::cout << "Generating Matrix..." << std::endl;
+
+  viennacl::vcl_size_t xPoints = 50;
+  viennacl::vcl_size_t yPoints = 50;
+//  boost::numeric::ublas::compressed_matrix<ScalarType> ublas_matrix;
+  viennacl::tools::generate_fdm_laplace(ublas_matrix, xPoints, yPoints );
+
+  std::cout << "Done" << std::endl;
+
 
   viennacl::vector<ScalarType> vcl_vec1(ublas_vec1.size());
   viennacl::vector<ScalarType> vcl_vec2(ublas_vec1.size());

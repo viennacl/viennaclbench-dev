@@ -7,6 +7,8 @@
 #define NDEBUG
 #endif
 
+#define BENCHMARK_RUNS          10
+
 #define VIENNACL_WITH_UBLAS 0
 //#ifdef VIENNACL_WITH_UBLAS
 //#undef VIENNACL_WITH_UBLAS
