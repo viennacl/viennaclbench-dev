@@ -37,3 +37,7 @@ td {
   color: #4f6b72;
   background: white;
 }
+
+td a img{
+	max-width: 40px;
+}

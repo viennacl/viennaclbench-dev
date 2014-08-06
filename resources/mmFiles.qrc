@@ -9,5 +9,6 @@
         <file>matrixmarket/compressedMatrixList_basic.json.js</file>
         <file>matrixmarket/groups.html</file>
         <file>matrixmarket/compressMatrixList.js</file>
+        <file>matrixmarket/run.png</file>
     </qresource>
 </RCC>
