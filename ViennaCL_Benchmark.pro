@@ -61,11 +61,6 @@ RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
     resources/mmFiles.qrc
 
-#Add benchmark data files
-testData.path = $$OUT_PWD/testdata
-testData.files += testdata/mat65k.mtx testdata/result65025.txt testdata/rhs65025.txt
-INSTALLS += testData
-
 #Notes on qmake variables
 # $$myVar - user variable
 # $${myVar} - supposed to be another version of user variable...
