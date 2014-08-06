@@ -1145,7 +1145,7 @@ color: #404040;
          </layout>
         </widget>
         <widget class="QWidget" name="systemInfoPage">
-         <layout class="QGridLayout" name="gridLayout_7">
+         <layout class="QGridLayout" name="gridLayout_7" rowstretch="1" columnstretch="0">
           <item row="0" column="0">
            <widget class="QGroupBox" name="systemInfo_Box">
             <property name="title">

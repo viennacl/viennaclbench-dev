@@ -18,6 +18,9 @@
 #include <QThread>
 #include <QSpacerItem>
 #include <QPlainTextEdit>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QSplitter>
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
@@ -60,6 +63,7 @@ public:
   void initMatrixMarket();
   bool getPrecision();
   void initSystemInfo();
+  void addInfoItem(int row, int col, QTableWidgetItem *item);
 private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
