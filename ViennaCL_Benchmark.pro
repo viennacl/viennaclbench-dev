@@ -38,7 +38,6 @@ HEADERS  +=    src/benchmark_controller.h \
     src/benchmarks/benchmark_sparse.h \
     src/benchmarks/benchmark_solver.h \
     src/benchmarks/benchmark_scheduler.h \
-    src/benchmarks/io.hpp \
     src/benchmarks/benchmark_blas3.h \
     src/benchmarks/Random.hpp \
     src/benchmarks/benchmark_copy.h \
@@ -89,26 +88,15 @@ INCLUDEPATH += libarchive/include
 DEPENDPATH += libarchive/include
 LIBS += "-L$$PWD/libarchive/bin/" -llibarchive
 
-#Set Boost include paths
-BOOSTROOT = C:\boost\boost_1_55_0
-
-#Add Boost and ViennaCL include folders
+#Add ViennaCL include folders
 INCLUDEPATH += "./external/viennacl-dev"
-INCLUDEPATH += $$BOOSTROOT
-INCLUDEPATH += $$BOOSTROOT"\stage\lib"
 
-DEPENDPATH += $$BOOSTROOT
-LIBS += "-L$$BOOSTROOT'/stage/lib/'"
-
-#Disable unused warnings that come from Boost and QCustomPlot
+#Disable unused warnings that come from QCustomPlot
 #CONFIG += warn_off
 gcc{
     QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
 #    QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
-
-#Define Boost variables
-DEFINES += BOOST_ALL_DYN_LINK
 
 #Find OpenCL root folder
 OPENCLROOT = $$(OPENCLROOT)

@@ -73,11 +73,6 @@ FIND_PACKAGE( Qt4 REQUIRED )
 INCLUDE( ${QT_USE_FILE} )
 ENDIF()
 
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost)
-
 #find OpenCL
 find_package(OpenCL REQUIRED)
 include_directories(${OPENCL_INCLUDE_DIR})
@@ -122,16 +117,14 @@ ELSE()
 qt4_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
 ENDIF()
 
-if(Boost_FOUND)# Start the build process
-    include_directories(${Boost_INCLUDE_DIRS})
-    add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
+add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
 
 # Link Qt
 IF(USE_QT5)# Qt5
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${OPENCL_LIBRARIES} )
+    target_link_libraries(ViennaCL_Benchmark ${OPENCL_LIBRARIES} )
     qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets WebKitWidgets)
 ELSE()# Qt4
-    target_link_libraries(ViennaCL_Benchmark ${Boost_LIBRARIES} ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
+    target_link_libraries(ViennaCL_Benchmark ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
     #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
     target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
@@ -139,5 +132,4 @@ ENDIF()
 # Link Zlib and Libarchive
 target_link_libraries(ViennaCL_Benchmark ${archive_static_LIBRARY} ${zlibstatic_LIBRARY})
 
-endif()
 

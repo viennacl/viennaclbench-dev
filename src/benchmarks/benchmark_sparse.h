@@ -9,18 +9,6 @@
 
 #define BENCHMARK_RUNS          10
 
-#define VIENNACL_WITH_UBLAS 0
-//#ifdef VIENNACL_WITH_UBLAS
-//#undef VIENNACL_WITH_UBLAS
-//#endif
-
-#include <boost/numeric/ublas/triangular.hpp>
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/vector_proxy.hpp>
-#include <boost/numeric/ublas/matrix_sparse.hpp>
-#include <boost/numeric/ublas/operation_sparse.hpp>
-#include <boost/numeric/ublas/lu.hpp>
-
 #include "viennacl/scalar.hpp"
 #include "viennacl/vector.hpp"
 #include "viennacl/coordinate_matrix.hpp"
@@ -38,7 +26,6 @@
 #include <iostream>
 #include <vector>
 #include "benchmark-utils.hpp"
-#include "io.hpp"
 
 class Benchmark_Sparse : public AbstractBenchmark
 {
