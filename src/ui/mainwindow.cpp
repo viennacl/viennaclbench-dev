@@ -858,9 +858,10 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   customPlot->rescaleAxes();
 
   QCPItemText *text = new QCPItemText(customPlot);
+  text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
   customPlot->addItem(text);
 
-  //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
+  text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   text->position->setType(QCPItemPosition::ptPlotCoords);
   text->position->setCoords(  currentValue , currentKey );
 
@@ -944,8 +945,9 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   //Unable to find a way to properly align the text label with the graph bar
   //I added some whitespaces in front of the result number;
   //Making it properly aligned! xD
-  text->setText(QString("                    ") + QString::number( currentData.value, 'f', 2  ));
+  text->setText(QString(" ") + QString::number( currentData.value, 'f', 2  ));
 
+  text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   customPlot->addItem(text);
 
