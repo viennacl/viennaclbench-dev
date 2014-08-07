@@ -545,6 +545,34 @@ void MainWindow::initHomeScreen(){
 #endif
 }
 
+//shows the detailed graph of a clicked final result bar
+void MainWindow::graphClicked(QCPAbstractPlottable *plottable)
+{
+  QString clickedBenchmarkBar = plottable->name();
+  if(clickedBenchmarkBar == "Blas3"){
+    basic_DetailedPlotTab->setCurrentIndex(BLAS3);
+  }
+  else if(clickedBenchmarkBar == "Copy"){
+    basic_DetailedPlotTab->setCurrentIndex(COPY);
+  }
+  else if(clickedBenchmarkBar == "Qr"){
+    basic_DetailedPlotTab->setCurrentIndex(QR);
+  }
+  else if(clickedBenchmarkBar == "Scheduler"){
+    basic_DetailedPlotTab->setCurrentIndex(SCHEDULER);
+  }
+  else if(clickedBenchmarkBar == "Solver"){
+    basic_DetailedPlotTab->setCurrentIndex(SOLVER);
+  }
+  else if(clickedBenchmarkBar == "Sparse"){
+    basic_DetailedPlotTab->setCurrentIndex(SPARSE);
+  }
+  else if(clickedBenchmarkBar == "Vector"){
+    basic_DetailedPlotTab->setCurrentIndex(VECTOR);
+  }
+}
+
+
 void MainWindow::initBasicView(){
   //normalize size of each list menu item
   for ( int i = 0; i < ui->menuListWidget->count(); i++ ) {
@@ -586,6 +614,10 @@ void MainWindow::initBasicView(){
   QBrush backgroundBrush(backgroundColor);
 
   foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
+
+    // connect slot that shows a message in the status bar when a graph is clicked:
+    connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
+
     plot->axisRect()->setupFullAxesBox();
     //Disable secondary axes
     plot->yAxis2->setVisible(false);
@@ -624,6 +656,9 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->xAxis2->setVisible(false);
   ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables);
   ui->basic_FinalResultPlot->legend->setVisible(false);
+
+  // connect slot that shows a message in the status bar when a graph is clicked:
+  connect(ui->basic_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
   QVector<QString> finalResultPlotLabels;
   finalResultPlotLabels.append("Vector - GFLOPs");
@@ -809,6 +844,7 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   qDebug()<<"current value"<<currentValue;
 
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
+  resultBar->setName(benchmarkName);
   resultBar->addData(currentKey, currentValue);
 
   currentTickVector.append(currentKey);
@@ -827,10 +863,10 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
   text->position->setType(QCPItemPosition::ptPlotCoords);
   text->position->setCoords(  currentValue , currentKey );
-  text->setText(QString::number( currentValue ));
 
-  //  text->setFont(QFont(font().family(), 12)); // make font a bit larger
-  text->setPen(QPen(Qt::red)); // show black border around text
+  QFont textFont;
+  textFont.family();
+  text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
 
   customPlot->replot();
 }
@@ -893,18 +929,25 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   //  text->setPen(QPen(Qt::black)); // show black border around text
 
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
+  resultBar->setName(benchmarkName);
   resultBar->addData(currentData);
   customPlot->addPlottable(resultBar);
 
   QCPItemText *text = new QCPItemText(customPlot);
-  customPlot->addItem(text);
 
   //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
   text->position->setType(QCPItemPosition::ptPlotCoords);
   text->position->setCoords(  currentData.value , currentData.key );
-  text->setText(QString::number( currentData.value ));
+  text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
 
-  text->setPen(QPen(Qt::red)); // show black border around text
+  //Probably the dirtiest hack-around I have ever made
+  //Unable to find a way to properly align the text label with the graph bar
+  //I added some whitespaces in front of the result number;
+  //Making it properly aligned! xD
+  text->setText(QString("                    ") + QString::number( currentData.value, 'f', 2  ));
+
+
+  customPlot->addItem(text);
 
   //  qDebug()<<"setting name";
   //  qDebug()<<"setting data";

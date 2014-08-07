@@ -97,6 +97,7 @@ public slots:
   void updateDoublePrecisionButtons();
   void stopBenchmarkExecution();
   void showBenchmarkStartButton();
+  void graphClicked(QCPAbstractPlottable *plottable);
 };
 
 #endif // MAINWINDOW_H
