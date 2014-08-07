@@ -8,6 +8,8 @@ QT       += core gui webkit network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
+CONFIG -= console
+
 TARGET = ViennaCL_Benchmark
 TEMPLATE = app
 
