@@ -1,7 +1,7 @@
-<html lang="EN">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
-<title>MatrixMarket - All Matrices</title>
+<link rel="stylesheet" type="text/css" href="stylesheet.css">
 
 <script src="displayTime.js"></script>
 <script src="sorttable.js"></script>
@@ -9,28 +9,33 @@
 <script src="compressMatrixList.js"></script>
 <script src="mDataList_compressed.json.js"></script>
 
-<link rel="stylesheet" type="text/css" href="stylesheet.css">
-
 <script type="text/javascript">
-// console.log(compressedMatrixList);
 
-//generates complete matrix list content from a compressed js array called compressedMatrixList
-//compressedMatrixList contains compressed complete html entries for each matrix
-//that html is decompressedd and gathered into the fullHtml variable
-//fullHtml variable is appended to the main matrix table resulting in the complete matrix table
+//Extract matrix group name from url
+Requests = {
+QueryString : function(item){
+var urlValue = location.search.match(new RegExp("[\?\&]"+ item + "=([^\&]*)(\&?)","i"));
+    console.log(urlValue[1]);
+return urlValue ? urlValue[1] : urlValue;
+}
+}
+
+var groupName = Requests.QueryString("name");
+
+function showGroupName(){
+	document.getElementById("gname").innerHTML= "Matrix group " + groupName;
+}
 function generateMatrixtable(){
-	// console.log("1 " +displayTime());
 	var uncompressedMatrixList = LZW.decompress(compressedMatrixList);
 	// console.log("2 " +displayTime());
 	// var matrixList = JSON.parse(uncompressedMatrixList);	
 	var mDataList = JSON.parse(uncompressedMatrixList);
-	// console.log("3 " +displayTime());
-	// compressedMatrixList = null;
-	// uncompressedMatrixList = null;
-	console.log("4 " +displayTime());
+
   var l = Object.keys(mDataList).length;
+
   var fullHtml = "";
   for( var i = 1; i < l; i++){
+  	if(groupName == mDataList[i].group){
     fullHtml += "<tr>";
 fullHtml += "<td>"+  mDataList[i].matrix +"</td>" ; 
 fullHtml += "<td>"+ mDataList[i].graph +"</td>" ; 
@@ -44,23 +49,26 @@ fullHtml += "<td>"+  mDataList[i].type +"</td>" ;
 fullHtml += "<td>"+  mDataList[i].sym +"</td>" ; 
 fullHtml += "<td>"+  mDataList[i].spd +"</td>" ; 
     fullHtml += "</tr>";
+    }
   }
-	console.log("5 " +displayTime());
   document.getElementById("matrixListTbody").innerHTML +=fullHtml;
-	console.log("6 " +displayTime());
 }
-//attach an event listener to modify the marix table after static html has been loaded
-window.onload = generateMatrixtable;
+
+function javascriptCANNOT_ProcessMultipleListeners(){
+	showGroupName();
+	generateMatrixtable();
+}
+
+window.onload = javascriptCANNOT_ProcessMultipleListeners;
+// window.onload = generateMatrixtable;
+// window.onload = showGroupName;
 </script>
-
 </head>
-
 <body>
-<li><a href="index.html">MatrixMarket Home</a><hr></li>
-<p>List of all available matrices, sorted by ID.
-Click on a column header to sort by that column.</p>
-<li><a href="groups.html">View a list of all matrix groups.</a></li>
 
+<li><a href="index.html">MatrixMarket Home</a><hr></li>
+<li><a href="groups.html">MatrixMarket Groups</a></li>
+<p id="gname"></p>
 <table cellspacing="0" cellpadding="0" id="matrixListTable" class="sortable">
 <tbody id="matrixListTbody">
 <tr>
@@ -78,13 +86,5 @@ Click on a column header to sort by that column.</p>
 </tr>
 
 </tbody></table>
-
-
-<!-- <p><i>Maintained by Tim Davis, last updated 12-Mar-2014.<br>Matrix pictures by <a href="http://www.cise.ufl.edu/research/sparse/CSparse/CSparse/MATLAB/CSparse/cspy.m">cspy</a> a MATLAB function in the <a href="http://www.cise.ufl.edu/research/sparse/CSparse">CSparse</a> package.
-<br>See  to download directly into MATLAB.
-
-</i></p> -->
-
-</li>
 </body>
 </html>

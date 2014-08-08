@@ -6,9 +6,11 @@
         <file>matrixmarket/lzw.js</file>
         <file>matrixmarket/sorttable.js</file>
         <file>matrixmarket/stylesheet.css</file>
-        <file>matrixmarket/compressedMatrixList_basic.json.js</file>
         <file>matrixmarket/groups.html</file>
         <file>matrixmarket/compressMatrixList.js</file>
         <file>matrixmarket/run.png</file>
+        <file>matrixmarket/matrixDataInterface.html</file>
+        <file>matrixmarket/matrixGroupGenerator.html</file>
+        <file>matrixmarket/mDataList_compressed.json.js</file>
     </qresource>
 </RCC>

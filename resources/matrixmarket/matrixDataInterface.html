@@ -1,0 +1,45 @@
+<html lang="EN">
+<head>
+
+<script src="displayTime.js"></script>
+<script src="sorttable.js"></script>
+<script src="lzw.js"></script>
+<script src="compressMatrixList.js"></script>
+<script src="compressedMatrixList_basic.json.js"></script>
+<script src="matrixListBasic.json.js"></script>
+<script src="mDataList.json.js"></script>
+
+<script type="text/javascript">
+
+function showControls () {
+	// body...
+}
+
+function printCompressed(){
+	window.onload = printCompressedMatrixList(matrixListBasic);//matrixListBasic is from matrixListBasic.json.js
+}
+function printCompressed2(){
+	window.onload = printCompressedMatrixList(mDataList);//matrixListBasic is from matrixListBasic.json.js
+}
+function printDecompressed(){
+	var decompressed = JSON.stringify(LZW.decompress(compressedMatrixList));//compressedMatrixList is from compressedMatrixList_basic.json.js
+	var url = 'data:text/json;charset=utf8,';
+	url += encodeURIComponent('var compressedMatrixList = ['+ decompressed + ']');
+	window.open(url, '_blank');
+	window.focus();
+}
+
+window.onload = showControls;
+
+</script>
+
+</head>
+
+<body>
+<div><button onclick="printCompressed();">Print the compressed matrix data taken from matrixListBasic.json.js</button></div> 
+<div><button onclick="printCompressed2();">Print the compressed matrix data taken from mDataList.json.js</button></div> 
+<div><button onclick="printDecompressed();">Print the decompressed matrix data taken from compressedMatrixList_basic.json.js</button></div> 
+
+
+</body>
+</html>

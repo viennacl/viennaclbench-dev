@@ -21,5 +21,7 @@
         <file>icons/start.png</file>
         <file>icons/stop.png</file>
         <file>icons/empty.png</file>
+        <file>icons/cpuIcon.png</file>
+        <file>icons/gpuIcon.png</file>
     </qresource>
 </RCC>
