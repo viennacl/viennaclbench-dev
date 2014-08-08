@@ -28,8 +28,9 @@
 Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  finalResultCounter = 0;
-  finalResultValue = 0;
+  //  finalResultCounter = 0;
+  //  finalResultValue = 0;
+  testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
 }
 
@@ -105,8 +106,9 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU align1 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
   emit resultSignal("Matrix-Vector product(compressed_matrix) align1", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 
 
   viennacl::backend::finish();
@@ -121,9 +123,9 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU align4 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
   emit resultSignal("Matrix-Vector product(compressed_matrix) align4", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
-
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 
   viennacl::backend::finish();
   timer.start();
@@ -137,8 +139,9 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU align8 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
   emit resultSignal("Matrix-Vector product(compressed_matrix) align8", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 
 
   std::cout << "------- Matrix-Vector product with coordinate_matrix ----------" << std::endl;
@@ -156,8 +159,9 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
   emit resultSignal("Matrix-Vector product(coordinate_matrix)", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 
   std::cout << "------- Matrix-Vector product with ell_matrix ----------" << std::endl;
   vcl_vec1 = viennacl::linalg::prod(vcl_ell_matrix_1, vcl_vec2); //startup calculation
@@ -174,8 +178,9 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
   emit resultSignal("Matrix-Vector product(ell_matrix)", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 
   std::cout << "------- Matrix-Vector product with hyb_matrix ----------" << std::endl;
   vcl_vec1 = viennacl::linalg::prod(vcl_hyb_matrix_1, vcl_vec2); //startup calculation
@@ -192,8 +197,9 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
   emit resultSignal("Matrix-Vector product(hyb_matrix)", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 }
 
 void Benchmark_Sparse::execute()
@@ -238,6 +244,7 @@ void Benchmark_Sparse::execute()
     }
   }
 
-  emit finalResultSignal("Sparse", finalResultValue/finalResultCounter);
+  qSort(testResultHolder);//sort test results in ascending order
+  emit finalResultSignal("Sparse", testResultHolder[testResultHolder.length()/2]);
   emit benchmarkComplete();
 }

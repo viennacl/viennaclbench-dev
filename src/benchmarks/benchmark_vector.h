@@ -3,6 +3,8 @@
 
 #include "abstractbenchmark.h"
 
+#include <QVector>
+
 #include "viennacl/scalar.hpp"
 #include "viennacl/vector.hpp"
 #include "viennacl/linalg/inner_prod.hpp"
@@ -34,8 +36,9 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 private:
-  double finalResultValue;
-  int finalResultCounter;
+  //  double finalResultValue;
+  //  int finalResultCounter;
+  QVector<double> testResultHolder;
 signals:
   /* Inherited signals:
    * void benchmarkStarted(int benchmarkIdNumber);

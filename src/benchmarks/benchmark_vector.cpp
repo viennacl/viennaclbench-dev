@@ -26,8 +26,9 @@
 Benchmark_Vector::Benchmark_Vector(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  finalResultCounter = 0;
-  finalResultValue = 0;
+  //  finalResultCounter = 0;
+  //  finalResultValue = 0;
+  testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
 }
 
@@ -105,8 +106,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result:" << std_result << std::endl;
   emit resultSignal("Vector inner products - CPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+//  finalResultValue += tempResultValue;
+//  finalResultCounter++;
+  testResultHolder.append(tempResultValue);
 
   std_result = viennacl::linalg::inner_prod(vcl_vec1, vcl_vec2); //startup calculation
   std_result = 0.0;
@@ -122,8 +124,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result: " << vcl_factor2 << std::endl;
   emit resultSignal("Vector inner products - GPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
   // inner product
   viennacl::backend::finish();
@@ -144,8 +147,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result:" << std_result << std::endl;
   emit resultSignal("Vector norm_2 - CPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
   std_result = viennacl::linalg::norm_2(vcl_vec1); //startup calculation
   std_result = 0.0;
@@ -161,8 +165,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << "Result: " << vcl_factor2 << std::endl;
   emit resultSignal("Vector norm_2 - GPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
   // vector addition
 
@@ -177,8 +182,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "CPU time: " << exec_time << std::endl;
   std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   emit resultSignal("Vector addition - CPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
   vcl_vec3 = vcl_vec1 + vcl_vec2; //startup calculation
   viennacl::backend::finish();
@@ -193,8 +199,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "GPU time: " << exec_time << std::endl;
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   emit resultSignal("Vector addition - GPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
 
   // multiply add:
@@ -209,8 +216,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "CPU time: " << exec_time << std::endl;
   std::cout << "CPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   emit resultSignal("Vector multiply add - CPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
   vcl_vec1 += vcl_factor1 * vcl_vec2; //startup calculation
   viennacl::backend::finish();
@@ -224,8 +232,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "GPU time: " << exec_time << std::endl;
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   emit resultSignal("Vector multiply add - GPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
 
 
@@ -241,8 +250,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "CPU time: " << exec_time << std::endl;
   std::cout << "CPU "; tempResultValue = printOps(6.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   emit resultSignal("Vector complicated expression - CPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
   vcl_vec3 = vcl_vec2 / vcl_factor1 + vcl_factor2 * (vcl_vec1 - vcl_factor1*vcl_vec2); //startup calculation
   viennacl::backend::finish();
@@ -256,8 +266,9 @@ void Benchmark_Vector::run_benchmark()
   std::cout << "GPU time: " << exec_time << std::endl;
   std::cout << "GPU "; tempResultValue = printOps(6.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   emit resultSignal("Vector complicated expression - GPU", tempResultValue );
-  finalResultValue += tempResultValue;
-  finalResultCounter++;
+  //  finalResultValue += tempResultValue;
+  //  finalResultCounter++;
+    testResultHolder.append(tempResultValue);
 
 }
 
@@ -305,7 +316,8 @@ void Benchmark_Vector::execute()
     }
   }
 
-  emit finalResultSignal("Vector", finalResultValue/finalResultCounter);
+  qSort(testResultHolder);//sort test results in ascending order
+  emit finalResultSignal("Vector", testResultHolder[testResultHolder.length()/2]);
   emit benchmarkComplete();
 }
 

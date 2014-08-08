@@ -29,6 +29,8 @@
 // Some helper functions for this tutorial:
 #include "Random.hpp"
 
+#include <QVector>
+
 #include "benchmark-utils.hpp"
 
 #define BLAS3_MATRIX_SIZE   1920
@@ -43,8 +45,9 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 private:
-  double finalResultValue;
-  int finalResultCounter;
+//  double finalResultValue;
+//  int finalResultCounter;
+  QVector<double> testResultHolder;
 signals:
   /* Inherited signals:
    * void benchmarkStarted(int benchmarkIdNumber);

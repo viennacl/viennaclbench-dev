@@ -25,7 +25,7 @@ using std::endl;
 //#include <QJsonObject>
 
 #include <QThread>
-
+#include <QVector>
 #include <QVariant>
 #include <QStringList>
 #include <QString>
@@ -42,8 +42,10 @@ public:
 private:
   QStringList benchmarkNames;
   QList<double> dataPoints;
-  double finalResultValue;
-  int finalResultCounter;
+
+  //  double finalResultValue;
+  //  int finalResultCounter;
+  QVector<double> testResultHolder;
 signals:
   /* Inherited signals:
    * void benchmarkStarted(int benchmarkIdNumber);

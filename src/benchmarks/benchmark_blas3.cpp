@@ -26,8 +26,9 @@
 Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  finalResultCounter = 0;
-  finalResultValue = 0;
+//  finalResultCounter = 0;
+//  finalResultValue = 0;
+  testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
 }
 
@@ -83,14 +84,15 @@ void Benchmark_Blas3::run_benchmark()
   // Now iterate over all OpenCL devices in the context and compute the matrix-matrix product
   //
 
-  std::cout << " ------ Benchmark 1: Matrix-Matrix product ------ " << std::endl;
-
 double tempResultValue;
 #ifdef VIENNACL_WITH_OPENCL
   std::vector<viennacl::ocl::device> devices = viennacl::ocl::current_context().devices();
 #else
   std::vector<long> devices(1);
 #endif
+
+  std::cout << " ------ Benchmark 1: Matrix-Matrix product ------ " << std::endl;
+
   for (std::size_t i=0; i<devices.size(); ++i)
   {
 #ifdef VIENNACL_WITH_OPENCL
@@ -115,8 +117,9 @@ double tempResultValue;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
     emit resultSignal("Matrix-Matrix product", tempResultValue );
-    finalResultValue += tempResultValue;
-    finalResultCounter++;
+    testResultHolder.append(tempResultValue);
+//    finalResultValue += tempResultValue;
+//    finalResultCounter++;
   }
 
   std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
@@ -146,8 +149,9 @@ double tempResultValue;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
     emit resultSignal("Matrix-Matrix product using ranges", tempResultValue );
-    finalResultValue += tempResultValue;
-    finalResultCounter++;
+    testResultHolder.append(tempResultValue);
+//    finalResultValue += tempResultValue;
+//    finalResultCounter++;
   }
 
   std::cout << " ------ Benchmark 3: Matrix-Matrix product using slices ------ " << std::endl;
@@ -177,8 +181,9 @@ double tempResultValue;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
     emit resultSignal("Matrix-Matrix product using slices", tempResultValue );
-    finalResultValue += tempResultValue;
-    finalResultCounter++;
+    testResultHolder.append(tempResultValue);
+//    finalResultValue += tempResultValue;
+//    finalResultCounter++;
   }
 
 
@@ -205,8 +210,9 @@ double tempResultValue;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
     emit resultSignal("LU factorization", tempResultValue );
-    finalResultValue += tempResultValue;
-    finalResultCounter++;
+    testResultHolder.append(tempResultValue);
+//    finalResultValue += tempResultValue;
+//    finalResultCounter++;
   }
 
   //  return EXIT_SUCCESS;
@@ -234,8 +240,9 @@ void Benchmark_Blas3::execute()
   std::cout << "## Benchmark :: Dense Matrix-Matrix product " << std::endl;
   std::cout << "----------------------------------------------" << std::endl;
 
+  //Single Precision
   if(getPrecision() == SINGLE_PRECISION)
-  {//Single
+  {
     std::cout << std::endl;
     std::cout << "   -------------------------------" << std::endl;
     std::cout << "   # benchmarking single-precision" << std::endl;
@@ -243,8 +250,9 @@ void Benchmark_Blas3::execute()
     run_benchmark<float>();
   }
 
+  //Double Precision
   else if( getPrecision() == DOUBLE_PRECISION)
-  {//Double
+  {
 #ifdef VIENNACL_WITH_OPENCL
     if( viennacl::ocl::current_device().double_support() )
 #endif
@@ -258,6 +266,8 @@ void Benchmark_Blas3::execute()
     }
   }
 
-  emit finalResultSignal("Blas3", finalResultValue/finalResultCounter);
+//  emit finalResultSignal("Blas3", finalResultValue/finalResultCounter);
+  qSort(testResultHolder);//sort test results in ascending order
+  emit finalResultSignal("Blas3", testResultHolder[testResultHolder.length()/2]);
   emit benchmarkComplete();
 }
