@@ -333,7 +333,6 @@ void MainWindow::initSystemInfo(){
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Driver Version:                ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->driver_version()) ) );
-      qDebug()<<"total rows" <<row;
       //      deviceInfoTable->setRowHeight(5, 200);
       deviceInfoTable->setContextMenuPolicy(Qt::NoContextMenu);
       deviceInfoTable->setSelectionBehavior(QAbstractItemView::SelectItems);
@@ -649,7 +648,7 @@ void MainWindow::initBasicView(){
 
 
   ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 0, 40 ));
+  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 50, 40 ));
   ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
   //Disable secondary axes & legend
   ui->basic_FinalResultPlot->yAxis2->setVisible(false);
@@ -691,6 +690,7 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->yAxis->grid()->setVisible(true);
   ui->basic_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
 
+
   ui->basic_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
   ui->basic_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
   ui->basic_FinalResultPlot->xAxis->setScaleLogBase(10);
@@ -700,12 +700,10 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(true);
   ui->basic_FinalResultPlot->xAxis->setAutoTickStep(true);
 //  ui->basic_FinalResultPlot->xAxis->setTickLengthOut(200);
-    ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
+    ui->basic_FinalResultPlot->xAxis->setRangeLower(0.5);
 //  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
 
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
-
-  //  ui->basic_FinalResultPlot->replot();
 
   ui->basic_StopBenchmarkButton->hide();
 
@@ -715,8 +713,6 @@ void MainWindow::initBasicView(){
     ui->basic_BenchmarkListWidget->item(i)->setSelected(true);
   }
 }
-
-
 
 void MainWindow::initExpertView(){
 }
@@ -866,7 +862,12 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   customPlot->rescaleAxes();
 
   QCPItemText *text = new QCPItemText(customPlot);
+
+  //Add a whitespace in front of the result value to separate it from the result bar
+  //Prolly could've also used margins, but meh
+  //And format the result number to two decimals
   text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
+
   customPlot->addItem(text);
 
   text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -914,15 +915,6 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
     qDebug()<<"Error parsing benchmark name";
   }
 
-  //increase xAxis scale to fit new result, if necessary
-  qDebug()<<"y axis max range"<<customPlot->xAxis->range().upper;
-  if(customPlot->xAxis->range().upper<value){
-    customPlot->xAxis->setRange(0,value*1.1);
-    //    customPlot->xAxis->setTickStep( ((customPlot->xAxis->range().upper)/1.1)  /10);
-  }
-
-
-
   //  QCPItemText *text = new QCPItemText(ui->basicFinalResultPlot);
   //  ui->basicFinalResultPlot->addItem(text);
 
@@ -945,14 +937,14 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   QCPItemText *text = new QCPItemText(customPlot);
 
   //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
+  text->setClipToAxisRect(false);//allow this item to flow over the main plot rectangle, hence showing it when it can't fit the plot rectangle
   text->position->setType(QCPItemPosition::ptPlotCoords);
   text->position->setCoords(  currentData.value , currentData.key );
   text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
 
-  //Probably the dirtiest hack-around I have ever made
-  //Unable to find a way to properly align the text label with the graph bar
-  //I added some whitespaces in front of the result number;
-  //Making it properly aligned! xD
+  //Add a whitespace in front of the result value to separate it from the result bar
+  //Prolly could've also used margins, but meh
+  //And format the result number to two decimals
   text->setText(QString(" ") + QString::number( currentData.value, 'f', 2  ));
 
   text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -997,10 +989,12 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   //  text->setPen(QPen(Qt::black)); // show black border around text
 
 
-
-  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
+//  ui->basic_FinalResultPlot->xAxis->setRangeLower(0.5);
   customPlot->replot();
-  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
+//  customPlot->xAxis->rescale();
+//  customPlot
+//  ui->basic_FinalResultPlot->xAxis->setRangeLower(0.5);
+//  ui->basic_FinalResultPlot->rescaleAxes();
 }
 
 
