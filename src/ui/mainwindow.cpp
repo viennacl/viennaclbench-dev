@@ -651,11 +651,12 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
   ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 0, 40 ));
   ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
-  //Disable secondary axes
+  //Disable secondary axes & legend
   ui->basic_FinalResultPlot->yAxis2->setVisible(false);
   ui->basic_FinalResultPlot->xAxis2->setVisible(false);
-  ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables);
   ui->basic_FinalResultPlot->legend->setVisible(false);
+  //Enable selecting plots
+  ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
 
   // connect slot that shows a message in the status bar when a graph is clicked:
   connect(ui->basic_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
@@ -690,10 +691,17 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->yAxis->grid()->setVisible(true);
   ui->basic_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
 
-  ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(true);
+  ui->basic_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
+  ui->basic_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+  ui->basic_FinalResultPlot->xAxis->setScaleLogBase(10);
+  ui->basic_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
+  ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
   ui->basic_FinalResultPlot->xAxis->setAutoTicks(true);
+  ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(true);
   ui->basic_FinalResultPlot->xAxis->setAutoTickStep(true);
-  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
+//  ui->basic_FinalResultPlot->xAxis->setTickLengthOut(200);
+    ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
+//  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
 
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
@@ -990,7 +998,9 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
 
 
 
+  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
   customPlot->replot();
+  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
 }
 
 
