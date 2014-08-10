@@ -19,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->menuListWidget, SIGNAL(currentRowChanged(int)), ui->stackedWidget, SLOT(setCurrentIndex(int)) );
   ui->menuListWidget->setCurrentRow(0);
 
+  maximumBenchProgress = 0;
+  currentBenchProgress = 0;
+
   //setup benchmark plots
   initHomeScreen();
   initBasicView();
@@ -47,12 +50,14 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), this, SLOT(setActiveBenchmarkPlot(int)) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
   connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString)), this, SLOT(updateBenchmarkUnitMeasure(QString)) );
-  //received a benchmark result -> parse it and show it on the graph
-  connect(&benchmarkController, SIGNAL(resultSignal(QString,double)), this, SLOT(parseBenchmarkResult(QString,double)) );
+  //received a benchmark test result -> parse it and show it on the graph
+  connect(&benchmarkController, SIGNAL(resultSignal(QString, double, double, int)), this, SLOT(parseBenchmarkResult(QString, double, double, int)) );
   //final benchmark result
   connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), this, SLOT(updateFinalResultPlot(QString,double)) );
   //show the start button once all benchmarks are done
   connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), this, SLOT(showBenchmarkStartButton()) );
+  //connect progress signals
+  connect(&benchmarkController, SIGNAL(testProgress()), this, SLOT(updateBenchProgress()) );
 
   connect(ui->basic_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
   connect(ui->basic_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
@@ -62,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::showBenchmarkStartButton(){
   ui->basic_StopBenchmarkButton->hide();
   ui->basic_StartBenchmarkButton->show();
+  ui->basic_ProgressBar->setFormat("Done");
 }
 
 void MainWindow::addInfoItem(int row, int col, QTableWidgetItem *item){
@@ -696,12 +702,40 @@ void MainWindow::initBasicView(){
   ui->basic_FinalResultPlot->xAxis->setScaleLogBase(10);
   ui->basic_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
   ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
-  ui->basic_FinalResultPlot->xAxis->setAutoTicks(true);
-  ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(true);
-  ui->basic_FinalResultPlot->xAxis->setAutoTickStep(true);
-//  ui->basic_FinalResultPlot->xAxis->setTickLengthOut(200);
-    ui->basic_FinalResultPlot->xAxis->setRangeLower(0.5);
-//  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
+  ui->basic_FinalResultPlot->xAxis->setAutoTicks(false);
+  ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(false);
+  ui->basic_FinalResultPlot->xAxis->setAutoTickStep(false);
+  QVector<double> ticks;
+  ticks.append(0.5);
+  ticks.append(1);
+  ticks.append(5);
+  ticks.append(10);
+  ticks.append(20);
+  ticks.append(50);
+  ticks.append(100);
+  ticks.append(200);
+  ticks.append(500);
+  ticks.append(1000);
+  ticks.append(2000);
+  ui->basic_FinalResultPlot->xAxis->setTickVector(ticks);
+
+  QVector<QString> tickLabels;
+  tickLabels.append("0.5");
+  tickLabels.append("1");
+  tickLabels.append("5");
+  tickLabels.append("10");
+  tickLabels.append("20");
+  tickLabels.append("50");
+  tickLabels.append("100");
+  tickLabels.append("200");
+  tickLabels.append("500");
+  tickLabels.append("1000");
+  tickLabels.append("2000");
+  ui->basic_FinalResultPlot->xAxis->setTickVectorLabels(tickLabels);
+
+  //  ui->basic_FinalResultPlot->xAxis->setTickLengthOut(200);
+  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
+  //  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
 
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
@@ -733,16 +767,37 @@ void MainWindow::stopBenchmarkExecution(){
   ui->basic_StartBenchmarkButton->show();
 }
 
+void MainWindow::updateBenchProgress(){
+  currentBenchProgress++;
+  ui->basic_ProgressBar->setValue(currentBenchProgress);
+  ui->basic_ProgressBar->setFormat("Running Test %v of %m");
+}
+
 //execute the currently selected benchmark
 void MainWindow::startBenchmarkExecution(){
   resetAllPlots();
+  currentBenchProgress = 0;
+  maximumBenchProgress = 0;
+  ui->basic_ProgressBar->setValue(currentBenchProgress);
+  ui->basic_ProgressBar->setFormat("Starting Benchmark...");
   QStringList selectedBenchmarkItems;
   for ( int i = 1; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
     if(ui->basic_BenchmarkListWidget->item(i)->isSelected() ){
       selectedBenchmarkItems.append(ui->basic_BenchmarkListWidget->item(i)->text());
+      //add each selected benchmark's number of tests to maximumBenchProgress
+      switch(i){
+      case 1: maximumBenchProgress += 4; break;//blas3 4 tests
+      case 2: maximumBenchProgress += 6; break;//copy 6 tests
+      case 3: maximumBenchProgress += 6; break;//sparse 6 tests
+      case 4: maximumBenchProgress += 10; break;//vector 10 tests
+      default: break;
+      }
     }
   }
-  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
+//  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
+
+  //set progress bar max value
+  ui->basic_ProgressBar->setMaximum(maximumBenchProgress);
 
   ui->basic_StopBenchmarkButton->show();
   ui->basic_StartBenchmarkButton->hide();
@@ -805,16 +860,27 @@ void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
 }
 
 //parse the received benchmark result name and value
-void MainWindow::parseBenchmarkResult(QString benchmarkName, double resultValue){
+void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType){
   //    barData.append(bandwidthValue);
   //    ticks.append(barCounter++);
   //    labels.append(benchmarkName);
-  plotResult(benchmarkName, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+  //graphType 0 = bar
+  //graphType 1 = line
+  if(graphType == 0){
+    plotBarResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+  }
+  else if(graphType == 1){
+    plotLineResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+  }
+}
+
+void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+  //TODO
 }
 
 //main result diplay function
 //x and y axis are swapped to achieve horizontal bar display
-void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *customPlot){
+void MainWindow::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
   //  customPlot->yAxis->setAutoTicks(false);
   //  customPlot->yAxis->setAutoTickLabels(false);
   //  customPlot->yAxis->setTickLabelRotation(60);
@@ -842,7 +908,8 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
 
   double currentValue = value;
-  double currentKey = currentTickVector.size();
+//  double currentKey = key;
+    double currentKey = currentTickVector.size();
 
   qDebug()<<"current key"<<currentKey;
   qDebug()<<"current value"<<currentValue;
@@ -878,6 +945,7 @@ void MainWindow::plotResult(QString benchmarkName, double value, QCustomPlot *cu
   textFont.family();
   text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
 
+  customPlot->yAxis->setRangeLower(-0.5);
   customPlot->replot();
 }
 
@@ -932,6 +1000,8 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
   resultBar->setName(benchmarkName);
   resultBar->addData(currentData);
+  resultBar->setPen(QPen(Qt::NoPen));
+
   customPlot->addPlottable(resultBar);
 
   QCPItemText *text = new QCPItemText(customPlot);
@@ -989,12 +1059,8 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
   //  text->setPen(QPen(Qt::black)); // show black border around text
 
 
-//  ui->basic_FinalResultPlot->xAxis->setRangeLower(0.5);
+  customPlot->xAxis->rescale();
   customPlot->replot();
-//  customPlot->xAxis->rescale();
-//  customPlot
-//  ui->basic_FinalResultPlot->xAxis->setRangeLower(0.5);
-//  ui->basic_FinalResultPlot->rescaleAxes();
 }
 
 

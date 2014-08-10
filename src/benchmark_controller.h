@@ -29,19 +29,21 @@ private:
   bool precision; // false(0) - SINGLE | true(1) - DOUBLE
   QThread *currentBenchmarkThread;
 signals:
-  void resultSignal(QString benchmarkName, double bandwidthValue);
+  void resultSignal(QString benchmarkName, double key, double resultValue, int graphType);
   void finalResultSignal(QString benchmarkName, double finalValue);
   void benchmarkComplete();
   void unitMeasureSignal(QString);
   void emptyBenchmarkQ();
   void benchmarkStarted(int benchmarkIdNumber);
+  void testProgress();
 public slots:
+  void testProgressSlot();
   void setPrecision(bool p);
   bool getPrecision();
   void benchmarkStartedSlot(int benchmarkIdNumber);
   void executeSelectedBenchmark(QStringList benchmarkNamesList, bool precision);
   void finalResultSignalSlot(QString benchmarkName, double finalValue);
-  void resultSignalSlot(QString benchmarkName, double bandwidthValue);
+  void resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType);
   void benchmarkCompleteSlot();
   void unitMeasureSignalSlot(QString unitMeasureName);
   void startNextBenchmark();

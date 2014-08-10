@@ -24,9 +24,10 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
   connect(workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
 
   connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
-  connect(benchmark, SIGNAL(resultSignal(QString,double)), this, SLOT(resultSignalSlot(QString,double)) );
+  connect(benchmark, SIGNAL(resultSignal(QString, double, double, int)), this, SLOT(resultSignalSlot(QString, double, double, int)) );
   connect(benchmark, SIGNAL(finalResultSignal(QString, double)), this, SLOT(finalResultSignalSlot(QString, double)) );
   connect(benchmark, SIGNAL(benchmarkStarted(int)), this, SLOT(benchmarkStartedSlot(int)) );
+  connect(benchmark, SIGNAL(testProgress()), this, SLOT(testProgressSlot()) );
 
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(startNextBenchmark()) );
@@ -46,6 +47,11 @@ void Benchmark_Controller::enqueueBenchmarks(QStringList benchmarkNamesList){
       benchmarkQ.enqueue(benchmark);
     }
   }
+}
+
+void Benchmark_Controller::testProgressSlot()
+{
+  emit testProgress();
 }
 
 void Benchmark_Controller::stopExecution()
@@ -128,9 +134,9 @@ void Benchmark_Controller::finalResultSignalSlot(QString benchmarkName, double f
   emit finalResultSignal(benchmarkName, finalValue);
 }
 
-void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double bandwidthValue)
+void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType)
 {
-  emit resultSignal(benchmarkName, bandwidthValue);
+  emit resultSignal(benchmarkName, key, resultValue, graphType);
 }
 
 void Benchmark_Controller::benchmarkCompleteSlot()

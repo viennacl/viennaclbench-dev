@@ -54,13 +54,14 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-  void plotResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void initExpertView();
   void initBasicView();
   void initHomeScreen();
+  void initMatrixMarket();
+  void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
+  void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
-  void initMatrixMarket();
   bool getPrecision();
   void initSystemInfo();
   void addInfoItem(int row, int col, QTableWidgetItem *item);
@@ -68,10 +69,8 @@ private:
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
   int activeBenchmark;
-//  int barCounter;//counts the total number of benchmarks
-//  QVector<double> barData;//benchmark bandwidth values
-//  QVector<QString> labels;//tracks the names of benchmarks
-//  QVector<double> ticks;//defines the number and order in which to show benchmark name labels on the yAxis
+  int currentBenchProgress;
+  int maximumBenchProgress;
 
   QTabWidget *basic_DetailedPlotTab;
   QVector<QCustomPlot*> basic_DetailedPlotsVector;
@@ -85,7 +84,7 @@ private:
 
 public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
-  void parseBenchmarkResult(QString benchmarkName, double resultValue);
+  void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType);
   void updateBenchmarkUnitMeasure(QString unitMeasureName);
   void startBenchmarkExecution();
   void updateBenchmarkListWidget(QListWidgetItem* item);
@@ -98,6 +97,7 @@ public slots:
   void stopBenchmarkExecution();
   void showBenchmarkStartButton();
   void graphClicked(QCPAbstractPlottable *plottable);
+  void updateBenchProgress();
 };
 
 #endif // MAINWINDOW_H

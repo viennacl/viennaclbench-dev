@@ -233,7 +233,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -675,7 +675,7 @@ border-top: 2px groove gray;
                </widget>
               </item>
               <item row="1" column="4" rowspan="2">
-               <widget class="QProgressBar" name="progressBar">
+               <widget class="QProgressBar" name="basic_ProgressBar">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -703,8 +703,11 @@ border-top: 2px groove gray;
 color: #404040;
 }</string>
                 </property>
+                <property name="maximum">
+                 <number>26</number>
+                </property>
                 <property name="value">
-                 <number>50</number>
+                 <number>0</number>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

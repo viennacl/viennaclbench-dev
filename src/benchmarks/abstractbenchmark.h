@@ -11,6 +11,8 @@ enum{ BLAS3, COPY, SPARSE, VECTOR, QR, SOLVER, SCHEDULER, ALL };//benchmarkIdNum
 
 enum{ SINGLE_PRECISION, DOUBLE_PRECISION };//benchmark precision
 
+enum{ BAR_GRAPH, LINE_GRAPH };//graph type to be used when plotting test results
+
 class AbstractBenchmark : public QObject
 {
   Q_OBJECT
@@ -21,9 +23,10 @@ private:
 signals:
   void benchmarkStarted(int benchmarkIdNumber);
   void finalResultSignal(QString benchmarkName, double finalValue);
-  void resultSignal(QString benchmarkName, double bandwidthValue);
+  void resultSignal(QString benchmarkName, double key, double value, int graphType);
   void benchmarkComplete();
   void unitMeasureSignal(QString unitMeasureName);
+  void testProgress();
 public slots:
   void setPrecision(bool p);
   bool getPrecision();
