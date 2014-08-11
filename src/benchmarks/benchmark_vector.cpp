@@ -76,7 +76,7 @@ void Benchmark_Vector::run_benchmark()
   double exec_time;
 
 
-  int MAX_BENCHMARK_VECTOR_SIZE = 10000000;
+  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;
   int MIN_BENCHMARK_VECTOR_SIZE = 1000000;
   int INCREMENT_SIZE = 1000000;
 

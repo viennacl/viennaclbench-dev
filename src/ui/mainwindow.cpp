@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
   initHomeScreen();
   initBasicView();
   initExpertView();
+  interconnectViews();
   initMatrixMarket();
   initSystemInfo();
 
@@ -71,7 +72,7 @@ void MainWindow::showBenchmarkStartButton(){
   ui->basic_ProgressBar->setFormat("Done");
 }
 
-void MainWindow::addInfoItem(int row, int col, QTableWidgetItem *item){
+void MainWindow::addInfoItem(int row, int col, QTableWidgetItem *item){//TODO is this useless?
   //  ui->systemInfo_TableWidget->setItem(row, col, item);
 }
 
@@ -749,7 +750,14 @@ void MainWindow::initBasicView(){
   }
 }
 
+void MainWindow::interconnectViews(){
+  //  connect(ui->basic_BenchmarkListWidget, SIGNAL()
+
+}
+
 void MainWindow::initExpertView(){
+  //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
+  //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
 }
 
 bool MainWindow::getPrecision(){
@@ -862,15 +870,10 @@ void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
 
 //parse the received benchmark result name and value
 void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
-  //    barData.append(bandwidthValue);
-  //    ticks.append(barCounter++);
-  //    labels.append(benchmarkName);
-  //graphType 0 = bar
-  //graphType 1 = line
-  if(graphType == 0){
+  if(graphType == BAR_GRAPH){
     plotBarResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
   }
-  else if(graphType == 1){
+  else if(graphType == LINE_GRAPH){
     plotLineResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark], testId);
   }
 }
@@ -904,7 +907,7 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
     qDebug()<<"using existing graph";
     currentResultGraph = customPlot->graph(testId);
   }
-/*
+  /*
   if(customPlot->graphCount() > 0){
     qDebug()<<"detected more than 0 graphs";
     for (int i =0; i<customPlot->graphCount(); i++) {
@@ -939,8 +942,28 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
   //  resultBar->setName(benchmarkName);
   //  resultBar->addData(currentKey, currentValue);
 
-  QPen pen(QColor("red"));
-
+  QPen pen;//(QColor("red"));
+  switch(testId){
+  case 0: pen.setColor("yellow");
+    break;
+  case 1: pen.setColor("blue");
+    break;
+  case 2: pen.setColor("black");
+    break;
+  case 3: pen.setColor("red");
+    break;
+  case 4: pen.setColor("cyan");
+    break;
+  case 5: pen.setColor("magenta");
+    break;
+  case 6: pen.setColor("green");
+    break;
+  case 7: pen.setColor("gray");
+    break;
+  case 8: pen.setColor("pink");
+    break;
+  default:    pen.setColor("orange");
+  }
   //  customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
 
   currentResultGraph->setName(benchmarkName);
@@ -956,6 +979,8 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
   customPlot->xAxis->setAutoTicks(true);
   customPlot->yAxis->setAutoTicks(true);
 
+  customPlot->xAxis->setAutoTickStep(true);
+  customPlot->yAxis->setAutoTickStep(true);
 
   customPlot->xAxis->setAutoTickLabels(true);
   customPlot->yAxis->setAutoTickLabels(true);
