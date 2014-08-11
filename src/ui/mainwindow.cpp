@@ -879,17 +879,9 @@ void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double 
 }
 
 void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
-  //TODO
-
   customPlot->legend->setVisible(true);
   customPlot->legend->setFont(QFont("Helvetica", 9));
   customPlot->legend->setRowSpacing(-3);
-  //  QVector<double> currentTickVector = customPlot->yAxis->tickVector();
-  //  QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
-
-  //  double currentValue = value;
-  //  double currentKey = key;
-  //    double currentKey = currentTickVector.size();
 
   QVector<double> keys, values;
 
@@ -907,44 +899,10 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
     qDebug()<<"using existing graph";
     currentResultGraph = customPlot->graph(testId);
   }
-  /*
-  if(customPlot->graphCount() > 0){
-    qDebug()<<"detected more than 0 graphs";
-    for (int i =0; i<customPlot->graphCount(); i++) {
-      if(customPlot->graph(i)->name() == benchmarkName){
-        //a graph for this benchmark result already exists
-        //add more data to it
-        qDebug()<<"graph detected";
-        currentResultGraph = customPlot->graph(i);
-        qDebug()<<"1";
-      }
-      else{
-        //this benchmark result has no appropriate graph setup
-        //create one
-        qDebug()<<"adding new";
-              currentResultGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-              break;
-              qDebug()<<"2";
-//        currentResultGraph = new QCPGraph(customPlot->xAxis, customPlot->yAxis);
-      }
-    }
-  }
-  else{
-    qDebug()<<"did not detect a graph";
-    currentResultGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-    qDebug()<<"3";
-  }
-*/
-  //  qDebug()<<"current key"<<currentKey;
-  //  qDebug()<<"current value"<<currentValue;
-
-  //  QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
-  //  resultBar->setName(benchmarkName);
-  //  resultBar->addData(currentKey, currentValue);
 
   QPen pen;//(QColor("red"));
   switch(testId){
-  case 0: pen.setColor("yellow");
+  case 0: pen.setColor("green");
     break;
   case 1: pen.setColor("blue");
     break;
@@ -956,9 +914,9 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
     break;
   case 5: pen.setColor("magenta");
     break;
-  case 6: pen.setColor("green");
+  case 6: pen.setColor("gray");
     break;
-  case 7: pen.setColor("gray");
+  case 7: pen.setColor("yellow");
     break;
   case 8: pen.setColor("pink");
     break;
