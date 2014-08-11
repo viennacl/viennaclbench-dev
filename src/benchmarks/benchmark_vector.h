@@ -35,9 +35,10 @@ public:
 
   template<typename ScalarType>
   void run_benchmark();
+  template<typename ScalarType>
+  void resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
+                     viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2);
 private:
-  //  double finalResultValue;
-  //  int finalResultCounter;
   QVector<double> testResultHolder;
 signals:
   /* Inherited signals:

@@ -23,7 +23,7 @@ private:
 signals:
   void benchmarkStarted(int benchmarkIdNumber);
   void finalResultSignal(QString benchmarkName, double finalValue);
-  void resultSignal(QString benchmarkName, double key, double value, int graphType);
+  void resultSignal(QString benchmarkName, double key, double value, int graphType, int testId);
   void benchmarkComplete();
   void unitMeasureSignal(QString unitMeasureName);
   void testProgress();

@@ -51,7 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
   connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString)), this, SLOT(updateBenchmarkUnitMeasure(QString)) );
   //received a benchmark test result -> parse it and show it on the graph
-  connect(&benchmarkController, SIGNAL(resultSignal(QString, double, double, int)), this, SLOT(parseBenchmarkResult(QString, double, double, int)) );
+  connect(&benchmarkController, SIGNAL(resultSignal(QString, double, double, int, int)),
+          this, SLOT(parseBenchmarkResult(QString, double, double, int, int)) );
   //final benchmark result
   connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), this, SLOT(updateFinalResultPlot(QString,double)) );
   //show the start button once all benchmarks are done
@@ -794,7 +795,7 @@ void MainWindow::startBenchmarkExecution(){
       }
     }
   }
-//  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
+  //  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
 
   //set progress bar max value
   ui->basic_ProgressBar->setMaximum(maximumBenchProgress);
@@ -860,7 +861,7 @@ void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
 }
 
 //parse the received benchmark result name and value
-void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType){
+void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
   //    barData.append(bandwidthValue);
   //    ticks.append(barCounter++);
   //    labels.append(benchmarkName);
@@ -870,14 +871,124 @@ void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double 
     plotBarResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
   }
   else if(graphType == 1){
-    plotLineResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+    plotLineResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark], testId);
   }
 }
 
-void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
   //TODO
-}
 
+  customPlot->legend->setVisible(true);
+  customPlot->legend->setFont(QFont("Helvetica", 9));
+  customPlot->legend->setRowSpacing(-3);
+  //  QVector<double> currentTickVector = customPlot->yAxis->tickVector();
+  //  QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
+
+  //  double currentValue = value;
+  //  double currentKey = key;
+  //    double currentKey = currentTickVector.size();
+
+  QVector<double> keys, values;
+
+  QCPGraph *currentResultGraph;
+
+  if(customPlot->graph(testId) == 0){
+    //no graph for this test result
+    //create one
+    qDebug()<<"adding new graph";
+    currentResultGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+  }
+  else{
+    //a graph for this test result already exists
+    //add the new data to it
+    qDebug()<<"using existing graph";
+    currentResultGraph = customPlot->graph(testId);
+  }
+/*
+  if(customPlot->graphCount() > 0){
+    qDebug()<<"detected more than 0 graphs";
+    for (int i =0; i<customPlot->graphCount(); i++) {
+      if(customPlot->graph(i)->name() == benchmarkName){
+        //a graph for this benchmark result already exists
+        //add more data to it
+        qDebug()<<"graph detected";
+        currentResultGraph = customPlot->graph(i);
+        qDebug()<<"1";
+      }
+      else{
+        //this benchmark result has no appropriate graph setup
+        //create one
+        qDebug()<<"adding new";
+              currentResultGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+              break;
+              qDebug()<<"2";
+//        currentResultGraph = new QCPGraph(customPlot->xAxis, customPlot->yAxis);
+      }
+    }
+  }
+  else{
+    qDebug()<<"did not detect a graph";
+    currentResultGraph = customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+    qDebug()<<"3";
+  }
+*/
+  //  qDebug()<<"current key"<<currentKey;
+  //  qDebug()<<"current value"<<currentValue;
+
+  //  QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
+  //  resultBar->setName(benchmarkName);
+  //  resultBar->addData(currentKey, currentValue);
+
+  QPen pen(QColor("red"));
+
+  //  customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
+
+  currentResultGraph->setName(benchmarkName);
+  currentResultGraph->addData( key, value );
+  currentResultGraph->rescaleAxes(true);
+  currentResultGraph->setPen(pen);
+  currentResultGraph->setLineStyle(QCPGraph::lsLine);
+  currentResultGraph->setScatterStyle(QCPScatterStyle::ssCrossSquare);
+
+  //  customPlot->addGraph()
+  customPlot->rescaleAxes();
+
+  customPlot->xAxis->setAutoTicks(true);
+  customPlot->yAxis->setAutoTicks(true);
+
+
+  customPlot->xAxis->setAutoTickLabels(true);
+  customPlot->yAxis->setAutoTickLabels(true);
+  //  currentTickVector.append(currentKey);
+  //  currentTickVectorLabels.append(benchmarkName);
+
+  //  customPlot->yAxis->setTickVector(currentTickVector);
+  //  customPlot->yAxis->setTickVectorLabels(currentTickVectorLabels);
+
+  //  customPlot->addPlottable(resultBar);
+
+
+  //  QCPItemText *text = new QCPItemText(customPlot);
+
+  //  //Add a whitespace in front of the result value to separate it from the result bar
+  //  //Prolly could've also used margins, but meh
+  //  //And format the result number to two decimals
+  //  text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
+
+  //  customPlot->addItem(text);
+
+  //  text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  //  text->position->setType(QCPItemPosition::ptPlotCoords);
+  //  text->position->setCoords(  currentValue , currentKey );
+
+  //  QFont textFont;
+  //  textFont.family();
+  //  text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
+
+  //  customPlot->yAxis->setRangeLower(-0.5);
+  customPlot->axisRect()->setupFullAxesBox();
+  customPlot->replot();
+}
 //main result diplay function
 //x and y axis are swapped to achieve horizontal bar display
 void MainWindow::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
@@ -908,8 +1019,8 @@ void MainWindow::plotBarResult(QString benchmarkName, double key, double value, 
   QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
 
   double currentValue = value;
-//  double currentKey = key;
-    double currentKey = currentTickVector.size();
+  //  double currentKey = key;
+  double currentKey = currentTickVector.size();
 
   qDebug()<<"current key"<<currentKey;
   qDebug()<<"current value"<<currentValue;

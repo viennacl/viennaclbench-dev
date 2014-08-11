@@ -43,6 +43,7 @@ void Benchmark_Blas3::run_benchmark()
 {
   Timer timer;
   double exec_time;
+  int testId = 0;
 
   //
   // Set up some ViennaCL objects
@@ -116,7 +117,7 @@ void Benchmark_Blas3::run_benchmark()
     tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("Matrix-Matrix product", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+    emit resultSignal("Matrix-Matrix product", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
     //    finalResultValue += tempResultValue;
@@ -149,7 +150,7 @@ void Benchmark_Blas3::run_benchmark()
     tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time ;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("Matrix-Matrix product using ranges", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+    emit resultSignal("Matrix-Matrix product using ranges", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
     //    finalResultValue += tempResultValue;
@@ -182,7 +183,7 @@ void Benchmark_Blas3::run_benchmark()
     tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("Matrix-Matrix product using slices", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+    emit resultSignal("Matrix-Matrix product using slices", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
     //    finalResultValue += tempResultValue;
@@ -212,7 +213,7 @@ void Benchmark_Blas3::run_benchmark()
     tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time;
     std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
     std::cout << std::endl;
-    emit resultSignal("LU factorization", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+    emit resultSignal("LU factorization", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
     //    finalResultValue += tempResultValue;

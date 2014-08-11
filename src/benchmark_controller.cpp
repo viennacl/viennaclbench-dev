@@ -24,14 +24,16 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
   connect(workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
 
   connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
-  connect(benchmark, SIGNAL(resultSignal(QString, double, double, int)), this, SLOT(resultSignalSlot(QString, double, double, int)) );
-  connect(benchmark, SIGNAL(finalResultSignal(QString, double)), this, SLOT(finalResultSignalSlot(QString, double)) );
+  connect(benchmark, SIGNAL(resultSignal(QString, double, double, int, int)),
+          this, SLOT(resultSignalSlot(QString, double, double, int, int)) );
+  connect(benchmark, SIGNAL(finalResultSignal(QString, double)),
+          this, SLOT(finalResultSignalSlot(QString, double)) );
   connect(benchmark, SIGNAL(benchmarkStarted(int)), this, SLOT(benchmarkStartedSlot(int)) );
   connect(benchmark, SIGNAL(testProgress()), this, SLOT(testProgressSlot()) );
 
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(benchmarkCompleteSlot()) );
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(startNextBenchmark()) );
-//  connect(benchmark, SIGNAL(benchmarkComplete()), workerThread, SLOT(terminate()) );
+  //  connect(benchmark, SIGNAL(benchmarkComplete()), workerThread, SLOT(terminate()) );
 
   workerThread->start();
 
@@ -59,8 +61,8 @@ void Benchmark_Controller::stopExecution()
   qDebug()<<"---STOPPING BENCHMARK EXECUTION---";
   currentBenchmarkThread->terminate();
   currentBenchmarkThread->wait();
-//  currentBenchmarkThread->exit();
-//  currentBenchmarkThread->quit();
+  //  currentBenchmarkThread->exit();
+  //  currentBenchmarkThread->quit();
   benchmarkQ.clear();
 
 }
@@ -83,10 +85,10 @@ void Benchmark_Controller::startNextBenchmark(){
       createBenchmark(new Benchmark_Copy( getPrecision() ));
     }
     else if(nextBenchmarkName == "Scheduler"){
-//      createBenchmark(new Benchmark_Scheduler( getPrecision() ));
+      //      createBenchmark(new Benchmark_Scheduler( getPrecision() ));
     }
     else if(nextBenchmarkName == "Solver"){
-//      createBenchmark(new Benchmark_Solver( getPrecision() ));
+      //      createBenchmark(new Benchmark_Solver( getPrecision() ));
     }
     else if(nextBenchmarkName == "Sparse"){
       createBenchmark(new Benchmark_Sparse( getPrecision() ));
@@ -95,7 +97,7 @@ void Benchmark_Controller::startNextBenchmark(){
       createBenchmark(new Benchmark_Vector( getPrecision() ));
     }
     else if(nextBenchmarkName == "Qr"){
-//      createBenchmark(new Benchmark_Qr());
+      //      createBenchmark(new Benchmark_Qr());
     }
     else{
       qDebug()<<"Error parsing benchmark name";
@@ -134,9 +136,9 @@ void Benchmark_Controller::finalResultSignalSlot(QString benchmarkName, double f
   emit finalResultSignal(benchmarkName, finalValue);
 }
 
-void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType)
+void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId)
 {
-  emit resultSignal(benchmarkName, key, resultValue, graphType);
+  emit resultSignal(benchmarkName, key, resultValue, graphType, testId);
 }
 
 void Benchmark_Controller::benchmarkCompleteSlot()

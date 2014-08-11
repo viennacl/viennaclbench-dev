@@ -31,7 +31,7 @@ Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   //  finalResultValue = 0;
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
-  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
+  //  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
 }
 
 Benchmark_Copy::Benchmark_Copy(bool precision)
@@ -41,25 +41,17 @@ Benchmark_Copy::Benchmark_Copy(bool precision)
 }
 
 template<typename ScalarType>
-void Benchmark_Copy::run_benchmark()
-{
+void Benchmark_Copy::resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
+                                   viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2){
 
-  Timer timer;
-  double exec_time_return = 0;
-  double exec_time_complete = 0;
-
-  std::vector<ScalarType> std_vec1(BENCHMARK_VECTOR_SIZE);
-  std::vector<ScalarType> std_vec2(BENCHMARK_VECTOR_SIZE);
-  viennacl::vector<ScalarType> vcl_vec1(BENCHMARK_VECTOR_SIZE);
-  viennacl::vector<ScalarType> vcl_vec2(BENCHMARK_VECTOR_SIZE);
-
-  double tempResultValue;
-
-  ///////////// Vector operations /////////////////
+  std_vec1.resize(size);
+  std_vec2.resize(size);
+  vcl_vec1.resize(size);
+  vcl_vec2.resize(size);
 
   std_vec1[0] = 1.0;
   std_vec2[0] = 1.0;
-  for (std::size_t i=1; i<BENCHMARK_VECTOR_SIZE; ++i)
+  for (std::size_t i=1; i<size; ++i)
   {
     std_vec1[i] = std_vec1[i-1] * ScalarType(1.000001);
     std_vec2[i] = std_vec1[i-1] * ScalarType(0.999999);
@@ -70,113 +62,164 @@ void Benchmark_Copy::run_benchmark()
   viennacl::fast_copy(std_vec2, vcl_vec2);
   viennacl::async_copy(std_vec2, vcl_vec1);
   viennacl::backend::finish();
+}
+
+template<typename ScalarType>
+void Benchmark_Copy::run_benchmark()
+{
+  std::vector<ScalarType> std_vec1;
+  std::vector<ScalarType> std_vec2;
+  viennacl::vector<ScalarType> vcl_vec1;
+  viennacl::vector<ScalarType> vcl_vec2;
+
+  Timer timer;
+  double exec_time_return = 0;
+  double exec_time_complete = 0;
+  int testId = 0;
+  double tempResultValue;
+
+  int MAX_BENCHMARK_VECTOR_SIZE = 10000000;
+  int MIN_BENCHMARK_VECTOR_SIZE = 1000000;
+  int INCREMENT_SIZE = 1000000;
+
+  ///////////// Vector operations /////////////////
 
   //
   // Benchmark copy operation:
   //
-  timer.start();
-  viennacl::copy(std_vec1, vcl_vec1);
-  exec_time_return = timer.get();
-  viennacl::backend::finish();
-  exec_time_complete = timer.get();
-  std::cout << " *** viennacl::copy(), host to device ***" << std::endl;
-  std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-  std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
-  tempResultValue = BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
-  emit resultSignal("viennacl::copy(), host to device", BENCHMARK_VECTOR_SIZE, tempResultValue, LINE_GRAPH );
-  //  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  //  finalResultCounter++;
-  testResultHolder.append(tempResultValue);
+
+  //host to device
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+
+    timer.start();
+    viennacl::copy(std_vec1, vcl_vec1);
+    exec_time_return = timer.get();
+    viennacl::backend::finish();
+    exec_time_complete = timer.get();
+
+    std::cout << " *** viennacl::copy(), host to device ***" << std::endl;
+    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
+    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
+    emit resultSignal("viennacl::copy(), host to device", vectorSize, tempResultValue, LINE_GRAPH, testId);
+    testResultHolder.append(tempResultValue);
+  }
+  testId++;
   emit testProgress();
 
-  timer.start();
-  viennacl::copy(vcl_vec1, std_vec1);
-  exec_time_return = timer.get();
-  viennacl::backend::finish();
-  exec_time_complete = timer.get();
-  std::cout << " *** viennacl::copy(), device to host ***" << std::endl;
-  std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-  std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
-  tempResultValue = BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
-  emit resultSignal("viennacl::copy(), device to host", BENCHMARK_VECTOR_SIZE / 10, tempResultValue, LINE_GRAPH );
-  //  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  //  finalResultCounter++;
-  testResultHolder.append(tempResultValue);
+  //device to host
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+
+    timer.start();
+    viennacl::copy(vcl_vec1, std_vec1);
+    exec_time_return = timer.get();
+    viennacl::backend::finish();
+    exec_time_complete = timer.get();
+
+    std::cout << " *** viennacl::copy(), device to host ***" << std::endl;
+    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
+    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
+    emit resultSignal("viennacl::copy(), device to host", vectorSize, tempResultValue, LINE_GRAPH, testId);
+    testResultHolder.append(tempResultValue);
+  }
+  testId++;
   emit testProgress();
 
 
   //
   // Benchmark fast_copy operation:
   //
-  timer.start();
-  viennacl::fast_copy(std_vec1, vcl_vec1);
-  exec_time_return = timer.get();
-  viennacl::backend::finish();
-  exec_time_complete = timer.get();
-  std::cout << " *** viennacl::fast_copy(), host to device ***" << std::endl;
-  std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-  std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
-  tempResultValue = BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
-  emit resultSignal("viennacl::fast_copy(), host to device", BENCHMARK_VECTOR_SIZE / 100, tempResultValue, LINE_GRAPH );
-  //  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  //  finalResultCounter++;
-  testResultHolder.append(tempResultValue);
+
+  //host to device
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+
+    timer.start();
+    viennacl::fast_copy(std_vec1, vcl_vec1);
+    exec_time_return = timer.get();
+    viennacl::backend::finish();
+    exec_time_complete = timer.get();
+
+    std::cout << " *** viennacl::fast_copy(), host to device ***" << std::endl;
+    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
+    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
+    emit resultSignal("viennacl::fast_copy(), host to device", vectorSize, tempResultValue, LINE_GRAPH, testId);
+    testResultHolder.append(tempResultValue);
+  }
+  testId++;
   emit testProgress();
 
-  timer.start();
-  viennacl::fast_copy(vcl_vec1, std_vec1);
-  exec_time_return = timer.get();
-  viennacl::backend::finish();
-  exec_time_complete = timer.get();
-  std::cout << " *** viennacl::fast_copy(), device to host ***" << std::endl;
-  std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-  std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
-  tempResultValue = BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
-  emit resultSignal("viennacl::fast_copy(), device to host", BENCHMARK_VECTOR_SIZE / 1000, tempResultValue, LINE_GRAPH );
-  //  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  //  finalResultCounter++;
-  testResultHolder.append(tempResultValue);
+  //device to host
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+
+    timer.start();
+    viennacl::fast_copy(vcl_vec1, std_vec1);
+    exec_time_return = timer.get();
+    viennacl::backend::finish();
+    exec_time_complete = timer.get();
+
+    std::cout << " *** viennacl::fast_copy(), device to host ***" << std::endl;
+    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
+    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
+    emit resultSignal("viennacl::fast_copy(), device to host", vectorSize, tempResultValue, LINE_GRAPH, testId);
+    testResultHolder.append(tempResultValue);
+  }
+  testId++;
   emit testProgress();
 
   //
   // Benchmark async_copy operation:
   //
-  timer.start();
-  viennacl::async_copy(vcl_vec1, std_vec1);
-  exec_time_return = timer.get();
-  viennacl::backend::finish();
-  exec_time_complete = timer.get();
-  std::cout << " *** viennacl::async_copy(), host to device ***" << std::endl;
-  std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-  std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
-  tempResultValue = BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
-  emit resultSignal("viennacl::async_copy(), host to device", BENCHMARK_VECTOR_SIZE / 2, tempResultValue, LINE_GRAPH );
-  //  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  //  finalResultCounter++;
-  testResultHolder.append(tempResultValue);
+
+  //host to device
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+
+    timer.start();
+    viennacl::async_copy(vcl_vec1, std_vec1);
+    exec_time_return = timer.get();
+    viennacl::backend::finish();
+    exec_time_complete = timer.get();
+
+    std::cout << " *** viennacl::async_copy(), host to device ***" << std::endl;
+    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
+    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
+    emit resultSignal("viennacl::async_copy(), host to device", vectorSize, tempResultValue, LINE_GRAPH, testId);
+    testResultHolder.append(tempResultValue);
+  }
+  testId++;
   emit testProgress();
 
-  timer.start();
-  viennacl::async_copy(vcl_vec1, std_vec1);
-  exec_time_return = timer.get();
-  viennacl::backend::finish();
-  exec_time_complete = timer.get();
-  std::cout << " *** viennacl::async_copy(), device to host ***" << std::endl;
-  std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-  std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
-  tempResultValue = BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
-  emit resultSignal("viennacl::async_copy(), device to host", BENCHMARK_VECTOR_SIZE * 2, tempResultValue, LINE_GRAPH );
-  //  finalResultValue += BENCHMARK_VECTOR_SIZE * sizeof(ScalarType) / exec_time_complete / 1e9;
-  //  finalResultCounter++;
-  testResultHolder.append(tempResultValue);
+  //device to host
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+    timer.start();
+    viennacl::async_copy(vcl_vec1, std_vec1);
+    exec_time_return = timer.get();
+    viennacl::backend::finish();
+    exec_time_complete = timer.get();
+    std::cout << " *** viennacl::async_copy(), device to host ***" << std::endl;
+    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
+    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
+    emit resultSignal("viennacl::async_copy(), device to host", vectorSize, tempResultValue, LINE_GRAPH, testId);
+    testResultHolder.append(tempResultValue);
+  }
+  testId++;
   emit testProgress();
-
 }
 
 void Benchmark_Copy::execute(){

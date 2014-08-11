@@ -59,7 +59,7 @@ public:
   void initHomeScreen();
   void initMatrixMarket();
   void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
-  void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
+  void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
   bool getPrecision();
@@ -84,7 +84,7 @@ private:
 
 public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
-  void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType);
+  void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void updateBenchmarkUnitMeasure(QString unitMeasureName);
   void startBenchmarkExecution();
   void updateBenchmarkListWidget(QListWidgetItem* item);

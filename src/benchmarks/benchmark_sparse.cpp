@@ -45,6 +45,7 @@ void Benchmark_Sparse::run_benchmark()
 {
   Timer timer;
   double exec_time;
+  int testId = 0;
 
   //ScalarType std_result = 0;
 
@@ -105,7 +106,7 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU time align1: " << exec_time << std::endl;
   std::cout << "GPU align1 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align1", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+  emit resultSignal("Matrix-Vector product(compressed_matrix) align1", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
   //  finalResultValue += tempResultValue;
   //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
@@ -123,7 +124,7 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU time align4: " << exec_time << std::endl;
   std::cout << "GPU align4 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align4", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+  emit resultSignal("Matrix-Vector product(compressed_matrix) align4", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
   //  finalResultValue += tempResultValue;
   //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
@@ -140,7 +141,7 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU time align8: " << exec_time << std::endl;
   std::cout << "GPU align8 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align8", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+  emit resultSignal("Matrix-Vector product(compressed_matrix) align8", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
   //  finalResultValue += tempResultValue;
   //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
@@ -161,7 +162,7 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU time: " << exec_time << std::endl;
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
-  emit resultSignal("Matrix-Vector product(coordinate_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+  emit resultSignal("Matrix-Vector product(coordinate_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
   //  finalResultValue += tempResultValue;
   //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
@@ -181,7 +182,7 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU time: " << exec_time << std::endl;
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
-  emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+  emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
   //  finalResultValue += tempResultValue;
   //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
@@ -201,7 +202,7 @@ void Benchmark_Sparse::run_benchmark()
   std::cout << "GPU time: " << exec_time << std::endl;
   std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
   std::cout << vcl_vec1[0] << std::endl;
-  emit resultSignal("Matrix-Vector product(hyb_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH );
+  emit resultSignal("Matrix-Vector product(hyb_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
   //  finalResultValue += tempResultValue;
   //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
