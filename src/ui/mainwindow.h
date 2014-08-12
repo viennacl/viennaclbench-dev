@@ -64,7 +64,6 @@ public:
   void resetAllPlots();
   bool getPrecision();
   void initSystemInfo();
-  void addInfoItem(int row, int col, QTableWidgetItem *item);
   void interconnectViews();
 private:
   Ui::MainWindow *ui;

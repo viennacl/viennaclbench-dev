@@ -72,14 +72,7 @@ void MainWindow::showBenchmarkStartButton(){
   ui->basic_ProgressBar->setFormat("Done");
 }
 
-void MainWindow::addInfoItem(int row, int col, QTableWidgetItem *item){//TODO is this useless?
-  //  ui->systemInfo_TableWidget->setItem(row, col, item);
-}
-
 void MainWindow::initSystemInfo(){
-
-
-  // USING TABLEWIDGET
 #ifdef VIENNACL_WITH_OPENCL
   QHBoxLayout *systemInfoLayout = new QHBoxLayout();
 
@@ -97,7 +90,6 @@ void MainWindow::initSystemInfo(){
 
     if (is_first_element)
     {
-      //      std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
       platformBox->setTitle(platformBox->title()+" (default)");
       is_first_element = false;
     }
@@ -108,14 +100,11 @@ void MainWindow::initSystemInfo(){
     platformSplitter->setOrientation(Qt::Vertical);
     for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
     {
-      //      devicesLayout->addWidget(new QLabel (QString("---Device #" + QString::number(++deviceCounter) )) );
-
       QTableWidget *deviceInfoTable = new QTableWidget();
       deviceInfoTable->setColumnCount(2);
       deviceInfoTable->setRowCount(60);
       deviceInfoTable->verticalHeader()->hide();
       deviceInfoTable->horizontalHeader()->hide();
-
 
       int row = 0;//row index counter
       int cProp = 0;//column property index
@@ -345,18 +334,14 @@ void MainWindow::initSystemInfo(){
       deviceInfoTable->resizeRowsToContents();
       deviceInfoTable->setVerticalScrollMode(QAbstractItemView::ScrollPerItem);
 
-      //      devicesLayout->addWidget( deviceInfoTable );
       platformSplitter->addWidget(deviceInfoTable);
 
     }//---DEVICES---END
     deviceCounter = 0;
-    //    devicesLayout->insertStretch(-1,1); //add a spacer at the end
-    //    platformSplitter->setLayout(devicesLayout);
-    //    platformBox->setLayout(devicesLayout);
-    //    platformSplitter->addWidget(platformBox);
     systemInfoLayout->addWidget(platformSplitter);
 
   }//---PLATFORMS---END
+
   delete ui->systemInfo_Box->layout();
   ui->systemInfo_Box->setLayout(systemInfoLayout);
 #endif
@@ -387,28 +372,19 @@ void MainWindow::quickstartFullBenchmark(){
 }
 
 void MainWindow::initMatrixMarket(){
-  //  QThread *workerThread = new QThread();
-  //  ui->webView->moveToThread(workerThread);
-  //  connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
-  //  workerThread->start();
   //enable cache
   QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
   QWebSettings::globalSettings()->setAttribute(QWebSettings::JavaEnabled, true);
-  QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+  QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);//enable inspect element
   ui->matrixMarket_Widget->webView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
-  //  ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(QDir::homePath());
-  ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(QDir::currentPath());
-  qDebug()<<"Saving web cache in: "<<QDir::currentPath();
+  ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(ArchiveExtractor::getMatrixMarketUserFolder());//save MatrixMarket web cache in its user folder
   ui->matrixMarket_Widget->webView->settings()->setMaximumPagesInCache(10);
   //web page with all matrices contains around 2700 matrices...
   //needs MOAR cache
   ui->matrixMarket_Widget->webView->settings()->setOfflineWebApplicationCacheQuota(22111000);
-  //lead the matrix market web page
-  //  ui->matrixMarket_Widget->webView->load(QUrl("http://www.cise.ufl.edu/research/sparse/matrices/"));
   ui->matrixMarket_Widget->webView->load(QUrl("qrc:///mmFiles/matrixmarket/index.html"));
-  //    ui->matrixMarket_Widget->webView->load(QUrl("http://localhost/MatrixMarket/index.html"));
+  //    ui->matrixMarket_Widget->webView->load(QUrl("http://localhost/MatrixMarket/index.html"));//I connect to my local WAMP server for easier html editing
 
-  //  connect(ui->matrixMarket_Widget->webView, SIGNAL( loadFinished(bool)), this, SLOT(modifyMatrixMarketWeb()) );
   connect(ui->matrixMarket_Widget->webView, SIGNAL(loadProgress(int)), this, SLOT(modifyMatrixMarketWeb()) );
 }
 
@@ -472,8 +448,7 @@ void MainWindow::initHomeScreen(){
 
     if (is_first_element)
     {
-      std::cout << "# ViennaCL uses this OpenCL platform by default." << std::endl;
-      platformBox->setTitle(platformBox->title()+" (default)");
+      platformBox->setTitle(platformBox->title()+" (default)");//TODO remove when device chooser is introduced
       is_first_element = false;
     }
     //---DEVICES---
@@ -890,7 +865,6 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
   else{
     //a graph for this test result already exists
     //add the new data to it
-    qDebug()<<"using existing graph";
     currentResultGraph = customPlot->graph(testId);
   }
 
@@ -914,10 +888,8 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
     break;
   case 8: pen.setColor("pink");
     break;
-  default:    pen.setColor("orange");
+  default: pen.setColor("orange");
   }
-  //  customPlot->addGraph(customPlot->xAxis, customPlot->yAxis);
-
   currentResultGraph->setName(benchmarkName);
   currentResultGraph->addData( key, value );
   currentResultGraph->rescaleAxes(true);
@@ -925,7 +897,6 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
   currentResultGraph->setLineStyle(QCPGraph::lsLine);
   currentResultGraph->setScatterStyle(QCPScatterStyle::ssCrossSquare);
 
-  //  customPlot->addGraph()
   customPlot->rescaleAxes();
 
   customPlot->xAxis->setAutoTicks(true);
@@ -936,71 +907,18 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 
   customPlot->xAxis->setAutoTickLabels(true);
   customPlot->yAxis->setAutoTickLabels(true);
-  //  currentTickVector.append(currentKey);
-  //  currentTickVectorLabels.append(benchmarkName);
-
-  //  customPlot->yAxis->setTickVector(currentTickVector);
-  //  customPlot->yAxis->setTickVectorLabels(currentTickVectorLabels);
-
-  //  customPlot->addPlottable(resultBar);
-
-
-  //  QCPItemText *text = new QCPItemText(customPlot);
-
-  //  //Add a whitespace in front of the result value to separate it from the result bar
-  //  //Prolly could've also used margins, but meh
-  //  //And format the result number to two decimals
-  //  text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
-
-  //  customPlot->addItem(text);
-
-  //  text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  //  text->position->setType(QCPItemPosition::ptPlotCoords);
-  //  text->position->setCoords(  currentValue , currentKey );
-
-  //  QFont textFont;
-  //  textFont.family();
-  //  text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
-
-  //  customPlot->yAxis->setRangeLower(-0.5);
   customPlot->axisRect()->setupFullAxesBox();
   customPlot->replot();
 }
+
 //main result diplay function
 //x and y axis are swapped to achieve horizontal bar display
 void MainWindow::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
-  //  customPlot->yAxis->setAutoTicks(false);
-  //  customPlot->yAxis->setAutoTickLabels(false);
-  //  customPlot->yAxis->setTickLabelRotation(60);
-  //  customPlot->yAxis->setTickVector(ticks);
-  //  customPlot->yAxis->setTickVectorLabels(labels);
-  //  customPlot->yAxis->setSubTickCount(0);
-  //  customPlot->yAxis->setTickLength(0, 2);
-  //  customPlot->yAxis->grid()->setVisible(true);
-  //  customPlot->yAxis->setTickLabelRotation(0);
-
-  //  //increase xAxis scale to fit new result, if necessary
-  //  qDebug()<<"y axis max range"<<customPlot->xAxis->range().upper;
-  //  if(customPlot->xAxis->range().upper<value){
-  //    customPlot->xAxis->setRange(0,value*1.1);
-  //  }
-  //  customPlot->xAxis->setTickStep( ((customPlot->xAxis->range().upper)/1.1)  /10);
-  //  //increase yAxis scale to fit new benchmark result
-  //  qDebug()<<"x axis max range"<<customPlot->yAxis->range().upper;
-  //  if(customPlot->yAxis->range().upper<barCounter){
-  //    customPlot->yAxis->setRange(0,barCounter);
-  //  }
-  //  qDebug()<<"showResult";
-
   QVector<double> currentTickVector = customPlot->yAxis->tickVector();
   QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
 
   double currentValue = value;
-  //  double currentKey = key;
   double currentKey = currentTickVector.size();
-
-  qDebug()<<"current key"<<currentKey;
-  qDebug()<<"current value"<<currentValue;
 
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
   resultBar->setName(benchmarkName);
@@ -1071,20 +989,6 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
     qDebug()<<"Error parsing benchmark name";
   }
 
-  //  QCPItemText *text = new QCPItemText(ui->basicFinalResultPlot);
-  //  ui->basicFinalResultPlot->addItem(text);
-
-  //  qDebug()<<"last key"<<currentKey;
-  //  qDebug()<<"last value"<<currentValue;
-
-  //  //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
-  //  text->position->setType(QCPItemPosition::ptPlotCoords);
-  //  text->position->setCoords(  currentValue , currentKey );
-  //  text->setText(QString::number( currentValue ));
-
-  //  //  text->setFont(QFont(font().family(), 12)); // make font a bit larger
-  //  text->setPen(QPen(Qt::black)); // show black border around text
-
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
   resultBar->setName(benchmarkName);
   resultBar->addData(currentData);
@@ -1109,49 +1013,9 @@ void MainWindow::plotFinalResult(QString benchmarkName, double value, QCustomPlo
 
   customPlot->addItem(text);
 
-  //  qDebug()<<"setting name";
-  //  qDebug()<<"setting data";
-  //  resultBar->setData(ticks, barData );
-  //  qDebug()<<"add set";
-
-  //  double currentValue = barData.last();
-  //  double currentKey = ticks.last();
-
-  //  QCPItemText *text = new QCPItemText(ui->basicFinalResultPlot);
-  //  ui->basicFinalResultPlot->addItem(text);
-
-
-
-
-
-  //  qDebug()<<"setting name";
-  //  qDebug()<<"setting data";
-  //  resultBar->setData(ticks, barData );
-  //  qDebug()<<"add set";
-
-  //  double currentValue = barData.last();
-  //  double currentKey = ticks.last();
-
-  //  QCPItemText *text = new QCPItemText(ui->basicFinalResultPlot);
-  //  ui->basicFinalResultPlot->addItem(text);
-
-  //  qDebug()<<"last key"<<currentKey;
-  //  qDebug()<<"last value"<<currentValue;
-
-  //  //  text->setPositionAlignment(Qt::AlignTop|Qt::AlignHCenter);
-  //  text->position->setType(QCPItemPosition::ptPlotCoords);
-  //  text->position->setCoords(  currentValue , currentKey );
-  //  text->setText(QString::number( currentValue ));
-
-  //  //  text->setFont(QFont(font().family(), 12)); // make font a bit larger
-  //  text->setPen(QPen(Qt::black)); // show black border around text
-
-
   customPlot->xAxis->rescale();
   customPlot->replot();
 }
-
-
 
 MainWindow::~MainWindow()
 {

@@ -27,8 +27,6 @@
 Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  //  finalResultCounter = 0;
-  //  finalResultValue = 0;
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
   //  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
@@ -98,11 +96,7 @@ void Benchmark_Copy::run_benchmark()
     viennacl::backend::finish();
     exec_time_complete = timer.get();
 
-    std::cout << " *** viennacl::copy(), host to device ***" << std::endl;
-    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
     tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
-    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
     emit resultSignal("viennacl::copy(), host to device", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -119,11 +113,7 @@ void Benchmark_Copy::run_benchmark()
     viennacl::backend::finish();
     exec_time_complete = timer.get();
 
-    std::cout << " *** viennacl::copy(), device to host ***" << std::endl;
-    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
     tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
-    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
     emit resultSignal("viennacl::copy(), device to host", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -145,11 +135,7 @@ void Benchmark_Copy::run_benchmark()
     viennacl::backend::finish();
     exec_time_complete = timer.get();
 
-    std::cout << " *** viennacl::fast_copy(), host to device ***" << std::endl;
-    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
     tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
-    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
     emit resultSignal("viennacl::fast_copy(), host to device", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -166,11 +152,7 @@ void Benchmark_Copy::run_benchmark()
     viennacl::backend::finish();
     exec_time_complete = timer.get();
 
-    std::cout << " *** viennacl::fast_copy(), device to host ***" << std::endl;
-    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
     tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
-    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
     emit resultSignal("viennacl::fast_copy(), device to host", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -191,11 +173,7 @@ void Benchmark_Copy::run_benchmark()
     viennacl::backend::finish();
     exec_time_complete = timer.get();
 
-    std::cout << " *** viennacl::async_copy(), host to device ***" << std::endl;
-    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
     tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
-    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
     emit resultSignal("viennacl::async_copy(), host to device", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -210,11 +188,7 @@ void Benchmark_Copy::run_benchmark()
     exec_time_return = timer.get();
     viennacl::backend::finish();
     exec_time_complete = timer.get();
-    std::cout << " *** viennacl::async_copy(), device to host ***" << std::endl;
-    std::cout << "  - Time to function return: " << exec_time_return << std::endl;
-    std::cout << "  - Time to completion: " << exec_time_complete << std::endl;
     tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
-    std::cout << "  - Estimated effective bandwidth: " << tempResultValue << " GB/sec" << std::endl;
     emit resultSignal("viennacl::async_copy(), device to host", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -225,15 +199,6 @@ void Benchmark_Copy::run_benchmark()
 void Benchmark_Copy::execute(){
   emit benchmarkStarted(COPY);
   emit unitMeasureSignal("GB/s");
-  std::cout << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "               Device Info" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-#ifdef VIENNACL_WITH_OPENCL
-  std::cout << "OPENCL IS ENABLED!" << std::endl;
-  std::cout << viennacl::ocl::current_device().info() << std::endl;
-#endif
-
 
 #ifndef NDEBUG
   std::cout << std::endl;
@@ -244,20 +209,9 @@ void Benchmark_Copy::execute(){
   std::cout << std::endl;
 #endif
 
-
-  std::cout << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "## Benchmark :: Vector" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-
   //Single Precision
   if(getPrecision() == SINGLE_PRECISION)
   {
-    std::cout << std::endl;
-    std::cout << "   -------------------------------" << std::endl;
-    std::cout << "   # benchmarking single-precision" << std::endl;
-    std::cout << "   -------------------------------" << std::endl;
     run_benchmark<float>();
   }
 
@@ -269,10 +223,6 @@ void Benchmark_Copy::execute(){
 #endif
       //what if current device does not support double precision?
     {
-      std::cout << std::endl;
-      std::cout << "   -------------------------------" << std::endl;
-      std::cout << "   # benchmarking double-precision" << std::endl;
-      std::cout << "   -------------------------------" << std::endl;
       run_benchmark<double>();
     }
   }

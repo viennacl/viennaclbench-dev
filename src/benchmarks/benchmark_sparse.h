@@ -38,8 +38,6 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 private:
-  //  double finalResultValue;
-  //  int finalResultCounter;
   QVector<double> testResultHolder;
 signals:
   /* Inherited signals:

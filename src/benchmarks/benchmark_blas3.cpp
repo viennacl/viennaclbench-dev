@@ -26,8 +26,6 @@
 Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  //  finalResultCounter = 0;
-  //  finalResultValue = 0;
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
 }
@@ -48,8 +46,7 @@ void Benchmark_Blas3::run_benchmark()
   //
   // Set up some ViennaCL objects
   //
-#ifdef VIENNACL_WITH_OPENCL
-  std::cout << "OPENCL IS ENABLED!" << std::endl;
+#ifdef VIENNACL_WITH_OPENC
   viennacl::ocl::set_context_device_type(0, viennacl::ocl::gpu_tag());
 #endif
 
@@ -92,13 +89,12 @@ void Benchmark_Blas3::run_benchmark()
   std::vector<long> devices(1);
 #endif
 
-  std::cout << " ------ Benchmark 1: Matrix-Matrix product ------ " << std::endl;
+//  std::cout << " ------ Benchmark 1: Matrix-Matrix product ------ " << std::endl;
 
   for (std::size_t i=0; i<devices.size(); ++i)
   {
 #ifdef VIENNACL_WITH_OPENCL
     viennacl::ocl::current_context().switch_device(devices[i]);
-    std::cout << " - Device Name: " << viennacl::ocl::current_device().name() << std::endl;
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
@@ -113,25 +109,20 @@ void Benchmark_Blas3::run_benchmark()
     vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
     viennacl::backend::finish();
     exec_time = timer.get();
-    std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
+
     tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
-    std::cout << std::endl;
     emit resultSignal("Matrix-Matrix product", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
-    //    finalResultValue += tempResultValue;
-    //    finalResultCounter++;
   }
 
-  std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
+//  std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
 
   viennacl::range r(BLAS3_MATRIX_SIZE/4, 3 * BLAS3_MATRIX_SIZE/4);
   for (std::size_t i=0; i<devices.size(); ++i)
   {
 #ifdef VIENNACL_WITH_OPENCL
     viennacl::ocl::current_context().switch_device(devices[i]);
-    std::cout << " - Device Name: " << viennacl::ocl::current_device().name() << std::endl;
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
@@ -146,25 +137,20 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::project(vcl_C, r, r) = viennacl::linalg::prod(viennacl::project(vcl_A, r, r), viennacl::project(vcl_B, r, r));
     viennacl::backend::finish();
     exec_time = timer.get();
-    std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
+
     tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time ;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
-    std::cout << std::endl;
     emit resultSignal("Matrix-Matrix product using ranges", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
-    //    finalResultValue += tempResultValue;
-    //    finalResultCounter++;
   }
 
-  std::cout << " ------ Benchmark 3: Matrix-Matrix product using slices ------ " << std::endl;
+//  std::cout << " ------ Benchmark 3: Matrix-Matrix product using slices ------ " << std::endl;
 
   viennacl::slice s(0, 2, BLAS3_MATRIX_SIZE/2);
   for (std::size_t i=0; i<devices.size(); ++i)
   {
 #ifdef VIENNACL_WITH_OPENCL
     viennacl::ocl::current_context().switch_device(devices[i]);
-    std::cout << " - Device Name: " << viennacl::ocl::current_device().name() << std::endl;
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
@@ -179,25 +165,20 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::project(vcl_C, s, s) = viennacl::linalg::prod(viennacl::project(vcl_A, s, s), viennacl::project(vcl_B, s, s));
     viennacl::backend::finish();
     exec_time = timer.get();
-    std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
+
     tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
-    std::cout << std::endl;
     emit resultSignal("Matrix-Matrix product using slices", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
-    //    finalResultValue += tempResultValue;
-    //    finalResultCounter++;
   }
 
 
-  std::cout << " ------ Benchmark 4: LU factorization ------ " << std::endl;
+//  std::cout << " ------ Benchmark 4: LU factorization ------ " << std::endl;
 
   for (std::size_t i=0; i<devices.size(); ++i)
   {
 #ifdef VIENNACL_WITH_OPENCL
     viennacl::ocl::current_context().switch_device(devices[i]);
-    std::cout << " - Device Name: " << viennacl::ocl::current_device().name() << std::endl;
 #endif
 
     viennacl::fast_copy(&(stl_A[0]),
@@ -209,49 +190,23 @@ void Benchmark_Blas3::run_benchmark()
     viennacl::linalg::lu_factorize(vcl_A);
     viennacl::backend::finish();
     exec_time = timer.get();
-    std::cout << " - Execution time on device (no setup time included): " << exec_time << std::endl;
+
     tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time;
-    std::cout << " - GFLOPs (counting multiply&add as separate operations): " << tempResultValue << std::endl;
-    std::cout << std::endl;
     emit resultSignal("LU factorization", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
-    //    finalResultValue += tempResultValue;
-    //    finalResultCounter++;
   }
 
-  //  return EXIT_SUCCESS;
 }
 
 void Benchmark_Blas3::execute()
 {
   emit benchmarkStarted(BLAS3);
   emit unitMeasureSignal("GFLOPs");
-  std::cout << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "               Device Info" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-
-#ifdef VIENNACL_WITH_OPENCL
-  std::cout << viennacl::ocl::current_device().info() << std::endl;
-  std::cout << "Starting FULL INFO" << std::endl;
-  std::cout << viennacl::ocl::current_device().full_info() << std::endl;
-#endif
-
-
-  std::cout << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "## Benchmark :: Dense Matrix-Matrix product " << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
 
   //Single Precision
   if(getPrecision() == SINGLE_PRECISION)
   {
-    std::cout << std::endl;
-    std::cout << "   -------------------------------" << std::endl;
-    std::cout << "   # benchmarking single-precision" << std::endl;
-    std::cout << "   -------------------------------" << std::endl;
     run_benchmark<float>();
   }
 
@@ -263,15 +218,10 @@ void Benchmark_Blas3::execute()
 #endif
       //what if current device does not support double precision?
     {
-      std::cout << std::endl;
-      std::cout << "   -------------------------------" << std::endl;
-      std::cout << "   # benchmarking double-precision" << std::endl;
-      std::cout << "   -------------------------------" << std::endl;
       run_benchmark<double>();
     }
   }
 
-  //  emit finalResultSignal("Blas3", finalResultValue/finalResultCounter);
   qSort(testResultHolder);//sort test results in ascending order
   emit finalResultSignal("Blas3", testResultHolder[testResultHolder.length()/2]);
   emit benchmarkComplete();

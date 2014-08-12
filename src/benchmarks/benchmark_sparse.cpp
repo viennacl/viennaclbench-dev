@@ -47,8 +47,6 @@ void Benchmark_Sparse::run_benchmark()
   double exec_time;
   int testId = 0;
 
-  //ScalarType std_result = 0;
-
   ScalarType std_factor1 = ScalarType(3.1415);
   ScalarType std_factor2 = ScalarType(42.0);
 
@@ -61,15 +59,13 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::ell_matrix<ScalarType, 1> vcl_ell_matrix_1;
   viennacl::hyb_matrix<ScalarType, 1> vcl_hyb_matrix_1;
 
-  std::cout << "Generating Matrix..." << std::endl;
+//  std::cout << "Generating Matrix..." << std::endl;
 
   viennacl::vcl_size_t xPoints = 50;
   viennacl::vcl_size_t yPoints = 50;
   std::vector< std::map<unsigned int, ScalarType> > stl_A;
   viennacl::tools::sparse_matrix_adapter<ScalarType> adapted_A(stl_A);
   viennacl::tools::generate_fdm_laplace(adapted_A, xPoints, yPoints );
-
-  std::cout << "Done" << std::endl;
 
   // create vectors and fill them with some (arbitrary) scalar values:
   viennacl::vector<ScalarType> vcl_vec1 = viennacl::scalar_vector<ScalarType>(stl_A.size(), 1.0);
@@ -88,12 +84,11 @@ void Benchmark_Sparse::run_benchmark()
 
   double tempResultValue;
 
-  std::cout << "------- Matrix-Vector product with compressed_matrix ----------" << std::endl;
+//  std::cout << "------- Matrix-Vector product with compressed_matrix ----------" << std::endl;
 
   vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_1, vcl_vec2); //startup calculation
   vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_4, vcl_vec2); //startup calculation
   vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_8, vcl_vec2); //startup calculation
-  //std_result = 0.0;
 
   viennacl::backend::finish();
   timer.start();
@@ -103,12 +98,9 @@ void Benchmark_Sparse::run_benchmark()
   }
   viennacl::backend::finish();
   exec_time = timer.get();
-  std::cout << "GPU time align1: " << exec_time << std::endl;
-  std::cout << "GPU align1 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  std::cout << vcl_vec1[0] << std::endl;
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
   emit resultSignal("Matrix-Vector product(compressed_matrix) align1", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
-  //  finalResultValue += tempResultValue;
-  //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -121,12 +113,9 @@ void Benchmark_Sparse::run_benchmark()
   }
   viennacl::backend::finish();
   exec_time = timer.get();
-  std::cout << "GPU time align4: " << exec_time << std::endl;
-  std::cout << "GPU align4 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  std::cout << vcl_vec1[0] << std::endl;
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
   emit resultSignal("Matrix-Vector product(compressed_matrix) align4", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
-  //  finalResultValue += tempResultValue;
-  //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -138,17 +127,15 @@ void Benchmark_Sparse::run_benchmark()
   }
   viennacl::backend::finish();
   exec_time = timer.get();
-  std::cout << "GPU time align8: " << exec_time << std::endl;
-  std::cout << "GPU align8 "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  std::cout << vcl_vec1[0] << std::endl;
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
   emit resultSignal("Matrix-Vector product(compressed_matrix) align8", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
-  //  finalResultValue += tempResultValue;
-  //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
 
-  std::cout << "------- Matrix-Vector product with coordinate_matrix ----------" << std::endl;
+//  std::cout << "------- Matrix-Vector product with coordinate_matrix ----------" << std::endl;
+
   vcl_vec1 = viennacl::linalg::prod(vcl_coordinate_matrix_128, vcl_vec2); //startup calculation
   viennacl::backend::finish();
 
@@ -159,16 +146,14 @@ void Benchmark_Sparse::run_benchmark()
   }
   viennacl::backend::finish();
   exec_time = timer.get();
-  std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  std::cout << vcl_vec1[0] << std::endl;
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
   emit resultSignal("Matrix-Vector product(coordinate_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
-  //  finalResultValue += tempResultValue;
-  //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
-  std::cout << "------- Matrix-Vector product with ell_matrix ----------" << std::endl;
+//  std::cout << "------- Matrix-Vector product with ell_matrix ----------" << std::endl;
+
   vcl_vec1 = viennacl::linalg::prod(vcl_ell_matrix_1, vcl_vec2); //startup calculation
   viennacl::backend::finish();
 
@@ -179,16 +164,14 @@ void Benchmark_Sparse::run_benchmark()
   }
   viennacl::backend::finish();
   exec_time = timer.get();
-  std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  std::cout << vcl_vec1[0] << std::endl;
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
   emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
-  //  finalResultValue += tempResultValue;
-  //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
-  std::cout << "------- Matrix-Vector product with hyb_matrix ----------" << std::endl;
+//  std::cout << "------- Matrix-Vector product with hyb_matrix ----------" << std::endl;
+
   vcl_vec1 = viennacl::linalg::prod(vcl_hyb_matrix_1, vcl_vec2); //startup calculation
   viennacl::backend::finish();
 
@@ -199,12 +182,9 @@ void Benchmark_Sparse::run_benchmark()
   }
   viennacl::backend::finish();
   exec_time = timer.get();
-  std::cout << "GPU time: " << exec_time << std::endl;
-  std::cout << "GPU "; tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-  std::cout << vcl_vec1[0] << std::endl;
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
   emit resultSignal("Matrix-Vector product(hyb_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
-  //  finalResultValue += tempResultValue;
-  //  finalResultCounter++;
   testResultHolder.append(tempResultValue);
   emit testProgress();
 }
@@ -213,26 +193,9 @@ void Benchmark_Sparse::execute()
 {
   emit benchmarkStarted(SPARSE);
   emit unitMeasureSignal("GFLOPs");
-  std::cout << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "               Device Info" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-
-#ifdef VIENNACL_WITH_OPENCL
-  std::cout << viennacl::ocl::current_device().info() << std::endl;
-#endif
-  std::cout << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
-  std::cout << "## Benchmark :: Sparse" << std::endl;
-  std::cout << "----------------------------------------------" << std::endl;
 
   if(getPrecision() == SINGLE_PRECISION)
   {//Single
-    std::cout << std::endl;
-    std::cout << "   -------------------------------" << std::endl;
-    std::cout << "   # benchmarking single-precision" << std::endl;
-    std::cout << "   -------------------------------" << std::endl;
     run_benchmark<float>();
   }
 
@@ -243,10 +206,6 @@ void Benchmark_Sparse::execute()
 #endif
       //what if current device does not support double precision?
     {
-      std::cout << std::endl;
-      std::cout << "   -------------------------------" << std::endl;
-      std::cout << "   # benchmarking double-precision" << std::endl;
-      std::cout << "   -------------------------------" << std::endl;
       run_benchmark<double>();
     }
   }
