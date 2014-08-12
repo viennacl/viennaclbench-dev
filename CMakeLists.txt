@@ -33,6 +33,18 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
+# Disable console window
+#set(QT_USE_QTMAIN TRUE)
+
+
+# Disable console on Windows
+IF(WIN32)
+SET(GUI_TYPE WIN32)
+ENDIF(WIN32)
+# Disable console on Mac
+IF(APPLE)
+SET(GUI_TYPE MACOSX_BUNDLE)
+ENDIF(APPLE)
 
 IF(MINGW)
   add_definitions(-O2 -D_FILE_OFFSET_BITS=64 -fPIC) 
@@ -117,7 +129,7 @@ ELSE()
 qt4_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
 ENDIF()
 
-add_executable(ViennaCL_Benchmark ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
+add_executable(ViennaCL_Benchmark ${GUI_TYPE} ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
 
 # Link Qt
 IF(USE_QT5)# Qt5
@@ -131,5 +143,4 @@ ENDIF()
 
 # Link Zlib and Libarchive
 target_link_libraries(ViennaCL_Benchmark ${archive_static_LIBRARY} ${zlibstatic_LIBRARY})
-
 
