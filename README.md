@@ -45,8 +45,8 @@ Also, make sure your Qt-libraries can be found by the system (see above).
 2. Navigate to external and clone the release version of libarchive (we've seen build problems with the latest master branch): `git clone https://github.com/libarchive/libarchive`<br/>
 -If you are on <b>Windows</b> you'll have to use <b>Libarchive v3.1.2</b> (the latest master build fails on Windows). Navigate to external/libarchive and checkout version 3.1.2: `cd libarchive && git checkout v3.1.2`
 3. Navigate back to external and clone zlib: `git clone https://github.com/madler/zlib`<br/>
-4. Use CMake to build zlib within the project source directory `/projectSourceFolder/external/zlib` and *the same build directory*. Use the CMake GUI, click on 'Configure' twice and then on 'Generate', open the Visual Studio project file and compile the `zlibstatic` target. If you are using MinGW, call `make`.
-  5. Use CMake to build libarchive within the project source directory `/projectSourceFolder/external/zlib` and *the same build directory*. Use CMake GUI to set ZLIB_INCLUDE_DIR to `../external/zlib` and `ZLIB_LIBRARY` to the `zlibstatic.lib` in either `../external/zlib` or one of the subfolders (typically Release or Debug)
+4. Use CMake to build zlib within its own source directory `../external/zlib` *(the build directory is the same as the source directory)*. Use the CMake GUI (if you wish to link zlib <b>statically on Windows</b>, make sure to turn <b>CMAKE_GNUtoMS ON</b>): click on 'Configure' twice and then on 'Generate', open the Visual Studio project file and compile the `zlibstatic` target. If you are using MinGW, call `make`( or `mingw32-make` on Windows ).
+5. Use CMake to build libarchive within its own source directory `../external/libarchive` *(the build directory is the same as the source directory)*. Use CMake GUI (if you wish to link libarchive <b>statically on Windows</b>, make sure to turn <b>CMAKE_GNUtoMS ON</b>): set ZLIB_INCLUDE_DIR to `../external/zlib` and `ZLIB_LIBRARY` to the `zlibstatic.lib` (`libzlib.lib` on Windows) in either `../external/zlib` or one of the subfolders (typically Release or Debug)
   
 
 <h4>Building the GUI</h4>
