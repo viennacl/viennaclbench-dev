@@ -80,10 +80,24 @@ DEPENDPATH += $$OUT_PWD/src/benchmarks
 INCLUDEPATH += .
 DEPENDPATH += .
 
-#Add Libarchive includes and dlls
-INCLUDEPATH += libarchive/include
-DEPENDPATH += libarchive/include
-LIBS += "-L$$PWD/libarchive/bin/" -llibarchive
+#Add Libarchive includes
+INCLUDEPATH += "./external/libarchive/libarchive"
+DEPENDPATH += "./external/libarchive/libarchive"
+
+#Note on adding libs with qmake
+# -l is used to specify a single lib file
+# -L is used to specify a folder containing targeted libs
+# use -L in conjunction with -l to specify multiple lib files within a single folder
+# (e.g. "-LC:/path/to/lib/folder" -lsomelibfile -lsomeotherlibfile )
+
+#Add Libarchive & Zlib dynamically
+#LIBS += "-L$$PWD/external/zlib" -llibzlib #Not needed if libarchive was linked with static zlib
+LIBS += "-L$$PWD/external/libarchive/bin" -llibarchive
+
+#Add Libarchive & Zlib statically
+#LIBS += "-l$$PWD/external/zlib/libzlib.lib"
+#LIBS += "-l$$PWD/external/libarchive/libarchive/libarchive.lib"
+#Of course it doesn't work. Why should it work? It was never meant to work. I don't know why I even try.
 
 #Add ViennaCL include folders
 INCLUDEPATH += "./external/viennacl-dev"
