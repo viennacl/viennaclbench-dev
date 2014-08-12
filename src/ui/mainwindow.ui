@@ -470,83 +470,20 @@ border-top: 1px groove gray;*/
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="basic_BenchmarkTab">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <attribute name="title">
               <string>Basic View</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_2">
-              <item row="1" column="1" rowspan="2" colspan="2">
-               <widget class="QPushButton" name="basic_StartBenchmarkButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>155</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                  <underline>false</underline>
-                  <strikeout>false</strikeout>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton  {
-    border: 2px solid gray;
-margin: 0px;
-    border-radius: 5px;
-}
-QPushButton:hover {
-    border: 2px solid gray;
-margin: 0px;
-color: green;
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
-}
-
-QPushButton:pressed 
-{
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-top: 2px groove gray; 
-color: #404040;
-}</string>
-                </property>
-                <property name="text">
-                 <string>START</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="../../resources/icons.qrc">
-                  <normaloff>:/icons/icons/start.png</normaloff>:/icons/icons/start.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>32</width>
-                  <height>32</height>
-                 </size>
-                </property>
-                <property name="flat">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
+              <item row="1" column="0">
                <widget class="BenchmarkListWidget" name="basic_BenchmarkListWidget">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
@@ -710,86 +647,7 @@ border-top: 2px groove gray;
                 </item>
                </widget>
               </item>
-              <item row="1" column="4" rowspan="2">
-               <widget class="QProgressBar" name="basic_ProgressBar">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QProgressBar  {
-    border: 2px solid gray;
-margin: 0px;
-    border-radius: 5px;
-}
-QPushButton:hover {
-    border: 2px solid gray;
-margin: 0px;
-color: green;
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
-}
-
-QPushButton:pressed 
-{
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-top: 2px groove gray; 
-color: #404040;
-}</string>
-                </property>
-                <property name="maximum">
-                 <number>26</number>
-                </property>
-                <property name="value">
-                 <number>0</number>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="textVisible">
-                 <bool>true</bool>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="invertedAppearance">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="5" rowspan="2">
-               <widget class="QLabel" name="basic_FinalResultLabel">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>13</pointsize>
-                  <weight>50</weight>
-                  <bold>false</bold>
-                  <underline>false</underline>
-                  <strikeout>false</strikeout>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QLabel  {
-    border: 2px solid gray;
-margin: 0px;
-    border-radius: 5px;
-}</string>
-                </property>
-                <property name="text">
-                 <string>Final Result:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1" colspan="5">
+              <item row="1" column="1" colspan="4">
                <widget class="QCustomPlot" name="basic_FinalResultPlot" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
@@ -811,17 +669,7 @@ margin: 0px;
                 </property>
                </widget>
               </item>
-              <item row="3" column="0" colspan="6">
-               <widget class="CollapseWidget" name="basic_CollapseWidget" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0" rowspan="2">
+              <item row="2" column="0">
                <widget class="QGroupBox" name="basic_PrecisionGroupBox">
                 <property name="styleSheet">
                  <string notr="true">QGroupBox
@@ -953,106 +801,8 @@ border-top: 1px groove gray;
                 </layout>
                </widget>
               </item>
-              <item row="1" column="3" rowspan="2">
-               <widget class="QPushButton" name="basic_StopBenchmarkButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>155</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                  <underline>false</underline>
-                  <strikeout>false</strikeout>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton  {
-    border: 2px solid gray;
-margin: 0px;
-    border-radius: 5px;
-}
-QPushButton:hover {
-    border: 2px solid gray;
-margin: 0px;
-color: red;
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
-}
-
-QPushButton:pressed 
-{
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-top: 2px groove gray; 
-color: #404040;
-}</string>
-                </property>
-                <property name="text">
-                 <string>STOP</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="../../resources/icons.qrc">
-                  <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>32</width>
-                  <height>32</height>
-                 </size>
-                </property>
-                <property name="flat">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="expertBenchmarkTab">
-             <attribute name="title">
-              <string>Expert View</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout_15">
-              <item row="0" column="3" colspan="2">
-               <widget class="QCustomPlot" name="expert_FinalResultPlot" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>255</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>255</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
               <item row="2" column="1">
-               <widget class="QPushButton" name="expert_StartBenchmarkButton">
+               <widget class="QPushButton" name="basic_StartBenchmarkButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1121,7 +871,7 @@ color: #404040;
                </widget>
               </item>
               <item row="2" column="2">
-               <widget class="QPushButton" name="expert_StopBenchmarkButton">
+               <widget class="QPushButton" name="basic_StopBenchmarkButton">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1190,7 +940,7 @@ color: #404040;
                </widget>
               </item>
               <item row="2" column="3">
-               <widget class="QProgressBar" name="expert_ProgressBar">
+               <widget class="QProgressBar" name="basic_ProgressBar">
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -1238,152 +988,98 @@ color: #404040;
                 </property>
                </widget>
               </item>
-              <item row="3" column="2">
-               <spacer name="verticalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
+              <item row="2" column="4">
+               <widget class="QLabel" name="basic_FinalResultLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
+                <property name="font">
+                 <font>
+                  <pointsize>13</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                  <underline>false</underline>
+                  <strikeout>false</strikeout>
+                  <kerning>true</kerning>
+                 </font>
                 </property>
-               </spacer>
-              </item>
-              <item row="2" column="0">
-               <widget class="QGroupBox" name="expert_PrecisionGroupBox">
                 <property name="styleSheet">
-                 <string notr="true">QGroupBox
-{
+                 <string notr="true">QLabel  {
     border: 2px solid gray;
+margin: 0px;
     border-radius: 5px;
-    /*margin-top: 1ex; /* leave space at the top for the title */
-}
-/*
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-/*
-}*/
-
-QPushButton 
-{ 
-background: rgba(240,240,240,255);
-
-border-bottom: 1px groove  rgba(240,240,240,255); 
-border-left: 1px groove  rgba(240,240,240,255); 
-border-right: 1px groove  rgba(240,240,240,255); 
-border-top: 1px groove  rgba(240,240,240,255); 
-}
-
-QPushButton:hover
-{ 
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-bottom: 1px groove  rgba(240,240,240,255); 
-border-left: 1px groove  rgba(240,240,240,255); 
-border-right: 1px groove  rgba(240,240,240,255); 
-border-top: 1px groove  rgba(240,240,240,255); 
-}
-QPushButton:checked 
-{ 
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-bottom: 1px groove gray; 
-border-left: 1px groove gray; 
-border-right: 1px groove gray; 
-border-top: 1px groove gray; 
 }</string>
                 </property>
-                <property name="title">
-                 <string/>
+                <property name="text">
+                 <string>Final Result:</string>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="flat">
-                 <bool>false</bool>
-                </property>
-                <property name="checkable">
-                 <bool>false</bool>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_9">
-                 <property name="leftMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>0</number>
-                 </property>
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                 <item row="1" column="0">
-                  <widget class="QPushButton" name="expert_DoubleButton">
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
-                   <property name="text">
-                    <string>Double</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../../resources/icons.qrc">
-                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>false</bool>
-                   </property>
-                   <property name="default">
-                    <bool>true</bool>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QPushButton" name="expert_SingleButton">
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
-                   <property name="text">
-                    <string>Single</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="../../resources/icons.qrc">
-                     <normaloff>:/icons/icons/empty.png</normaloff>:/icons/icons/empty.png</iconset>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                   <property name="checked">
-                    <bool>false</bool>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>false</bool>
-                   </property>
-                   <property name="default">
-                    <bool>true</bool>
-                   </property>
-                   <property name="flat">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
                </widget>
               </item>
-              <item row="0" column="0">
+              <item row="3" column="0" colspan="5">
+               <widget class="CollapseWidget" name="basic_CollapseWidget" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="5">
+               <layout class="QHBoxLayout" name="basic_chooserLayout" stretch="0,4,0,4">
+                <item>
+                 <widget class="QLabel" name="basic_platformsLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Using Platform:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="basic_platformsComboBox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="basic_devicesLabel">
+                  <property name="text">
+                   <string>Using Device:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="basic_devicesComboBox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="expertBenchmarkTab">
+             <attribute name="title">
+              <string>Expert View</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_15">
+              <item row="1" column="0">
                <widget class="BenchmarkListWidget" name="expert_BenchmarkListWidget">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
@@ -1547,7 +1243,287 @@ border-top: 2px groove gray;
                 </item>
                </widget>
               </item>
-              <item row="0" column="1" colspan="2">
+              <item row="2" column="1">
+               <widget class="QPushButton" name="expert_StartBenchmarkButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>155</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                  <underline>false</underline>
+                  <strikeout>false</strikeout>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton  {
+    border: 2px solid gray;
+margin: 0px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    border: 2px solid gray;
+margin: 0px;
+color: green;
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
+    border-radius: 5px;
+}
+
+QPushButton:pressed 
+{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-top: 2px groove gray; 
+color: #404040;
+}</string>
+                </property>
+                <property name="text">
+                 <string>START</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../resources/icons.qrc">
+                  <normaloff>:/icons/icons/start.png</normaloff>:/icons/icons/start.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>32</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2">
+               <spacer name="verticalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="1" column="4" colspan="2">
+               <widget class="QCustomPlot" name="expert_FinalResultPlot" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>255</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>255</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="6">
+               <layout class="QHBoxLayout" name="expert_chooserLayout_" stretch="0,4,0,4">
+                <item>
+                 <widget class="QLabel" name="expert_platformsLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Using Platform:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="expert_platformsComboBox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="expert_devicesLabel">
+                  <property name="text">
+                   <string>Using Device:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="expert_devicesComboBox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="2" column="0">
+               <widget class="QGroupBox" name="expert_PrecisionGroupBox">
+                <property name="styleSheet">
+                 <string notr="true">QGroupBox
+{
+    border: 2px solid gray;
+    border-radius: 5px;
+    /*margin-top: 1ex; /* leave space at the top for the title */
+}
+/*
+QGroupBox::title  {
+     subcontrol-origin: margin;
+     subcontrol-position: top center; /* position at the top center */
+/*
+}*/
+
+QPushButton 
+{ 
+background: rgba(240,240,240,255);
+
+border-bottom: 1px groove  rgba(240,240,240,255); 
+border-left: 1px groove  rgba(240,240,240,255); 
+border-right: 1px groove  rgba(240,240,240,255); 
+border-top: 1px groove  rgba(240,240,240,255); 
+}
+
+QPushButton:hover
+{ 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-bottom: 1px groove  rgba(240,240,240,255); 
+border-left: 1px groove  rgba(240,240,240,255); 
+border-right: 1px groove  rgba(240,240,240,255); 
+border-top: 1px groove  rgba(240,240,240,255); 
+}
+QPushButton:checked 
+{ 
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-bottom: 1px groove gray; 
+border-left: 1px groove gray; 
+border-right: 1px groove gray; 
+border-top: 1px groove gray; 
+}</string>
+                </property>
+                <property name="title">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="flat">
+                 <bool>false</bool>
+                </property>
+                <property name="checkable">
+                 <bool>false</bool>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_9">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="expert_DoubleButton">
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string>Double</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>false</bool>
+                   </property>
+                   <property name="default">
+                    <bool>true</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="expert_SingleButton">
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string>Single</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/empty.png</normaloff>:/icons/icons/empty.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>false</bool>
+                   </property>
+                   <property name="default">
+                    <bool>true</bool>
+                   </property>
+                   <property name="flat">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item row="1" column="1" colspan="3">
                <widget class="QGroupBox" name="groupBox">
                 <property name="title">
                  <string>Benchmark Config</string>
@@ -1782,15 +1758,136 @@ border-top: 2px groove gray;
                 <zorder>userMatrixName</zorder>
                </widget>
               </item>
+              <item row="2" column="4">
+               <widget class="QPushButton" name="expert_StopBenchmarkButton">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>150</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>200</width>
+                  <height>155</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <italic>false</italic>
+                  <bold>true</bold>
+                  <underline>false</underline>
+                  <strikeout>false</strikeout>
+                  <kerning>true</kerning>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton  {
+    border: 2px solid gray;
+margin: 0px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    border: 2px solid gray;
+margin: 0px;
+color: red;
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
+    border-radius: 5px;
+}
+
+QPushButton:pressed 
+{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-top: 2px groove gray; 
+color: #404040;
+}</string>
+                </property>
+                <property name="text">
+                 <string>STOP</string>
+                </property>
+                <property name="icon">
+                 <iconset resource="../../resources/icons.qrc">
+                  <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>32</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="2">
+               <widget class="QProgressBar" name="expert_ProgressBar">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>40</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QProgressBar  {
+    border: 2px solid gray;
+margin: 0px;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    border: 2px solid gray;
+margin: 0px;
+color: green;
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
+    border-radius: 5px;
+}
+
+QPushButton:pressed 
+{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-top: 2px groove gray; 
+color: #404040;
+}</string>
+                </property>
+                <property name="maximum">
+                 <number>26</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="textVisible">
+                 <bool>true</bool>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="invertedAppearance">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
              </layout>
              <zorder>expert_FinalResultPlot</zorder>
              <zorder>expert_PrecisionGroupBox</zorder>
              <zorder>expert_StartBenchmarkButton</zorder>
-             <zorder>expert_StopBenchmarkButton</zorder>
-             <zorder>expert_ProgressBar</zorder>
              <zorder>groupBox</zorder>
              <zorder>expert_BenchmarkListWidget</zorder>
              <zorder>verticalSpacer_2</zorder>
+             <zorder>layoutWidget</zorder>
+             <zorder>expert_DoubleButton</zorder>
+             <zorder>expert_SingleButton</zorder>
+             <zorder>expert_StopBenchmarkButton</zorder>
+             <zorder>expert_ProgressBar</zorder>
             </widget>
            </widget>
           </item>

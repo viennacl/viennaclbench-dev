@@ -2,6 +2,10 @@
 #define ABSTRACTBENCHMARK_H
 
 #include <QObject>
+#include <QString>
+
+#include "viennacl/ocl/device.hpp"
+#include "viennacl/ocl/platform.hpp"
 
 /*
  * Abstract benchmark interface class for easier handling of benchmark classes
@@ -12,6 +16,15 @@ enum{ BLAS3, COPY, SPARSE, VECTOR, QR, SOLVER, SCHEDULER, ALL };//benchmarkIdNum
 enum{ SINGLE_PRECISION, DOUBLE_PRECISION };//benchmark precision
 
 enum{ BAR_GRAPH, LINE_GRAPH };//graph type to be used when plotting test results
+
+struct platformIdMap{
+  cl_platform_id id;
+  QString name;
+};
+struct deviceIdMap{
+  cl_device_id id;
+  QString name;
+};
 
 class AbstractBenchmark : public QObject
 {

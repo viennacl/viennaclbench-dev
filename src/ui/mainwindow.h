@@ -21,6 +21,8 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QSplitter>
+#include <QMap>
+#include <QMultiMap>
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
@@ -65,7 +67,10 @@ public:
   bool getPrecision();
   void initSystemInfo();
   void interconnectViews();
+  void initPlatformDeviceChooser();
 private:
+  QMap<int, platformIdMap> platformMap;
+  QMultiMap<cl_platform_id, deviceIdMap> deviceMap;
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
   int activeBenchmark;
@@ -98,6 +103,7 @@ public slots:
   void showBenchmarkStartButton();
   void graphClicked(QCPAbstractPlottable *plottable);
   void updateBenchProgress();
+  void switchDeviceList(int platformNumber);
 };
 
 #endif // MAINWINDOW_H

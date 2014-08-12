@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
   interconnectViews();
   initMatrixMarket();
   initSystemInfo();
+  initPlatformDeviceChooser();
 
 
   //    Benchmark_Sparse s; //working
@@ -70,6 +71,73 @@ void MainWindow::showBenchmarkStartButton(){
   ui->basic_StopBenchmarkButton->hide();
   ui->basic_StartBenchmarkButton->show();
   ui->basic_ProgressBar->setFormat("Done");
+}
+
+void MainWindow::initPlatformDeviceChooser(){
+  //---PLATFORMS---
+  typedef std::vector< viennacl::ocl::platform > platforms_type;
+  platforms_type platforms = viennacl::ocl::get_platforms();
+  int platformCounter = 0;
+  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
+    platformIdMap pIdMap;
+    pIdMap.id = platform_iter->id();
+    pIdMap.name = QString::fromStdString(platform_iter->info());
+    platformMap.insert(platformCounter, pIdMap);
+
+    //---DEVICES---
+    typedef std::vector<viennacl::ocl::device> devices_type;
+    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
+    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++){
+      deviceIdMap dIdMap;
+      dIdMap.id = iter->id();
+      dIdMap.name = QString::fromStdString(iter->name());
+      deviceMap.insert( platform_iter->id(), dIdMap);
+    }    //END---DEVICES---
+
+    platformCounter++;
+  }  //END---PLATFORMS---
+
+  //add platform & device info to the UI
+  for (int i = 0; i <= platformMap.lastKey(); ++i) {
+//    qDebug()<<"Platform number: "<<i<<" | Platform name: "<<platformMap.value(i).name;
+    ui->basic_platformsComboBox->addItem( platformMap.value(i).name );
+    ui->expert_platformsComboBox->addItem( platformMap.value(i).name );
+  }
+
+  //use 0th platform as the default
+  int defaultPlatform = 0;
+  ui->basic_platformsComboBox->setCurrentIndex(defaultPlatform);
+  ui->expert_platformsComboBox->setCurrentIndex(defaultPlatform);
+
+  //show devices of the default platform
+  QList<deviceIdMap> defaultDevices = deviceMap.values( platformMap.value(defaultPlatform).id );
+  for (int i = 0; i < defaultDevices.size(); ++i){
+    //      cout << values.at(i) << endl;
+//    qDebug()<<"Device number: "<<i<<" | Device name: "<<defaultDevices.at( i ).name;
+    ui->basic_devicesComboBox->addItem( defaultDevices.at( i ).name );
+    ui->expert_devicesComboBox->addItem( defaultDevices.at( i ).name );
+    ui->basic_devicesComboBox->setCurrentIndex(i);
+    ui->expert_devicesComboBox->setCurrentIndex(i);
+  }
+
+  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
+  connect(ui->expert_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->basic_platformsComboBox, SLOT(setCurrentIndex(int)) );
+  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(switchDeviceList(int)) );
+
+
+}
+
+//shows devices for the selected platform
+void MainWindow::switchDeviceList(int platformNumber){
+  ui->basic_devicesComboBox->clear();
+  ui->expert_devicesComboBox->clear();
+  QList<deviceIdMap> devices = deviceMap.values( platformMap.value(platformNumber).id );
+  for (int i = 0; i < devices.size(); ++i){
+    //      cout << values.at(i) << endl;
+//    qDebug()<<"Device number: "<<i<<" | Device name: "<<devices.at( i ).name;
+    ui->basic_devicesComboBox->addItem( devices.at( i ).name );
+    ui->expert_devicesComboBox->addItem( devices.at( i ).name );
+  }
 }
 
 void MainWindow::initSystemInfo(){
@@ -547,7 +615,6 @@ void MainWindow::graphClicked(QCPAbstractPlottable *plottable)
     basic_DetailedPlotTab->setCurrentIndex(VECTOR);
   }
 }
-
 
 void MainWindow::initBasicView(){
   //normalize size of each list menu item
