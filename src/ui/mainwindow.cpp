@@ -145,8 +145,7 @@ void MainWindow::initSystemInfo(){
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->error_correction_support()) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Execution Capabilities:        ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->exec_capabilities_to_string(iter->execution_capabilities())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->exec_capabilities_to_string(iter->execution_capabilities())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Extensions:                    ")) );
       QString extensions = QString::fromStdString( iter->extensions());
@@ -157,8 +156,7 @@ void MainWindow::initSystemInfo(){
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->global_mem_cache_size() ) + QString( " Bytes") ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Global Mem Cache Type:         ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->mem_cache_type_to_string(iter->global_mem_cache_type())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->mem_cache_type_to_string(iter->global_mem_cache_type())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Global Mem Cacheline Size:     ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->global_mem_cacheline_size() ) + QString( " Bytes") ) );
@@ -198,8 +196,7 @@ void MainWindow::initSystemInfo(){
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->local_mem_size() ) + QString( " Bytes") ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Local Mem Type:                ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->local_mem_type_to_string(iter->local_mem_type())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->local_mem_type_to_string(iter->local_mem_type())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Clock Frequency:           ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_clock_frequency() ) + QString( " MHz") ) );
@@ -232,8 +229,7 @@ void MainWindow::initSystemInfo(){
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_work_item_dimensions()) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Work Item Sizes:           ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->convert_to_string(iter->max_work_item_sizes())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->convert_to_string(iter->max_work_item_sizes())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Write Image Args:          ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_write_image_args()) ) );
@@ -286,8 +282,10 @@ void MainWindow::initSystemInfo(){
 #endif
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Platform:                      ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->platform()) ) );
+      /* cl_platform_id conversion complications */
+      std::ostringstream oss;
+      oss << iter->platform();
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( oss.str()) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width char:   ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_char()) ) );
@@ -319,16 +317,13 @@ void MainWindow::initSystemInfo(){
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->profiling_timer_resolution() ) + QString( " ns") ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Queue Properties:              ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->queue_properties_to_string(iter->queue_properties())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->queue_properties_to_string(iter->queue_properties())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Single FP Config:              ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->fp_config_to_string(iter->single_fp_config())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->fp_config_to_string(iter->single_fp_config())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Type:                          ")) );
-      row++;
-      //    deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->device_type_to_string(iter->type())) ) );
+      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->device_type_to_string(iter->type())) ) );
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Vendor:                        ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->vendor()) ) );
@@ -341,7 +336,6 @@ void MainWindow::initSystemInfo(){
 
       deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Driver Version:                ")) );
       deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->driver_version()) ) );
-      //      deviceInfoTable->setRowHeight(5, 200);
       deviceInfoTable->setContextMenuPolicy(Qt::NoContextMenu);
       deviceInfoTable->setSelectionBehavior(QAbstractItemView::SelectItems);
       deviceInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
