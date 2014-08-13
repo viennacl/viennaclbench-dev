@@ -114,7 +114,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align1", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Matrix-Vector product(compressed_matrix) align1", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -129,7 +129,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align4", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Matrix-Vector product(compressed_matrix) align4", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -143,7 +143,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align8", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Matrix-Vector product(compressed_matrix) align8", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -162,7 +162,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(coordinate_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Matrix-Vector product(coordinate_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -180,7 +180,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -198,7 +198,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(hyb_matrix)", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Matrix-Vector product(hyb_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 }
@@ -225,6 +225,6 @@ void Benchmark_Sparse::execute()
   }
 
   qSort(testResultHolder);//sort test results in ascending order
-  emit finalResultSignal("Sparse", testResultHolder[testResultHolder.length()/2]);
+  emit finalResultSignal("Sparse", testResultHolder[testResultHolder.size()/2]);
   emit benchmarkComplete();
 }

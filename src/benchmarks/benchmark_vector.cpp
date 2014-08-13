@@ -333,6 +333,6 @@ void Benchmark_Vector::execute()
   }
 
   qSort(testResultHolder);//sort test results in ascending order
-  emit finalResultSignal("Vector", testResultHolder[testResultHolder.length()/2]);
+  emit finalResultSignal("Vector", testResultHolder[testResultHolder.size()/2]);
   emit benchmarkComplete();
 }
