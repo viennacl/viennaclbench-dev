@@ -94,6 +94,14 @@ void MainWindow::initPlatformDeviceChooser(){
 //      std::cout << "Context "<<contextCounter<<": - Device: "<< iter->name() <<" - Platform: "<<platforms[platformId].info()<<std::endl;
       QString contextName = "[" + QString::number(contextCounter) + "] " + QString::fromStdString(iter->name()) + " | " + QString::fromStdString(platforms[platformId].info());
       contextMap.insert(contextCounter, contextName);
+
+
+      viennacl::ocl::switch_context( contextCounter );
+      std::cout << "contextCounter "<< contextCounter << std::endl;
+      std::cout << "current_context platform_index: "<< viennacl::ocl::current_context().platform_index()<< std::endl;
+//      std::cout << "current_context().handle().get() " << viennacl::ocl::current_context().handle().get() << std::endl;
+
+
       ++contextCounter;
     }
     //END---DEVICES---
@@ -125,7 +133,9 @@ void MainWindow::initPlatformDeviceChooser(){
 //switches viennacl to selected context and displays its devices
 void MainWindow::switchContext(int contextNumber){
   viennacl::ocl::switch_context((long)contextNumber);
-  std::cout << "New context id: "<< contextNumber <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+  std::cout << "Context id: "<< contextNumber <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+  std::cout << "Platform_index: "<< viennacl::ocl::current_context().platform_index()<< std::endl;
+  std::cout << "Device name: "<< viennacl::ocl::current_context().current_device().name()<< std::endl;
 }
 
 void MainWindow::initSystemInfo(){
