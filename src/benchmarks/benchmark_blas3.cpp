@@ -111,7 +111,7 @@ void Benchmark_Blas3::run_benchmark()
     exec_time = timer.get();
 
     tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
-    emit resultSignal("Matrix-Matrix product", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+    emit resultSignal("Matrix-Matrix product", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
   }
@@ -139,7 +139,7 @@ void Benchmark_Blas3::run_benchmark()
     exec_time = timer.get();
 
     tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time ;
-    emit resultSignal("Matrix-Matrix product using ranges", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+    emit resultSignal("Matrix-Matrix product using ranges", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
   }
@@ -167,7 +167,7 @@ void Benchmark_Blas3::run_benchmark()
     exec_time = timer.get();
 
     tempResultValue = 2.0 * (vcl_A.size1() / 2000.0) * (vcl_A.size2() / 2000.0) * (vcl_B.size2() / 2000.0) / exec_time;
-    emit resultSignal("Matrix-Matrix product using slices", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+    emit resultSignal("Matrix-Matrix product using slices", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
   }
@@ -192,7 +192,7 @@ void Benchmark_Blas3::run_benchmark()
     exec_time = timer.get();
 
     tempResultValue = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_A.size2() / 1000.0) / exec_time;
-    emit resultSignal("LU factorization", testResultHolder.length(), tempResultValue, BAR_GRAPH, testId );
+    emit resultSignal("LU factorization", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
     testResultHolder.append(tempResultValue);
     emit testProgress();
   }
@@ -223,6 +223,6 @@ void Benchmark_Blas3::execute()
   }
 
   qSort(testResultHolder);//sort test results in ascending order
-  emit finalResultSignal("Blas3", testResultHolder[testResultHolder.length()/2]);
+  emit finalResultSignal("Blas3", testResultHolder[testResultHolder.size()/2]);
   emit benchmarkComplete();
 }

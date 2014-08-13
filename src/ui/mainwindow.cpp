@@ -98,7 +98,8 @@ void MainWindow::initPlatformDeviceChooser(){
   }  //END---PLATFORMS---
 
   //add platform & device info to the UI
-  for (int i = 0; i <= platformMap.lastKey(); ++i) {
+  int num_platforms = (--platformMap.end()).key();
+  for (int i = 0; i <= num_platforms; ++i) {
 //    qDebug()<<"Platform number: "<<i<<" | Platform name: "<<platformMap.value(i).name;
     ui->basic_platformsComboBox->addItem( platformMap.value(i).name );
     ui->expert_platformsComboBox->addItem( platformMap.value(i).name );
