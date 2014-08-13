@@ -53,7 +53,7 @@ template<typename ScalarType>
 void Benchmark_Sparse::run_benchmark()
 {
   std::cout << "Benchmarking..." << std::endl;
-  std::cout << "Context id: "<< viennacl::ocl::current_context().platform_index()
+  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
             <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
   std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
