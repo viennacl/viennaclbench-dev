@@ -69,8 +69,9 @@ public:
   void interconnectViews();
   void initPlatformDeviceChooser();
 private:
-  QMap<int, platformIdMap> platformMap;
-  QMultiMap<cl_platform_id, deviceIdMap> deviceMap;
+  QMap<int, QString> platformMap;
+  QMultiMap<int, DeviceInfo> deviceMap;
+  QMap<int, QString> contextMap;
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
   int activeBenchmark;
@@ -103,7 +104,7 @@ public slots:
   void showBenchmarkStartButton();
   void graphClicked(QCPAbstractPlottable *plottable);
   void updateBenchProgress();
-  void switchDeviceList(int platformNumber);
+  void switchContext(int contextNumber);
 };
 
 #endif // MAINWINDOW_H

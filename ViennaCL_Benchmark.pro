@@ -106,6 +106,7 @@ INCLUDEPATH += "./external/viennacl-dev"
 #CONFIG += warn_off
 gcc{
     QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
+#    QMAKE_CXXFLAGS += -DVIENNACL_DEBUG_ALL
 #    QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
 

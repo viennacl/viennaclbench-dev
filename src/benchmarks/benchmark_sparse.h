@@ -33,7 +33,8 @@ class Benchmark_Sparse : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Sparse(QObject *parent = 0);
-  Benchmark_Sparse(bool precision);
+  Benchmark_Sparse(bool precision, cl_platform_id platform, cl_device_id device);
+  Benchmark_Sparse(bool precision);//, cl_platform_id platform, cl_device_id device);
 
   template<typename ScalarType>
   void run_benchmark();

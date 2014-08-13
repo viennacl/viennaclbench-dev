@@ -74,70 +74,64 @@ void MainWindow::showBenchmarkStartButton(){
 }
 
 void MainWindow::initPlatformDeviceChooser(){
-  //---PLATFORMS---
   typedef std::vector< viennacl::ocl::platform > platforms_type;
+  typedef std::vector< viennacl::ocl::device > devices_type;
+
+  //Generate contexts
+
+  //---PLATFORMS---
+  long contextCounter = 0;
   platforms_type platforms = viennacl::ocl::get_platforms();
-  int platformCounter = 0;
-  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
-    platformIdMap pIdMap;
-    pIdMap.id = platform_iter->id();
-    pIdMap.name = QString::fromStdString(platform_iter->info());
-    platformMap.insert(platformCounter, pIdMap);
+  for( size_t platformId = 0; platformId < platforms.size() ; ++platformId )
+  {
+    devices_type devices = platforms[platformId].devices(CL_DEVICE_TYPE_ALL);
 
     //---DEVICES---
-    typedef std::vector<viennacl::ocl::device> devices_type;
-    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
+    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
+    {
+      viennacl::ocl::set_context_platform_index( contextCounter, platformId);
+      viennacl::ocl::setup_context(contextCounter, *iter);
+//      std::cout << "Context "<<contextCounter<<": - Device: "<< iter->name() <<" - Platform: "<<platforms[platformId].info()<<std::endl;
+      QString contextName = "[" + QString::number(contextCounter) + "] " + QString::fromStdString(iter->name()) + " | " + QString::fromStdString(platforms[platformId].info());
+      contextMap.insert(contextCounter, contextName);
+      ++contextCounter;
+    }
+    //END---DEVICES---
+
+  }
+  //END---PLATFORMS---
+
+  //Check all generated contexts and their devices
+  for( long i = 0; i<= contextCounter+10; i++){
+    viennacl::ocl::switch_context( i );
+    std::cout << "Context id: "<< i <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+    devices_type devices = viennacl::ocl::current_context().devices();
     for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++){
-      deviceIdMap dIdMap;
-      dIdMap.id = iter->id();
-      dIdMap.name = QString::fromStdString(iter->name());
-      deviceMap.insert( platform_iter->id(), dIdMap);
-    }    //END---DEVICES---
 
-    platformCounter++;
-  }  //END---PLATFORMS---
-
-  //add platform & device info to the UI
-  for (int i = 0; i <= platformMap.lastKey(); ++i) {
-//    qDebug()<<"Platform number: "<<i<<" | Platform name: "<<platformMap.value(i).name;
-    ui->basic_platformsComboBox->addItem( platformMap.value(i).name );
-    ui->expert_platformsComboBox->addItem( platformMap.value(i).name );
+      viennacl::ocl::switch_device(*iter);
+      std::cout << "Context id: "<< i <<" Device name: "<<viennacl::ocl::current_device().name() << std::endl;
+    }
   }
 
-  //use 0th platform as the default
-  int defaultPlatform = 0;
-  ui->basic_platformsComboBox->setCurrentIndex(defaultPlatform);
-  ui->expert_platformsComboBox->setCurrentIndex(defaultPlatform);
-
-  //show devices of the default platform
-  QList<deviceIdMap> defaultDevices = deviceMap.values( platformMap.value(defaultPlatform).id );
-  for (int i = 0; i < defaultDevices.size(); ++i){
-    //      cout << values.at(i) << endl;
-//    qDebug()<<"Device number: "<<i<<" | Device name: "<<defaultDevices.at( i ).name;
-    ui->basic_devicesComboBox->addItem( defaultDevices.at( i ).name );
-    ui->expert_devicesComboBox->addItem( defaultDevices.at( i ).name );
-    ui->basic_devicesComboBox->setCurrentIndex(i);
-    ui->expert_devicesComboBox->setCurrentIndex(i);
+  //Add contexts to the UI
+  for (int i = 0; i <= contextMap.lastKey(); ++i) {
+    qDebug()<< "adding context: "<< contextMap.value(i);
+    ui->basic_contextComboBox->insertItem( i, contextMap.value(i) );
+    ui->expert_contextComboBox->insertItem( i, contextMap.value(i) );
   }
 
-  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
-  connect(ui->expert_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->basic_platformsComboBox, SLOT(setCurrentIndex(int)) );
-  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(switchDeviceList(int)) );
+  //  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
+  //  connect(ui->expert_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->basic_platformsComboBox, SLOT(setCurrentIndex(int)) );
+  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
+  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
 
 
 }
 
-//shows devices for the selected platform
-void MainWindow::switchDeviceList(int platformNumber){
-  ui->basic_devicesComboBox->clear();
-  ui->expert_devicesComboBox->clear();
-  QList<deviceIdMap> devices = deviceMap.values( platformMap.value(platformNumber).id );
-  for (int i = 0; i < devices.size(); ++i){
-    //      cout << values.at(i) << endl;
-//    qDebug()<<"Device number: "<<i<<" | Device name: "<<devices.at( i ).name;
-    ui->basic_devicesComboBox->addItem( devices.at( i ).name );
-    ui->expert_devicesComboBox->addItem( devices.at( i ).name );
-  }
+//switches viennacl to selected context and displays its devices
+void MainWindow::switchContext(int contextNumber){
+  viennacl::ocl::switch_context((long)contextNumber);
+  std::cout << "New context id: "<< contextNumber <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 }
 
 void MainWindow::initSystemInfo(){

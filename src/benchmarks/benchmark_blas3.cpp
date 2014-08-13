@@ -30,10 +30,20 @@ Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   setPrecision(DOUBLE_PRECISION);
 }
 
-Benchmark_Blas3::Benchmark_Blas3(bool precision)
+Benchmark_Blas3::Benchmark_Blas3(bool precision, cl_platform_id platform, cl_device_id device)
 {
   Benchmark_Blas3();
   setPrecision(precision);
+  setPlatform(platform);
+  setDevice(device);
+}
+
+Benchmark_Blas3::Benchmark_Blas3(bool precision)//, cl_platform_id platform, cl_device_id device)
+{
+  Benchmark_Blas3();
+  setPrecision(precision);
+//  setPlatform(platform);
+//  setDevice(device);
 }
 
 template<typename ScalarType>
@@ -46,9 +56,9 @@ void Benchmark_Blas3::run_benchmark()
   //
   // Set up some ViennaCL objects
   //
-#ifdef VIENNACL_WITH_OPENC
-  viennacl::ocl::set_context_device_type(0, viennacl::ocl::gpu_tag());
-#endif
+//#ifdef VIENNACL_WITH_OPENC
+//  viennacl::ocl::set_context_device_type(0, viennacl::ocl::gpu_tag());
+//#endif
 
   //viennacl::ocl::current_context().build_options("-cl-mad-enable -cl-fast-relaxed-math");   //uncomment for additional optimizations
   //viennacl::ocl::current_context().build_options("-cl-opt-disable");                        //uncomment to get poor performance
@@ -96,7 +106,7 @@ void Benchmark_Blas3::run_benchmark()
 #ifdef VIENNACL_WITH_OPENCL
     viennacl::ocl::current_context().switch_device(devices[i]);
 #endif
-
+//viennacl::ocl::set_context_platform_index(id,
     viennacl::fast_copy(&(stl_A[0]),
         &(stl_A[0]) + stl_A.size(),
         vcl_A);
@@ -116,7 +126,7 @@ void Benchmark_Blas3::run_benchmark()
     emit testProgress();
   }
 
-//  std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
+  std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
 
   viennacl::range r(BLAS3_MATRIX_SIZE/4, 3 * BLAS3_MATRIX_SIZE/4);
   for (std::size_t i=0; i<devices.size(); ++i)

@@ -32,10 +32,20 @@ Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   //  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
 }
 
-Benchmark_Copy::Benchmark_Copy(bool precision)
+Benchmark_Copy::Benchmark_Copy(bool precision, cl_platform_id platform, cl_device_id device)
 {
   Benchmark_Copy();
   setPrecision(precision);
+  setPlatform(platform);
+  setDevice(device);
+}
+
+Benchmark_Copy::Benchmark_Copy(bool precision)//, cl_platform_id platform, cl_device_id device)
+{
+  Benchmark_Copy();
+  setPrecision(precision);
+//  setPlatform(platform);
+//  setDevice(device);
 }
 
 template<typename ScalarType>

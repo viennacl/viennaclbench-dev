@@ -1029,9 +1029,9 @@ margin: 0px;
                </widget>
               </item>
               <item row="0" column="0" colspan="5">
-               <layout class="QHBoxLayout" name="basic_chooserLayout" stretch="0,4,0,4">
+               <layout class="QHBoxLayout" name="basic_contextLayout" stretch="0,4">
                 <item>
-                 <widget class="QLabel" name="basic_platformsLabel">
+                 <widget class="QLabel" name="basic_contextLabel">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -1039,29 +1039,12 @@ margin: 0px;
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>Using Platform:</string>
+                   <string>Device | Platform</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="basic_platformsComboBox">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="basic_devicesLabel">
-                  <property name="text">
-                   <string>Using Device:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="basic_devicesComboBox">
+                 <widget class="QComboBox" name="basic_contextComboBox">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -1348,9 +1331,9 @@ color: #404040;
                </widget>
               </item>
               <item row="0" column="0" colspan="6">
-               <layout class="QHBoxLayout" name="expert_chooserLayout_" stretch="0,4,0,4">
+               <layout class="QHBoxLayout" name="expert_contextLayout" stretch="0,4">
                 <item>
-                 <widget class="QLabel" name="expert_platformsLabel">
+                 <widget class="QLabel" name="expert_contextLabel">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -1358,29 +1341,12 @@ color: #404040;
                    </sizepolicy>
                   </property>
                   <property name="text">
-                   <string>Using Platform:</string>
+                   <string>Device | Platform</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="expert_platformsComboBox">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="expert_devicesLabel">
-                  <property name="text">
-                   <string>Using Device:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="expert_devicesComboBox">
+                 <widget class="QComboBox" name="expert_contextComboBox">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -1883,9 +1849,6 @@ color: #404040;
              <zorder>groupBox</zorder>
              <zorder>expert_BenchmarkListWidget</zorder>
              <zorder>verticalSpacer_2</zorder>
-             <zorder>layoutWidget</zorder>
-             <zorder>expert_DoubleButton</zorder>
-             <zorder>expert_SingleButton</zorder>
              <zorder>expert_StopBenchmarkButton</zorder>
              <zorder>expert_ProgressBar</zorder>
             </widget>

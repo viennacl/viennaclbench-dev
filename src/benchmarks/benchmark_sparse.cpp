@@ -34,15 +34,29 @@ Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   setPrecision(DOUBLE_PRECISION);
 }
 
-Benchmark_Sparse::Benchmark_Sparse(bool precision)
+Benchmark_Sparse::Benchmark_Sparse(bool precision, cl_platform_id platform, cl_device_id device)
 {
   Benchmark_Sparse();
   setPrecision(precision);
+  setPlatform(platform);
+  setDevice(device);
+}
+Benchmark_Sparse::Benchmark_Sparse(bool precision)//, cl_platform_id platform, cl_device_id device)
+{
+  Benchmark_Sparse();
+  setPrecision(precision);
+//  setPlatform(platform);
+//  setDevice(device);
 }
 
 template<typename ScalarType>
 void Benchmark_Sparse::run_benchmark()
 {
+  std::cout << "Benchmarking..." << std::endl;
+  std::cout << "Context id: "<< viennacl::ocl::current_context().platform_index()
+            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+
+  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
   Timer timer;
   double exec_time;
   int testId = 0;

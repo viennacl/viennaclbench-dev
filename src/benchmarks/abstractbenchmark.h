@@ -17,12 +17,14 @@ enum{ SINGLE_PRECISION, DOUBLE_PRECISION };//benchmark precision
 
 enum{ BAR_GRAPH, LINE_GRAPH };//graph type to be used when plotting test results
 
-struct platformIdMap{
-  cl_platform_id id;
-  QString name;
-};
-struct deviceIdMap{
-  cl_device_id id;
+//struct PlatformIdMap{
+//  cl_platform_id id;
+//  long id;
+//  QString name;
+//};
+struct DeviceInfo{
+//  cl_device_id id;
+  int id;
   QString name;
 };
 
@@ -33,6 +35,8 @@ public:
   explicit AbstractBenchmark(QObject *parent = 0);
 private:
   bool precision;
+  cl_platform_id platform;
+  cl_device_id device;
 signals:
   void benchmarkStarted(int benchmarkIdNumber);
   void finalResultSignal(QString benchmarkName, double finalValue);
@@ -41,6 +45,8 @@ signals:
   void unitMeasureSignal(QString unitMeasureName);
   void testProgress();
 public slots:
+  void setPlatform(cl_platform_id);
+  void setDevice(cl_device_id);
   void setPrecision(bool p);
   bool getPrecision();
   virtual void execute() = 0;
