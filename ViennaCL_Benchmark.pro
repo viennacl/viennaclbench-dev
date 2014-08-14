@@ -31,7 +31,9 @@ SOURCES += src/main.cpp \
     src/ui/collapsewidget.cpp \
     src/ui/matrixmarket_webview.cpp \
     src/ui/splashscreen.cpp \
-    src/ui/matrixmarket_widget.cpp
+    src/ui/matrixmarket_widget.cpp \
+    src/benchmark_model.cpp \
+    src/benchmarkinstance.cpp
 
 HEADERS  +=    src/benchmark_controller.h \
     src/archiveextractor.h \
@@ -53,7 +55,9 @@ HEADERS  +=    src/benchmark_controller.h \
     src/ui/collapsewidget.h \
     src/ui/matrixmarket_webview.h \
     src/ui/splashscreen.h \
-    src/ui/matrixmarket_widget.h
+    src/ui/matrixmarket_widget.h \
+    src/benchmark_model.h \
+    src/benchmarkinstance.h
 
 FORMS    += src/ui/mainwindow.ui \
     src/ui/collapsewidget.ui \
