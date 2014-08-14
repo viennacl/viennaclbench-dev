@@ -69,8 +69,6 @@ public:
   void interconnectViews();
   void initPlatformDeviceChooser();
 private:
-  QMap<int, QString> platformMap;
-  QMultiMap<int, DeviceInfo> deviceMap;
   QMap<int, QString> contextMap;
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;

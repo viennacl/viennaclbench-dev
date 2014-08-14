@@ -35,8 +35,7 @@ class Benchmark_Copy : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Copy(QObject *parent = 0);
-  Benchmark_Copy(bool precision, cl_platform_id platform, cl_device_id device);
-  Benchmark_Copy(bool precision);//, cl_platform_id platform, cl_device_id device);
+  Benchmark_Copy(bool precision);
 
   template<typename ScalarType>
   void run_benchmark();
@@ -55,6 +54,7 @@ signals:
    * void resultSignal(QString benchmarkName, double bandwidthValue);
    * void benchmarkComplete();
    * void unitMeasureSignal(QString unitMeasureName);
+   * void testProgress();
    * */
 public slots:
   void execute();

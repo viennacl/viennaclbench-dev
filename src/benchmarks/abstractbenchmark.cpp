@@ -5,16 +5,6 @@ AbstractBenchmark::AbstractBenchmark(QObject *parent) :
 {
 }
 
-void AbstractBenchmark::setPlatform(cl_platform_id)
-{
-
-}
-
-void AbstractBenchmark::setDevice(cl_device_id)
-{
-
-}
-
 void AbstractBenchmark::setPrecision(bool p)
 {
   this->precision = p;

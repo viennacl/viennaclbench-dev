@@ -30,20 +30,10 @@ Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   setPrecision(DOUBLE_PRECISION);
 }
 
-Benchmark_Blas3::Benchmark_Blas3(bool precision, cl_platform_id platform, cl_device_id device)
-{
-  Benchmark_Blas3();
-  setPrecision(precision);
-  setPlatform(platform);
-  setDevice(device);
-}
-
 Benchmark_Blas3::Benchmark_Blas3(bool precision)//, cl_platform_id platform, cl_device_id device)
 {
   Benchmark_Blas3();
   setPrecision(precision);
-  //  setPlatform(platform);
-  //  setDevice(device);
 }
 
 template<typename ScalarType>

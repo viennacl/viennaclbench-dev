@@ -30,20 +30,10 @@ Benchmark_Vector::Benchmark_Vector(QObject *parent) :
   setPrecision(DOUBLE_PRECISION);
 }
 
-Benchmark_Vector::Benchmark_Vector(bool precision, cl_platform_id platform, cl_device_id device)
+Benchmark_Vector::Benchmark_Vector(bool precision)
 {
   Benchmark_Vector();
   setPrecision(precision);
-  setPlatform(platform);
-  setDevice(device);
-}
-
-Benchmark_Vector::Benchmark_Vector(bool precision)//, cl_platform_id platform, cl_device_id device)
-{
-  Benchmark_Vector();
-  setPrecision(precision);
-//  setPlatform(platform);
-//  setDevice(device);
 }
 
 template<typename ScalarType>
