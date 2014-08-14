@@ -121,8 +121,8 @@ void MainWindow::initPlatformDeviceChooser(){
 
   //  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
   //  connect(ui->expert_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->basic_platformsComboBox, SLOT(setCurrentIndex(int)) );
-  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
-  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
+//  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
+//  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
 
 
 }
@@ -841,7 +841,9 @@ void MainWindow::startBenchmarkExecution(){
 
   ui->basic_StopBenchmarkButton->show();
   ui->basic_StartBenchmarkButton->hide();
-  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, getPrecision() );
+
+  switchContext( ui->basic_contextComboBox->currentIndex() );//switch to currently selected context
+  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, getPrecision() );//start the benchmark
 }
 
 void MainWindow::updateBenchmarkListWidget(QListWidgetItem *item)
