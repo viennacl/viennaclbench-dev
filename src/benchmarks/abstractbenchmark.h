@@ -21,8 +21,6 @@ public:
   explicit AbstractBenchmark(QObject *parent = 0);
 private:
   bool precision;
-  cl_platform_id platform;
-  cl_device_id device;
 signals:
   void benchmarkStarted(int benchmarkIdNumber);
   void finalResultSignal(QString benchmarkName, double finalValue);
