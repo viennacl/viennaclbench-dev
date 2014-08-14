@@ -281,10 +281,13 @@ QGroupBox::title  {
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Welcome to ViennaCL Benchmark GUI. 
-This program uses the ViennaCL computing library to benchmark the performance of your GPU.
-ViennaCL is a free open-source linear algebra library for computations on many-core architectures (GPUs, MIC) and multi-core CPUs.
-The library is written in C++ and supports CUDA, OpenCL, and OpenMP.</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to ViennaCL Benchmark GUI. &lt;br/&gt;This program uses the ViennaCL computing library to benchmark the performance of your GPU.&lt;br/&gt;&lt;a href=&quot;http://viennacl.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ViennaCL&lt;/span&gt;&lt;/a&gt; is a free open-source linear algebra library for computations on many-core architectures (GPUs, MIC) and multi-core CPUs.&lt;br/&gt;The library is written in C++ and supports CUDA, OpenCL, and OpenMP.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::RichText</enum>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -480,7 +483,7 @@ border-top: 1px groove gray;*/
               </sizepolicy>
              </property>
              <attribute name="title">
-              <string>Basic View</string>
+              <string>Basic</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_2">
               <item row="1" column="0">
@@ -1059,7 +1062,7 @@ margin: 0px;
             </widget>
             <widget class="QWidget" name="expertBenchmarkTab">
              <attribute name="title">
-              <string>Expert View</string>
+              <string>Expert</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout_15">
               <item row="1" column="0">
