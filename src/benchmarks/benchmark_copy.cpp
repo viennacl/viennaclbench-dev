@@ -80,6 +80,12 @@ void Benchmark_Copy::run_benchmark()
   viennacl::vector<ScalarType> vcl_vec1;
   viennacl::vector<ScalarType> vcl_vec2;
 
+  std::cout << "Benchmarking..." << std::endl;
+  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
+            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+
+  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
+
   Timer timer;
   double exec_time_return = 0;
   double exec_time_complete = 0;

@@ -28,8 +28,6 @@
 Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   AbstractBenchmark(parent)
 {
-  //  finalResultCounter = 0;
-  //  finalResultValue = 0;
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
 }
@@ -75,8 +73,8 @@ void Benchmark_Sparse::run_benchmark()
 
 //  std::cout << "Generating Matrix..." << std::endl;
 
-  viennacl::vcl_size_t xPoints = 50;
-  viennacl::vcl_size_t yPoints = 50;
+  viennacl::vcl_size_t xPoints = 150;
+  viennacl::vcl_size_t yPoints = 150;
   std::vector< std::map<unsigned int, ScalarType> > stl_A;
   viennacl::tools::sparse_matrix_adapter<ScalarType> adapted_A(stl_A);
   viennacl::tools::generate_fdm_laplace(adapted_A, xPoints, yPoints );

@@ -110,7 +110,7 @@ void MainWindow::initPlatformDeviceChooser(){
   //END---PLATFORMS---
 
   //Check all generated contexts and their devices
-  for( long i = 0; i<= contextCounter+10; i++){
+  for( long i = 0; i<= contextCounter; i++){
     viennacl::ocl::switch_context( i );
     std::cout << "Context id: "<< i <<" Context value: " << viennacl::ocl::current_context().handle().get() << "Device name: "<<viennacl::ocl::current_device().name() << std::endl;
   }

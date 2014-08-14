@@ -76,6 +76,11 @@ void Benchmark_Vector::run_benchmark()
   Timer timer;
   double exec_time;
 
+  std::cout << "Benchmarking..." << std::endl;
+  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
+            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+
+  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
 
   int MAX_BENCHMARK_VECTOR_SIZE = 15000000;
   int MIN_BENCHMARK_VECTOR_SIZE = 1000000;
