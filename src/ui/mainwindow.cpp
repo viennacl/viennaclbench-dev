@@ -89,18 +89,16 @@ void MainWindow::initPlatformDeviceChooser(){
     //---DEVICES---
     for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
     {
+      //Setup contexts; one context per each device/platform combo
       viennacl::ocl::set_context_platform_index( contextCounter, platformId);
       viennacl::ocl::setup_context(contextCounter, *iter);
-//      std::cout << "Context "<<contextCounter<<": - Device: "<< iter->name() <<" - Platform: "<<platforms[platformId].info()<<std::endl;
-      QString contextName = "[" + QString::number(contextCounter) + "] " + QString::fromStdString(iter->name()) + " | " + QString::fromStdString(platforms[platformId].info());
-      contextMap.insert(contextCounter, contextName);
 
-
-      viennacl::ocl::switch_context( contextCounter );
-      std::cout << "contextCounter "<< contextCounter << std::endl;
-      std::cout << "current_context platform_index: "<< viennacl::ocl::current_context().platform_index()<< std::endl;
-//      std::cout << "current_context().handle().get() " << viennacl::ocl::current_context().handle().get() << std::endl;
-
+      //Construct a context info string to be shown in the UI
+      QString contextInfo = "[" + QString::number(contextCounter) +
+                            "] " + QString::fromStdString(iter->name()) +
+                            " | " + QString::fromStdString(platforms[platformId].info());
+      //Keep track of this context
+      contextMap.insert(contextCounter, contextInfo);
 
       ++contextCounter;
     }
@@ -110,14 +108,13 @@ void MainWindow::initPlatformDeviceChooser(){
   //END---PLATFORMS---
 
   //Check all generated contexts and their devices
-  for( long i = 0; i<= contextCounter; i++){
+  for( long i = 0; i< contextCounter; i++){
     viennacl::ocl::switch_context( i );
-    std::cout << "Context id: "<< i <<" Context value: " << viennacl::ocl::current_context().handle().get() << "Device name: "<<viennacl::ocl::current_device().name() << std::endl;
+    std::cout << "Context id: "<< i <<" Context value: " << viennacl::ocl::current_context().handle().get() << " Device name: "<<viennacl::ocl::current_device().name() << std::endl;
   }
 
   //Add contexts to the UI
   for (int i = 0; i <= contextMap.lastKey(); ++i) {
-    qDebug()<< "adding context: "<< contextMap.value(i);
     ui->basic_contextComboBox->insertItem( i, contextMap.value(i) );
     ui->expert_contextComboBox->insertItem( i, contextMap.value(i) );
   }
