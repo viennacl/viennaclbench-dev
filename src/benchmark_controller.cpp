@@ -13,7 +13,7 @@ Benchmark_Controller::Benchmark_Controller(QObject *parent) :
 
 //Starts execution of a new benchmark test in a separate thread
 void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
-  qDebug()<<"Creating Benchmark Thread Object";
+//  qDebug()<<"Creating Benchmark Thread Object";
   QThread *workerThread = new QThread();
   currentBenchmarkThread = workerThread;
   benchmark->moveToThread(workerThread);
@@ -40,7 +40,7 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
 }
 
 void Benchmark_Controller::workerFinishedSlot(){
-  qDebug()<<"worker thread finished";
+//  qDebug()<<"worker thread finished";
 }
 
 void Benchmark_Controller::enqueueBenchmarks(QStringList benchmarkNamesList){
@@ -77,7 +77,7 @@ void Benchmark_Controller::startNextBenchmark(){
     QString nextBenchmarkName;
     nextBenchmarkName = benchmarkQ.dequeue();
 
-    qDebug()<<"String Next benchmark: "<<nextBenchmarkName;
+//    qDebug()<<"String Next benchmark: "<<nextBenchmarkName;
     if(nextBenchmarkName == "Blas3"){
       createBenchmark(new Benchmark_Blas3( getPrecision() ));
     }
@@ -104,7 +104,7 @@ void Benchmark_Controller::startNextBenchmark(){
     }
   }
   else{
-    qDebug()<<"Benchmark queue is empty";
+//    qDebug()<<"Benchmark queue is empty";
     emit emptyBenchmarkQ(); //no more benchmarks to run
   }
 }
@@ -143,7 +143,7 @@ void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double key, d
 
 void Benchmark_Controller::benchmarkCompleteSlot()
 {
-  qDebug()<<"A benchmark has been completed;";
+//  qDebug()<<"A benchmark has been completed;";
   emit benchmarkComplete();
 }
 
