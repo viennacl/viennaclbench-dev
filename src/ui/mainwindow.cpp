@@ -95,8 +95,8 @@ void MainWindow::initPlatformDeviceChooser(){
 
       //Construct a context info string to be shown in the UI
       QString contextInfo = "[" + QString::number(contextCounter) +
-                            "] " + QString::fromStdString(iter->name()) +
-                            " | " + QString::fromStdString(platforms[platformId].info());
+          "] " + QString::fromStdString(iter->name()) +
+          " | " + QString::fromStdString(platforms[platformId].info());
       //Keep track of this context
       contextMap.insert(contextCounter, contextInfo);
 
@@ -121,8 +121,8 @@ void MainWindow::initPlatformDeviceChooser(){
 
   //  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
   //  connect(ui->expert_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->basic_platformsComboBox, SLOT(setCurrentIndex(int)) );
-//  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
-//  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
+  //  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
+  //  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
 
 
 }
@@ -511,7 +511,7 @@ void MainWindow::initHomeScreen(){
 
     if (is_first_element)
     {
-      platformBox->setTitle(platformBox->title()+" (default)");//TODO remove when device chooser is introduced
+      platformBox->setTitle(platformBox->title());
       is_first_element = false;
     }
     //---DEVICES---
@@ -656,6 +656,9 @@ void MainWindow::initBasicView(){
     // connect slot that shows a message in the status bar when a graph is clicked:
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
+    //    plot->axisRect()->setAutoMargins(QCP::msNone);
+    //    plot->axisRect()->setMargins(QMargins( 0, 0, 50, 0 ));
+
     plot->axisRect()->setupFullAxesBox();
     //Disable secondary axes
     plot->yAxis2->setVisible(false);
@@ -687,7 +690,7 @@ void MainWindow::initBasicView(){
 
 
   ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 50, 40 ));
+  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
   ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
   //Disable secondary axes & legend
   ui->basic_FinalResultPlot->yAxis2->setVisible(false);
@@ -915,6 +918,60 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
   customPlot->legend->setVisible(true);
   customPlot->legend->setFont(QFont("Helvetica", 9));
   customPlot->legend->setRowSpacing(-3);
+  //todo
+  customPlot->xAxis->grid()->setSubGridVisible(true);
+  customPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+  customPlot->xAxis->setScaleLogBase(10);
+  customPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
+  customPlot->xAxis->setNumberPrecision(0);
+  //  customPlot->xAxis->setAutoTicks(false);
+  //  customPlot->xAxis->setAutoTickLabels(false);
+  //  customPlot->xAxis->setAutoTickStep(false);
+
+  //    customPlot->xAxis->setAutoTickLabels(true);
+  //    customPlot->xAxis->setAutoTicks(true);
+  //    customPlot->xAxis->setAutoTickStep(true);
+
+
+  customPlot->xAxis->setAutoSubTicks(true);
+  customPlot->xAxis->setSubTickCount( 2 );
+
+  customPlot->xAxis->setAutoTicks(true);
+  customPlot->yAxis->setAutoTicks(true);
+
+  customPlot->xAxis->setAutoTickStep(true);
+  customPlot->yAxis->setAutoTickStep(true);
+
+  customPlot->xAxis->setAutoTickLabels(true);
+  customPlot->yAxis->setAutoTickLabels(true);
+
+  //  QVector<double> ticks;
+  //  ticks.append(0.5);
+  //  ticks.append(1);
+  //  ticks.append(5);
+  //  ticks.append(10);
+  //  ticks.append(20);
+  //  ticks.append(50);
+  //  ticks.append(100);
+  //  ticks.append(200);
+  //  ticks.append(500);
+  //  ticks.append(1000);
+  //  ticks.append(2000);
+  //  plot->xAxis->setTickVector(ticks);
+
+  //  QVector<QString> tickLabels;
+  //  tickLabels.append("0.5");
+  //  tickLabels.append("1");
+  //  tickLabels.append("5");
+  //  tickLabels.append("10");
+  //  tickLabels.append("20");
+  //  tickLabels.append("50");
+  //  tickLabels.append("100");
+  //  tickLabels.append("200");
+  //  tickLabels.append("500");
+  //  tickLabels.append("1000");
+  //  tickLabels.append("2000");
+  //  plot->xAxis->setTickVectorLabels(tickLabels);
 
   QVector<double> keys, values;
 
@@ -963,14 +1020,6 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 
   customPlot->rescaleAxes();
 
-  customPlot->xAxis->setAutoTicks(true);
-  customPlot->yAxis->setAutoTicks(true);
-
-  customPlot->xAxis->setAutoTickStep(true);
-  customPlot->yAxis->setAutoTickStep(true);
-
-  customPlot->xAxis->setAutoTickLabels(true);
-  customPlot->yAxis->setAutoTickLabels(true);
   customPlot->axisRect()->setupFullAxesBox();
   customPlot->replot();
 }
@@ -978,6 +1027,11 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 //main result diplay function
 //x and y axis are swapped to achieve horizontal bar display
 void MainWindow::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+  customPlot->axisRect()->setAutoMargins(QCP::msLeft);
+  QMargins margins = customPlot->axisRect()->margins();
+  margins.setRight(60);
+
+  customPlot->axisRect()->setMargins( margins );
   QVector<double> currentTickVector = customPlot->yAxis->tickVector();
   QVector<QString> currentTickVectorLabels =  customPlot->yAxis->tickVectorLabels();
 
@@ -985,6 +1039,7 @@ void MainWindow::plotBarResult(QString benchmarkName, double key, double value, 
   double currentKey = currentTickVector.size();
 
   QCPBars *resultBar = new QCPBars(customPlot->yAxis, customPlot->xAxis);
+  resultBar->setPen(QPen(Qt::NoPen));
   resultBar->setName(benchmarkName);
   resultBar->addData(currentKey, currentValue);
 
@@ -1000,16 +1055,20 @@ void MainWindow::plotBarResult(QString benchmarkName, double key, double value, 
 
   QCPItemText *text = new QCPItemText(customPlot);
 
+  text->setClipToAxisRect(false);//allow this item to flow over the main plot rectangle, hence showing it when it can't fit the plot rectangle
+
+  text->position->setType(QCPItemPosition::ptPlotCoords);
+  text->position->setCoords(  currentValue , currentKey );
+  text->setFont(QFont(font().family(), 10, QFont::Bold)); // make font a bit larger
+
   //Add a whitespace in front of the result value to separate it from the result bar
   //Prolly could've also used margins, but meh
   //And format the result number to two decimals
   text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
 
-  customPlot->addItem(text);
-
   text->setPositionAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  text->position->setType(QCPItemPosition::ptPlotCoords);
-  text->position->setCoords(  currentValue , currentKey );
+
+  customPlot->addItem(text);
 
   QFont textFont;
   textFont.family();
