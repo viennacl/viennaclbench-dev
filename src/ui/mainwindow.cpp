@@ -655,7 +655,8 @@ void MainWindow::initBasicView(){
 
     // connect slot that shows a message in the status bar when a graph is clicked:
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
-
+    connect(plot, SIGNAL(legendClick(QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*)),
+            this, SLOT(legendClicked(QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*)) );
     //    plot->axisRect()->setAutoMargins(QCP::msNone);
     //    plot->axisRect()->setMargins(QMargins( 0, 0, 50, 0 ));
 
@@ -666,6 +667,7 @@ void MainWindow::initBasicView(){
 
     plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom);
     plot->legend->setVisible(false);
+
 
     plot->yAxis->setTickLength( 0, 2);
     plot->yAxis->grid()->setVisible(true);
@@ -782,6 +784,11 @@ void MainWindow::initBasicView(){
   for ( int i = 0; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
     ui->basic_BenchmarkListWidget->item(i)->setSelected(true);
   }
+}
+
+void MainWindow::legendClicked(QCPLegend* legend,QCPAbstractLegendItem* item,QMouseEvent* event){
+  qDebug()<<"legend item clicked";
+  //item->
 }
 
 void MainWindow::interconnectViews(){
@@ -928,9 +935,15 @@ void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double 
 
 void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
   //    qDebug()<<benchmarkName<< " key "<<key<<" value "<<value;
-  customPlot->legend->setVisible(true);
+  //    plot->plotLayout()->addElement(1, 0, plot->axisRect());
+  if(customPlot->legend->visible() == false){
+    customPlot->plotLayout()->addElement(0,1, customPlot->legend);
+    customPlot->legend->setVisible(true);
+    customPlot->legend->setMaximumSize( 150, QWIDGETSIZE_MAX);
+  }
   customPlot->legend->setFont(QFont("Helvetica", 9));
   customPlot->legend->setRowSpacing(-3);
+  //  customPlot->legend->
 
   customPlot->xAxis->setAutoTicks(false);
   customPlot->xAxis->setAutoTickLabels(false);

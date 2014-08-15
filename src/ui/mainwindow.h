@@ -103,6 +103,7 @@ public slots:
   void graphClicked(QCPAbstractPlottable *plottable);
   void updateBenchProgress();
   void switchContext(int contextNumber);
+  void legendClicked(QCPLegend *legend, QCPAbstractLegendItem *item, QMouseEvent *event);
 };
 
 #endif // MAINWINDOW_H
