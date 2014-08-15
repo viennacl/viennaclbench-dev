@@ -207,15 +207,6 @@ void Benchmark_Copy::execute(){
   emit unitMeasureSignal("GB/s", Qt::YAxis);
   emit unitMeasureSignal("Vector Size", Qt::XAxis);
 
-#ifndef NDEBUG
-  std::cout << std::endl;
-  std::cout << " ******************************************************************" << std::endl;
-  std::cout << " **** WARNING: This is not a release build." << std::endl;
-  std::cout << " ****          Performance numbers are therefore lower than normal. " << std::endl;
-  std::cout << " ******************************************************************" << std::endl;
-  std::cout << std::endl;
-#endif
-
   //Single Precision
   if(getPrecision() == SINGLE_PRECISION)
   {
