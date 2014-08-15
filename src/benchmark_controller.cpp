@@ -23,7 +23,7 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
   connect(workerThread, SIGNAL(finished()), this, SLOT(workerFinishedSlot()) );
   connect(workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
 
-  connect(benchmark, SIGNAL(unitMeasureSignal(QString)), this, SLOT(unitMeasureSignalSlot(QString)) );
+  connect(benchmark, SIGNAL(unitMeasureSignal(QString, int)), this, SLOT(unitMeasureSignalSlot(QString, int)) );
   connect(benchmark, SIGNAL(resultSignal(QString, double, double, int, int)),
           this, SLOT(resultSignalSlot(QString, double, double, int, int)) );
   connect(benchmark, SIGNAL(finalResultSignal(QString, double)),
@@ -147,7 +147,7 @@ void Benchmark_Controller::benchmarkCompleteSlot()
   emit benchmarkComplete();
 }
 
-void Benchmark_Controller::unitMeasureSignalSlot(QString unitMeasureName)
+void Benchmark_Controller::unitMeasureSignalSlot(QString unitMeasureName, int axis)
 {
-  emit unitMeasureSignal(unitMeasureName);
+  emit unitMeasureSignal(unitMeasureName, axis);
 }

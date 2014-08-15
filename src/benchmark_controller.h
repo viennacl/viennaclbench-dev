@@ -32,7 +32,7 @@ signals:
   void resultSignal(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void finalResultSignal(QString benchmarkName, double finalValue);
   void benchmarkComplete();
-  void unitMeasureSignal(QString);
+  void unitMeasureSignal(QString, int axis);
   void emptyBenchmarkQ();
   void benchmarkStarted(int benchmarkIdNumber);
   void testProgress();
@@ -45,7 +45,7 @@ public slots:
   void finalResultSignalSlot(QString benchmarkName, double finalValue);
   void resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void benchmarkCompleteSlot();
-  void unitMeasureSignalSlot(QString unitMeasureName);
+  void unitMeasureSignalSlot(QString unitMeasureName, int axis);
   void startNextBenchmark();
   void createBenchmark(AbstractBenchmark *benchmark);
   void workerFinishedSlot();

@@ -89,7 +89,7 @@ private:
 public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
   void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
-  void updateBenchmarkUnitMeasure(QString unitMeasureName);
+  void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
   void startBenchmarkExecution();
   void updateBenchmarkListWidget(QListWidgetItem* item);
   void updateFinalResultPlot(QString benchmarkName, double finalResult);

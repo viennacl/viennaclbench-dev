@@ -82,9 +82,9 @@ void Benchmark_Copy::run_benchmark()
   int testId = 0;
   double tempResultValue;
 
-  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;
-  int MIN_BENCHMARK_VECTOR_SIZE = 1000000;
-  int INCREMENT_SIZE = 1000000;
+  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;//1.5M
+  int MIN_BENCHMARK_VECTOR_SIZE = 131072; //2^17
+  int INCREMENT_FACTOR = 2;
 
   ///////////// Vector operations /////////////////
 
@@ -93,7 +93,7 @@ void Benchmark_Copy::run_benchmark()
   //
 
   //host to device
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
     resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
     timer.start();
@@ -110,7 +110,7 @@ void Benchmark_Copy::run_benchmark()
   emit testProgress();
 
   //device to host
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
     resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
     timer.start();
@@ -132,7 +132,7 @@ void Benchmark_Copy::run_benchmark()
   //
 
   //host to device
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
     resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
     timer.start();
@@ -149,7 +149,7 @@ void Benchmark_Copy::run_benchmark()
   emit testProgress();
 
   //device to host
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
     resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
     timer.start();
@@ -170,7 +170,7 @@ void Benchmark_Copy::run_benchmark()
   //
 
   //host to device
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
     resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
     timer.start();
@@ -187,7 +187,7 @@ void Benchmark_Copy::run_benchmark()
   emit testProgress();
 
   //device to host
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
     resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
     timer.start();
     viennacl::async_copy(vcl_vec1, std_vec1);
@@ -204,7 +204,8 @@ void Benchmark_Copy::run_benchmark()
 
 void Benchmark_Copy::execute(){
   emit benchmarkStarted(COPY);
-  emit unitMeasureSignal("GB/s");
+  emit unitMeasureSignal("GB/s", Qt::YAxis);
+  emit unitMeasureSignal("Vector Size", Qt::XAxis);
 
 #ifndef NDEBUG
   std::cout << std::endl;

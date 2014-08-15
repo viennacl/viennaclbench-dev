@@ -195,7 +195,7 @@ void Benchmark_Sparse::run_benchmark()
 void Benchmark_Sparse::execute()
 {
   emit benchmarkStarted(SPARSE);
-  emit unitMeasureSignal("GFLOPs");
+  emit unitMeasureSignal("GFLOPs - Sparse", Qt::XAxis);
 
   if(getPrecision() == SINGLE_PRECISION)
   {//Single

@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
   //route incoming benchmark result info to appropriate plots
   connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), this, SLOT(setActiveBenchmarkPlot(int)) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
-  connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString)), this, SLOT(updateBenchmarkUnitMeasure(QString)) );
+  connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString, int)), this, SLOT(updateBenchmarkUnitMeasure(QString, int)) );
   //received a benchmark test result -> parse it and show it on the graph
   connect(&benchmarkController, SIGNAL(resultSignal(QString, double, double, int, int)),
           this, SLOT(parseBenchmarkResult(QString, double, double, int, int)) );
@@ -899,9 +899,21 @@ void MainWindow::resetPlotData(QCustomPlot *benchmarkGraph)
 }
 
 //set the benchmark's unit measure
-void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName)
+void MainWindow::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
 {
-  basic_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
+  switch(axis){
+  case Qt::XAxis:
+    qDebug()<<""<<unitMeasureName;
+    basic_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
+    break;
+  case Qt::YAxis:
+    qDebug()<<""<<unitMeasureName;
+    basic_DetailedPlotsVector[activeBenchmark]->yAxis->setLabel(unitMeasureName);
+    break;
+  default:
+    break;
+  }
+
 }
 
 //parse the received benchmark result name and value
@@ -915,65 +927,54 @@ void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double 
 }
 
 void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
+  //    qDebug()<<benchmarkName<< " key "<<key<<" value "<<value;
   customPlot->legend->setVisible(true);
   customPlot->legend->setFont(QFont("Helvetica", 9));
   customPlot->legend->setRowSpacing(-3);
-  //todo
-  customPlot->xAxis->grid()->setSubGridVisible(true);
+
+  customPlot->xAxis->setAutoTicks(false);
+  customPlot->xAxis->setAutoTickLabels(false);
+  customPlot->xAxis->setAutoTickStep(false);
+  customPlot->xAxis->setAutoSubTicks(false);
+
+  QVector<double> tickPositions = customPlot->xAxis->tickVector();
+  QVector<QString> tickLabels =  customPlot->xAxis->tickVectorLabels();
+
+  double newTickPosition = key;
+  QString newTickLabel = QString::number(key, 'f', 0);
+  //  qDebug()<<"new tick #"<<newTickPosition<<" new value "<<newTickLabel;
+
+  tickPositions.append( newTickPosition );
+  tickLabels.append( newTickLabel );
+
+  customPlot->xAxis->setTickVector(tickPositions);
+  customPlot->xAxis->setTickVectorLabels(tickLabels);
+
+  //  customPlot->xAxis->grid()->setSubGridVisible(true);
   customPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
   customPlot->xAxis->setScaleLogBase(10);
   customPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
   customPlot->xAxis->setNumberPrecision(0);
-  //  customPlot->xAxis->setAutoTicks(false);
-  //  customPlot->xAxis->setAutoTickLabels(false);
-  //  customPlot->xAxis->setAutoTickStep(false);
+  QFont axisTickFont;
+  axisTickFont.setBold(false);
+  customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
 
-  //    customPlot->xAxis->setAutoTickLabels(true);
-  //    customPlot->xAxis->setAutoTicks(true);
-  //    customPlot->xAxis->setAutoTickStep(true);
+  customPlot->xAxis->setLabelFont(axisTickFont);
+  customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
 
+  //  //Add a whitespace in front of the result value to separate it from the result bar
+  //  //Prolly could've also used margins, but meh
+  //  //And format the result number to two decimals
+  //  text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
 
-  customPlot->xAxis->setAutoSubTicks(true);
-  customPlot->xAxis->setSubTickCount( 2 );
-
-  customPlot->xAxis->setAutoTicks(true);
+  //  customPlot->xAxis->setAutoTicks(true);
   customPlot->yAxis->setAutoTicks(true);
 
-  customPlot->xAxis->setAutoTickStep(true);
+  //  customPlot->xAxis->setAutoTickStep(true);
   customPlot->yAxis->setAutoTickStep(true);
 
-  customPlot->xAxis->setAutoTickLabels(true);
+  //  customPlot->xAxis->setAutoTickLabels(true);
   customPlot->yAxis->setAutoTickLabels(true);
-
-  //  QVector<double> ticks;
-  //  ticks.append(0.5);
-  //  ticks.append(1);
-  //  ticks.append(5);
-  //  ticks.append(10);
-  //  ticks.append(20);
-  //  ticks.append(50);
-  //  ticks.append(100);
-  //  ticks.append(200);
-  //  ticks.append(500);
-  //  ticks.append(1000);
-  //  ticks.append(2000);
-  //  plot->xAxis->setTickVector(ticks);
-
-  //  QVector<QString> tickLabels;
-  //  tickLabels.append("0.5");
-  //  tickLabels.append("1");
-  //  tickLabels.append("5");
-  //  tickLabels.append("10");
-  //  tickLabels.append("20");
-  //  tickLabels.append("50");
-  //  tickLabels.append("100");
-  //  tickLabels.append("200");
-  //  tickLabels.append("500");
-  //  tickLabels.append("1000");
-  //  tickLabels.append("2000");
-  //  plot->xAxis->setTickVectorLabels(tickLabels);
-
-  QVector<double> keys, values;
 
   QCPGraph *currentResultGraph;
 
@@ -1020,7 +1021,7 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 
   customPlot->rescaleAxes();
 
-  customPlot->axisRect()->setupFullAxesBox();
+  //  customPlot->axisRect()->setupFullAxesBox();
   customPlot->replot();
 }
 
@@ -1029,7 +1030,8 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 void MainWindow::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
-  margins.setRight(60);
+  margins.setRight(60);//reserve space for the largest result
+  margins.setBottom(35);//reserve space for measure label
 
   customPlot->axisRect()->setMargins( margins );
   QVector<double> currentTickVector = customPlot->yAxis->tickVector();

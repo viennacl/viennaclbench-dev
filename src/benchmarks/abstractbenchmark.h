@@ -26,7 +26,7 @@ signals:
   void finalResultSignal(QString benchmarkName, double finalValue);
   void resultSignal(QString benchmarkName, double key, double value, int graphType, int testId);
   void benchmarkComplete();
-  void unitMeasureSignal(QString unitMeasureName);
+  void unitMeasureSignal(QString unitMeasureName, int axis);
   void testProgress();
 public slots:
   void setPrecision(bool p);

@@ -72,14 +72,14 @@ void Benchmark_Vector::run_benchmark()
 
   std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
 
-  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;
-  int MIN_BENCHMARK_VECTOR_SIZE = 1000000;
-  int INCREMENT_SIZE = 1000000;
+  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;//1.5M
+  int MIN_BENCHMARK_VECTOR_SIZE = 131072; //2^17
+  int INCREMENT_FACTOR = 2;
 
   /* HOLD MY BEER, IMMA GONNA FORLOOP EVERYTHING */
   /* Seriously, I run the entire test suite for each vector size */
 
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize <= MAX_BENCHMARK_VECTOR_SIZE; vectorSize += INCREMENT_SIZE){
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize <= MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
 
     int testId = 0;
     ScalarType std_result = 0;
@@ -142,11 +142,14 @@ void Benchmark_Vector::run_benchmark()
 
     tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
+    std::cout << "CPU time: " << exec_time << std::endl;
+    std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+    std::cout << "Result:" << std_result << std::endl;
+
     emit resultSignal("Vector inner products - CPU", vectorSize, tempResultValue, LINE_GRAPH, testId );
     testId++;
     testResultHolder.append(tempResultValue);
     emit testProgress();
-
     std_result = viennacl::linalg::inner_prod(vcl_vec1, vcl_vec2); //startup calculation
     std_result = 0.0;
     viennacl::backend::finish();
@@ -309,7 +312,8 @@ void Benchmark_Vector::run_benchmark()
 void Benchmark_Vector::execute()
 {
   emit benchmarkStarted(VECTOR);
-  emit unitMeasureSignal("GFLOPs");
+  emit unitMeasureSignal("GFLOPs", Qt::YAxis);
+  emit unitMeasureSignal("Vector Size", Qt::XAxis);
 
   if(getPrecision() == SINGLE_PRECISION)
   {//Single

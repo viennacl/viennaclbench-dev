@@ -168,7 +168,7 @@ void Benchmark_Blas3::run_benchmark()
 void Benchmark_Blas3::execute()
 {
   emit benchmarkStarted(BLAS3);
-  emit unitMeasureSignal("GFLOPs");
+  emit unitMeasureSignal("GFLOPs", Qt::XAxis);
 
   //Single Precision
   if(getPrecision() == SINGLE_PRECISION)
