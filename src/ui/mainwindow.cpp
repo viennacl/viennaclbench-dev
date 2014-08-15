@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
   //setup benchmark plots
   initHomeScreen();
-  initBasicView();
-  initExpertView();
+  initBasic();
+  initExpert();
   interconnectViews();
   initMatrixMarket();
   initSystemInfo();
@@ -611,7 +611,25 @@ void MainWindow::graphClicked(QCPAbstractPlottable *plottable)
   }
 }
 
-void MainWindow::initBasicView(){
+//detailed plot selection filter
+void MainWindow::selectionChanged()
+{
+  int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
+  // synchronize selection of graphs with selection of corresponding legend items:
+  for (int i=0; i< currentPlot->graphCount(); ++i)
+  {
+    QCPGraph *graph = currentPlot->graph(i);
+    QCPPlottableLegendItem *item = currentPlot->legend->itemWithPlottable(graph);
+    if (item->selected() || graph->selected())
+    {
+      item->setSelected(true);
+      graph->setSelected(true);
+    }
+  }
+}
+
+void MainWindow::initBasic(){
   //normalize size of each list menu item
   for ( int i = 0; i < ui->menuListWidget->count(); i++ ) {
     ui->menuListWidget->item(i)->setSizeHint(ui->menuListWidget->itemSizeHint());
@@ -655,8 +673,9 @@ void MainWindow::initBasicView(){
 
     // connect slot that shows a message in the status bar when a graph is clicked:
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
-    connect(plot, SIGNAL(legendClick(QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*)),
-            this, SLOT(legendClicked(QCPLegend*,QCPAbstractLegendItem*,QMouseEvent*)) );
+
+    //filter each item selection
+    connect(plot, SIGNAL( selectionChangedByUser()), this, SLOT(selectionChanged()) );
     //    plot->axisRect()->setAutoMargins(QCP::msNone);
     //    plot->axisRect()->setMargins(QMargins( 0, 0, 50, 0 ));
 
@@ -665,7 +684,7 @@ void MainWindow::initBasicView(){
     plot->yAxis2->setVisible(false);
     plot->xAxis2->setVisible(false);
 
-    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom);
+    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectLegend);
     plot->legend->setVisible(false);
 
 
@@ -796,7 +815,7 @@ void MainWindow::interconnectViews(){
 
 }
 
-void MainWindow::initExpertView(){
+void MainWindow::initExpert(){
   //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
   //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
 }
@@ -934,16 +953,14 @@ void MainWindow::parseBenchmarkResult(QString benchmarkName, double key, double 
 }
 
 void MainWindow::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
-  //    qDebug()<<benchmarkName<< " key "<<key<<" value "<<value;
-  //    plot->plotLayout()->addElement(1, 0, plot->axisRect());
   if(customPlot->legend->visible() == false){
     customPlot->plotLayout()->addElement(0,1, customPlot->legend);
     customPlot->legend->setVisible(true);
-    customPlot->legend->setMaximumSize( 150, QWIDGETSIZE_MAX);
+    customPlot->legend->setSelectableParts( QCPLegend::spItems );
+    customPlot->legend->setMaximumSize( 150, QWIDGETSIZE_MAX );
   }
   customPlot->legend->setFont(QFont("Helvetica", 9));
   customPlot->legend->setRowSpacing(-3);
-  //  customPlot->legend->
 
   customPlot->xAxis->setAutoTicks(false);
   customPlot->xAxis->setAutoTickLabels(false);
@@ -955,7 +972,6 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 
   double newTickPosition = key;
   QString newTickLabel = QString::number(key, 'f', 0);
-  //  qDebug()<<"new tick #"<<newTickPosition<<" new value "<<newTickLabel;
 
   tickPositions.append( newTickPosition );
   tickLabels.append( newTickLabel );
@@ -974,11 +990,6 @@ void MainWindow::plotLineResult(QString benchmarkName, double key, double value,
 
   customPlot->xAxis->setLabelFont(axisTickFont);
   customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
-
-  //  //Add a whitespace in front of the result value to separate it from the result bar
-  //  //Prolly could've also used margins, but meh
-  //  //And format the result number to two decimals
-  //  text->setText( QString(" ") + QString::number( currentValue, 'f', 2  ));
 
   //  customPlot->xAxis->setAutoTicks(true);
   customPlot->yAxis->setAutoTicks(true);

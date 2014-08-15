@@ -56,8 +56,8 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-  void initExpertView();
-  void initBasicView();
+  void initExpert();
+  void initBasic();
   void initHomeScreen();
   void initMatrixMarket();
   void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
@@ -87,6 +87,7 @@ private:
   QString jsString;
 
 public slots:
+  void selectionChanged();
   void resetPlotData(QCustomPlot *benchmarkGraph);
   void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
