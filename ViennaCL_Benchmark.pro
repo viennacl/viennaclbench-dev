@@ -33,7 +33,9 @@ SOURCES += src/main.cpp \
     src/ui/splashscreen.cpp \
     src/ui/matrixmarket_widget.cpp \
     src/benchmark_model.cpp \
-    src/benchmarkinstance.cpp
+    src/benchmarkinstance.cpp \
+    src/ui/homescreen.cpp \
+    src/ui/systeminfoscreen.cpp
 
 HEADERS  +=    src/benchmark_controller.h \
     src/archiveextractor.h \
@@ -57,11 +59,15 @@ HEADERS  +=    src/benchmark_controller.h \
     src/ui/splashscreen.h \
     src/ui/matrixmarket_widget.h \
     src/benchmark_model.h \
-    src/benchmarkinstance.h
+    src/benchmarkinstance.h \
+    src/ui/homescreen.h \
+    src/ui/systeminfoscreen.h
 
 FORMS    += src/ui/mainwindow.ui \
     src/ui/collapsewidget.ui \
-    src/ui/matrixmarket_widget.ui
+    src/ui/matrixmarket_widget.ui \
+    src/ui/homescreen.ui \
+    src/ui/systeminfoscreen.ui
 
 RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
