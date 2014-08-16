@@ -1,7 +1,7 @@
 #ifndef MATRIXMARKET_WEBVIEW_H
 #define MATRIXMARKET_WEBVIEW_H
 
-#include <QObject>
+#include <QObject>//QObject must be included in order for the next line to work
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
 #include <QtNetwork/QNetworkAccessManager>
@@ -29,6 +29,7 @@ private:
 
 signals:
   void currentDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+  void fileReadyForBenchmark(QString filename);
 
 public slots:
   void downloadSlot(QNetworkRequest request);

@@ -68,21 +68,22 @@ bool ArchiveExtractor::checkUserHomeFolder(){
  * Extracts the selected .tar.gz archive to the selected folder
  * will try to create the target folder if it does not exist
  * */
-void ArchiveExtractor::extractFileToTargetFolder(const char *filePath, const char * targetFolderPath){
-  ArchiveExtractor::extractFileToTargetFolder(QString(filePath), QString(targetFolderPath));
+QString ArchiveExtractor::extractFileToTargetFolder(const char *filePath, const char * targetFolderPath){
+  return ArchiveExtractor::extractFileToTargetFolder(QString(filePath), QString(targetFolderPath));
 }
 
 /*
  * Extracts the selected .tar.gz archive to the selected folder
  * will try to create the target folder if it does not exist
+ * returns the full path to the extracted file, or null string if failed
  * */
-void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
+QString ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
   //check if the selected archive file exist
   QFile *selectedFile = new QFile(filePath);
   if(!selectedFile->exists()){
     qDebug()<<"ERROR: File marked for decompression does not exist!";
     delete selectedFile;
-    return;
+    return QString("");
   }
   delete selectedFile;
   struct archive *a;
@@ -170,7 +171,7 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
       if(!targetFolder.mkpath(targetFolderPath)){//failed to create target folder
         //break procedure
         std::cout << "ERROR: Target folder does not exist and cannot be created" << std::endl;
-        return;
+        return QString("");
       }
     }
 
@@ -186,48 +187,57 @@ void ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targe
       r = archive_write_header(ext, entry);
       if (r != ARCHIVE_OK) errmsg(archive_error_string(a));
       else copy_data(a, ext);
-      std::cout << "File extracted: ";
-      msg(archive_entry_pathname(entry));
-      std::cout << std::endl;
+      std::string returnPath;
+      returnPath = archive_entry_pathname(entry);
+      std::cout << "File extracted: " << returnPath << std::endl;
+      archive_read_close(a);
+      archive_read_free(a);
+      archive_write_close(ext);
+      archive_write_free(ext);
+      return QString::fromStdString( returnPath );
     }
   }
   archive_read_close(a);
   archive_read_free(a);
   archive_write_close(ext);
   archive_write_free(ext);
+  return QString("");
 }
 
 /*
  * Extract the selected .tar.gz archive to the current user's home folder
  * */
-void ArchiveExtractor::extractFileToUserHomeFolder(const char *filePath)
+QString ArchiveExtractor::extractFileToUserHomeFolder(const char *filePath)
 {
-  ArchiveExtractor::extractFileToUserHomeFolder(QString(filePath));
+  return ArchiveExtractor::extractFileToUserHomeFolder(QString(filePath));
 }
 
 /*
  * Extract the selected .tar.gz archive to the current user's home folder
  * */
-void ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
+QString ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
   QString userHomeFolder = ArchiveExtractor::getMatrixMarketUserFolder();/* QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";*/
   if(!userHomeFolder.isNull()){
-    extractFileToTargetFolder(filePath, userHomeFolder);
+    return extractFileToTargetFolder(filePath, userHomeFolder);
+  }
+  else{
+    return QString("");
   }
 }
 
 /*
  * Extracts the selected .tar.gz archive to the program's current working directory
  * */
-void ArchiveExtractor::extractFileToWorkFolder(const char *filePath)
+QString ArchiveExtractor::extractFileToWorkFolder(const char *filePath)
 {
-  ArchiveExtractor::extractFileToWorkFolder(QString(filePath));
+  return ArchiveExtractor::extractFileToWorkFolder(QString(filePath));
 }
 
 /*
  * Extracts the selected .tar.gz archive to the program's current working directory
  * */
-void ArchiveExtractor::extractFileToWorkFolder(QString filePath){
-  extractFileToTargetFolder(filePath, QDir::currentPath()+"/");
+QString ArchiveExtractor::extractFileToWorkFolder(QString filePath){
+  return extractFileToTargetFolder(filePath, QDir::currentPath()+"/");
 }
 
 

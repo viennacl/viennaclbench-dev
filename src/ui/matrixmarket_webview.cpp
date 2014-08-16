@@ -50,7 +50,16 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
     mmFileToSave.write(mmFile);
     mmFileToSave.close();
     qDebug()<<"File saved. Path: "<<fullPath;
-    ArchiveExtractor::extractFileToUserHomeFolder(fullPath);
+    QString extractedFilePath = ArchiveExtractor::extractFileToUserHomeFolder(fullPath);
+    qDebug()<<"extractedFilePath "<<extractedFilePath;
+    if(extractedFilePath == ""){
+      //extraction failed
+    }
+    else if(extractedFilePath.endsWith( QString(".mtx")) ){
+      //extracted file is of .mtx format
+      //proceed to do a benchmark with it
+      emit fileReadyForBenchmark(extractedFilePath);
+    }
   }
   else{
     qDebug()<<"Cannot save file";
