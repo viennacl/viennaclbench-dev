@@ -13,8 +13,8 @@
 #include <QPainter>
 #include <QObject>
 #include <QTabWidget>
-#include <QDebug>
 #include <QListWidgetItem>
+#include <QDebug>
 #include <QThread>
 #include <QSpacerItem>
 #include <QPlainTextEdit>
@@ -58,14 +58,12 @@ public:
 
   void initExpert();
   void initBasic();
-  void initHomeScreen();
   void initMatrixMarket();
   void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
   void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
   bool getPrecision();
-  void initSystemInfo();
   void interconnectViews();
   void initPlatformDeviceChooser();
 private:
@@ -77,7 +75,15 @@ private:
   int maximumBenchProgress;
 
   QTabWidget *basic_DetailedPlotTab;
+  QTabWidget *expert_DetailedPlotTab;
   QVector<QCustomPlot*> basic_DetailedPlotsVector;
+  QVector<QCustomPlot*> expert_DetailedPlotsVector;
+  QCustomPlot *blas3_expertDetailedPlot;
+  QCustomPlot *copy_expertDetailedPlot;
+//  QCustomPlot *qr_expertDetailedPlot;
+//  QCustomPlot *solver_expertDetailedPlot;
+  QCustomPlot *sparse_expertDetailedPlot;
+  QCustomPlot *vector_expertDetailedPlot;
   QCustomPlot *blas3_DetailedPlot;
   QCustomPlot *copy_DetailedPlot;
 //  QCustomPlot *qr_DetailedPlot;
@@ -105,6 +111,7 @@ public slots:
   void updateBenchProgress();
   void switchContext(int contextNumber);
   void legendClicked(QCPLegend *legend, QCPAbstractLegendItem *item, QMouseEvent *event);
+  void startMatrixMarketBenchmark(QString filename);
 };
 
 #endif // MAINWINDOW_H

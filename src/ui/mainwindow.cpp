@@ -23,12 +23,12 @@ MainWindow::MainWindow(QWidget *parent) :
   currentBenchProgress = 0;
 
   //setup benchmark plots
-  initHomeScreen();
+  //HomeScreen class takes care of its own init
   initBasic();
   initExpert();
   interconnectViews();
   initMatrixMarket();
-  initSystemInfo();
+  //SystemInfoScreen class takes care of its own init
   initPlatformDeviceChooser();
 
 
@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
   //    s.execute();
 
   //connect quickstart button
-  connect(ui->homeQuickStartButon, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark()) );
+  connect(ui->homeScreen->quickStartButton, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark()) );
   //run benchmark button clicked -> execute benchmark
   connect(ui->basic_StartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startBenchmarkExecution()) );
   //stop benchmark button
@@ -135,282 +135,6 @@ void MainWindow::switchContext(int contextNumber){
   std::cout << "Device name: "<< viennacl::ocl::current_context().current_device().name()<< std::endl;
 }
 
-void MainWindow::initSystemInfo(){
-#ifdef VIENNACL_WITH_OPENCL
-  QHBoxLayout *systemInfoLayout = new QHBoxLayout();
-
-  typedef std::vector< viennacl::ocl::platform > platforms_type;
-  platforms_type platforms = viennacl::ocl::get_platforms();
-  bool is_first_element = true;
-
-  //---PLATFORMS---
-  QVBoxLayout *platformsLayout = new QVBoxLayout();
-  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
-    QGroupBox *platformBox = new QGroupBox(QString::fromStdString(platform_iter->info()) );
-
-    typedef std::vector<viennacl::ocl::device> devices_type;
-    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
-
-    if (is_first_element)
-    {
-      platformBox->setTitle(platformBox->title()+" (default)");
-      is_first_element = false;
-    }
-    //---DEVICES---
-    int deviceCounter = 0;
-    QVBoxLayout *devicesLayout = new QVBoxLayout();
-    QSplitter *platformSplitter = new QSplitter();
-    platformSplitter->setOrientation(Qt::Vertical);
-    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
-    {
-      QTableWidget *deviceInfoTable = new QTableWidget();
-      deviceInfoTable->setColumnCount(2);
-      deviceInfoTable->setRowCount(60);
-      deviceInfoTable->verticalHeader()->hide();
-      deviceInfoTable->horizontalHeader()->hide();
-
-      int row = 0;//row index counter
-      int cProp = 0;//column property index
-      int cVal = 1;//column value index
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Name:                          ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->name()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Address Bits:                  ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->address_bits()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Available:                     ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->available()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Compiler Available:            ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->compiler_available()) ) );
-#ifdef CL_DEVICE_DOUBLE_FP_CONFIG
-
-      deviceInfoTable->setItem(row, columnProperty, new QTableWidgetItem( QString("Double FP Config:              ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->fp_config_to_string(iter->double_fp_config())) ) );
-#endif
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Endian Little:                 ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->endian_little()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Error Correction Support:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->error_correction_support()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Execution Capabilities:        ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->exec_capabilities_to_string(iter->execution_capabilities())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Extensions:                    ")) );
-      QString extensions = QString::fromStdString( iter->extensions());
-      extensions.replace(" ","\n");
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( extensions ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Global Mem Cache Size:         ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->global_mem_cache_size() ) + QString( " Bytes") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Global Mem Cache Type:         ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->mem_cache_type_to_string(iter->global_mem_cache_type())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Global Mem Cacheline Size:     ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->global_mem_cacheline_size() ) + QString( " Bytes") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Global Mem Size:               ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->global_mem_size() ) + QString( " Bytes") ) );
-#ifdef CL_DEVICE_HALF_FP_CONFIG
-
-      deviceInfoTable->setItem(row, columnProperty, new QTableWidgetItem( QString("Half PF Config:                ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->fp_config_to_string(iter->half_fp_config())) ) );
-#endif
-#ifdef CL_DEVICE_HOST_UNIFIED_MEMORY
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Host Unified Memory:           ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->host_unified_memory()) ) );
-#endif
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Image Support:                 ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->image_support()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Image2D Max Height:            ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->image2d_max_height()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Image2D Max Width:             ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->image2d_max_width()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Image3D Max Depth:             ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->image3d_max_depth()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Image3D Max Height:            ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->image3d_max_height()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Image3D Max Width:             ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->image3d_max_width()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Local Mem Size:                ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->local_mem_size() ) + QString( " Bytes") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Local Mem Type:                ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->local_mem_type_to_string(iter->local_mem_type())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Clock Frequency:           ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_clock_frequency() ) + QString( " MHz") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Compute Units:             ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_compute_units()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Constant Args:             ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_constant_args()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Constant Buffer Size:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_constant_buffer_size() ) + QString( " Bytes") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Mem Alloc Size:            ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_mem_alloc_size() ) + QString( " Bytes") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Parameter Size:            ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_parameter_size() ) + QString( " Bytes") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Read Image Args:           ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_read_image_args()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Samplers:                  ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_samplers()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Work Group Size:           ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_work_group_size()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Work Item Dimensions:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_work_item_dimensions()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Work Item Sizes:           ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->convert_to_string(iter->max_work_item_sizes())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Max Write Image Args:          ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->max_write_image_args()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Mem Base Addr Align:           ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->mem_base_addr_align()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Min Data Type Align Size:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->min_data_type_align_size() ) + QString( " Bytes") ) );
-
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width char:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_char()) ) );
-#endif
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width short:     ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_short()) ) );
-#endif
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_INT
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width int:       ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_int()) ) );
-#endif
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width long:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_long()) ) );
-#endif
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width float:     ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_float()) ) );
-#endif
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width double:    ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_double()) ) );
-#endif
-#ifdef CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Native Vector Width half:      ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->native_vector_width_half()) ) );
-#endif
-#ifdef CL_DEVICE_OPENCL_C_VERSION
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("OpenCL C Version:              ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->opencl_c_version()) ) );
-#endif
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Platform:                      ")) );
-      /* cl_platform_id conversion complications */
-      std::ostringstream oss;
-      oss << iter->platform();
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( oss.str()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width char:   ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_char()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width short:  ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_short()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width int:    ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_int()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width long:   ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_long()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width float:  ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_float()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width double: ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_double()) ) );
-#ifdef CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Preferred Vector Width half:   ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->preferred_vector_width_half()) ) );
-#endif
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Profile:                       ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->profile()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Profiling Timer Resolution:    ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->profiling_timer_resolution() ) + QString( " ns") ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Queue Properties:              ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->queue_properties_to_string(iter->queue_properties())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Single FP Config:              ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->fp_config_to_string(iter->single_fp_config())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Type:                          ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->device_type_to_string(iter->type())) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Vendor:                        ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->vendor()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Vendor ID:                     ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::number( iter->vendor_id()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Version:                       ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->version()) ) );
-
-      deviceInfoTable->setItem(row, cProp, new QTableWidgetItem( QString("Driver Version:                ")) );
-      deviceInfoTable->setItem(row++, cVal, new QTableWidgetItem( QString::fromStdString( iter->driver_version()) ) );
-      deviceInfoTable->setContextMenuPolicy(Qt::NoContextMenu);
-      deviceInfoTable->setSelectionBehavior(QAbstractItemView::SelectItems);
-      deviceInfoTable->setSelectionMode(QAbstractItemView::SingleSelection);
-      deviceInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-      deviceInfoTable->horizontalHeader()->setStretchLastSection(true);
-      deviceInfoTable->resizeColumnsToContents();
-      deviceInfoTable->resizeRowsToContents();
-      deviceInfoTable->setVerticalScrollMode(QAbstractItemView::ScrollPerItem);
-
-      platformSplitter->addWidget(deviceInfoTable);
-
-    }//---DEVICES---END
-    deviceCounter = 0;
-    systemInfoLayout->addWidget(platformSplitter);
-
-  }//---PLATFORMS---END
-
-  delete ui->systemInfo_Box->layout();
-  ui->systemInfo_Box->setLayout(systemInfoLayout);
-#endif
-
-}//END initSystemInfo()
-
 void MainWindow::updateSinglePrecisionButtons(){
   ui->basic_SingleButton->setChecked(true);
   ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
@@ -448,7 +172,12 @@ void MainWindow::initMatrixMarket(){
   ui->matrixMarket_Widget->webView->load(QUrl("qrc:///mmFiles/matrixmarket/index.html"));
   //    ui->matrixMarket_Widget->webView->load(QUrl("http://localhost/MatrixMarket/index.html"));//I connect to my local WAMP server for easier html editing
 
-  connect(ui->matrixMarket_Widget->webView, SIGNAL(loadProgress(int)), this, SLOT(modifyMatrixMarketWeb()) );
+//  connect(ui->matrixMarket_Widget->webView, SIGNAL(loadProgress(int)), this, SLOT(modifyMatrixMarketWeb()) );
+  connect(ui->matrixMarket_Widget->webView, SIGNAL(fileReadyForBenchmark(QString)), this, SLOT( startMatrixMarketBenchmark(QString) ) );
+}
+
+void MainWindow::startMatrixMarketBenchmark(QString filename){
+  //todo
 }
 
 void MainWindow::modifyMatrixMarketWeb(){
@@ -467,121 +196,6 @@ void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){
 
 void MainWindow::updateFinalResultPlot(QString benchmarkName, double finalResult){
   plotFinalResult(benchmarkName, finalResult, ui->basic_FinalResultPlot);
-}
-
-void MainWindow::initHomeScreen(){
-#ifdef VIENNACL_WITH_OPENCL
-  QHBoxLayout *systemInfoLayout = new QHBoxLayout();
-
-  typedef std::vector< viennacl::ocl::platform > platforms_type;
-  platforms_type platforms = viennacl::ocl::get_platforms();
-  bool is_first_element = true;
-
-  //---PLATFORMS---
-  for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
-    QVBoxLayout *platformLayout = new QVBoxLayout();
-
-
-    QString platformName( QString::fromStdString(platform_iter->info()) );
-    QPixmap *platformIcon;
-
-    if(platformName.contains("Advanced Micro Devices")){
-      //set AMD icon
-      platformIcon = new QPixmap( QString(":/icons/icons/amdLogoGreen.png") );
-    }
-    else if(platformName.contains("Intel(R) Corporation")){
-      //set Intel icon
-      platformIcon = new QPixmap( QString(":/icons/icons/intelLogo.png") );
-    }
-    else{
-      //set nVidia icon
-      platformIcon = new QPixmap( QString(":/icons/icons/nvidiaLogoBlack.png") );
-    }
-
-    QLabel *platformIconLabel = new QLabel();
-    platformIconLabel->setAlignment(Qt::AlignHCenter);
-    platformIconLabel->setPixmap( platformIcon->scaledToHeight(50, Qt::SmoothTransformation) );
-
-    platformLayout->addWidget( platformIconLabel );
-
-    QGroupBox *platformBox = new QGroupBox( platformName );
-
-    typedef std::vector<viennacl::ocl::device> devices_type;
-    devices_type devices = platform_iter->devices(CL_DEVICE_TYPE_ALL);
-
-    if (is_first_element)
-    {
-      platformBox->setTitle(platformBox->title());
-      is_first_element = false;
-    }
-    //---DEVICES---
-    int deviceCounter = 0;
-    QVBoxLayout *devicesLayout = new QVBoxLayout();
-    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
-    {
-      devicesLayout->addWidget(new QLabel (QString("---Device #" + QString::number(++deviceCounter) )) );
-
-      QString typeString;
-      typeString.append("Type: ");
-
-      cl_device_type localDeviceType = iter->type();
-      if(localDeviceType & CL_DEVICE_TYPE_GPU){
-        typeString.append("GPU");
-      }
-      else if(localDeviceType & CL_DEVICE_TYPE_CPU){
-        typeString.append("CPU");
-      }
-      else if(localDeviceType & CL_DEVICE_TYPE_ACCELERATOR){
-        typeString.append("Accelerator");
-      }
-      else if(localDeviceType & CL_DEVICE_TYPE_DEFAULT){
-        typeString.append("(default)");
-      }
-      devicesLayout->addWidget(new QLabel(typeString) );
-
-      QString nameString;
-      nameString.append("Name: " + QString::fromStdString(iter->name()) );
-      devicesLayout->addWidget(new QLabel( nameString ) );
-
-      QString vendorString;
-      vendorString.append("Vendor: " + QString::fromStdString(iter->vendor()) );
-      devicesLayout->addWidget(new QLabel( vendorString ) );
-
-      QString memoryString;
-      memoryString.append("Global Memory Size: " + QString::number( ((uint64_t)iter->global_mem_size()/(1024*1024)) ) + " MB" );
-      devicesLayout->addWidget(new QLabel( memoryString ) );
-
-      QString clockString;
-      clockString.append("Clock Frequency: " + QString::number(iter->max_clock_frequency()) + " MHz" );
-      devicesLayout->addWidget(new QLabel( clockString ) );
-
-#ifdef CL_DEVICE_OPENCL_C_VERSION
-      QString openclCString;
-      openclCString.append("OpenCL C Version: " + QString::fromStdString(iter->opencl_c_version() ) );
-      devicesLayout->addWidget(new QLabel( openclCString ) );
-#endif
-
-      QString openclString;
-      openclString.append("Version: " + QString::fromStdString(iter->version() ) );
-      devicesLayout->addWidget(new QLabel( openclString ) );
-
-      QString driverString;
-      driverString.append("Driver Version: " + QString::fromStdString(iter->driver_version() ) );
-      devicesLayout->addWidget(new QLabel( driverString ) );
-
-    }//---DEVICES---END
-    deviceCounter = 0;
-    devicesLayout->insertStretch(-1,1); //add a spacer at the end
-
-    platformBox->setLayout(devicesLayout);
-    platformLayout->addWidget(platformBox);
-    //    systemInfoLayout->addWidget(platformBox);
-    systemInfoLayout->addLayout(platformLayout);
-
-  }//---PLATFORMS---END
-  delete ui->homeSystemInfoBox->layout();
-  ui->homeSystemInfoBox->setLayout(systemInfoLayout);
-#endif
 }
 
 //shows the detailed graph of a clicked final result bar
@@ -818,6 +432,175 @@ void MainWindow::interconnectViews(){
 void MainWindow::initExpert(){
   //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
   //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+
+  expert_DetailedPlotTab = new QTabWidget(ui->expert_BenchmarkTab);
+  expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
+
+  blas3_expertDetailedPlot = new QCustomPlot();
+  copy_expertDetailedPlot = new QCustomPlot();
+  //  qr_expertDetailedPlot = new QCustomPlot();
+  //  solver_expertDetailedPlot = new QCustomPlot();
+  sparse_expertDetailedPlot = new QCustomPlot();
+  vector_expertDetailedPlot = new QCustomPlot();
+
+  expert_DetailedPlotsVector.insert(BLAS3, blas3_expertDetailedPlot);
+  expert_DetailedPlotsVector.insert(COPY, copy_expertDetailedPlot);
+  //  expert_DetailedPlotsVector.insert(QR, qr_expertDetailedPlot);
+  //  expert_DetailedPlotsVector.insert(SOLVER, solver_expertDetailedPlot);
+  expert_DetailedPlotsVector.insert(SPARSE, sparse_expertDetailedPlot);
+  expert_DetailedPlotsVector.insert(VECTOR, vector_expertDetailedPlot);
+
+  expert_DetailedPlotTab->insertTab(BLAS3, blas3_expertDetailedPlot,"Blas3");
+  expert_DetailedPlotTab->insertTab(COPY, copy_expertDetailedPlot,"Copy");
+  //  expert_DetailedPlotTab->insertTab(QR, qr_expertDetailedPlot,"Qr");
+  //  expert_DetailedPlotTab->insertTab(SOLVER, solver_expertDetailedPlot,"Solver");
+  expert_DetailedPlotTab->insertTab(SPARSE, sparse_expertDetailedPlot,"Sparse");
+  expert_DetailedPlotTab->insertTab(VECTOR, vector_expertDetailedPlot,"Vector");
+
+  ui->expert_CollapseWidget->setChildWidget(expert_DetailedPlotTab);
+  ui->expert_CollapseWidget->setText("Detailed Test Results");
+
+  //xAxis bottom
+  //yAxis left
+  //xAxis2 top
+  //yAxis2 right
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
+
+  foreach(QCustomPlot* plot, expert_DetailedPlotsVector){
+
+    // connect slot that shows a message in the status bar when a graph is clicked:
+    connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
+
+    //filter each item selection
+    connect(plot, SIGNAL( selectionChangedByUser()), this, SLOT(selectionChanged()) );
+    //    plot->axisRect()->setAutoMargins(QCP::msNone);
+    //    plot->axisRect()->setMargins(QMargins( 0, 0, 50, 0 ));
+
+    plot->axisRect()->setupFullAxesBox();
+    //Disable secondary axes
+    plot->yAxis2->setVisible(false);
+    plot->xAxis2->setVisible(false);
+
+    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectLegend);
+    plot->legend->setVisible(false);
+
+
+    plot->yAxis->setTickLength( 0, 2);
+    plot->yAxis->grid()->setVisible(true);
+    plot->yAxis->setTickLabelRotation( 0 );
+
+    plot->yAxis->setAutoSubTicks(false);
+    plot->yAxis->setAutoTickLabels(false);
+    plot->yAxis->setAutoTicks(false);
+    plot->yAxis->setAutoTickStep(false);
+    QVector<double> emptyTickVector;
+    plot->yAxis->setTickVector(emptyTickVector);
+    QVector<QString> emptyTickVectorLabels;
+    plot->yAxis->setTickVectorLabels(emptyTickVectorLabels);
+
+    plot->xAxis->setAutoSubTicks(true);
+    plot->xAxis->setAutoTickLabels(true);
+    plot->xAxis->setAutoTicks(true);
+    plot->xAxis->setAutoTickStep(true);
+
+    plot->setBackground(backgroundBrush);
+  }
+
+
+  ui->expert_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
+  ui->expert_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
+  ui->expert_FinalResultPlot->axisRect()->setupFullAxesBox();
+  //Disable secondary axes & legend
+  ui->expert_FinalResultPlot->yAxis2->setVisible(false);
+  ui->expert_FinalResultPlot->xAxis2->setVisible(false);
+  ui->expert_FinalResultPlot->legend->setVisible(false);
+  //Enable selecting plots
+  ui->expert_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
+
+  // connect slot that shows a message in the status bar when a graph is clicked:
+  connect(ui->expert_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
+
+  QVector<QString> finalResultPlotLabels;
+  finalResultPlotLabels.append("Vector - GFLOPs");
+  finalResultPlotLabels.append("Sparse - GFLOPs");
+  //  finalResultPlotLabels.append("Solver - GFLOPs");
+  //  finalResultPlotLabels.append("Qr - GFLOPs");
+  finalResultPlotLabels.append("Copy - GB/s");
+  finalResultPlotLabels.append("Blas3 - GFLOPs");
+
+  //  Plot mapping
+  //  Vector - 1
+  //  Sparse - 2
+  //  Copy - 3
+  //  Blas3 - 4
+
+  QVector<double> finalResultPlotTicks;
+  finalResultPlotTicks.append(1);
+  finalResultPlotTicks.append(2);
+  finalResultPlotTicks.append(3);
+  finalResultPlotTicks.append(4);
+
+  ui->expert_FinalResultPlot->yAxis->setAutoTickLabels(false);
+  ui->expert_FinalResultPlot->yAxis->setAutoTicks(false);
+  ui->expert_FinalResultPlot->yAxis->setTickVectorLabels(finalResultPlotLabels);
+  ui->expert_FinalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
+  ui->expert_FinalResultPlot->yAxis->setSubTickCount( 0 );
+  ui->expert_FinalResultPlot->yAxis->setTickLength( 0, 2);
+  ui->expert_FinalResultPlot->yAxis->setRange( 0.5, 5.0);
+  ui->expert_FinalResultPlot->yAxis->grid()->setVisible(true);
+  ui->expert_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
+
+
+  ui->expert_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
+  ui->expert_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+  ui->expert_FinalResultPlot->xAxis->setScaleLogBase(10);
+  ui->expert_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
+  ui->expert_FinalResultPlot->xAxis->setNumberPrecision(0);
+  ui->expert_FinalResultPlot->xAxis->setAutoTicks(false);
+  ui->expert_FinalResultPlot->xAxis->setAutoTickLabels(false);
+  ui->expert_FinalResultPlot->xAxis->setAutoTickStep(false);
+  QVector<double> ticks;
+  ticks.append(0.5);
+  ticks.append(1);
+  ticks.append(5);
+  ticks.append(10);
+  ticks.append(20);
+  ticks.append(50);
+  ticks.append(100);
+  ticks.append(200);
+  ticks.append(500);
+  ticks.append(1000);
+  ticks.append(2000);
+  ui->expert_FinalResultPlot->xAxis->setTickVector(ticks);
+
+  QVector<QString> tickLabels;
+  tickLabels.append("0.5");
+  tickLabels.append("1");
+  tickLabels.append("5");
+  tickLabels.append("10");
+  tickLabels.append("20");
+  tickLabels.append("50");
+  tickLabels.append("100");
+  tickLabels.append("200");
+  tickLabels.append("500");
+  tickLabels.append("1000");
+  tickLabels.append("2000");
+  ui->expert_FinalResultPlot->xAxis->setTickVectorLabels(tickLabels);
+
+  //  ui->expert_FinalResultPlot->xAxis->setTickLengthOut(200);
+  ui->expert_FinalResultPlot->xAxis->setRangeLower(0);
+  //  ui->expert_FinalResultPlot->xAxis->setRange(0,1);
+
+  ui->expert_FinalResultPlot->setBackground(backgroundBrush);
+
+  ui->expert_StopBenchmarkButton->hide();
+
+  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+  for ( int i = 0; i < ui->expert_BenchmarkListWidget->count(); i++ ) {
+    ui->expert_BenchmarkListWidget->item(i)->setSelected(true);
+  }
 }
 
 bool MainWindow::getPrecision(){

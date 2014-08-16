@@ -233,7 +233,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -243,178 +243,8 @@ background: #F0F0F0;
 }</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="3" column="1">
-           <widget class="QGroupBox" name="homeAboutBox">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 2ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}</string>
-            </property>
-            <property name="title">
-             <string>About</string>
-            </property>
-            <property name="checkable">
-             <bool>false</bool>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <item row="1" column="0">
-              <widget class="QLabel" name="homeAboutLabel">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Welcome to ViennaCL Benchmark GUI. &lt;br/&gt;This program uses the ViennaCL computing library to benchmark the performance of your GPU.&lt;br/&gt;&lt;a href=&quot;http://viennacl.sourceforge.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;ViennaCL&lt;/span&gt;&lt;/a&gt; is a free open-source linear algebra library for computations on many-core architectures (GPUs, MIC) and multi-core CPUs.&lt;br/&gt;The library is written in C++ and supports CUDA, OpenCL, and OpenMP.&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
-               <property name="textFormat">
-                <enum>Qt::RichText</enum>
-               </property>
-               <property name="openExternalLinks">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QGroupBox" name="homeQuickStartBox">
-            <property name="styleSheet">
-             <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 2ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}</string>
-            </property>
-            <property name="title">
-             <string>Quick Start</string>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QPushButton" name="homeQuickStartButon">
-               <property name="text">
-                <string>Run Benchmark</string>
-               </property>
-               <property name="icon">
-                <iconset resource="../../resources/icons.qrc">
-                 <normaloff>:/icons/icons/start.png</normaloff>:/icons/icons/start.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-               <property name="flat">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="1" column="0" colspan="3">
-           <widget class="QGroupBox" name="homeSystemInfoBox">
-            <property name="styleSheet">
-             <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 6ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}
- QGroupBox::indicator {
-     width: 55px;
-     height: 32px;
- }</string>
-            </property>
-            <property name="title">
-             <string/>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3"/>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QGroupBox" name="homeOptionsBox">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The ViennaCL project will greatly benefit from your uploaded benchmark results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 2ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}</string>
-            </property>
-            <property name="title">
-             <string>Options</string>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <item row="1" column="0">
-              <widget class="QCheckBox" name="homeMatrixTestDataCheckBox">
-               <property name="text">
-                <string>Use default matrix test data</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="homeAutoUploadCheckBox">
-               <property name="text">
-                <string>Automatic benchmark result upload</string>
-               </property>
-               <property name="checked">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="0" column="0" colspan="3">
-           <widget class="QLabel" name="homeLabel">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="pixmap">
-             <pixmap resource="../../resources/otherFiles.qrc">:/resources/images/benchmarkTestLogo.png</pixmap>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignHCenter|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
+          <item row="0" column="0">
+           <widget class="HomeScreen" name="homeScreen" native="true"/>
           </item>
          </layout>
         </widget>
@@ -678,7 +508,11 @@ border-top: 2px groove gray;
                  <string notr="true">QGroupBox
 {
     border: 2px solid gray;
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
     /*margin-top: 1ex; /* leave space at the top for the title */
 }
 /*
@@ -838,14 +672,24 @@ border-top: 1px groove gray;
                  <string notr="true">QPushButton  {
     border: 2px solid gray;
 margin: 0px;
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 QPushButton:hover {
     border: 2px solid gray;
 margin: 0px;
 color: green;
 background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
+  /*  border-radius: 5px;*/
+
+
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 
 QPushButton:pressed 
@@ -907,14 +751,22 @@ color: #404040;
                  <string notr="true">QPushButton  {
     border: 2px solid gray;
 margin: 0px;
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 QPushButton:hover {
     border: 2px solid gray;
 margin: 0px;
 color: red;
 background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 
 QPushButton:pressed 
@@ -954,14 +806,22 @@ color: #404040;
                  <string notr="true">QProgressBar  {
     border: 2px solid gray;
 margin: 0px;
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 QPushButton:hover {
     border: 2px solid gray;
 margin: 0px;
 color: green;
 background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 
 QPushButton:pressed 
@@ -1013,7 +873,11 @@ color: #404040;
                  <string notr="true">QLabel  {
     border: 2px solid gray;
 margin: 0px;
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }</string>
                 </property>
                 <property name="text">
@@ -1060,42 +924,74 @@ margin: 0px;
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="expertBenchmarkTab">
+            <widget class="QWidget" name="expert_BenchmarkTab">
              <attribute name="title">
               <string>Expert</string>
              </attribute>
-             <layout class="QGridLayout" name="gridLayout_15">
-              <item row="1" column="0">
-               <widget class="BenchmarkListWidget" name="expert_BenchmarkListWidget">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
+             <layout class="QGridLayout" name="gridLayout_14">
+              <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="expert_contextLayout" stretch="0,4">
+                <item>
+                 <widget class="QLabel" name="expert_contextLabel">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Device | Platform</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="expert_contextComboBox">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="1" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="expert_layout_top">
+                <property name="topMargin">
+                 <number>0</number>
                 </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>100</width>
-                  <height>255</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>100</width>
-                  <height>255</height>
-                 </size>
-                </property>
-                <property name="baseSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QListWidget 
+                <item>
+                 <widget class="BenchmarkListWidget" name="expert_BenchmarkListWidget">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>255</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>100</width>
+                    <height>255</height>
+                   </size>
+                  </property>
+                  <property name="baseSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QListWidget 
 { 
 /*background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(41, 41, 41, 255), stop:1 rgba(85, 85, 85, 255));  */
 background: rgba(240,240,240,255);
@@ -1133,228 +1029,375 @@ border-left: 2px groove gray;
 border-right: 2px groove gray; 
 border-top: 2px groove gray; 
 }</string>
-                </property>
-                <property name="lineWidth">
-                 <number>1</number>
-                </property>
-                <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="autoScroll">
-                 <bool>false</bool>
-                </property>
-                <property name="autoScrollMargin">
-                 <number>0</number>
-                </property>
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <property name="tabKeyNavigation">
-                 <bool>false</bool>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::MultiSelection</enum>
-                </property>
-                <property name="verticalScrollMode">
-                 <enum>QAbstractItemView::ScrollPerItem</enum>
-                </property>
-                <property name="flow">
-                 <enum>QListView::TopToBottom</enum>
-                </property>
-                <property name="isWrapping" stdset="0">
-                 <bool>false</bool>
-                </property>
-                <property name="viewMode">
-                 <enum>QListView::ListMode</enum>
-                </property>
-                <property name="selectionRectVisible">
-                 <bool>false</bool>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>All</string>
-                 </property>
-                 <property name="background">
-                  <brush brushstyle="NoBrush">
-                   <color alpha="255">
-                    <red>0</red>
-                    <green>0</green>
-                    <blue>0</blue>
-                   </color>
-                  </brush>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
+                  </property>
+                  <property name="lineWidth">
+                   <number>1</number>
+                  </property>
+                  <property name="verticalScrollBarPolicy">
+                   <enum>Qt::ScrollBarAlwaysOff</enum>
+                  </property>
+                  <property name="horizontalScrollBarPolicy">
+                   <enum>Qt::ScrollBarAlwaysOff</enum>
+                  </property>
+                  <property name="autoScroll">
+                   <bool>false</bool>
+                  </property>
+                  <property name="autoScrollMargin">
+                   <number>0</number>
+                  </property>
+                  <property name="editTriggers">
+                   <set>QAbstractItemView::NoEditTriggers</set>
+                  </property>
+                  <property name="tabKeyNavigation">
+                   <bool>false</bool>
+                  </property>
+                  <property name="selectionMode">
+                   <enum>QAbstractItemView::MultiSelection</enum>
+                  </property>
+                  <property name="verticalScrollMode">
+                   <enum>QAbstractItemView::ScrollPerItem</enum>
+                  </property>
+                  <property name="flow">
+                   <enum>QListView::TopToBottom</enum>
+                  </property>
+                  <property name="isWrapping" stdset="0">
+                   <bool>false</bool>
+                  </property>
+                  <property name="viewMode">
+                   <enum>QListView::ListMode</enum>
+                  </property>
+                  <property name="selectionRectVisible">
+                   <bool>false</bool>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>All</string>
+                   </property>
+                   <property name="background">
+                    <brush brushstyle="NoBrush">
+                     <color alpha="255">
+                      <red>0</red>
+                      <green>0</green>
+                      <blue>0</blue>
+                     </color>
+                    </brush>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Blas3</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Copy</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Sparse</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Vector</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../../resources/icons.qrc">
+                     <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
+                   </property>
+                  </item>
+                 </widget>
                 </item>
                 <item>
-                 <property name="text">
-                  <string>Blas3</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Copy</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Sparse</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-                <item>
-                 <property name="text">
-                  <string>Vector</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="../../resources/icons.qrc">
-                   <normaloff>:/icons/icons/checkTrue.png</normaloff>:/icons/icons/checkTrue.png</iconset>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QPushButton" name="expert_StartBenchmarkButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>155</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                  <underline>false</underline>
-                  <strikeout>false</strikeout>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton  {
-    border: 2px solid gray;
-margin: 0px;
-    border-radius: 5px;
-}
-QPushButton:hover {
-    border: 2px solid gray;
-margin: 0px;
-color: green;
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
-}
-
-QPushButton:pressed 
-{
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
-border-top: 2px groove gray; 
-color: #404040;
-}</string>
-                </property>
-                <property name="text">
-                 <string>START</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="../../resources/icons.qrc">
-                  <normaloff>:/icons/icons/start.png</normaloff>:/icons/icons/start.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>32</width>
-                  <height>32</height>
-                 </size>
-                </property>
-                <property name="flat">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2">
-               <spacer name="verticalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="4" colspan="2">
-               <widget class="QCustomPlot" name="expert_FinalResultPlot" native="true">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>255</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>255</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="6">
-               <layout class="QHBoxLayout" name="expert_contextLayout" stretch="0,4">
-                <item>
-                 <widget class="QLabel" name="expert_contextLabel">
+                 <widget class="QGroupBox" name="expert_configGroupBox">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
-                  <property name="text">
-                   <string>Device | Platform</string>
+                  <property name="minimumSize">
+                   <size>
+                    <width>400</width>
+                    <height>0</height>
+                   </size>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>400</width>
+                    <height>255</height>
+                   </size>
+                  </property>
+                  <property name="title">
+                   <string>Benchmark Config</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_18">
+                   <item row="0" column="0">
+                    <layout class="QGridLayout" name="expert_layout_config_copy_vector">
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="expert_VecMinLabel">
+                       <property name="text">
+                        <string>Vector Min Size</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QLabel" name="expert_VecMaxLabel">
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>10</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string>Vector Max Size</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="3">
+                      <widget class="QLabel" name="expert_IncFactorLabel">
+                       <property name="text">
+                        <string>Increment Factor</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="expert_CopyLabel">
+                       <property name="text">
+                        <string>Copy</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="expert_CopyVecMin">
+                       <property name="text">
+                        <string>10000</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="QLineEdit" name="expert_CopyVecMax">
+                       <property name="text">
+                        <string>10000</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <widget class="QLineEdit" name="expert_CopyIncFactor">
+                       <property name="text">
+                        <string>2</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="expert_VectorLabel">
+                       <property name="text">
+                        <string>Vector</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLineEdit" name="expert_VectorVecMin">
+                       <property name="text">
+                        <string>1500000</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="QLineEdit" name="expert_VectorVecMax">
+                       <property name="text">
+                        <string>1500000</string>
+                       </property>
+                       <property name="frame">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="3">
+                      <widget class="QLineEdit" name="expert_VectorIncFactor">
+                       <property name="text">
+                        <string>2</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item row="1" column="0">
+                    <layout class="QGridLayout" name="expert_layout_config_blas3_sparse">
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="expert_AMatSizeLabel">
+                       <property name="text">
+                        <string>Matrix Size A</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QLabel" name="expert_BMatSizeLabel">
+                       <property name="text">
+                        <string>Matrix Size B</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="3">
+                      <widget class="QLabel" name="expert_CMatSizeLabel">
+                       <property name="text">
+                        <string>Matrix Size C</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="expert_Blas3Label">
+                       <property name="text">
+                        <string>Blas3</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="expert_Blas3AMatSize">
+                       <property name="text">
+                        <string>1920</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="2">
+                      <widget class="QLineEdit" name="expert_Blas3BMatSize">
+                       <property name="text">
+                        <string>1920</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <widget class="QLineEdit" name="expert_Blas3CMatSize">
+                       <property name="text">
+                        <string>1920</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="expert_SparseLabel">
+                       <property name="text">
+                        <string>Sparse</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLineEdit" name="expert_SparseAMatSize">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="text">
+                        <string>1920</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="2">
+                      <widget class="QLineEdit" name="expert_SparseBMatSize">
+                       <property name="text">
+                        <string>1920</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0" colspan="4">
+                      <layout class="QHBoxLayout" name="expert_layout_config_custom_matrix">
+                       <item>
+                        <widget class="QLabel" name="expert_CustomMatrixLabel">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>110</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>Custom Sparse Matrix:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="expert_CustomMatrixName">
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QToolButton" name="expert_CustomMatrixBrowsebutton">
+                         <property name="text">
+                          <string>Browse</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QToolButton" name="expert_CustomMatrixDefaultButton">
+                         <property name="text">
+                          <string>Default</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                   <item row="2" column="0">
+                    <spacer name="verticalSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="expert_contextComboBox">
+                 <widget class="QCustomPlot" name="expert_FinalResultPlot" native="true">
                   <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>255</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>255</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -1366,7 +1409,11 @@ color: #404040;
                  <string notr="true">QGroupBox
 {
     border: 2px solid gray;
-    border-radius: 5px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
     /*margin-top: 1ex; /* leave space at the top for the title */
 }
 /*
@@ -1433,6 +1480,12 @@ border-top: 1px groove gray;
                  </property>
                  <item row="1" column="0">
                   <widget class="QPushButton" name="expert_DoubleButton">
+                   <property name="minimumSize">
+                    <size>
+                     <width>96</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true"/>
                    </property>
@@ -1462,6 +1515,12 @@ border-top: 1px groove gray;
                  </item>
                  <item row="0" column="0">
                   <widget class="QPushButton" name="expert_SingleButton">
+                   <property name="minimumSize">
+                    <size>
+                     <width>96</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true"/>
                    </property>
@@ -1492,330 +1551,60 @@ border-top: 1px groove gray;
                 </layout>
                </widget>
               </item>
-              <item row="1" column="1" colspan="3">
-               <widget class="QGroupBox" name="groupBox">
-                <property name="title">
-                 <string>Benchmark Config</string>
-                </property>
-                <layout class="QGridLayout" name="gridLayout_14">
-                 <item row="2" column="1">
-                  <widget class="QGroupBox" name="vectorGroupBox">
-                   <property name="title">
-                    <string>Vector</string>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_12">
-                    <item row="0" column="0" colspan="2">
-                     <widget class="QLabel" name="label_6">
-                      <property name="text">
-                       <string>Vector Min Size</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0" colspan="2">
-                     <widget class="QLabel" name="label_7">
-                      <property name="text">
-                       <string>Vector Max Size</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0" colspan="2">
-                     <widget class="QLabel" name="label_8">
-                      <property name="text">
-                       <string>Increment Factor</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="2">
-                     <widget class="QLineEdit" name="lineEdit_6">
-                      <property name="text">
-                       <string>10000</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="2">
-                     <widget class="QLineEdit" name="lineEdit_7">
-                      <property name="text">
-                       <string>1500000</string>
-                      </property>
-                      <property name="frame">
-                       <bool>true</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="2">
-                     <widget class="QLineEdit" name="lineEdit_8">
-                      <property name="text">
-                       <string>2</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <widget class="QGroupBox" name="blas3GroupBox">
-                   <property name="title">
-                    <string>Blas3</string>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_10">
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="label_2">
-                      <property name="text">
-                       <string>Matrix Size Y</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label">
-                      <property name="text">
-                       <string>Matrix Size X</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QLineEdit" name="lineEdit">
-                      <property name="text">
-                       <string>1920</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QLineEdit" name="lineEdit_2">
-                      <property name="text">
-                       <string>1920</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_12">
-                      <property name="text">
-                       <string>Matrix Size Z</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QLineEdit" name="lineEdit_11">
-                      <property name="text">
-                       <string>1920</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="0" column="1" rowspan="2">
-                  <widget class="QGroupBox" name="copyGroupBox">
-                   <property name="title">
-                    <string>Copy</string>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_11">
-                    <item row="2" column="0">
-                     <widget class="QLabel" name="label_5">
-                      <property name="text">
-                       <string>Increment Factor</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="label_4">
-                      <property name="text">
-                       <string>Vector Max Size</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_3">
-                      <property name="text">
-                       <string>Vector Min Size</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QLineEdit" name="lineEdit_5">
-                      <property name="text">
-                       <string>2</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QLineEdit" name="lineEdit_4">
-                      <property name="text">
-                       <string>1500000</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QLineEdit" name="lineEdit_3">
-                      <property name="text">
-                       <string>10000</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="1" column="0" rowspan="2">
-                  <widget class="QGroupBox" name="sparseGroupBox">
-                   <property name="title">
-                    <string>Sparse</string>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_13">
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_9">
-                      <property name="text">
-                       <string>Matrix Size X</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1" colspan="3">
-                     <widget class="QLineEdit" name="lineEdit_9">
-                      <property name="text">
-                       <string>1920</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QLabel" name="label_10">
-                      <property name="text">
-                       <string>Matrix Size Y</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1" colspan="3">
-                     <widget class="QLineEdit" name="lineEdit_10">
-                      <property name="text">
-                       <string>1920</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0" colspan="2">
-                     <widget class="QLabel" name="label_11">
-                      <property name="text">
-                       <string>Matrix</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="2">
-                     <widget class="QToolButton" name="toolButton">
-                      <property name="text">
-                       <string>Browse</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="3">
-                     <widget class="QToolButton" name="toolButton_2">
-                      <property name="text">
-                       <string>Use Default</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item row="3" column="0" colspan="2">
-                  <widget class="QLabel" name="userMatrixName">
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-                <zorder>blas3GroupBox</zorder>
-                <zorder>sparseGroupBox</zorder>
-                <zorder>copyGroupBox</zorder>
-                <zorder>vectorGroupBox</zorder>
-                <zorder>userMatrixName</zorder>
-               </widget>
-              </item>
-              <item row="2" column="4">
-               <widget class="QPushButton" name="expert_StopBenchmarkButton">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>200</width>
-                  <height>155</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <weight>75</weight>
-                  <italic>false</italic>
-                  <bold>true</bold>
-                  <underline>false</underline>
-                  <strikeout>false</strikeout>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton  {
+              <item row="2" column="1">
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QPushButton" name="expert_StartBenchmarkButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>155</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                    <underline>false</underline>
+                    <strikeout>false</strikeout>
+                    <kerning>true</kerning>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton  {
     border: 2px solid gray;
 margin: 0px;
-    border-radius: 5px;
-}
-QPushButton:hover {
-    border: 2px solid gray;
-margin: 0px;
-color: red;
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
-}
-
-QPushButton:pressed 
-{
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
 border-top: 2px groove gray; 
-color: #404040;
-}</string>
-                </property>
-                <property name="text">
-                 <string>STOP</string>
-                </property>
-                <property name="icon">
-                 <iconset resource="../../resources/icons.qrc">
-                  <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>32</width>
-                  <height>32</height>
-                 </size>
-                </property>
-                <property name="flat">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="2">
-               <widget class="QProgressBar" name="expert_ProgressBar">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QProgressBar  {
-    border: 2px solid gray;
-margin: 0px;
-    border-radius: 5px;
 }
 QPushButton:hover {
     border: 2px solid gray;
 margin: 0px;
 color: green;
 background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
-    border-radius: 5px;
+  /*  border-radius: 5px;*/
+
+
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
 }
 
 QPushButton:pressed 
@@ -1824,36 +1613,275 @@ background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200,
 border-top: 2px groove gray; 
 color: #404040;
 }</string>
-                </property>
-                <property name="maximum">
-                 <number>26</number>
-                </property>
-                <property name="value">
-                 <number>0</number>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="textVisible">
-                 <bool>true</bool>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="invertedAppearance">
-                 <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>START</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../resources/icons.qrc">
+                    <normaloff>:/icons/icons/start.png</normaloff>:/icons/icons/start.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="flat">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="expert_StopBenchmarkButton">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>155</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                    <underline>false</underline>
+                    <strikeout>false</strikeout>
+                    <kerning>true</kerning>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton  {
+    border: 2px solid gray;
+margin: 0px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
+}
+QPushButton:hover {
+    border: 2px solid gray;
+margin: 0px;
+color: green;
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
+  /*  border-radius: 5px;*/
+
+
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
+}
+
+QPushButton:pressed 
+{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-top: 2px groove gray; 
+color: #404040;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>STOP</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="../../resources/icons.qrc">
+                    <normaloff>:/icons/icons/stop.png</normaloff>:/icons/icons/stop.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                  <property name="flat">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QProgressBar" name="expert_ProgressBar">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QProgressBar  {
+    border: 2px solid gray;
+margin: 0px;
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
+}
+QPushButton:hover {
+    border: 2px solid gray;
+margin: 0px;
+color: green;
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 gray, stop:1 rgba(200, 200, 200, 255));
+   /* border-radius: 5px;*/
+border-bottom: 2px groove gray; 
+border-left: 2px groove gray; 
+border-right: 2px groove gray; 
+border-top: 2px groove gray; 
+}
+
+QPushButton:pressed 
+{
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(200, 200, 200, 200), stop:1 rgba(220, 220, 220, 255)); 
+border-top: 2px groove gray; 
+color: #404040;
+}</string>
+                  </property>
+                  <property name="maximum">
+                   <number>26</number>
+                  </property>
+                  <property name="value">
+                   <number>0</number>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                  <property name="textVisible">
+                   <bool>true</bool>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="invertedAppearance">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="CollapseWidget" name="expert_CollapseWidget" native="true">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
                </widget>
               </item>
              </layout>
-             <zorder>expert_FinalResultPlot</zorder>
              <zorder>expert_PrecisionGroupBox</zorder>
-             <zorder>expert_StartBenchmarkButton</zorder>
-             <zorder>groupBox</zorder>
-             <zorder>expert_BenchmarkListWidget</zorder>
-             <zorder>verticalSpacer_2</zorder>
-             <zorder>expert_StopBenchmarkButton</zorder>
-             <zorder>expert_ProgressBar</zorder>
+             <zorder></zorder>
+             <zorder>expert_CollapseWidget</zorder>
+            </widget>
+            <widget class="QWidget" name="tab">
+             <attribute name="title">
+              <string>Page</string>
+             </attribute>
+             <widget class="QGroupBox" name="blas3GroupBox">
+              <property name="geometry">
+               <rect>
+                <x>230</x>
+                <y>110</y>
+                <width>289</width>
+                <height>99</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Blas3</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_10"/>
+             </widget>
+             <widget class="QGroupBox" name="vectorGroupBox">
+              <property name="geometry">
+               <rect>
+                <x>170</x>
+                <y>390</y>
+                <width>456</width>
+                <height>108</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Vector</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_12">
+               <item row="0" column="0" colspan="2">
+                <widget class="QLabel" name="label_6">
+                 <property name="text">
+                  <string>Vector Min Size</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" colspan="2">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Increment Factor</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" colspan="2">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Vector Max Size</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QGroupBox" name="sparseGroupBox">
+              <property name="geometry">
+               <rect>
+                <x>140</x>
+                <y>240</y>
+                <width>220</width>
+                <height>108</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Sparse</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_13">
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Matrix Size X</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>Matrix Size Y</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QGroupBox" name="copyGroupBox">
+              <property name="geometry">
+               <rect>
+                <x>430</x>
+                <y>250</y>
+                <width>241</width>
+                <height>84</height>
+               </rect>
+              </property>
+              <property name="title">
+               <string>Copy</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_11"/>
+             </widget>
             </widget>
            </widget>
           </item>
@@ -2022,14 +2050,9 @@ color: #404040;
          </layout>
         </widget>
         <widget class="QWidget" name="systemInfoPage">
-         <layout class="QGridLayout" name="gridLayout_7" rowstretch="1" columnstretch="0">
+         <layout class="QGridLayout" name="gridLayout_7" rowstretch="0" columnstretch="0">
           <item row="0" column="0">
-           <widget class="QGroupBox" name="systemInfo_Box">
-            <property name="title">
-             <string>System Info</string>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_4"/>
-           </widget>
+           <widget class="SystemInfoScreen" name="widget" native="true"/>
           </item>
          </layout>
         </widget>
@@ -2116,6 +2139,18 @@ QMenuBar:item:selected{
    <class>MatrixMarket_Widget</class>
    <extends>QWidget</extends>
    <header>src/ui/matrixmarket_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>HomeScreen</class>
+   <extends>QWidget</extends>
+   <header>src/ui/homescreen.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SystemInfoScreen</class>
+   <extends>QWidget</extends>
+   <header>src/ui/systeminfoscreen.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
