@@ -199,6 +199,8 @@ void ExpertBenchmark::initExpert(){
   for ( int i = 0; i < ui->expert_BenchmarkListWidget->count(); i++ ) {
     ui->expert_BenchmarkListWidget->item(i)->setSelected(true);
   }
+  connect(ui->expert_CustomMatrixBrowsebutton, SIGNAL(clicked()), this, SLOT(setCustomSparseMatrixPath()) );
+  connect(ui->expert_CustomMatrixDefaultButton, SIGNAL(clicked()), ui->expert_SparseCustomMatrix, SLOT(clear()) );
 }
 
 void ExpertBenchmark::showBenchmarkStartButton(){
@@ -321,6 +323,14 @@ void ExpertBenchmark::resetAllPlots(){
     plot->xAxis->setRange(0,5);
     plot->replot();
   }
+}
+
+void ExpertBenchmark::setCustomSparseMatrixPath(){
+  ui->expert_SparseCustomMatrix->setText( QFileDialog::getOpenFileName(this,
+                                                                       QString("Select a Custom Sparse Matrix"),
+                                                                       ArchiveExtractor::getMatrixMarketUserFolder(),
+                                                                       "Matrix Market Files (*.mtx)" )
+                                          );
 }
 
 BenchmarkSettings ExpertBenchmark::getExpertSettings()

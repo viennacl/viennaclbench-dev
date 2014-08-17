@@ -24,6 +24,7 @@
 #include <QPushButton>
 #include <QProgressBar>
 #include <QComboBox>
+#include <QFileDialog>
 
 #include <cstdlib>
 #include <ctime>
@@ -76,6 +77,7 @@ public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
   void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
   void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
+  void setCustomSparseMatrixPath();
 private:
   int activeBenchmark;
   int currentBenchProgress;
