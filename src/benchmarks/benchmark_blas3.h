@@ -33,19 +33,21 @@
 
 #include "benchmark-utils.hpp"
 
-#define BLAS3_MATRIX_SIZE   1920
-
 class Benchmark_Blas3 : public AbstractBenchmark
 {
   Q_OBJECT
 public:
   explicit Benchmark_Blas3(QObject *parent = 0);
-  Benchmark_Blas3(bool precision);
+  Benchmark_Blas3(bool precision, BenchmarkSettings settings);
 
   template<typename ScalarType>
   void run_benchmark();
 private:
   QVector<double> testResultHolder;
+
+  int blas3MatrixSizeA;
+  int blas3MatrixSizeB;
+  int blas3MatrixSizeC;
 signals:
   /* Inherited signals:
    * void benchmarkStarted(int benchmarkIdNumber);

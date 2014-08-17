@@ -28,12 +28,19 @@ Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
 {
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
+  BenchmarkSettings settings;
+  blas3MatrixSizeA = settings.blas3MatSizeA;
+  blas3MatrixSizeB = settings.blas3MatSizeB;
+  blas3MatrixSizeC = settings.blas3MatSizeC;
 }
 
-Benchmark_Blas3::Benchmark_Blas3(bool precision)//, cl_platform_id platform, cl_device_id device)
+Benchmark_Blas3::Benchmark_Blas3(bool precision, BenchmarkSettings settings)//, cl_platform_id platform, cl_device_id device)
 {
   Benchmark_Blas3();
   setPrecision(precision);
+  blas3MatrixSizeA = settings.blas3MatSizeA;
+  blas3MatrixSizeB = settings.blas3MatSizeB;
+  blas3MatrixSizeC = settings.blas3MatSizeC;
 }
 
 template<typename ScalarType>
@@ -48,32 +55,33 @@ void Benchmark_Blas3::run_benchmark()
             <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
   std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
+  std::cout << blas3MatrixSizeA << "|||" <<blas3MatrixSizeB<<"|||"<<blas3MatrixSizeC<< std::endl;
   //
   // Set up some ViennaCL objects
   //
 
   //viennacl::ocl::current_context().build_options("-cl-mad-enable -cl-fast-relaxed-math");   //uncomment for additional optimizations
   //viennacl::ocl::current_context().build_options("-cl-opt-disable");                        //uncomment to get poor performance
-  viennacl::matrix<ScalarType> vcl_A(BLAS3_MATRIX_SIZE, BLAS3_MATRIX_SIZE);
-  viennacl::matrix<ScalarType> vcl_B(BLAS3_MATRIX_SIZE, BLAS3_MATRIX_SIZE);
-  viennacl::matrix<ScalarType> vcl_C(BLAS3_MATRIX_SIZE, BLAS3_MATRIX_SIZE);
+  viennacl::matrix<ScalarType> vcl_A(blas3MatrixSizeA, blas3MatrixSizeB);
+  viennacl::matrix<ScalarType> vcl_B(blas3MatrixSizeB, blas3MatrixSizeC);
+  viennacl::matrix<ScalarType> vcl_C(blas3MatrixSizeA, blas3MatrixSizeC);
 
   //
   // One alternative: Put the matrices into a contiguous block of memory (allows to use viennacl::fast_copy(), avoiding temporary memory)
   //
   std::vector<ScalarType> stl_A(vcl_A.internal_size());
-  std::vector<ScalarType> stl_B(vcl_A.internal_size());
+  std::vector<ScalarType> stl_B(vcl_B.internal_size());
 
   //
   // Fill the matrix
   //
-  for (unsigned int i = 0; i < BLAS3_MATRIX_SIZE; ++i)
-    for (unsigned int j = 0; j < BLAS3_MATRIX_SIZE; ++j)
-      stl_A[i*BLAS3_MATRIX_SIZE + j] = random<ScalarType>();
+  for (unsigned int i = 0; i < blas3MatrixSizeA; ++i)
+    for (unsigned int j = 0; j < blas3MatrixSizeB; ++j)
+      stl_A[i*blas3MatrixSizeA + j] = random<ScalarType>();
 
-  for (unsigned int i = 0; i < BLAS3_MATRIX_SIZE; ++i)
-    for (unsigned int j = 0; j < BLAS3_MATRIX_SIZE; ++j)
-      stl_B[i + j*BLAS3_MATRIX_SIZE] = random<ScalarType>();
+  for (unsigned int i = 0; i < blas3MatrixSizeB; ++i)
+    for (unsigned int j = 0; j < blas3MatrixSizeC; ++j)
+      stl_B[i + j*blas3MatrixSizeC] = random<ScalarType>();
 
 
   double tempResultValue;
@@ -104,7 +112,7 @@ void Benchmark_Blas3::run_benchmark()
 
   //  std::cout << " ------ Benchmark 2: Matrix-Matrix product using ranges ------ " << std::endl;
 
-  viennacl::range r(BLAS3_MATRIX_SIZE/4, 3 * BLAS3_MATRIX_SIZE/4);
+  viennacl::range r(blas3MatrixSizeB/4, 3 * blas3MatrixSizeB/4);
 
   viennacl::fast_copy(&(stl_A[0]),
       &(stl_A[0]) + stl_A.size(),
@@ -126,7 +134,7 @@ void Benchmark_Blas3::run_benchmark()
 
   //  std::cout << " ------ Benchmark 3: Matrix-Matrix product using slices ------ " << std::endl;
 
-  viennacl::slice s(0, 2, BLAS3_MATRIX_SIZE/2);
+  viennacl::slice s(0, 2, blas3MatrixSizeB/2);
 
   viennacl::fast_copy(&(stl_A[0]),
       &(stl_A[0]) + stl_A.size(),

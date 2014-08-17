@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 
+#include "../benchmarksettings.h"
+
 /*
  * Abstract benchmark interface class for easier handling of benchmark classes
  * */
@@ -13,6 +15,8 @@ enum{ BLAS3, COPY, SPARSE, VECTOR, QR, SOLVER, SCHEDULER, ALL };//benchmarkIdNum
 enum{ SINGLE_PRECISION, DOUBLE_PRECISION };//benchmark precision
 
 enum{ BAR_GRAPH, LINE_GRAPH };//graph type to be used when plotting test results
+
+enum{ BENCHMARK_MODE_BASIC, BENCHMARK_MODE_EXPERT };
 
 class AbstractBenchmark : public QObject
 {

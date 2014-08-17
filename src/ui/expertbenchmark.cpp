@@ -1,57 +1,62 @@
-#include "basicbenchmark.h"
-#include "ui_basicbenchmark.h"
+#include "expertbenchmark.h"
+#include "ui_expertbenchmark.h"
 
-BasicBenchmark::BasicBenchmark(QWidget *parent) :
+ExpertBenchmark::ExpertBenchmark(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::BasicBenchmark)
+  ui(new Ui::ExpertBenchmark)
 {
   ui->setupUi(this);
-  startBenchmarkButton = ui->basic_StartBenchmarkButton;
-  stopBenchmarkButton = ui->basic_StopBenchmarkButton;
-  progressBar = ui->basic_ProgressBar;
-  benchmarkListWidget = ui->basic_BenchmarkListWidget;
-  contextComboBox = ui->basic_contextComboBox;
-  singlePrecisionButton = ui->basic_SingleButton;
+
+  startBenchmarkButton = ui->expert_StartBenchmarkButton;
+  stopBenchmarkButton = ui->expert_StopBenchmarkButton;
+  progressBar = ui->expert_ProgressBar;
+  benchmarkListWidget = ui->expert_BenchmarkListWidget;
+  contextComboBox = ui->expert_contextComboBox;
+  singlePrecisionButton = ui->expert_SingleButton;
 
   maximumBenchProgress = 0;
   currentBenchProgress = 0;
-  connect(ui->basic_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
-  connect(ui->basic_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
-  initBasic();
+
+  connect(ui->expert_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
+  connect(ui->expert_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
+  initExpert();
 }
 
-BasicBenchmark::~BasicBenchmark()
+ExpertBenchmark::~ExpertBenchmark()
 {
   delete ui;
 }
 
-void BasicBenchmark::initBasic(){
-  basic_DetailedPlotTab = new QTabWidget(this);
-  basic_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
+void ExpertBenchmark::initExpert(){
+  //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
+  //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+
+  expert_DetailedPlotTab = new QTabWidget(this);
+  expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
   copy_DetailedPlot = new QCustomPlot();
-  //  qr_DetailedPlot = new QCustomPlot();
-  //  solver_DetailedPlot = new QCustomPlot();
+  //  qr_expertDetailedPlot = new QCustomPlot();
+  //  solver_expertDetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
   vector_DetailedPlot = new QCustomPlot();
 
-  basic_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
-  basic_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
-  //  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
-  //  basic_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
-  basic_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
-  basic_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
+  expert_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
+  expert_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
+  //  expert_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
+  //  expert_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
+  expert_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
+  expert_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
 
-  basic_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
-  basic_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
-  //  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
-  //  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
-  basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
-  basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
+  expert_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
+  expert_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
+  //  expert_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
+  //  expert_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
+  expert_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
+  expert_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
 
-  ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
-  ui->basic_CollapseWidget->setText("Detailed Test Results");
+  ui->expert_CollapseWidget->setChildWidget(expert_DetailedPlotTab);
+  ui->expert_CollapseWidget->setText("Detailed Test Results");
 
   //xAxis bottom
   //yAxis left
@@ -60,7 +65,7 @@ void BasicBenchmark::initBasic(){
   QColor backgroundColor(240,240,240);
   QBrush backgroundBrush(backgroundColor);
 
-  foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
+  foreach(QCustomPlot* plot, expert_DetailedPlotsVector){
 
     // connect slot that shows a message in the status bar when a graph is clicked:
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
@@ -101,18 +106,18 @@ void BasicBenchmark::initBasic(){
   }
 
 
-  ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
-  ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
+  ui->expert_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
+  ui->expert_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
+  ui->expert_FinalResultPlot->axisRect()->setupFullAxesBox();
   //Disable secondary axes & legend
-  ui->basic_FinalResultPlot->yAxis2->setVisible(false);
-  ui->basic_FinalResultPlot->xAxis2->setVisible(false);
-  ui->basic_FinalResultPlot->legend->setVisible(false);
+  ui->expert_FinalResultPlot->yAxis2->setVisible(false);
+  ui->expert_FinalResultPlot->xAxis2->setVisible(false);
+  ui->expert_FinalResultPlot->legend->setVisible(false);
   //Enable selecting plots
-  ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
+  ui->expert_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
 
   // connect slot that shows a message in the status bar when a graph is clicked:
-  connect(ui->basic_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
+  connect(ui->expert_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
   QVector<QString> finalResultPlotLabels;
   finalResultPlotLabels.append("Vector - GFLOPs");
@@ -134,25 +139,25 @@ void BasicBenchmark::initBasic(){
   finalResultPlotTicks.append(3);
   finalResultPlotTicks.append(4);
 
-  ui->basic_FinalResultPlot->yAxis->setAutoTickLabels(false);
-  ui->basic_FinalResultPlot->yAxis->setAutoTicks(false);
-  ui->basic_FinalResultPlot->yAxis->setTickVectorLabels(finalResultPlotLabels);
-  ui->basic_FinalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
-  ui->basic_FinalResultPlot->yAxis->setSubTickCount( 0 );
-  ui->basic_FinalResultPlot->yAxis->setTickLength( 0, 2);
-  ui->basic_FinalResultPlot->yAxis->setRange( 0.5, 5.0);
-  ui->basic_FinalResultPlot->yAxis->grid()->setVisible(true);
-  ui->basic_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
+  ui->expert_FinalResultPlot->yAxis->setAutoTickLabels(false);
+  ui->expert_FinalResultPlot->yAxis->setAutoTicks(false);
+  ui->expert_FinalResultPlot->yAxis->setTickVectorLabels(finalResultPlotLabels);
+  ui->expert_FinalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
+  ui->expert_FinalResultPlot->yAxis->setSubTickCount( 0 );
+  ui->expert_FinalResultPlot->yAxis->setTickLength( 0, 2);
+  ui->expert_FinalResultPlot->yAxis->setRange( 0.5, 5.0);
+  ui->expert_FinalResultPlot->yAxis->grid()->setVisible(true);
+  ui->expert_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
 
 
-  ui->basic_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
-  ui->basic_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
-  ui->basic_FinalResultPlot->xAxis->setScaleLogBase(10);
-  ui->basic_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
-  ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
-  ui->basic_FinalResultPlot->xAxis->setAutoTicks(false);
-  ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(false);
-  ui->basic_FinalResultPlot->xAxis->setAutoTickStep(false);
+  ui->expert_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
+  ui->expert_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+  ui->expert_FinalResultPlot->xAxis->setScaleLogBase(10);
+  ui->expert_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
+  ui->expert_FinalResultPlot->xAxis->setNumberPrecision(0);
+  ui->expert_FinalResultPlot->xAxis->setAutoTicks(false);
+  ui->expert_FinalResultPlot->xAxis->setAutoTickLabels(false);
+  ui->expert_FinalResultPlot->xAxis->setAutoTickStep(false);
   QVector<double> ticks;
   ticks.append(0.5);
   ticks.append(1);
@@ -165,7 +170,7 @@ void BasicBenchmark::initBasic(){
   ticks.append(500);
   ticks.append(1000);
   ticks.append(2000);
-  ui->basic_FinalResultPlot->xAxis->setTickVector(ticks);
+  ui->expert_FinalResultPlot->xAxis->setTickVector(ticks);
 
   QVector<QString> tickLabels;
   tickLabels.append("0.5");
@@ -179,87 +184,88 @@ void BasicBenchmark::initBasic(){
   tickLabels.append("500");
   tickLabels.append("1000");
   tickLabels.append("2000");
-  ui->basic_FinalResultPlot->xAxis->setTickVectorLabels(tickLabels);
+  ui->expert_FinalResultPlot->xAxis->setTickVectorLabels(tickLabels);
 
-  //  ui->basic_FinalResultPlot->xAxis->setTickLengthOut(200);
-  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
-  //  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
+  //  ui->expert_FinalResultPlot->xAxis->setTickLengthOut(200);
+  ui->expert_FinalResultPlot->xAxis->setRangeLower(0);
+  //  ui->expert_FinalResultPlot->xAxis->setRange(0,1);
 
-  ui->basic_FinalResultPlot->setBackground(backgroundBrush);
+  ui->expert_FinalResultPlot->setBackground(backgroundBrush);
 
-  ui->basic_StopBenchmarkButton->hide();
+  ui->expert_StopBenchmarkButton->hide();
 
-  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-  for ( int i = 0; i < ui->basic_BenchmarkListWidget->count(); i++ ) {
-    ui->basic_BenchmarkListWidget->item(i)->setSelected(true);
+  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+  for ( int i = 0; i < ui->expert_BenchmarkListWidget->count(); i++ ) {
+    ui->expert_BenchmarkListWidget->item(i)->setSelected(true);
   }
 }
 
-void BasicBenchmark::showBenchmarkStartButton(){
-  ui->basic_StopBenchmarkButton->hide();
-  ui->basic_StartBenchmarkButton->show();
-  ui->basic_ProgressBar->setFormat("Done");
+void ExpertBenchmark::showBenchmarkStartButton(){
+  ui->expert_StopBenchmarkButton->hide();
+  ui->expert_StartBenchmarkButton->show();
+  ui->expert_ProgressBar->setFormat("Done");
 }
 
-void BasicBenchmark::updateSinglePrecisionButtons(){
-  ui->basic_SingleButton->setChecked(true);
-  ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
+void ExpertBenchmark::updateSinglePrecisionButtons(){
+  ui->expert_SingleButton->setChecked(true);
+  ui->expert_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
-  ui->basic_DoubleButton->setChecked(false);
-  ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/empty.png"));
-
-}
-void BasicBenchmark::updateDoublePrecisionButtons(){
-  ui->basic_DoubleButton->setChecked(true);
-  ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
-
-  ui->basic_SingleButton->setChecked(false);
-  ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/empty.png"));
+  ui->expert_DoubleButton->setChecked(false);
+  ui->expert_DoubleButton->setIcon(QIcon(":/icons/icons/empty.png"));
 
 }
 
-void BasicBenchmark::setActiveBenchmarkPlot(int benchmarkIdNumber){
-  basic_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
+void ExpertBenchmark::updateDoublePrecisionButtons(){
+  ui->expert_DoubleButton->setChecked(true);
+  ui->expert_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
+
+  ui->expert_SingleButton->setChecked(false);
+  ui->expert_SingleButton->setIcon(QIcon(":/icons/icons/empty.png"));
+
+}
+
+void ExpertBenchmark::setActiveBenchmarkPlot(int benchmarkIdNumber){
+  expert_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
   activeBenchmark = benchmarkIdNumber;
 }
 
-void BasicBenchmark::updateFinalResultPlot(QString benchmarkName, double finalResult){
-  plotFinalResult(benchmarkName, finalResult, ui->basic_FinalResultPlot);
+void ExpertBenchmark::updateFinalResultPlot(QString benchmarkName, double finalResult){
+  plotFinalResult(benchmarkName, finalResult, ui->expert_FinalResultPlot);
 }
 
 //shows the detailed graph of a clicked final result bar
-void BasicBenchmark::graphClicked(QCPAbstractPlottable *plottable)
+void ExpertBenchmark::graphClicked(QCPAbstractPlottable *plottable)
 {
   QString clickedBenchmarkBar = plottable->name();
   if(clickedBenchmarkBar == "Blas3"){
-    basic_DetailedPlotTab->setCurrentIndex(BLAS3);
+    expert_DetailedPlotTab->setCurrentIndex(BLAS3);
   }
   else if(clickedBenchmarkBar == "Copy"){
-    basic_DetailedPlotTab->setCurrentIndex(COPY);
+    expert_DetailedPlotTab->setCurrentIndex(COPY);
   }
   else if(clickedBenchmarkBar == "Qr"){
-    basic_DetailedPlotTab->setCurrentIndex(QR);
+    expert_DetailedPlotTab->setCurrentIndex(QR);
   }
   else if(clickedBenchmarkBar == "Scheduler"){
-    basic_DetailedPlotTab->setCurrentIndex(SCHEDULER);
+    expert_DetailedPlotTab->setCurrentIndex(SCHEDULER);
   }
   else if(clickedBenchmarkBar == "Solver"){
-    basic_DetailedPlotTab->setCurrentIndex(SOLVER);
+    expert_DetailedPlotTab->setCurrentIndex(SOLVER);
   }
   else if(clickedBenchmarkBar == "Sparse"){
-    basic_DetailedPlotTab->setCurrentIndex(SPARSE);
+    expert_DetailedPlotTab->setCurrentIndex(SPARSE);
   }
   else if(clickedBenchmarkBar == "Vector"){
-    basic_DetailedPlotTab->setCurrentIndex(VECTOR);
+    expert_DetailedPlotTab->setCurrentIndex(VECTOR);
   }
 }
 
 //detailed plot selection filter
-void BasicBenchmark::selectionChanged()
+void ExpertBenchmark::selectionChanged()
 {
-  int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
-  QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
+  int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = expert_DetailedPlotsVector[currentPlotIndex];
   // synchronize selection of graphs with selection of corresponding legend items:
   for (int i=0; i< currentPlot->graphCount(); ++i)
   {
@@ -272,40 +278,40 @@ void BasicBenchmark::selectionChanged()
     }
   }
 }
-void BasicBenchmark::updateBenchProgress(){
+void ExpertBenchmark::updateBenchProgress(){
   currentBenchProgress++;
-  ui->basic_ProgressBar->setValue(currentBenchProgress);
-  ui->basic_ProgressBar->setFormat("Running Test %v of %m");
+  ui->expert_ProgressBar->setValue(currentBenchProgress);
+  ui->expert_ProgressBar->setFormat("Running Test %v of %m");
 }
 
-void BasicBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
+void ExpertBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
 {
   //item(0) is the 'All' benchmarks selection option
-  if(ui->basic_BenchmarkListWidget->row(item) == 0){
+  if(ui->expert_BenchmarkListWidget->row(item) == 0){
     if(item->isSelected()){
-      ui->basic_BenchmarkListWidget->selectAllItems();
+      ui->expert_BenchmarkListWidget->selectAllItems();
     }
     else{
-      ui->basic_BenchmarkListWidget->deselectAllItems();
+      ui->expert_BenchmarkListWidget->deselectAllItems();
     }
   }
   else{
     if(item->isSelected()){
       item->setIcon(QIcon(":/icons/icons/checkTrue.png"));
-      ui->basic_BenchmarkListWidget->checkSelectedItems();
+      ui->expert_BenchmarkListWidget->checkSelectedItems();
     }
     else{
-      ui->basic_BenchmarkListWidget->item(0)->setSelected(false);
-      ui->basic_BenchmarkListWidget->item(0)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
+      ui->expert_BenchmarkListWidget->item(0)->setSelected(false);
+      ui->expert_BenchmarkListWidget->item(0)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
       item->setIcon(QIcon(":/icons/icons/checkFalse.png"));
     }
   }
 }
 
-void BasicBenchmark::resetAllPlots(){
-  resetPlotData(ui->basic_FinalResultPlot);
+void ExpertBenchmark::resetAllPlots(){
+  resetPlotData(ui->expert_FinalResultPlot);
   //reset all plots
-  foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
+  foreach(QCustomPlot* plot, expert_DetailedPlotsVector){
     resetPlotData(plot);
     plot->yAxis->setTickVector(QVector<double>() );
     plot->yAxis->setTickVectorLabels(QVector<QString>() );
@@ -317,13 +323,36 @@ void BasicBenchmark::resetAllPlots(){
   }
 }
 
-void BasicBenchmark::hideStopButton()
+BenchmarkSettings ExpertBenchmark::getExpertSettings()
 {
-  ui->basic_StopBenchmarkButton->hide();
-  ui->basic_StartBenchmarkButton->show();
+  BenchmarkSettings settings;
+
+  settings.blas3MatSizeA = ui->expert_Blas3AMatSize->text().toInt();
+  settings.blas3MatSizeB = ui->expert_Blas3BMatSize->text().toInt();
+  settings.blas3MatSizeC = ui->expert_Blas3CMatSize->text().toInt();
+
+  settings.copyIncFactor = ui->expert_CopyIncFactor->text().toInt();
+  settings.copyMaxVectorSize = ui->expert_CopyVecMax->text().toInt();
+  settings.copyMinVectorSize = ui->expert_CopyVecMin->text().toInt();
+
+  settings.vectorMinVectorSize = ui->expert_VectorVecMin->text().toInt();
+  settings.vectorMaxVectorSize = ui->expert_VectorVecMax->text().toInt();
+  settings.vectorIncFactor = ui->expert_VectorIncFactor->text().toInt();
+
+  settings.sparseMatSizeA = ui->expert_SparseAMatSize->text().toInt();
+  settings.sparseMatSizeB = ui->expert_SparseBMatSize->text().toInt();
+  settings.sparseCustomMatrix = ui->expert_SparseCustomMatrix->text();
+
+  return settings;
+}
+
+void ExpertBenchmark::hideStopButton()
+{
+  ui->expert_StopBenchmarkButton->hide();
+  ui->expert_StartBenchmarkButton->show();
 }
 //reset the graph
-void BasicBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
+void ExpertBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
 {
   benchmarkGraph->clearGraphs();
   benchmarkGraph->clearPlottables();
@@ -332,16 +361,16 @@ void BasicBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
   benchmarkGraph->replot();
 }
 //set the benchmark's unit measure
-void BasicBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
+void ExpertBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
 {
   switch(axis){
   case Qt::XAxis:
     qDebug()<<""<<unitMeasureName;
-    basic_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
+    expert_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
     break;
   case Qt::YAxis:
     qDebug()<<""<<unitMeasureName;
-    basic_DetailedPlotsVector[activeBenchmark]->yAxis->setLabel(unitMeasureName);
+    expert_DetailedPlotsVector[activeBenchmark]->yAxis->setLabel(unitMeasureName);
     break;
   default:
     break;
@@ -349,16 +378,16 @@ void BasicBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axi
 
 }//parse the received benchmark result name and value
 
-void BasicBenchmark::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
+void ExpertBenchmark::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
   if(graphType == BAR_GRAPH){
-    plotBarResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
+    plotBarResult(benchmarkName, key, resultValue, expert_DetailedPlotsVector[activeBenchmark]);
   }
   else if(graphType == LINE_GRAPH){
-    plotLineResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark], testId);
+    plotLineResult(benchmarkName, key, resultValue, expert_DetailedPlotsVector[activeBenchmark], testId);
   }
 }
 
-void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
+void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
   if(customPlot->legend->visible() == false){
     customPlot->plotLayout()->addElement(0,1, customPlot->legend);
     customPlot->legend->setVisible(true);
@@ -457,7 +486,7 @@ void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double va
 
 //main result diplay function
 //x and y axis are swapped to achieve horizontal bar display
-void BasicBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+void ExpertBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
   margins.setRight(60);//reserve space for the largest result
@@ -506,7 +535,7 @@ void BasicBenchmark::plotBarResult(QString benchmarkName, double key, double val
   customPlot->replot();
 }
 
-void BasicBenchmark::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
+void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
   //  Plot mapping
   //  Vector - 1
   //  Sparse - 2

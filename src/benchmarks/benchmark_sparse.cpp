@@ -30,12 +30,19 @@ Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
 {
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
+  BenchmarkSettings settings;
+  xPoints = (viennacl::vcl_size_t) settings.sparseMatSizeA;
+  yPoints = (viennacl::vcl_size_t) settings.sparseMatSizeB;
+  customSparseMatrixPath = settings.sparseCustomMatrix;
 }
 
-Benchmark_Sparse::Benchmark_Sparse(bool precision)
+Benchmark_Sparse::Benchmark_Sparse(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Sparse();
   setPrecision(precision);
+  xPoints = (viennacl::vcl_size_t) settings.sparseMatSizeA;
+  yPoints = (viennacl::vcl_size_t) settings.sparseMatSizeB;
+  customSparseMatrixPath = settings.sparseCustomMatrix;
 }
 
 template<typename ScalarType>
@@ -46,12 +53,13 @@ void Benchmark_Sparse::run_benchmark()
             <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
   std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
+  std::cout << xPoints << "|||" <<yPoints<<"|||"<<customSparseMatrixPath.toStdString()<< std::endl;
   Timer timer;
   double exec_time;
   int testId = 0;
 
-  ScalarType std_factor1 = ScalarType(3.1415);
-  ScalarType std_factor2 = ScalarType(42.0);
+//  ScalarType std_factor1 = ScalarType(3.1415);
+//  ScalarType std_factor2 = ScalarType(42.0);
 
   viennacl::compressed_matrix<ScalarType, 1> vcl_compressed_matrix_1;
   viennacl::compressed_matrix<ScalarType, 4> vcl_compressed_matrix_4;
@@ -63,12 +71,21 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::hyb_matrix<ScalarType, 1> vcl_hyb_matrix_1;
 
 //  std::cout << "Generating Matrix..." << std::endl;
-
-  viennacl::vcl_size_t xPoints = 150;
-  viennacl::vcl_size_t yPoints = 150;
   std::vector< std::map<unsigned int, ScalarType> > stl_A;
   viennacl::tools::sparse_matrix_adapter<ScalarType> adapted_A(stl_A);
-  viennacl::tools::generate_fdm_laplace(adapted_A, xPoints, yPoints );
+  if(customSparseMatrixPath.isEmpty()){
+    //no custom matrix specified, generate the default one
+    viennacl::tools::generate_fdm_laplace(adapted_A, xPoints, yPoints );
+  }
+  else{
+    //load matrix from file
+    if(!viennacl::io::read_matrix_market_file(adapted_A /* Is this the right variable to read into? */, customSparseMatrixPath.toStdString()) ){
+      std::cout << "Custom sparse matrix read successfully" <<std::endl;
+    }
+    else{
+      std::cout << "Failed to read custom sparse matrix" <<std::endl;
+    }
+  }
 
   // create vectors and fill them with some (arbitrary) scalar values:
   viennacl::vector<ScalarType> vcl_vec1 = viennacl::scalar_vector<ScalarType>(stl_A.size(), 1.0);

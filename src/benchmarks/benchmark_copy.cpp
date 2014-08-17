@@ -29,13 +29,20 @@ Benchmark_Copy::Benchmark_Copy(QObject *parent) :
 {
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
+  BenchmarkSettings settings;
+  MAX_BENCHMARK_VECTOR_SIZE = settings.copyMaxVectorSize;
+  MIN_BENCHMARK_VECTOR_SIZE = settings.copyMinVectorSize;
+  INCREMENT_FACTOR = settings.copyIncFactor;
   //  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
 }
 
-Benchmark_Copy::Benchmark_Copy(bool precision)
+Benchmark_Copy::Benchmark_Copy(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Copy();
   setPrecision(precision);
+  MAX_BENCHMARK_VECTOR_SIZE = settings.copyMaxVectorSize;
+  MIN_BENCHMARK_VECTOR_SIZE = settings.copyMinVectorSize;
+  INCREMENT_FACTOR = settings.copyIncFactor;
 }
 
 template<typename ScalarType>
@@ -75,16 +82,13 @@ void Benchmark_Copy::run_benchmark()
             <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
   std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
+  std::cout << MIN_BENCHMARK_VECTOR_SIZE << "|||" <<MAX_BENCHMARK_VECTOR_SIZE<<"|||"<<INCREMENT_FACTOR<< std::endl;
 
   Timer timer;
   double exec_time_return = 0;
   double exec_time_complete = 0;
   int testId = 0;
   double tempResultValue;
-
-  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;//1.5M
-  int MIN_BENCHMARK_VECTOR_SIZE = 131072; //2^17
-  int INCREMENT_FACTOR = 2;
 
   ///////////// Vector operations /////////////////
 

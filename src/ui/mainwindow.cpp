@@ -14,17 +14,28 @@ MainWindow::MainWindow(QWidget *parent) :
       "elems[index].parentNode.removeChild(elems[index]);}"
       "}";
 
-  //normalize size of each list menu item
+  //normalize size of each main menu item
+  //otherwise items would not be centered
   for ( int i = 0; i < ui->mainMenuListWidget->count(); i++ ) {
     ui->mainMenuListWidget->item(i)->setSizeHint(ui->mainMenuListWidget->itemSizeHint());
   }
 
-  basicBenchmarkListWidget = ui->basicBenchmarkWidget->benchmarkListWidget;
-  basicStartBenchmarkButton = ui->basicBenchmarkWidget->startBenchmarkButton;
-  basicStopBenchmarkButton = ui->basicBenchmarkWidget->stopBenchmarkButton;
-  basicProgressBar = ui->basicBenchmarkWidget->progressBar;
-  basicContextComboBox = ui->basicBenchmarkWidget->contextComboBox;
-  basicSinglePrecisionButton = ui->basicBenchmarkWidget->singlePrecisionButton;
+  //get pointers to certain widgets of basic & expert benchmark widgets
+  //accessing widget's ui widgets is considered bad design
+  //should be done by using signals & slots
+  basicBenchmarkListWidget = ui->basicBenchmark->benchmarkListWidget;
+  basicStartBenchmarkButton = ui->basicBenchmark->startBenchmarkButton;
+  basicStopBenchmarkButton = ui->basicBenchmark->stopBenchmarkButton;
+  basicProgressBar = ui->basicBenchmark->progressBar;
+  basicContextComboBox = ui->basicBenchmark->contextComboBox;
+  basicSinglePrecisionButton = ui->basicBenchmark->singlePrecisionButton;
+
+  expertBenchmarkListWidget = ui->expertBenchmark->benchmarkListWidget;
+  expertStartBenchmarkButton = ui->expertBenchmark->startBenchmarkButton;
+  expertStopBenchmarkButton = ui->expertBenchmark->stopBenchmarkButton;
+  expertProgressBar = ui->expertBenchmark->progressBar;
+  expertContextComboBox = ui->expertBenchmark->contextComboBox;
+  expertSinglePrecisionButton = ui->expertBenchmark->singlePrecisionButton;
 
   connect(ui->actionAbout,SIGNAL(triggered()), qApp, SLOT(aboutQt()) );
   connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()) );
@@ -37,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
   //setup benchmark plots
   //HomeScreen class takes care of its own init
   //BasicBenchmark class takes care of its own init
-  initExpert();
+  //ExpertBenchmark class takes care of its own init
   interconnectViews();
   initMatrixMarket();
   //SystemInfoScreen class takes care of its own init
@@ -47,25 +58,46 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(ui->homeScreen->quickStartButton, SIGNAL(clicked()), this, SLOT(quickstartFullBenchmark()) );
   //run benchmark button clicked -> execute benchmark
 
+  //start basic/expert benchmark execution
   connect(basicStartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startBasicBenchmarkExecution()) );
+  connect(expertStartBenchmarkButton, SIGNAL(clicked()), this, SLOT(startExpertBenchmarkExecution()) );
+
   //stop benchmark button
   connect(basicStopBenchmarkButton, SIGNAL(clicked()), &benchmarkController, SLOT(stopExecution()) );
+  connect(expertStopBenchmarkButton, SIGNAL(clicked()), &benchmarkController, SLOT(stopExecution()) );
 
-  connect(&benchmarkController, SIGNAL(benchmarkStopped()), ui->basicBenchmarkWidget, SLOT(hideStopButton()) );
+  //hide stop button, show start button after the benchmark has been stopped
+  connect(&benchmarkController, SIGNAL(benchmarkStopped()), ui->basicBenchmark, SLOT(hideStopButton()) );
+  connect(&benchmarkController, SIGNAL(benchmarkStopped()), ui->expertBenchmark, SLOT(hideStopButton()) );
 
+  //show the start button once all benchmarks are done
+  connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), ui->basicBenchmark, SLOT(showBenchmarkStartButton()) );
+  connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), ui->expertBenchmark, SLOT(showBenchmarkStartButton()) );
+
+  /* ---BASIC MODE CONNECTIONS--- */
   //route incoming benchmark result info to appropriate plots
-  connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), ui->basicBenchmarkWidget, SLOT(setActiveBenchmarkPlot(int)) );
+  connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), ui->basicBenchmark, SLOT(setActiveBenchmarkPlot(int)) );
   //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
-  connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString, int)), ui->basicBenchmarkWidget, SLOT(updateBenchmarkUnitMeasure(QString, int)) );
+  connect(&benchmarkController, SIGNAL(unitMeasureSignal(QString, int)), ui->basicBenchmark, SLOT(updateBenchmarkUnitMeasure(QString, int)) );
   //received a benchmark test result -> parse it and show it on the graph
   connect(&benchmarkController, SIGNAL(resultSignal(QString, double, double, int, int)),
-          ui->basicBenchmarkWidget, SLOT(parseBenchmarkResult(QString, double, double, int, int)) );
+          ui->basicBenchmark, SLOT(parseBenchmarkResult(QString, double, double, int, int)) );
   //final benchmark result
-  connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), ui->basicBenchmarkWidget, SLOT(updateFinalResultPlot(QString,double)) );
-  //show the start button once all benchmarks are done
-  connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), ui->basicBenchmarkWidget, SLOT(showBenchmarkStartButton()) );
+  connect(&benchmarkController, SIGNAL(finalResultSignal(QString, double)), ui->basicBenchmark, SLOT(updateFinalResultPlot(QString,double)) );
   //connect progress signals
-  connect(&benchmarkController, SIGNAL(testProgress()), ui->basicBenchmarkWidget, SLOT(updateBenchProgress()) );
+  connect(&benchmarkController, SIGNAL(testProgress()), ui->basicBenchmark, SLOT(updateBenchProgress()) );
+
+  /* ---EXPERT MODE CONNECTIONS--- */
+  connect(&benchmarkController, SIGNAL(expert_benchmarkStarted(int)), ui->expertBenchmark, SLOT(setActiveBenchmarkPlot(int)) );
+  //set the benchmark result unit measure(GB/s, GFLOPs, seconds...)
+  connect(&benchmarkController, SIGNAL(expert_unitMeasureSignal(QString, int)), ui->expertBenchmark, SLOT(updateBenchmarkUnitMeasure(QString, int)) );
+  //received a benchmark test result -> parse it and show it on the graph
+  connect(&benchmarkController, SIGNAL(expert_resultSignal(QString, double, double, int, int)),
+          ui->expertBenchmark, SLOT(parseBenchmarkResult(QString, double, double, int, int)) );
+  //final benchmark result
+  connect(&benchmarkController, SIGNAL(expert_finalResultSignal(QString, double)), ui->expertBenchmark, SLOT(updateFinalResultPlot(QString,double)) );
+  //connect progress signals
+  connect(&benchmarkController, SIGNAL(expert_testProgress()), ui->expertBenchmark, SLOT(updateBenchProgress()) );
 
 }
 
@@ -112,7 +144,7 @@ void MainWindow::initPlatformDeviceChooser(){
   //Add contexts to the UI
   for (int i = 0; i <= contextMap.lastKey(); ++i) {
     basicContextComboBox->insertItem( i, contextMap.value(i) );
-    ui->expert_contextComboBox->insertItem( i, contextMap.value(i) );
+    expertContextComboBox->insertItem( i, contextMap.value(i) );
   }
 
   //  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
@@ -120,21 +152,6 @@ void MainWindow::initPlatformDeviceChooser(){
   //  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
   //  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
 
-
-}
-
-void MainWindow::selectionChanged()
-{
-
-}
-
-void MainWindow::graphClicked(QCPAbstractPlottable *plottable)
-{
-
-}
-
-void MainWindow::updateBenchmarkListWidget(QListWidgetItem *item)
-{
 
 }
 
@@ -146,6 +163,7 @@ void MainWindow::switchContext(int contextNumber){
   std::cout << "Device name: "<< viennacl::ocl::current_context().current_device().name()<< std::endl;
 }
 
+//starts a full basic benchmark
 void MainWindow::quickstartFullBenchmark(){
   ui->mainMenuListWidget->setCurrentRow(1);//switch to benchmark tab
   ui->benchmarkPageTabWidget->setCurrentIndex(0);//switch to basic benchmark tab
@@ -184,188 +202,9 @@ void MainWindow::modifyMatrixMarketWeb(){
   //  ui->matrixMarket_Widget->webView->page()->mainFrame()->evaluateJavaScript(jsString);
 }
 
-void MainWindow::setActiveBenchmarkPlot(int benchmarkIdNumber){//-!
-  basic_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
-  activeBenchmark = benchmarkIdNumber;
-}
-
 void MainWindow::interconnectViews(){
   //  connect(ui->basic_BenchmarkListWidget, SIGNAL()
 
-}
-
-void MainWindow::initExpert(){
-  //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
-  //  connect(ui->basic_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-
-  expert_DetailedPlotTab = new QTabWidget(ui->expert_BenchmarkTab);
-  expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
-
-  blas3_expertDetailedPlot = new QCustomPlot();
-  copy_expertDetailedPlot = new QCustomPlot();
-  //  qr_expertDetailedPlot = new QCustomPlot();
-  //  solver_expertDetailedPlot = new QCustomPlot();
-  sparse_expertDetailedPlot = new QCustomPlot();
-  vector_expertDetailedPlot = new QCustomPlot();
-
-  expert_DetailedPlotsVector.insert(BLAS3, blas3_expertDetailedPlot);
-  expert_DetailedPlotsVector.insert(COPY, copy_expertDetailedPlot);
-  //  expert_DetailedPlotsVector.insert(QR, qr_expertDetailedPlot);
-  //  expert_DetailedPlotsVector.insert(SOLVER, solver_expertDetailedPlot);
-  expert_DetailedPlotsVector.insert(SPARSE, sparse_expertDetailedPlot);
-  expert_DetailedPlotsVector.insert(VECTOR, vector_expertDetailedPlot);
-
-  expert_DetailedPlotTab->insertTab(BLAS3, blas3_expertDetailedPlot,"Blas3");
-  expert_DetailedPlotTab->insertTab(COPY, copy_expertDetailedPlot,"Copy");
-  //  expert_DetailedPlotTab->insertTab(QR, qr_expertDetailedPlot,"Qr");
-  //  expert_DetailedPlotTab->insertTab(SOLVER, solver_expertDetailedPlot,"Solver");
-  expert_DetailedPlotTab->insertTab(SPARSE, sparse_expertDetailedPlot,"Sparse");
-  expert_DetailedPlotTab->insertTab(VECTOR, vector_expertDetailedPlot,"Vector");
-
-  ui->expert_CollapseWidget->setChildWidget(expert_DetailedPlotTab);
-  ui->expert_CollapseWidget->setText("Detailed Test Results");
-
-  //xAxis bottom
-  //yAxis left
-  //xAxis2 top
-  //yAxis2 right
-  QColor backgroundColor(240,240,240);
-  QBrush backgroundBrush(backgroundColor);
-
-  foreach(QCustomPlot* plot, expert_DetailedPlotsVector){
-
-    // connect slot that shows a message in the status bar when a graph is clicked:
-    connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
-
-    //filter each item selection
-    connect(plot, SIGNAL( selectionChangedByUser()), this, SLOT(selectionChanged()) );
-    //    plot->axisRect()->setAutoMargins(QCP::msNone);
-    //    plot->axisRect()->setMargins(QMargins( 0, 0, 50, 0 ));
-
-    plot->axisRect()->setupFullAxesBox();
-    //Disable secondary axes
-    plot->yAxis2->setVisible(false);
-    plot->xAxis2->setVisible(false);
-
-    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectLegend);
-    plot->legend->setVisible(false);
-
-
-    plot->yAxis->setTickLength( 0, 2);
-    plot->yAxis->grid()->setVisible(true);
-    plot->yAxis->setTickLabelRotation( 0 );
-
-    plot->yAxis->setAutoSubTicks(false);
-    plot->yAxis->setAutoTickLabels(false);
-    plot->yAxis->setAutoTicks(false);
-    plot->yAxis->setAutoTickStep(false);
-    QVector<double> emptyTickVector;
-    plot->yAxis->setTickVector(emptyTickVector);
-    QVector<QString> emptyTickVectorLabels;
-    plot->yAxis->setTickVectorLabels(emptyTickVectorLabels);
-
-    plot->xAxis->setAutoSubTicks(true);
-    plot->xAxis->setAutoTickLabels(true);
-    plot->xAxis->setAutoTicks(true);
-    plot->xAxis->setAutoTickStep(true);
-
-    plot->setBackground(backgroundBrush);
-  }
-
-
-  ui->expert_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  ui->expert_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
-  ui->expert_FinalResultPlot->axisRect()->setupFullAxesBox();
-  //Disable secondary axes & legend
-  ui->expert_FinalResultPlot->yAxis2->setVisible(false);
-  ui->expert_FinalResultPlot->xAxis2->setVisible(false);
-  ui->expert_FinalResultPlot->legend->setVisible(false);
-  //Enable selecting plots
-  ui->expert_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
-
-  // connect slot that shows a message in the status bar when a graph is clicked:
-  connect(ui->expert_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
-
-  QVector<QString> finalResultPlotLabels;
-  finalResultPlotLabels.append("Vector - GFLOPs");
-  finalResultPlotLabels.append("Sparse - GFLOPs");
-  //  finalResultPlotLabels.append("Solver - GFLOPs");
-  //  finalResultPlotLabels.append("Qr - GFLOPs");
-  finalResultPlotLabels.append("Copy - GB/s");
-  finalResultPlotLabels.append("Blas3 - GFLOPs");
-
-  //  Plot mapping
-  //  Vector - 1
-  //  Sparse - 2
-  //  Copy - 3
-  //  Blas3 - 4
-
-  QVector<double> finalResultPlotTicks;
-  finalResultPlotTicks.append(1);
-  finalResultPlotTicks.append(2);
-  finalResultPlotTicks.append(3);
-  finalResultPlotTicks.append(4);
-
-  ui->expert_FinalResultPlot->yAxis->setAutoTickLabels(false);
-  ui->expert_FinalResultPlot->yAxis->setAutoTicks(false);
-  ui->expert_FinalResultPlot->yAxis->setTickVectorLabels(finalResultPlotLabels);
-  ui->expert_FinalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
-  ui->expert_FinalResultPlot->yAxis->setSubTickCount( 0 );
-  ui->expert_FinalResultPlot->yAxis->setTickLength( 0, 2);
-  ui->expert_FinalResultPlot->yAxis->setRange( 0.5, 5.0);
-  ui->expert_FinalResultPlot->yAxis->grid()->setVisible(true);
-  ui->expert_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
-
-
-  ui->expert_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
-  ui->expert_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
-  ui->expert_FinalResultPlot->xAxis->setScaleLogBase(10);
-  ui->expert_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
-  ui->expert_FinalResultPlot->xAxis->setNumberPrecision(0);
-  ui->expert_FinalResultPlot->xAxis->setAutoTicks(false);
-  ui->expert_FinalResultPlot->xAxis->setAutoTickLabels(false);
-  ui->expert_FinalResultPlot->xAxis->setAutoTickStep(false);
-  QVector<double> ticks;
-  ticks.append(0.5);
-  ticks.append(1);
-  ticks.append(5);
-  ticks.append(10);
-  ticks.append(20);
-  ticks.append(50);
-  ticks.append(100);
-  ticks.append(200);
-  ticks.append(500);
-  ticks.append(1000);
-  ticks.append(2000);
-  ui->expert_FinalResultPlot->xAxis->setTickVector(ticks);
-
-  QVector<QString> tickLabels;
-  tickLabels.append("0.5");
-  tickLabels.append("1");
-  tickLabels.append("5");
-  tickLabels.append("10");
-  tickLabels.append("20");
-  tickLabels.append("50");
-  tickLabels.append("100");
-  tickLabels.append("200");
-  tickLabels.append("500");
-  tickLabels.append("1000");
-  tickLabels.append("2000");
-  ui->expert_FinalResultPlot->xAxis->setTickVectorLabels(tickLabels);
-
-  //  ui->expert_FinalResultPlot->xAxis->setTickLengthOut(200);
-  ui->expert_FinalResultPlot->xAxis->setRangeLower(0);
-  //  ui->expert_FinalResultPlot->xAxis->setRange(0,1);
-
-  ui->expert_FinalResultPlot->setBackground(backgroundBrush);
-
-  ui->expert_StopBenchmarkButton->hide();
-
-  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-  for ( int i = 0; i < ui->expert_BenchmarkListWidget->count(); i++ ) {
-    ui->expert_BenchmarkListWidget->item(i)->setSelected(true);
-  }
 }
 
 bool MainWindow::getBasicPrecision(){
@@ -377,9 +216,52 @@ bool MainWindow::getBasicPrecision(){
   }
 }
 
+bool MainWindow::getExpertPrecision(){
+  if(expertSinglePrecisionButton->isChecked()){
+    return SINGLE_PRECISION;
+  }
+  else{
+    return DOUBLE_PRECISION;
+  }
+}
+
+void MainWindow::startExpertBenchmarkExecution(){
+  ui->expertBenchmark->resetAllPlots();
+  currentBenchProgress = 0;
+  maximumBenchProgress = 0;
+  expertProgressBar->setValue(currentBenchProgress);
+  expertProgressBar->setFormat("Starting Benchmark...");
+  QStringList selectedBenchmarkItems;
+  for ( int i = 1; i < expertBenchmarkListWidget->count(); i++ ) {
+    if(expertBenchmarkListWidget->item(i)->isSelected() ){
+      selectedBenchmarkItems.append(expertBenchmarkListWidget->item(i)->text());
+      //add each selected benchmark's number of tests to maximumBenchProgress
+      switch(i){
+      case 1: maximumBenchProgress += 4; break;//blas3 4 tests
+      case 2: maximumBenchProgress += 6; break;//copy 6 tests
+      case 3: maximumBenchProgress += 6; break;//sparse 6 tests
+      case 4: maximumBenchProgress += 10; break;//vector 10 tests
+      default: break;
+      }
+    }
+  }
+  //  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
+
+  //set progress bar max value
+  expertProgressBar->setMaximum(maximumBenchProgress);
+
+  expertStopBenchmarkButton->show();
+  expertStartBenchmarkButton->hide();
+
+  switchContext( expertContextComboBox->currentIndex() );//switch to currently selected context
+  BenchmarkSettings customSettings;
+  customSettings.setSettings(ui->expertBenchmark->getExpertSettings());
+  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, customSettings, getExpertPrecision(), BENCHMARK_MODE_EXPERT );//start the benchmark
+}
+
 //execute the currently selected benchmark
 void MainWindow::startBasicBenchmarkExecution(){
-  ui->basicBenchmarkWidget->resetAllPlots();
+  ui->basicBenchmark->resetAllPlots();
   currentBenchProgress = 0;
   maximumBenchProgress = 0;
   basicProgressBar->setValue(currentBenchProgress);
@@ -407,7 +289,8 @@ void MainWindow::startBasicBenchmarkExecution(){
   basicStartBenchmarkButton->hide();
 
   switchContext( basicContextComboBox->currentIndex() );//switch to currently selected context
-  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, getBasicPrecision() );//start the benchmark
+  BenchmarkSettings defaultSettings;
+  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, defaultSettings, getBasicPrecision(), BENCHMARK_MODE_BASIC );//start the benchmark
 }
 
 MainWindow::~MainWindow()

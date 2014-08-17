@@ -38,6 +38,7 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "../benchmarksettings.h"
 #include "qcustomplot.h"
 #include "../benchmark_controller.h"
 #include "benchmarklistwidget.h"
@@ -59,20 +60,19 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-  void initExpert();
   void initMatrixMarket();
   void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
   void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
   bool getBasicPrecision();
+  bool getExpertPrecision();
   void interconnectViews();
   void initPlatformDeviceChooser();
 private:
   QMap<int, QString> contextMap;
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController;
-  int activeBenchmark;
   int currentBenchProgress;
   int maximumBenchProgress;
 
@@ -84,38 +84,24 @@ private:
   QComboBox *basicContextComboBox;
   QPushButton  *basicSinglePrecisionButton;
 
+  BenchmarkListWidget *expertBenchmarkListWidget;
+  QPushButton *expertStartBenchmarkButton;
+  QPushButton *expertStopBenchmarkButton;
+  QProgressBar *expertProgressBar;
+  QComboBox *expertContextComboBox;
+  QPushButton  *expertSinglePrecisionButton;
 
 
-
-  QTabWidget *basic_DetailedPlotTab;
-  QTabWidget *expert_DetailedPlotTab;
-  QVector<QCustomPlot*> basic_DetailedPlotsVector;
-  QVector<QCustomPlot*> expert_DetailedPlotsVector;
-  QCustomPlot *blas3_expertDetailedPlot;
-  QCustomPlot *copy_expertDetailedPlot;
-//  QCustomPlot *qr_expertDetailedPlot;
-//  QCustomPlot *solver_expertDetailedPlot;
-  QCustomPlot *sparse_expertDetailedPlot;
-  QCustomPlot *vector_expertDetailedPlot;
-  QCustomPlot *blas3_DetailedPlot;
-  QCustomPlot *copy_DetailedPlot;
-//  QCustomPlot *qr_DetailedPlot;
-//  QCustomPlot *solver_DetailedPlot;
-  QCustomPlot *sparse_DetailedPlot;
-  QCustomPlot *vector_DetailedPlot;
   QString jsString;
 
 public slots:
-  void selectionChanged();
-  void graphClicked(QCPAbstractPlottable *plottable);
-  void updateBenchmarkListWidget(QListWidgetItem* item);
-
+  //BASIC MODE SLOTS
   void startBasicBenchmarkExecution();
   void quickstartFullBenchmark();
   void modifyMatrixMarketWeb();
   void switchContext(int contextNumber);
   void startMatrixMarketBenchmark(QString filename);
-  void setActiveBenchmarkPlot(int benchmarkIdNumber);
+  void startExpertBenchmarkExecution();
 };
 
 #endif // MAINWINDOW_H

@@ -28,12 +28,19 @@ Benchmark_Vector::Benchmark_Vector(QObject *parent) :
 {
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
+  BenchmarkSettings settings;
+  MAX_BENCHMARK_VECTOR_SIZE = settings.vectorMaxVectorSize;
+  MIN_BENCHMARK_VECTOR_SIZE = settings.vectorMinVectorSize;
+  INCREMENT_FACTOR = settings.vectorIncFactor;
 }
 
-Benchmark_Vector::Benchmark_Vector(bool precision)
+Benchmark_Vector::Benchmark_Vector(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Vector();
   setPrecision(precision);
+  MAX_BENCHMARK_VECTOR_SIZE = settings.vectorMaxVectorSize;
+  MIN_BENCHMARK_VECTOR_SIZE = settings.vectorMinVectorSize;
+  INCREMENT_FACTOR = settings.vectorIncFactor;
 }
 
 template<typename ScalarType>
@@ -71,10 +78,8 @@ void Benchmark_Vector::run_benchmark()
             <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
   std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
+  std::cout << MIN_BENCHMARK_VECTOR_SIZE << "|||" <<MAX_BENCHMARK_VECTOR_SIZE<<"|||"<<INCREMENT_FACTOR<< std::endl;
 
-  int MAX_BENCHMARK_VECTOR_SIZE = 15000000;//1.5M
-  int MIN_BENCHMARK_VECTOR_SIZE = 131072; //2^17
-  int INCREMENT_FACTOR = 2;
 
   /* HOLD MY BEER, IMMA GONNA FORLOOP EVERYTHING */
   /* Seriously, I run the entire test suite for each vector size */

@@ -35,7 +35,7 @@ class Benchmark_Copy : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Copy(QObject *parent = 0);
-  Benchmark_Copy(bool precision);
+  Benchmark_Copy(bool precision, BenchmarkSettings settings);
 
   template<typename ScalarType>
   void run_benchmark();
@@ -43,6 +43,10 @@ public:
   void resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
                      viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2);
 private:
+  int MAX_BENCHMARK_VECTOR_SIZE;
+  int MIN_BENCHMARK_VECTOR_SIZE;
+  int INCREMENT_FACTOR;
+
   QStringList benchmarkNames;
   QList<double> dataPoints;
 

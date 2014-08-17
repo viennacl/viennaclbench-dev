@@ -33,11 +33,14 @@ class Benchmark_Sparse : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Sparse(QObject *parent = 0);
-  Benchmark_Sparse(bool precision);
+  Benchmark_Sparse(bool precision, BenchmarkSettings settings);
 
   template<typename ScalarType>
   void run_benchmark();
 private:
+  viennacl::vcl_size_t xPoints;
+  viennacl::vcl_size_t yPoints;
+  QString customSparseMatrixPath;
   QVector<double> testResultHolder;
 signals:
   /* Inherited signals:

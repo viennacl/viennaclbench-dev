@@ -52,7 +52,7 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
     qDebug()<<"File saved. Path: "<<fullPath;
     QString extractedFilePath = ArchiveExtractor::extractFileToUserHomeFolder(fullPath);
     qDebug()<<"extractedFilePath "<<extractedFilePath;
-    if(extractedFilePath == ""){
+    if(extractedFilePath.isEmpty()){
       //extraction failed
     }
     else if(extractedFilePath.endsWith( QString(".mtx")) ){

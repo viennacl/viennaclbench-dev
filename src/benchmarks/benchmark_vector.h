@@ -23,7 +23,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-#define BENCHMARK_VECTOR_SIZE   3000000
 #define BENCHMARK_RUNS          10
 
 class Benchmark_Vector : public AbstractBenchmark
@@ -31,7 +30,7 @@ class Benchmark_Vector : public AbstractBenchmark
   Q_OBJECT
 public:
   explicit Benchmark_Vector(QObject *parent = 0);
-  Benchmark_Vector(bool precision);
+  Benchmark_Vector(bool precision, BenchmarkSettings settings);
 
   template<typename ScalarType>
   void run_benchmark();
@@ -39,6 +38,9 @@ public:
   void resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
                      viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2);
 private:
+  int MAX_BENCHMARK_VECTOR_SIZE;
+  int MIN_BENCHMARK_VECTOR_SIZE;
+  int INCREMENT_FACTOR;
   QVector<double> testResultHolder;
 signals:
   /* Inherited signals:
