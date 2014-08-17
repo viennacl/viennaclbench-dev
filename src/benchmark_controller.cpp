@@ -64,7 +64,7 @@ void Benchmark_Controller::stopExecution()
   //  currentBenchmarkThread->exit();
   //  currentBenchmarkThread->quit();
   benchmarkQ.clear();
-
+  emit benchmarkStopped();
 }
 
 void Benchmark_Controller::benchmarkStartedSlot(int benchmarkIdNumber)

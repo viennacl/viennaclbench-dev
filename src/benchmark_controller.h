@@ -22,7 +22,6 @@ class Benchmark_Controller : public QObject
   Q_OBJECT
 public:
   explicit Benchmark_Controller(QObject *parent = 0);
-  void stopExecution();
 private:
   QQueue<QString> benchmarkQ;
   void enqueueBenchmarks(QStringList benchmarkNames);
@@ -36,7 +35,9 @@ signals:
   void emptyBenchmarkQ();
   void benchmarkStarted(int benchmarkIdNumber);
   void testProgress();
+  void benchmarkStopped();
 public slots:
+  void stopExecution();
   void testProgressSlot();
   void setPrecision(bool p);
   bool getPrecision();

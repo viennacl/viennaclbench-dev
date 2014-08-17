@@ -23,6 +23,9 @@
 #include <QSplitter>
 #include <QMap>
 #include <QMultiMap>
+#include <QPushButton>
+#include <QProgressBar>
+#include <QComboBox>
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>
@@ -57,13 +60,12 @@ public:
   ~MainWindow();
 
   void initExpert();
-  void initBasic();
   void initMatrixMarket();
   void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
   void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
-  bool getPrecision();
+  bool getBasicPrecision();
   void interconnectViews();
   void initPlatformDeviceChooser();
 private:
@@ -73,6 +75,17 @@ private:
   int activeBenchmark;
   int currentBenchProgress;
   int maximumBenchProgress;
+
+
+  BenchmarkListWidget *basicBenchmarkListWidget;
+  QPushButton *basicStartBenchmarkButton;
+  QPushButton *basicStopBenchmarkButton;
+  QProgressBar *basicProgressBar;
+  QComboBox *basicContextComboBox;
+  QPushButton  *basicSinglePrecisionButton;
+
+
+
 
   QTabWidget *basic_DetailedPlotTab;
   QTabWidget *expert_DetailedPlotTab;
@@ -94,24 +107,15 @@ private:
 
 public slots:
   void selectionChanged();
-  void resetPlotData(QCustomPlot *benchmarkGraph);
-  void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
-  void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
-  void startBenchmarkExecution();
+  void graphClicked(QCPAbstractPlottable *plottable);
   void updateBenchmarkListWidget(QListWidgetItem* item);
-  void updateFinalResultPlot(QString benchmarkName, double finalResult);
-  void setActiveBenchmarkPlot(int benchmarkIdNumber);
+
+  void startBasicBenchmarkExecution();
   void quickstartFullBenchmark();
   void modifyMatrixMarketWeb();
-  void updateSinglePrecisionButtons();
-  void updateDoublePrecisionButtons();
-  void stopBenchmarkExecution();
-  void showBenchmarkStartButton();
-  void graphClicked(QCPAbstractPlottable *plottable);
-  void updateBenchProgress();
   void switchContext(int contextNumber);
-  void legendClicked(QCPLegend *legend, QCPAbstractLegendItem *item, QMouseEvent *event);
   void startMatrixMarketBenchmark(QString filename);
+  void setActiveBenchmarkPlot(int benchmarkIdNumber);
 };
 
 #endif // MAINWINDOW_H
