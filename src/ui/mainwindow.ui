@@ -233,7 +233,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -336,75 +336,9 @@ border-top: 1px groove gray;*/
          </layout>
         </widget>
         <widget class="QWidget" name="myResultsPage">
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QLabel" name="myResultsLabel">
-            <property name="text">
-             <string>My Result History</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QTableWidget" name="myResultsTable">
-            <property name="editTriggers">
-             <set>QAbstractItemView::NoEditTriggers</set>
-            </property>
-            <row>
-             <property name="text">
-              <string>1.</string>
-             </property>
-            </row>
-            <row>
-             <property name="text">
-              <string>2.</string>
-             </property>
-            </row>
-            <column>
-             <property name="text">
-              <string>Date</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Result</string>
-             </property>
-            </column>
-            <column>
-             <property name="text">
-              <string>Note</string>
-             </property>
-            </column>
-            <item row="0" column="0">
-             <property name="text">
-              <string>23.06.2014</string>
-             </property>
-            </item>
-            <item row="0" column="1">
-             <property name="text">
-              <string>7560</string>
-             </property>
-            </item>
-            <item row="0" column="2">
-             <property name="text">
-              <string>Test1</string>
-             </property>
-            </item>
-            <item row="1" column="0">
-             <property name="text">
-              <string>24.06.2014</string>
-             </property>
-            </item>
-            <item row="1" column="1">
-             <property name="text">
-              <string>7850</string>
-             </property>
-            </item>
-            <item row="1" column="2">
-             <property name="text">
-              <string>Test2</string>
-             </property>
-            </item>
-           </widget>
+           <widget class="ResultHistory" name="resultHistory" native="true"/>
           </item>
          </layout>
         </widget>
@@ -594,6 +528,12 @@ QMenuBar:item:selected{
    <class>ExpertBenchmark</class>
    <extends>QWidget</extends>
    <header>src/ui/expertbenchmark.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ResultHistory</class>
+   <extends>QWidget</extends>
+   <header>src/ui/resulthistory.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

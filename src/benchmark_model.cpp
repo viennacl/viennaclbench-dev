@@ -15,9 +15,27 @@ void Benchmark_Model::processBenchmarkInstance(BenchmarkInstance instance)
 //save results to local file in json format
 void Benchmark_Model::saveResults(BenchmarkInstance instance)
 {
-  qDebug()<<"saving results";
-  generateJson( instance );
-  //  updateBenchmarkData(QString benchmarkName, double bandwidthValue)
+  QJsonDocument doc = generateJson( instance );
+//  qDebug()<<"---toJson---";
+//  qDebug()<<doc.toJson(QJsonDocument::Indented);
+
+  QString saveFolderPath = QDir::home().absolutePath() + QString("/ViennaCL-Benchmark/benchmarkHistory/");
+  QDir saveDir(saveFolderPath);
+  if(!saveDir.exists(saveFolderPath)){
+    saveDir.mkpath(saveFolderPath);
+  }
+  QString filename;
+//  filename = saveFolderPath + QString("resultSave.json");
+  filename = QDateTime::currentDateTime().toString( QString("d.M.yyyy_h-m-s")) + QString(".json");//set filename to current datetime, ensuring each has a unique name
+  QString finalPath = saveFolderPath + filename;
+//  qDebug()<<finalPath;
+  QFile jsonFile(finalPath);
+  if(!jsonFile.open(QIODevice::WriteOnly)){
+    qDebug()<<"Failed to open json file.";
+    return;
+  }
+  jsonFile.write( doc.toJson(QJsonDocument::Indented) );
+  jsonFile.close();
 }
 
 void Benchmark_Model::uploadResults(BenchmarkInstance instance)
@@ -26,7 +44,7 @@ void Benchmark_Model::uploadResults(BenchmarkInstance instance)
   //upload benchmark results/info to server
 }
 
-QVariant Benchmark_Model::generateJson(BenchmarkInstance instance){
+QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
   QJsonObject rootObject;
 
@@ -68,28 +86,9 @@ QVariant Benchmark_Model::generateJson(BenchmarkInstance instance){
   rootObject["vector"] = vectorObject;
 
   QJsonDocument jsonDoc(rootObject);
-  qDebug()<<"---toJson---";
-  qDebug()<<jsonDoc.toJson(QJsonDocument::Indented);
-
-  QString saveFolderPath = QDir::home().absolutePath() + QString("/ViennaCL-Benchmark/benchmarkHistory/");
-  QDir saveDir(saveFolderPath);
-  if(!saveDir.exists(saveFolderPath)){
-    saveDir.mkpath(saveFolderPath);
-  }
-  QString filename;
-  filename = saveFolderPath + QString("resultSave.json");
-  qDebug()<<"saving to file: "<<filename;
-  QFile jsonSave(filename);
-  if(!jsonSave.open(QIODevice::WriteOnly)){
-    qDebug()<<"Failed to open json file.";
-    return QVariant();
-  }
-  jsonSave.write( jsonDoc.toJson(QJsonDocument::Indented) );
-
-  //  return jsonDoc.toJson();
-  return jsonDoc.toVariant();
+  return jsonDoc;
 #else
   qDebug()<<"JSON is not supported is Qt4";
-  return QVariant();
+  return QJsonDocument();
 #endif
 }

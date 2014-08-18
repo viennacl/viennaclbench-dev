@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ResultHistory</class>
+ <widget class="QWidget" name="ResultHistory">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>915</width>
+    <height>682</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Mode</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Precision</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Blas3</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Copy</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Sparse</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Vector</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

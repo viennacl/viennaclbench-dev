@@ -9,6 +9,7 @@
  * */
 #include <QObject>
 
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QString>
@@ -37,7 +38,7 @@ public:
 signals:
 
 public slots:
-  QVariant generateJson(BenchmarkInstance instance);
+  QJsonDocument generateJson(BenchmarkInstance instance);
 
 };
 

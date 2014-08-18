@@ -38,7 +38,8 @@ SOURCES += src/main.cpp \
     src/ui/systeminfoscreen.cpp \
     src/ui/basicbenchmark.cpp \
     src/ui/expertbenchmark.cpp \
-    src/benchmarksettings.cpp
+    src/benchmarksettings.cpp \
+    src/ui/resulthistory.cpp
 
 HEADERS  +=    src/benchmark_controller.h \
     src/archiveextractor.h \
@@ -67,7 +68,8 @@ HEADERS  +=    src/benchmark_controller.h \
     src/ui/systeminfoscreen.h \
     src/ui/basicbenchmark.h \
     src/ui/expertbenchmark.h \
-    src/benchmarksettings.h
+    src/benchmarksettings.h \
+    src/ui/resulthistory.h
 
 FORMS    += src/ui/mainwindow.ui \
     src/ui/collapsewidget.ui \
@@ -75,7 +77,8 @@ FORMS    += src/ui/mainwindow.ui \
     src/ui/homescreen.ui \
     src/ui/systeminfoscreen.ui \
     src/ui/basicbenchmark.ui \
-    src/ui/expertbenchmark.ui
+    src/ui/expertbenchmark.ui \
+    src/ui/resulthistory.ui
 
 RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
