@@ -1,9 +1,5 @@
 #include "benchmark_controller.h"
 #include "QDebug"
-/*
- * Central benchmark execution controller
- * Basically acts as a central connection hub between the UI and benchmarks
- * */
 
 Benchmark_Controller::Benchmark_Controller(QObject *parent) :
   QObject(parent)
@@ -240,6 +236,19 @@ void Benchmark_Controller::expert_benchmarkStartedSlot(int benchmarkIdNumber)
 
 void Benchmark_Controller::expert_finalResultSignalSlot(QString benchmarkName, double finalValue)
 {
+  //intercept final results and store them in the benchmark instance
+  if(benchmarkName == "Blas3"){
+    currentBenchmark_Instance.blas3Result = finalValue;
+  }
+  else if(benchmarkName == "Copy"){
+    currentBenchmark_Instance.copyResult = finalValue;
+  }
+  else if(benchmarkName == "Sparse"){
+    currentBenchmark_Instance.sparseResult = finalValue;
+  }
+  else if(benchmarkName == "Vector"){
+    currentBenchmark_Instance.vectorResult = finalValue;
+  }
   emit expert_finalResultSignal(benchmarkName, finalValue);
 }
 
