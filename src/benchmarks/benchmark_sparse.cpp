@@ -84,6 +84,7 @@ void Benchmark_Sparse::run_benchmark()
     }
     else{
       std::cout << "Failed to read custom sparse matrix" <<std::endl;
+      return;
     }
   }
 
