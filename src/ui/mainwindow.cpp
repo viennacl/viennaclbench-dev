@@ -245,6 +245,11 @@ void MainWindow::startExpertBenchmarkExecution(){
       }
     }
   }
+  if(selectedBenchmarkItems.isEmpty()){
+    //no benchmarks were selected, return
+    expertProgressBar->setFormat("No benchmarks were selected");
+    return;
+  }
   //  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
 
   //set progress bar max value
@@ -279,6 +284,11 @@ void MainWindow::startBasicBenchmarkExecution(){
       default: break;
       }
     }
+  }
+  if(selectedBenchmarkItems.isEmpty()){
+    //no benchmarks were selected, return
+    basicProgressBar->setFormat("No benchmarks were selected");
+    return;
   }
   //  qDebug()<<"Selected benchmarks: "<<selectedBenchmarkItems;
 
