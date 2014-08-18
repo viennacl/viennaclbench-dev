@@ -6,6 +6,7 @@ BasicBenchmark::BasicBenchmark(QWidget *parent) :
   ui(new Ui::BasicBenchmark)
 {
   ui->setupUi(this);
+  ui->basic_FinalResultLabel->hide();
   startBenchmarkButton = ui->basic_StartBenchmarkButton;
   stopBenchmarkButton = ui->basic_StopBenchmarkButton;
   progressBar = ui->basic_ProgressBar;

@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
       "elems[index].parentNode.removeChild(elems[index]);}"
       "}";
 
+  ui->mainMenuListWidget->item(3)->setHidden(true);
   //normalize size of each main menu item
   //otherwise items would not be centered
   for ( int i = 0; i < ui->mainMenuListWidget->count(); i++ ) {
