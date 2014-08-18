@@ -146,7 +146,10 @@ void Benchmark_Vector::run_benchmark()
 
     tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-    printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+    //this is still here for reasons
+    std::cout << "CPU time: " << exec_time << std::endl;
+    std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+    std::cout << "Result:" << std_result << std::endl;
 
     emit resultSignal("Vector inner products - CPU", vectorSize, tempResultValue, LINE_GRAPH, testId );
     testId++;
