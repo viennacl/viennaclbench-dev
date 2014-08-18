@@ -9,15 +9,33 @@
  * */
 #include <QObject>
 
+#include <QString>
+#include <QStringList>
+#include <QList>
+#include <QVariant>
+
+#if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#else
+#endif
+#include "benchmarkinstance.h"
+#include "benchmarksettings.h"
+
 class Benchmark_Model : public QObject
 {
   Q_OBJECT
 public:
   explicit Benchmark_Model(QObject *parent = 0);
+  void processBenchmarkInstance(BenchmarkInstance instance);
+  void saveResults(BenchmarkInstance instance);
+  void uploadResults(BenchmarkInstance instance);
 
 signals:
 
 public slots:
+  QVariant generateJson(BenchmarkInstance instance);
 
 };
 

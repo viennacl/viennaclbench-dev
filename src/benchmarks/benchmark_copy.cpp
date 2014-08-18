@@ -33,7 +33,6 @@ Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   MAX_BENCHMARK_VECTOR_SIZE = settings.copyMaxVectorSize;
   MIN_BENCHMARK_VECTOR_SIZE = settings.copyMinVectorSize;
   INCREMENT_FACTOR = settings.copyIncFactor;
-  //  connect(this, SIGNAL(resultSignal(QString,double)), this, SLOT(updateBenchmarkData(QString,double)) );//TODO move json data saving to BenchmarkInstance model
 }
 
 Benchmark_Copy::Benchmark_Copy(bool precision, BenchmarkSettings settings)
@@ -233,44 +232,3 @@ void Benchmark_Copy::execute(){
   emit finalResultSignal("Copy", testResultHolder[testResultHolder.size()/2]);
   emit benchmarkComplete();
 }
-
-void Benchmark_Copy::updateBenchmarkData(QString benchmarkName, double bandwidthValue)
-{
-  benchmarkNames.append(benchmarkName);
-  dataPoints.append(bandwidthValue);
-}
-
-//QVariant Benchmark_Copy::getJsonData(){
-//  QJsonObject jsonObject;
-//  QJsonArray labels;
-
-//  foreach (QString benchmarkName, benchmarkNames) {
-//    labels.append(benchmarkName);
-//  }
-//  jsonObject["labels"] = labels;
-
-//  QJsonArray dataPointsJsonArray;
-//  foreach (double dataPoint, dataPoints) {
-//    dataPointsJsonArray.append(dataPoint);
-//  }
-//  QString color = "rgba(0,0,220,0.5)";
-//  QJsonObject chartBarData;
-//    chartBarData["fillColor"] = color;
-//    chartBarData["strokeColor"] = color;
-//    chartBarData["data"] = dataPointsJsonArray;
-
-//    QJsonArray datasets;
-//  datasets.append(chartBarData);
-
-//  jsonObject["datasets"] = datasets;
-
-//  QJsonDocument jsonDoc(jsonObject);
-////  qDebug()<<"json output";
-////  qDebug()<<jsonDoc.toBinaryData();
-//  qDebug()<<"---toJson---";
-////  qDebug()<<jsonDoc.toJson(QJsonDocument::Compact);
-////  return jsonDoc.toJson();
-//  dataPoints.clear();
-//  benchmarkNames.clear();
-//  return jsonDoc.toVariant();
-//}

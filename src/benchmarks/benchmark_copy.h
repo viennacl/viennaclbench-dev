@@ -17,12 +17,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-#define BENCHMARK_VECTOR_SIZE   10000000
 #define BENCHMARK_RUNS          10
-
-//#include <QJsonArray>
-//#include <QJsonDocument>
-//#include <QJsonObject>
 
 #include <QThread>
 #include <QVector>
@@ -47,9 +42,6 @@ private:
   int MIN_BENCHMARK_VECTOR_SIZE;
   int INCREMENT_FACTOR;
 
-  QStringList benchmarkNames;
-  QList<double> dataPoints;
-
   QVector<double> testResultHolder;
 signals:
   /* Inherited signals:
@@ -62,8 +54,6 @@ signals:
    * */
 public slots:
   void execute();
-  void updateBenchmarkData(QString benchmarkName, double bandwidthValue);
-  //  QVariant getJsonData();
 };
 
 #endif // BENCHMARK_COPY_H

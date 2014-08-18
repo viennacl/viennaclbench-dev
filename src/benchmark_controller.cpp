@@ -11,14 +11,14 @@ Benchmark_Controller::Benchmark_Controller(QObject *parent) :
   precision = DOUBLE_PRECISION;
   mode = BENCHMARK_MODE_BASIC;
   BenchmarkSettings defaultSettings;
-  currentBenchmarkSettings.setSettings(defaultSettings);
+  currentBenchmark_Settings.setSettings(defaultSettings);
 }
 
 //Starts execution of a new benchmark test in a separate thread
 void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
   //  qDebug()<<"Creating Benchmark Thread Object";
   QThread *workerThread = new QThread();
-  currentBenchmarkThread = workerThread;
+  currentBenchmark_Thread = workerThread;
   benchmark->moveToThread(workerThread);
 
   connect(workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );
@@ -79,8 +79,8 @@ void Benchmark_Controller::testProgressSlot()
 void Benchmark_Controller::stopExecution()
 {
   qDebug()<<"---STOPPING BENCHMARK EXECUTION---";
-  currentBenchmarkThread->terminate();
-  currentBenchmarkThread->wait();
+  currentBenchmark_Thread->terminate();
+  currentBenchmark_Thread->wait();
   //  currentBenchmarkThread->exit();
   //  currentBenchmarkThread->quit();
   benchmarkQ.clear();
@@ -99,10 +99,10 @@ void Benchmark_Controller::startNextBenchmark(){
 
     //    qDebug()<<"String Next benchmark: "<<nextBenchmarkName;
     if(nextBenchmarkName == "Blas3"){
-      createBenchmark(new Benchmark_Blas3( getPrecision(), currentBenchmarkSettings ));
+      createBenchmark(new Benchmark_Blas3( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Copy"){
-      createBenchmark(new Benchmark_Copy( getPrecision(), currentBenchmarkSettings ));
+      createBenchmark(new Benchmark_Copy( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Scheduler"){
       //      createBenchmark(new Benchmark_Scheduler( getPrecision(), *currentBenchmarkSettings ));
@@ -111,10 +111,10 @@ void Benchmark_Controller::startNextBenchmark(){
       //      createBenchmark(new Benchmark_Solver( getPrecision(), *currentBenchmarkSettings ));
     }
     else if(nextBenchmarkName == "Sparse"){
-      createBenchmark(new Benchmark_Sparse( getPrecision(), currentBenchmarkSettings ));
+      createBenchmark(new Benchmark_Sparse( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Vector"){
-      createBenchmark(new Benchmark_Vector( getPrecision(), currentBenchmarkSettings ));
+      createBenchmark(new Benchmark_Vector( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Qr"){
       //      createBenchmark(new Benchmark_Qr());
@@ -124,9 +124,17 @@ void Benchmark_Controller::startNextBenchmark(){
     }
   }
   else{
-    //    qDebug()<<"Benchmark queue is empty";
-    emit emptyBenchmarkQ(); //no more benchmarks to run
+    //---ALL BENCHMARKS HAVE BEEN EXECUTED---//
+
+    //        qDebug()<<"Benchmark queue is empty";
+    processBenchmarkInstance(currentBenchmark_Instance);//save/upload benchmark results
+    emit emptyBenchmarkQ(); //let ui know all benchmarks are complete
   }
+}
+
+void Benchmark_Controller::processBenchmarkInstance(BenchmarkInstance instance){
+  Benchmark_Model model;
+  model.processBenchmarkInstance(instance);
 }
 
 void Benchmark_Controller::setPrecision(bool p)
@@ -152,9 +160,31 @@ void Benchmark_Controller::executeSelectedBenchmark(QStringList benchmarkNamesLi
                                                     bool precision = DOUBLE_PRECISION,
                                                     int mode = BENCHMARK_MODE_BASIC)
 {
-  currentBenchmarkSettings.setSettings(settings);
+  currentBenchmark_Settings.setSettings(settings);
+
+  currentBenchmark_Instance.setSettings(currentBenchmark_Settings);
+  if(mode == BENCHMARK_MODE_BASIC){
+    currentBenchmark_Instance.mode = "Standard";
+  }
+  else{
+    currentBenchmark_Instance.mode = "Advanced";
+  }
+  if(precision == DOUBLE_PRECISION){
+    currentBenchmark_Instance.precision = "Double";
+  }
+  else{
+    currentBenchmark_Instance.precision = "Single";
+  }
+  if(benchmarkNamesList.length() == 4){//all 4 benchmark have been selected
+    currentBenchmark_Instance.full = true;
+  }
+  else{
+    currentBenchmark_Instance.full = false;
+  }
+
   setPrecision(precision);
   setMode(mode);
+
   if(!benchmarkNamesList.isEmpty()){
     enqueueBenchmarks(benchmarkNamesList);
     startNextBenchmark();
@@ -166,6 +196,19 @@ void Benchmark_Controller::executeSelectedBenchmark(QStringList benchmarkNamesLi
 
 void Benchmark_Controller::finalResultSignalSlot(QString benchmarkName, double finalValue)
 {
+  //intercept final results and store them in the benchmark instance
+  if(benchmarkName == "Blas3"){
+    currentBenchmark_Instance.blas3Result = finalValue;
+  }
+  else if(benchmarkName == "Copy"){
+    currentBenchmark_Instance.copyResult = finalValue;
+  }
+  else if(benchmarkName == "Sparse"){
+    currentBenchmark_Instance.sparseResult = finalValue;
+  }
+  else if(benchmarkName == "Vector"){
+    currentBenchmark_Instance.vectorResult = finalValue;
+  }
   emit finalResultSignal(benchmarkName, finalValue);
 }
 

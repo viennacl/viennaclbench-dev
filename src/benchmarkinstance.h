@@ -4,17 +4,28 @@
  * Holds all information related to a benchmark run
  * For now it's just benchmark results and settings
  * */
-#include <QObject>
+//#include <QObject>
+#include "benchmarksettings.h"
 
-class BenchmarkInstance : public QObject
+class BenchmarkInstance// : public QObject
 {
-  Q_OBJECT
+//  Q_OBJECT
 public:
-  explicit BenchmarkInstance(QObject *parent = 0);
+  explicit BenchmarkInstance(/*QObject *parent = 0*/);
 
-signals:
+  BenchmarkSettings settings;
+  double blas3Result;
+  double copyResult;
+  double sparseResult;
+  double vectorResult;
+  QString mode;
+  bool full;
+  double totalScore;
+  QString precision;
+  void setSettings(BenchmarkSettings s);
+//signals:
 
-public slots:
+//public slots:
 
 };
 

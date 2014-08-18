@@ -16,6 +16,8 @@
 //#include "benchmarks/benchmark_solver.h"
 //#include "benchmarks/benchmark_qr.h"
 #include "benchmarksettings.h"
+#include "benchmarkinstance.h"
+#include "benchmark_model.h"
 
 class Benchmark_Controller : public QObject
 {
@@ -26,8 +28,9 @@ private:
   QQueue<QString> benchmarkQ;
   void enqueueBenchmarks(QStringList benchmarkNames);
   bool precision; // false(0) - SINGLE | true(1) - DOUBLE
-  QThread *currentBenchmarkThread;
-  BenchmarkSettings currentBenchmarkSettings;
+  QThread *currentBenchmark_Thread;
+  BenchmarkSettings currentBenchmark_Settings;
+  BenchmarkInstance currentBenchmark_Instance;
   int mode;
 signals:
   void emptyBenchmarkQ();
@@ -59,6 +62,8 @@ public slots:
   void setMode(int m);
   int getMode();
   void createBenchmark(AbstractBenchmark *benchmark);
+  void processBenchmarkInstance(BenchmarkInstance instance);
+  void errorMessageSlot(QString message);
 
   //basic mode slots
   void testProgressSlot();
@@ -75,7 +80,6 @@ public slots:
   void expert_resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void expert_benchmarkCompleteSlot();
   void expert_unitMeasureSignalSlot(QString unitMeasureName, int axis);
-  void errorMessageSlot(QString message);
 };
 
 #endif // BENCHMARK_CONTROLLER_H
