@@ -102,6 +102,7 @@ public slots:
   void switchContext(int contextNumber);
   void startMatrixMarketBenchmark(QString filename);
   void startExpertBenchmarkExecution();
+  void showErrorMessageBox(QString message);
 };
 
 #endif // MAINWINDOW_H

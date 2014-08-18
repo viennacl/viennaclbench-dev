@@ -49,9 +49,14 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(expert_benchmarkCompleteSlot()) );
 
   }
+  connect(benchmark, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)) );
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(startNextBenchmark()) );
   workerThread->start();
 
+}
+
+void Benchmark_Controller::errorMessageSlot(QString message){
+  emit errorMessage(message);
 }
 
 void Benchmark_Controller::workerFinishedSlot(){

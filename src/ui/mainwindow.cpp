@@ -74,6 +74,9 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), ui->basicBenchmark, SLOT(showBenchmarkStartButton()) );
   connect(&benchmarkController, SIGNAL(emptyBenchmarkQ()), ui->expertBenchmark, SLOT(showBenchmarkStartButton()) );
 
+  //show error messages
+  connect(&benchmarkController, SIGNAL(errorMessage(QString)), this, SLOT(showErrorMessageBox(QString)) );
+
   /* ---BASIC MODE CONNECTIONS--- */
   //route incoming benchmark result info to appropriate plots
   connect(&benchmarkController, SIGNAL(benchmarkStarted(int)), ui->basicBenchmark, SLOT(setActiveBenchmarkPlot(int)) );
@@ -99,6 +102,10 @@ MainWindow::MainWindow(QWidget *parent) :
   //connect progress signals
   connect(&benchmarkController, SIGNAL(expert_testProgress()), ui->expertBenchmark, SLOT(updateBenchProgress()) );
 
+}
+
+void MainWindow::showErrorMessageBox(QString message){
+  QMessageBox::warning(this, QString("ViennaCL Benchmark"), message);
 }
 
 void MainWindow::initPlatformDeviceChooser(){

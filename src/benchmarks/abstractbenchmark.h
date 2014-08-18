@@ -26,6 +26,7 @@ public:
 private:
   bool precision;
 signals:
+  void errorMessage(QString message);
   void benchmarkStarted(int benchmarkIdNumber);
   void finalResultSignal(QString benchmarkName, double finalValue);
   void resultSignal(QString benchmarkName, double key, double value, int graphType, int testId);

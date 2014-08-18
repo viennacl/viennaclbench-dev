@@ -23,6 +23,7 @@
 #include <QString>
 #include <QDir>
 #include <QVector>
+#include <QMessageBox>
 
 #include <iostream>
 #include <vector>

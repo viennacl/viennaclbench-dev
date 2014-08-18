@@ -32,6 +32,7 @@ private:
 signals:
   void emptyBenchmarkQ();
   void benchmarkStopped();
+  void errorMessage(QString message);
 
   //basic mode signals
   void benchmarkComplete();
@@ -74,6 +75,7 @@ public slots:
   void expert_resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void expert_benchmarkCompleteSlot();
   void expert_unitMeasureSignalSlot(QString unitMeasureName, int axis);
+  void errorMessageSlot(QString message);
 };
 
 #endif // BENCHMARK_CONTROLLER_H
