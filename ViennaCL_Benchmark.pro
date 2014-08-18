@@ -163,6 +163,7 @@ win32:CONFIG(release, debug|release){
     msvc:QMAKE_CXXFLAGS += /MD #Force MSVC to use Dynamic Libs
     msvc:QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO
     #Enable OpenCL
+    msvc:QMAKE_LFLAGS_RELEASE = /VIENNACL_WITH_OPENCL
     QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
     message("OpenCL library path: "$$OPENCL_LIBRARIES)
     LIBS += -L$${OPENCL_LIBRARIES} -lOpenCL

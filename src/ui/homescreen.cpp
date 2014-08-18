@@ -86,7 +86,7 @@ HomeScreen::HomeScreen(QWidget *parent) :
       devicesLayout->addWidget(new QLabel( vendorString ) );
 
       QString memoryString;
-      memoryString.append("Global Memory Size: " + QString::number( ((uint64_t)iter->global_mem_size()/(1024*1024)) ) + " MB" );
+      memoryString.append("Global Memory Size: " + QString::number( ((uint)iter->global_mem_size()/(1024*1024)) ) + " MB" );
       devicesLayout->addWidget(new QLabel( memoryString ) );
 
       QString clockString;
