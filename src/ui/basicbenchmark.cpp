@@ -76,7 +76,7 @@ void BasicBenchmark::initBasic(){
     plot->yAxis2->setVisible(false);
     plot->xAxis2->setVisible(false);
 
-    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectLegend);
+    plot->setInteractions(QCP::iSelectPlottables | QCP::iSelectLegend);
     plot->legend->setVisible(false);
 
 
@@ -110,7 +110,7 @@ void BasicBenchmark::initBasic(){
   ui->basic_FinalResultPlot->xAxis2->setVisible(false);
   ui->basic_FinalResultPlot->legend->setVisible(false);
   //Enable selecting plots
-  ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
+  ui->basic_FinalResultPlot->setInteractions(QCP::iSelectPlottables);
 
   // connect slot that shows a message in the status bar when a graph is clicked:
   connect(ui->basic_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));

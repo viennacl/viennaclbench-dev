@@ -80,7 +80,7 @@ void ExpertBenchmark::initExpert(){
     plot->yAxis2->setVisible(false);
     plot->xAxis2->setVisible(false);
 
-    plot->setInteractions(QCP::iSelectPlottables | QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectLegend);
+    plot->setInteractions(QCP::iSelectPlottables | QCP::iSelectLegend);
     plot->legend->setVisible(false);
 
 
@@ -114,7 +114,7 @@ void ExpertBenchmark::initExpert(){
   ui->expert_FinalResultPlot->xAxis2->setVisible(false);
   ui->expert_FinalResultPlot->legend->setVisible(false);
   //Enable selecting plots
-  ui->expert_FinalResultPlot->setInteractions(QCP::iSelectPlottables|QCP::iRangeDrag|QCP::iRangeZoom);
+  ui->expert_FinalResultPlot->setInteractions(QCP::iSelectPlottables);
 
   // connect slot that shows a message in the status bar when a graph is clicked:
   connect(ui->expert_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
