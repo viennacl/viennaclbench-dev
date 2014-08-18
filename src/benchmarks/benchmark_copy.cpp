@@ -76,12 +76,11 @@ void Benchmark_Copy::run_benchmark()
   viennacl::vector<ScalarType> vcl_vec1;
   viennacl::vector<ScalarType> vcl_vec2;
 
-  std::cout << "Benchmarking..." << std::endl;
-  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
-            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+//  std::cout << "Benchmarking..." << std::endl;
+//  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
+//            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
-  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
-  std::cout << MIN_BENCHMARK_VECTOR_SIZE << "|||" <<MAX_BENCHMARK_VECTOR_SIZE<<"|||"<<INCREMENT_FACTOR<< std::endl;
+//  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
 
   Timer timer;
   double exec_time_return = 0;

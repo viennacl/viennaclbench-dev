@@ -50,12 +50,11 @@ void Benchmark_Blas3::run_benchmark()
   double exec_time;
   int testId = 0;
 
-  std::cout << "Benchmarking..." << std::endl;
-  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
-            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+//  std::cout << "Benchmarking..." << std::endl;
+//  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
+//            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
-  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
-  std::cout << blas3MatrixSizeA << "|||" <<blas3MatrixSizeB<<"|||"<<blas3MatrixSizeC<< std::endl;
+//  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
   //
   // Set up some ViennaCL objects
   //

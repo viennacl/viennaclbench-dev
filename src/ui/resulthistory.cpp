@@ -10,6 +10,7 @@ ResultHistory::ResultHistory(QWidget *parent) :
   loadHistory();
 }
 
+//loads all result files and displays them in the table widget
 void ResultHistory::loadHistory(){
   QDir historyDir( QDir::home().absolutePath() + QString("/ViennaCL-Benchmark/benchmarkHistory/") );
   if(historyDir.exists()){
@@ -31,6 +32,7 @@ void ResultHistory::loadHistory(){
   }
 }
 
+//reads a single result file and displays it in the table widget
 void ResultHistory::readResultFile(const QJsonObject &jsonRoot){
   int currentRow = ui->tableWidget->rowCount();
   ui->tableWidget->insertRow(currentRow);

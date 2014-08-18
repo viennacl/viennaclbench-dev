@@ -44,6 +44,7 @@ void Benchmark_Model::uploadResults(BenchmarkInstance instance)
   //upload benchmark results/info to server
 }
 
+//Converts a given benchmark instance object to a QJsonDocument
 QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
   QJsonObject rootObject;

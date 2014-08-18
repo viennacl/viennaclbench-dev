@@ -158,38 +158,37 @@ QString ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString ta
       errmsg(archive_error_string(a));
     }
     if (verbose || !do_extract){
-      std::cout << "Detected files in archive: ";
+      qDebug()<<"Detected files in archive: ";
       msg(archive_entry_pathname(entry));
-      std::cout << std::endl;
     }
     QString currentPath(archive_entry_pathname( entry ));
-    std::cout << currentPath.toStdString() << std::endl;
+    qDebug()<<currentPath;
 
     QDir targetFolder(targetFolderPath);
     if(!targetFolder.exists()){//target folder does not exist
       //attempt to create it
       if(!targetFolder.mkpath(targetFolderPath)){//failed to create target folder
         //break procedure
-        std::cout << "ERROR: Target folder does not exist and cannot be created" << std::endl;
+        qDebug()<<"ERROR: Target folder does not exist and cannot be created";
         return QString("");
       }
     }
 
     QString newPath = targetFolderPath + currentPath;
-    std::cout << "newPath: " << newPath.toStdString() << std::endl;
+    qDebug()<<"newPath: " << newPath;
 
     archive_entry_set_pathname( entry, newPath.toUtf8().constData() );
     if (verbose && do_extract){
 //      msg("About to start extracting\n");
     }
     if (do_extract){
-      std::cout << "Extracting..." << std::endl;
+      qDebug()<<"Extracting...";
       r = archive_write_header(ext, entry);
       if (r != ARCHIVE_OK) errmsg(archive_error_string(a));
       else copy_data(a, ext);
       std::string returnPath;
       returnPath = archive_entry_pathname(entry);
-      std::cout << "File extracted: " << returnPath << std::endl;
+      qDebug()<<"File extracted: " << returnPath;
       archive_read_close(a);
       archive_read_free(a);
       archive_write_close(ext);
@@ -271,7 +270,7 @@ int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
  * */
 
 void ArchiveExtractor::msg(const char *m){
-  std::cout << m;
+  std::cout <<m;
 }
 
 void ArchiveExtractor::errmsg(const char *m){

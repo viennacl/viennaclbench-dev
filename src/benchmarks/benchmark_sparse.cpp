@@ -48,12 +48,11 @@ Benchmark_Sparse::Benchmark_Sparse(bool precision, BenchmarkSettings settings)
 template<typename ScalarType>
 void Benchmark_Sparse::run_benchmark()
 {
-  std::cout << "Benchmarking..." << std::endl;
-  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
-            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+//  std::cout << "Benchmarking..." << std::endl;
+//  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
+//            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
-  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
-  std::cout << xPoints << "|||" <<yPoints<<"|||"<<customSparseMatrixPath.toStdString()<< std::endl;
+//  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
   Timer timer;
   double exec_time;
   int testId = 0;

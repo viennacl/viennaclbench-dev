@@ -73,12 +73,11 @@ void Benchmark_Vector::run_benchmark()
   Timer timer;
   double exec_time;
 
-  std::cout << "Benchmarking..." << std::endl;
-  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
-            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
+//  std::cout << "Benchmarking..." << std::endl;
+//  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
+//            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
 
-  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
-  std::cout << MIN_BENCHMARK_VECTOR_SIZE << "|||" <<MAX_BENCHMARK_VECTOR_SIZE<<"|||"<<INCREMENT_FACTOR<< std::endl;
+//  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
 
 
   /* HOLD MY BEER, IMMA GONNA FORLOOP EVERYTHING */
@@ -147,9 +146,7 @@ void Benchmark_Vector::run_benchmark()
 
     tempResultValue = printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-    std::cout << "CPU time: " << exec_time << std::endl;
-    std::cout << "CPU "; printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-    std::cout << "Result:" << std_result << std::endl;
+    printOps(2.0 * static_cast<double>(std_vec1.size()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
     emit resultSignal("Vector inner products - CPU", vectorSize, tempResultValue, LINE_GRAPH, testId );
     testId++;

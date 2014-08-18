@@ -1,6 +1,10 @@
 #ifndef BENCHMARK_CONTROLLER_H
 #define BENCHMARK_CONTROLLER_H
-
+/*
+ * Central benchmark execution controller
+ * Basically acts as a central connection hub between the UI and benchmarks
+ * Forwards relevant signals from active benchmarks to the UI
+ * */
 #include <QObject>
 #include <QString>
 #include <QStringList>
@@ -52,6 +56,7 @@ signals:
   void expert_testProgress();
   void expert_resultSignal(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void expert_finalResultSignal(QString benchmarkName, double finalValue);
+
 public slots:
   void stopExecution();
   void setPrecision(bool p);

@@ -145,7 +145,7 @@ void MainWindow::initPlatformDeviceChooser(){
   //Check all generated contexts and their devices
   for( long i = 0; i< contextCounter; i++){
     viennacl::ocl::switch_context( i );
-    std::cout << "Context id: "<< i <<" Context value: " << viennacl::ocl::current_context().handle().get() << " Device name: "<<viennacl::ocl::current_device().name() << std::endl;
+//    std::cout << "Context id: "<< i <<" Context value: " << viennacl::ocl::current_context().handle().get() << " Device name: "<<viennacl::ocl::current_device().name() << std::endl;
   }
 
   //Add contexts to the UI
@@ -165,9 +165,11 @@ void MainWindow::initPlatformDeviceChooser(){
 //switches viennacl to selected context and displays its devices
 void MainWindow::switchContext(int contextNumber){
   viennacl::ocl::switch_context((long)contextNumber);
+#ifndef QT_NO_DEBUG_OUTPUT
   std::cout << "Context id: "<< contextNumber <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
   std::cout << "Platform_index: "<< viennacl::ocl::current_context().platform_index()<< std::endl;
   std::cout << "Device name: "<< viennacl::ocl::current_context().current_device().name()<< std::endl;
+#endif
 }
 
 //starts a full basic benchmark

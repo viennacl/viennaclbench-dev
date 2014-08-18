@@ -167,6 +167,10 @@ win32:CONFIG(release, debug|release){
     msvc:QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO
     #Enable OpenCL
     QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
+    #Disable debug output (qDebug()), (std::cout) will probably still work
+#    DEFINES += QT_NO_DEBUG
+    DEFINES += QT_NO_DEBUG_OUTPUT
+    QMAKE_CXXFLAGS += -DQT_NO_DEBUG_OUTPUT
     message("OpenCL library path: "$$OPENCL_LIBRARIES)
     LIBS += -L$${OPENCL_LIBRARIES} -lOpenCL
     message("This is a Release build")
