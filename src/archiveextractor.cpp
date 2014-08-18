@@ -188,7 +188,7 @@ QString ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString ta
       else copy_data(a, ext);
       std::string returnPath;
       returnPath = archive_entry_pathname(entry);
-      qDebug()<<"File extracted: " << returnPath;
+      qDebug()<<"File extracted: " << QString::fromStdString(returnPath);
       archive_read_close(a);
       archive_read_free(a);
       archive_write_close(ext);
