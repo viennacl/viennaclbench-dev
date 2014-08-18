@@ -153,7 +153,8 @@ void Benchmark_Blas3::run_benchmark()
   emit resultSignal("Matrix-Matrix product using slices", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
-
+/*
+ * LU factorization is disabled (does not support non-square matrices)
   //  std::cout << " ------ Benchmark 4: LU factorization ------ " << std::endl;
 
   viennacl::fast_copy(&(stl_A[0]),
@@ -170,7 +171,7 @@ void Benchmark_Blas3::run_benchmark()
   emit resultSignal("LU factorization", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
-
+*/
 }
 
 void Benchmark_Blas3::execute()
