@@ -9,6 +9,8 @@
  * */
 #include <QObject>
 
+#include <QDir>
+#include <QFile>
 #include <QString>
 #include <QStringList>
 #include <QList>

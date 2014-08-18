@@ -70,6 +70,22 @@ QVariant Benchmark_Model::generateJson(BenchmarkInstance instance){
   QJsonDocument jsonDoc(rootObject);
   qDebug()<<"---toJson---";
   qDebug()<<jsonDoc.toJson(QJsonDocument::Indented);
+
+  QString saveFolderPath = QDir::home().absolutePath() + QString("/ViennaCL-Benchmark/benchmarkHistory/");
+  QDir saveDir(saveFolderPath);
+  if(!saveDir.exists(saveFolderPath)){
+    saveDir.mkpath(saveFolderPath);
+  }
+  QString filename;
+  filename = saveFolderPath + QString("resultSave.json");
+  qDebug()<<"saving to file: "<<filename;
+  QFile jsonSave(filename);
+  if(!jsonSave.open(QIODevice::WriteOnly)){
+    qDebug()<<"Failed to open json file.";
+    return QVariant();
+  }
+  jsonSave.write( jsonDoc.toJson(QJsonDocument::Indented) );
+
   //  return jsonDoc.toJson();
   return jsonDoc.toVariant();
 #else
