@@ -319,21 +319,21 @@ border-top: 2px groove gray;
           <item row="0" column="3">
            <widget class="QLabel" name="expert_CMatSizeLabel">
             <property name="text">
-             <string>Matrix Size C</string>
+             <string>Matrix Size K</string>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
            <widget class="QLabel" name="expert_BMatSizeLabel">
             <property name="text">
-             <string>Matrix Size B</string>
+             <string>Matrix Size N</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QLabel" name="expert_AMatSizeLabel">
             <property name="text">
-             <string>Matrix Size A</string>
+             <string>Matrix Size M</string>
             </property>
            </widget>
           </item>
