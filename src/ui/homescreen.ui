@@ -50,7 +50,6 @@ QGroupBox::title  {
      <property name="title">
       <string/>
      </property>
-     <zorder>homeLabel</zorder>
     </widget>
    </item>
    <item row="2" column="0">
@@ -73,16 +72,6 @@ QGroupBox::title  {
       <string>Options</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_9">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="homeMatrixTestDataCheckBox">
-        <property name="text">
-         <string>Use default matrix test data</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="homeAutoUploadCheckBox">
         <property name="text">
