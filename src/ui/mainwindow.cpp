@@ -184,7 +184,7 @@ void MainWindow::initMatrixMarket(){
   //enable cache
   QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
   QWebSettings::globalSettings()->setAttribute(QWebSettings::JavaEnabled, true);
-  QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);//enable inspect element
+  QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, false);//disable/enable inspect element
   ui->matrixMarket_Widget->webView->settings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
   ui->matrixMarket_Widget->webView->settings()->enablePersistentStorage(ArchiveExtractor::getMatrixMarketUserFolder());//save MatrixMarket web cache in its user folder
   ui->matrixMarket_Widget->webView->settings()->setMaximumPagesInCache(10);
