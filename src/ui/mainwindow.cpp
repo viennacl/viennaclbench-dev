@@ -266,6 +266,8 @@ void MainWindow::startExpertBenchmarkExecution(){
 
   expertStopBenchmarkButton->show();
   expertStartBenchmarkButton->hide();
+  basicStopBenchmarkButton->show();
+  basicStartBenchmarkButton->hide();
 
   switchContext( expertContextComboBox->currentIndex() );//switch to currently selected context
   BenchmarkSettings customSettings;
@@ -304,6 +306,8 @@ void MainWindow::startBasicBenchmarkExecution(){
   //set progress bar max value
   basicProgressBar->setMaximum(maximumBenchProgress);
 
+  expertStopBenchmarkButton->show();
+  expertStartBenchmarkButton->hide();
   basicStopBenchmarkButton->show();
   basicStartBenchmarkButton->hide();
 
