@@ -492,7 +492,7 @@ border-top: 2px groove gray;
      <item>
       <widget class="QCustomPlot" name="expert_FinalResultPlot" native="true">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+        <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>

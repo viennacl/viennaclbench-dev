@@ -23,6 +23,7 @@
 #include <QJsonObject>
 #else
 #endif
+
 #include "benchmarkinstance.h"
 #include "benchmarksettings.h"
 
@@ -35,11 +36,14 @@ public:
   void saveResults(BenchmarkInstance instance);
   void uploadResults(BenchmarkInstance instance);
 
+#if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
+  QJsonDocument generateJson(BenchmarkInstance instance);
+#else
+#endif
+
 signals:
 
 public slots:
-  QJsonDocument generateJson(BenchmarkInstance instance);
-
 };
 
 #endif // BENCHMARK_MODEL_H

@@ -12,6 +12,7 @@ ResultHistory::ResultHistory(QWidget *parent) :
 
 //loads all result files and displays them in the table widget
 void ResultHistory::loadHistory(){
+#if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
   QDir historyDir( QDir::home().absolutePath() + QString("/ViennaCL-Benchmark/benchmarkHistory/") );
   if(historyDir.exists()){
     foreach( QFileInfo info, historyDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files)){
@@ -30,9 +31,12 @@ void ResultHistory::loadHistory(){
       }
     }
   }
+#endif
+
 }
 
 //reads a single result file and displays it in the table widget
+#if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
 void ResultHistory::readResultFile(const QJsonObject &jsonRoot){
   int currentRow = ui->tableWidget->rowCount();
   ui->tableWidget->insertRow(currentRow);
@@ -61,8 +65,8 @@ void ResultHistory::readResultFile(const QJsonObject &jsonRoot){
   val = QJsonValue(benchmarkObject["result"]);
   QTableWidgetItem *Vector = new QTableWidgetItem( QString::number(val.toVariant().toDouble() ) );
   ui->tableWidget->setItem(currentRow, 5, Vector);
-
 }
+#endif
 
 ResultHistory::~ResultHistory()
 {

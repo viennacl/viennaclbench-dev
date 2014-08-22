@@ -150,7 +150,7 @@ void MainWindow::initPlatformDeviceChooser(){
   }
 
   //Add contexts to the UI
-  for (int i = 0; i <= contextMap.lastKey(); ++i) {
+  for (int i = 0; i <= contextMap.size(); ++i) {
     basicContextComboBox->insertItem( i, contextMap.value(i) );
     expertContextComboBox->insertItem( i, contextMap.value(i) );
   }

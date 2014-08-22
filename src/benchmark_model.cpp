@@ -15,6 +15,7 @@ void Benchmark_Model::processBenchmarkInstance(BenchmarkInstance instance)
 //save results to local file in json format
 void Benchmark_Model::saveResults(BenchmarkInstance instance)
 {
+#if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
   QJsonDocument doc = generateJson( instance );
 //  qDebug()<<"---toJson---";
 //  qDebug()<<doc.toJson(QJsonDocument::Indented);
@@ -36,6 +37,7 @@ void Benchmark_Model::saveResults(BenchmarkInstance instance)
   }
   jsonFile.write( doc.toJson(QJsonDocument::Indented) );
   jsonFile.close();
+#endif
 }
 
 void Benchmark_Model::uploadResults(BenchmarkInstance instance)
@@ -45,8 +47,8 @@ void Benchmark_Model::uploadResults(BenchmarkInstance instance)
 }
 
 //Converts a given benchmark instance object to a QJsonDocument
-QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
+QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
   QJsonObject rootObject;
 
   rootObject["mode"] = instance.mode;
@@ -88,8 +90,5 @@ QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
 
   QJsonDocument jsonDoc(rootObject);
   return jsonDoc;
-#else
-  qDebug()<<"JSON is not supported is Qt4";
-  return QJsonDocument();
-#endif
 }
+#endif
