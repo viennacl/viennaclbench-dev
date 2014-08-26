@@ -342,11 +342,11 @@ BenchmarkSettings ExpertBenchmark::getExpertSettings()
   settings.blas3MatSizeC = ui->expert_Blas3CMatSize->text().toInt();
 
   settings.copyIncFactor = ui->expert_CopyIncFactor->text().toInt();
-  settings.copyMaxVectorSize = ui->expert_CopyVecMax->text().toInt();
-  settings.copyMinVectorSize = ui->expert_CopyVecMin->text().toInt();
+  settings.copyMaxVectorSize = ui->expert_CopyVecMax->text().toInt() * 1000;
+  settings.copyMinVectorSize = ui->expert_CopyVecMin->text().toInt() * 1000;
 
-  settings.vectorMinVectorSize = ui->expert_VectorVecMin->text().toInt();
-  settings.vectorMaxVectorSize = ui->expert_VectorVecMax->text().toInt();
+  settings.vectorMinVectorSize = ui->expert_VectorVecMin->text().toInt() * 1000;
+  settings.vectorMaxVectorSize = ui->expert_VectorVecMax->text().toInt() * 1000;
   settings.vectorIncFactor = ui->expert_VectorIncFactor->text().toInt();
 
   settings.sparseMatSizeA = ui->expert_SparseAMatSize->text().toInt();

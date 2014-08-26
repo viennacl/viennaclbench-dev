@@ -69,11 +69,11 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::ell_matrix<ScalarType, 1> vcl_ell_matrix_1;
   viennacl::hyb_matrix<ScalarType, 1> vcl_hyb_matrix_1;
 
-//  std::cout << "Generating Matrix..." << std::endl;
   std::vector< std::map<unsigned int, ScalarType> > stl_A;
   viennacl::tools::sparse_matrix_adapter<ScalarType> adapted_A(stl_A);
   if(customSparseMatrixPath.isEmpty()){
     //no custom matrix specified, generate the default one
+    //  std::cout << "Generating Matrix..." << std::endl;
     viennacl::tools::generate_fdm_laplace(adapted_A, xPoints, yPoints );
   }
   else{
@@ -83,7 +83,7 @@ void Benchmark_Sparse::run_benchmark()
     }
     else{
       std::cout << "Failed to read custom sparse matrix" <<std::endl;
-      emit errorMessage("Failed to read selected sparse matrix");
+      emit errorMessage("Failed to read selected sparse matrix");//tell the GUI thread to show a popup error message
       return;
     }
   }
@@ -107,6 +107,7 @@ void Benchmark_Sparse::run_benchmark()
 
 //  std::cout << "------- Matrix-Vector product with compressed_matrix ----------" << std::endl;
 
+  //when using a custom sparse matrix, the benchmark breaks here
   vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_1, vcl_vec2); //startup calculation
   vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_4, vcl_vec2); //startup calculation
   vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_8, vcl_vec2); //startup calculation

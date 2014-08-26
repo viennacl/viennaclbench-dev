@@ -127,7 +127,7 @@ INCLUDEPATH += "./external/viennacl-dev"
 #CONFIG += warn_off
 gcc{
     QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
-#    QMAKE_CXXFLAGS += -DVIENNACL_DEBUG_ALL
+#    QMAKE_CXXFLAGS += -DVIENNACL_DEBUG_ALL #Enable/disable ViennaCL's debug output
 #    QMAKE_CXXFLAGS += -Wno-unused-parameter
 }
 
@@ -167,7 +167,7 @@ win32:CONFIG(release, debug|release){
     msvc:QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO
     #Enable OpenCL
     QMAKE_CXXFLAGS += -DVIENNACL_WITH_OPENCL
-    #Disable debug output (qDebug()), (std::cout) will probably still work
+    #Disable debug output qDebug(); (std::cout) will probably still work
 #    DEFINES += QT_NO_DEBUG
     DEFINES += QT_NO_DEBUG_OUTPUT
     QMAKE_CXXFLAGS += -DQT_NO_DEBUG_OUTPUT

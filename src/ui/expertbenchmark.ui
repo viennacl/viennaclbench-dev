@@ -401,7 +401,7 @@ border-top: 2px groove gray;
           <item row="0" column="1">
            <widget class="QLabel" name="expert_VecMinLabel">
             <property name="text">
-             <string>Vector Min Size</string>
+             <string>Vector Min Size x1000</string>
             </property>
            </widget>
           </item>
@@ -414,7 +414,7 @@ border-top: 2px groove gray;
              </size>
             </property>
             <property name="text">
-             <string>Vector Max Size</string>
+             <string>Vector Max Size x1000</string>
             </property>
            </widget>
           </item>
@@ -435,14 +435,14 @@ border-top: 2px groove gray;
           <item row="1" column="1">
            <widget class="QLineEdit" name="expert_CopyVecMin">
             <property name="text">
-             <string>10000</string>
+             <string>10</string>
             </property>
            </widget>
           </item>
           <item row="1" column="2">
            <widget class="QLineEdit" name="expert_CopyVecMax">
             <property name="text">
-             <string>10240000</string>
+             <string>10240</string>
             </property>
            </widget>
           </item>
@@ -463,14 +463,14 @@ border-top: 2px groove gray;
           <item row="2" column="1">
            <widget class="QLineEdit" name="expert_VectorVecMin">
             <property name="text">
-             <string>10000</string>
+             <string>10</string>
             </property>
            </widget>
           </item>
           <item row="2" column="2">
            <widget class="QLineEdit" name="expert_VectorVecMax">
             <property name="text">
-             <string>10240000</string>
+             <string>10240</string>
             </property>
             <property name="frame">
              <bool>true</bool>
