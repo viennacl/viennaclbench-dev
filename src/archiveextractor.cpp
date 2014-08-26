@@ -12,10 +12,9 @@ ArchiveExtractor::ArchiveExtractor(QObject *parent) :
 {
 }
 
-/*
- * Returns the user home folder in which matrix market files are to be stored
- * If the folder does not exist or cannot be created, returns a null string
- * */
+/** @brief Returns the user home folder in which matrix market files are to be stored.
+* @return Returns a null string, if the folder does not exist or cannot be created.
+*/
 QString ArchiveExtractor::getMatrixMarketUserFolder(){
   if(checkUserHomeFolder()){
     return QDir::home().absolutePath() + "/ViennaCL-Benchmark/MatrixMarket/";
@@ -25,12 +24,9 @@ QString ArchiveExtractor::getMatrixMarketUserFolder(){
   }
 }
 
-/*
- * Checks if user's home folder contains the appropriate folder for matrix file storage
- * Attempts to create a matrix market folder in case one does not already exist
- * Returns true if a /ViennaCL Benchmark/MatrixMarket/ exists in the user home folder
- * Returns false if the folder does not exist or cannot be created
- * */
+/** @brief Checks if user's home folder contains the appropriate folder for matrix file storage. Attempts to create the matrix market folder in case it does not already exist
+* @return Returns true if ViennaCL-Benchmark/MatrixMarket/ subfolder exists in the user home folder. Returns false if the folder does not exist or cannot be created.
+*/
 bool ArchiveExtractor::checkUserHomeFolder(){
   QDir userHomeFolder = QDir::home();
 //  qDebug()<<"User's home folder: " << userHomeFolder.absolutePath();
@@ -63,20 +59,20 @@ bool ArchiveExtractor::checkUserHomeFolder(){
   return true;
 }
 
-
-/*
- * Extracts the selected .tar.gz archive to the selected folder
- * will try to create the target folder if it does not exist
- * */
+/** @brief Extracts the selected .tar.gz archive to the selected folder, will try to create the target folder if it does not exist.
+* @param filePath Full path to selected archive.
+* @param targetFolderPath Full path to target folder.
+* @return Returns full path to the extracted archive, or empty QString if failed.
+*/
 QString ArchiveExtractor::extractFileToTargetFolder(const char *filePath, const char * targetFolderPath){
   return ArchiveExtractor::extractFileToTargetFolder(QString(filePath), QString(targetFolderPath));
 }
 
-/*
- * Extracts the selected .tar.gz archive to the selected folder
- * will try to create the target folder if it does not exist
- * returns the full path to the extracted file, or null string if failed
- * */
+/** @brief Extracts the selected .tar.gz archive to the selected folder, will try to create the target folder if it does not exist.
+* @param filePath Full path to selected archive.
+* @param targetFolderPath Full path to target folder.
+* @return Returns full path to the extracted archive, or empty QString if failed.
+*/
 QString ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString targetFolderPath){
   //check if the selected archive file exist
   QFile *selectedFile = new QFile(filePath);
@@ -203,17 +199,19 @@ QString ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString ta
   return QString("");
 }
 
-/*
- * Extract the selected .tar.gz archive to the current user's home folder
- * */
+/** @brief Extracts the selected .tar.gz archive to the current user's home folder.
+* @param filePath Full path to selected archive.
+* @return Returns full path to the extracted archive, or empty QString if failed.
+*/
 QString ArchiveExtractor::extractFileToUserHomeFolder(const char *filePath)
 {
   return ArchiveExtractor::extractFileToUserHomeFolder(QString(filePath));
 }
 
-/*
- * Extract the selected .tar.gz archive to the current user's home folder
- * */
+/** @brief Extracts the selected .tar.gz archive to the current user's home folder.
+* @param filePath Full path to selected archive.
+* @return Returns full path to the extracted archive, or empty QString if failed.
+*/
 QString ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
   QString userHomeFolder = ArchiveExtractor::getMatrixMarketUserFolder();/* QDir::home().absolutePath() + "/ViennaCL Benchmark/MatrixMarket/";*/
   if(!userHomeFolder.isNull()){
@@ -224,21 +222,22 @@ QString ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
   }
 }
 
-/*
- * Extracts the selected .tar.gz archive to the program's current working directory
- * */
+/** @brief Extracts the selected .tar.gz archive to the same folder as the program.
+* @param filePath Full path to selected archive.
+* @return Returns full path to the extracted archive, or empty QString if failed.
+*/
 QString ArchiveExtractor::extractFileToWorkFolder(const char *filePath)
 {
   return ArchiveExtractor::extractFileToWorkFolder(QString(filePath));
 }
 
-/*
- * Extracts the selected .tar.gz archive to the program's current working directory
- * */
+/** @brief Extracts the selected .tar.gz archive to the same folder as the program.
+* @param filePath Full path to selected archive.
+* @return Returns full path to the extracted archive, or empty QString if failed.
+*/
 QString ArchiveExtractor::extractFileToWorkFolder(QString filePath){
   return extractFileToTargetFolder(filePath, QDir::currentPath()+"/");
 }
-
 
 int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
   int r;
@@ -269,14 +268,24 @@ int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
  * Reporting functions
  * */
 
+/** @brief Prints a message to std::cout.
+ * @param m The message.
+ */
 void ArchiveExtractor::msg(const char *m){
   std::cout <<m;
 }
 
+/** @brief Prints an error message to std::cout.
+ * @param m The error message.
+ */
 void ArchiveExtractor::errmsg(const char *m){
   std::cout << "Error: " << m;
 }
 
+/** @brief Prints a warning message to std::cout.
+ * @param f The warning name.
+ * @param m The warning message.
+ */
 void ArchiveExtractor::warn(const char *f, const char *m){
   errmsg(f);
   errmsg(" failed: ");
