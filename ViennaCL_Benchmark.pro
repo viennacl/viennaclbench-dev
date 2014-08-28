@@ -23,7 +23,6 @@ SOURCES += src/main.cpp \
     src/benchmarks/benchmark_copy.cpp \
     src/benchmark_controller.cpp \
     src/benchmarks/benchmark_qr.cpp \
-    src/benchmarks/abstractbenchmark.cpp \
     src/ui/mainwindow.cpp \
     src/ui/menulistwidget.cpp \
     src/ui/qcustomplot.cpp \
