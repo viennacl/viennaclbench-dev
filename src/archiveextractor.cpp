@@ -1,18 +1,21 @@
 #include "archiveextractor.h"
 #include <QDebug>
 
-/*
- * ArchiveExtractor class provides easy decompression of .tar.gz files
- * use the function extractFile(QString filePath) to perform the extraction
- * can be easily modified to provide support for additional formats
+/*! \class ArchiveExtractor
+ * ArchiveExtractor class provides easy decompression of .tar.gz files. Use the extractFile functions to perform the extraction.
  * */
 
+/*!
+ * \brief Default constructor.
+ * Not really needed since all functions are static.
+ * \param parent
+ */
 ArchiveExtractor::ArchiveExtractor(QObject *parent) :
   QObject(parent)
 {
 }
 
-/** @brief Returns the user home folder in which matrix market files are to be stored.
+/*! \brief Returns the user home folder in which matrix market files are to be stored.
 * @return Returns a null string, if the folder does not exist or cannot be created.
 */
 QString ArchiveExtractor::getMatrixMarketUserFolder(){
@@ -24,7 +27,7 @@ QString ArchiveExtractor::getMatrixMarketUserFolder(){
   }
 }
 
-/** @brief Checks if user's home folder contains the appropriate folder for matrix file storage. Attempts to create the matrix market folder in case it does not already exist
+/*! \brief Checks if user's home folder contains the appropriate folder for matrix file storage. Attempts to create the matrix market folder in case it does not already exist
 * @return Returns true if ViennaCL-Benchmark/MatrixMarket/ subfolder exists in the user home folder. Returns false if the folder does not exist or cannot be created.
 */
 bool ArchiveExtractor::checkUserHomeFolder(){
@@ -59,7 +62,7 @@ bool ArchiveExtractor::checkUserHomeFolder(){
   return true;
 }
 
-/** @brief Extracts the selected .tar.gz archive to the selected folder, will try to create the target folder if it does not exist.
+/*! \brief Extracts the selected .tar.gz archive to the selected folder, will try to create the target folder if it does not exist.
 * @param filePath Full path to selected archive.
 * @param targetFolderPath Full path to target folder.
 * @return Returns full path to the extracted archive, or empty QString if failed.
@@ -68,7 +71,7 @@ QString ArchiveExtractor::extractFileToTargetFolder(const char *filePath, const 
   return ArchiveExtractor::extractFileToTargetFolder(QString(filePath), QString(targetFolderPath));
 }
 
-/** @brief Extracts the selected .tar.gz archive to the selected folder, will try to create the target folder if it does not exist.
+/*! \brief Extracts the selected .tar.gz archive to the selected folder, will try to create the target folder if it does not exist.
 * @param filePath Full path to selected archive.
 * @param targetFolderPath Full path to target folder.
 * @return Returns full path to the extracted archive, or empty QString if failed.
@@ -199,7 +202,7 @@ QString ArchiveExtractor::extractFileToTargetFolder(QString filePath, QString ta
   return QString("");
 }
 
-/** @brief Extracts the selected .tar.gz archive to the current user's home folder.
+/*! \brief Extracts the selected .tar.gz archive to the current user's home folder.
 * @param filePath Full path to selected archive.
 * @return Returns full path to the extracted archive, or empty QString if failed.
 */
@@ -208,7 +211,7 @@ QString ArchiveExtractor::extractFileToUserHomeFolder(const char *filePath)
   return ArchiveExtractor::extractFileToUserHomeFolder(QString(filePath));
 }
 
-/** @brief Extracts the selected .tar.gz archive to the current user's home folder.
+/*! \brief Extracts the selected .tar.gz archive to the current user's home folder.
 * @param filePath Full path to selected archive.
 * @return Returns full path to the extracted archive, or empty QString if failed.
 */
@@ -222,7 +225,7 @@ QString ArchiveExtractor::extractFileToUserHomeFolder(QString filePath){
   }
 }
 
-/** @brief Extracts the selected .tar.gz archive to the same folder as the program.
+/*! \brief Extracts the selected .tar.gz archive to the same folder as the program.
 * @param filePath Full path to selected archive.
 * @return Returns full path to the extracted archive, or empty QString if failed.
 */
@@ -231,7 +234,7 @@ QString ArchiveExtractor::extractFileToWorkFolder(const char *filePath)
   return ArchiveExtractor::extractFileToWorkFolder(QString(filePath));
 }
 
-/** @brief Extracts the selected .tar.gz archive to the same folder as the program.
+/*! \brief Extracts the selected .tar.gz archive to the same folder as the program.
 * @param filePath Full path to selected archive.
 * @return Returns full path to the extracted archive, or empty QString if failed.
 */
@@ -268,21 +271,21 @@ int ArchiveExtractor::copy_data(struct archive *ar, struct archive *aw){
  * Reporting functions
  * */
 
-/** @brief Prints a message to std::cout.
+/*! \brief Prints a message to std::cout.
  * @param m The message.
  */
 void ArchiveExtractor::msg(const char *m){
   std::cout <<m;
 }
 
-/** @brief Prints an error message to std::cout.
+/*! \brief Prints an error message to std::cout.
  * @param m The error message.
  */
 void ArchiveExtractor::errmsg(const char *m){
   std::cout << "Error: " << m;
 }
 
-/** @brief Prints a warning message to std::cout.
+/*! \brief Prints a warning message to std::cout.
  * @param f The warning name.
  * @param m The warning message.
  */
