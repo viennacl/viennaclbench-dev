@@ -23,6 +23,11 @@
 
 #include "benchmark_vector.h"
 
+/*!
+ * \brief Default constructor.
+ * Sets the precision to double and load default vector sizes & increment factor from \ref BenchmarkSettings
+ * \param parent Optional parent object.
+ */
 Benchmark_Vector::Benchmark_Vector(QObject *parent) :
   AbstractBenchmark(parent)
 {
@@ -34,6 +39,11 @@ Benchmark_Vector::Benchmark_Vector(QObject *parent) :
   INCREMENT_FACTOR = settings.vectorIncFactor;
 }
 
+/*!
+ * \brief Constructor with precision and settings
+ * \param precision Benchmark precision
+ * \param settings Settings from which to load vector sizes & increment factor
+ */
 Benchmark_Vector::Benchmark_Vector(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Vector();
@@ -44,6 +54,16 @@ Benchmark_Vector::Benchmark_Vector(bool precision, BenchmarkSettings settings)
 }
 
 template<typename ScalarType>
+/*!
+ * \brief Resizes the benchmark vectors to \a size.
+ * Not used. The benchmark runs a for-loop and initiates new vectors on each run.
+ * Should be used if any changes are to occur in the future.
+ * \param size New vector size.
+ * \param std_vec1 std vector 1
+ * \param std_vec2 std vector 2
+ * \param vcl_vec1 vcl vector 1
+ * \param vcl_vec2 vcl vector 2
+ */
 void Benchmark_Vector::resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
                                      viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2){
 
@@ -67,6 +87,11 @@ void Benchmark_Vector::resizeVectors(int size, std::vector<ScalarType> &std_vec1
   viennacl::backend::finish();
 }
 
+/*!
+ * \brief Main benchmarking function
+ * Should only be called by the \ref Benchmark_Vector::execute() function,
+ * since there are certain requirements that need to be fulfilled before starting the benchmarking procedure.
+ */
 template<typename ScalarType>
 void Benchmark_Vector::run_benchmark()
 {

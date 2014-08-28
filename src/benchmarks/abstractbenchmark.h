@@ -43,7 +43,7 @@ enum BenchmarkMode { BENCHMARK_MODE_BASIC, ///< Basic (standard) benchmark mode 
                    };
 
 /*! \class AbstractBenchmark
- * \brief Abstract benchmark interface class for easier handling of benchmark classes.
+ * \brief Abstract benchmark class defines common signal/slot functions inherited by all benchmark classes.
  * */
 class AbstractBenchmark : public QObject
 {
@@ -126,6 +126,9 @@ public slots:
 
   /*!
    * \brief Begins the benchmark execution.
+   * This function is the common way all benchmarks are started. Each benchmark implements its own version of this function.
+   * It should present itself as the primary way of starting a benchmark.
+   * In general, this function will perform neccessary preparations and eventually call run_benchmark() function.
    */
   virtual void execute() = 0;
 };

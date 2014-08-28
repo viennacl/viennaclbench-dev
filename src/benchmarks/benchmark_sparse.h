@@ -7,18 +7,19 @@
 #define NDEBUG
 #endif
 
-#define BENCHMARK_RUNS          10
+#define BENCHMARK_RUNS          10 ///< Number of runs each test is to be run.
 
-#include "viennacl/scalar.hpp"
-#include "viennacl/vector.hpp"
-#include "viennacl/coordinate_matrix.hpp"
 #include "viennacl/compressed_matrix.hpp"
+#include "viennacl/coordinate_matrix.hpp"
 #include "viennacl/ell_matrix.hpp"
 #include "viennacl/hyb_matrix.hpp"
-#include "viennacl/linalg/prod.hpp"
-#include "viennacl/linalg/norm_2.hpp"
+#include "viennacl/scalar.hpp"
+#include "viennacl/vector.hpp"
 #include "viennacl/io/matrix_market.hpp"
 #include "viennacl/linalg/ilu.hpp"
+#include "viennacl/linalg/norm_2.hpp"
+#include "viennacl/linalg/prod.hpp"
+#include "viennacl/tools/matrix_generation.hpp"
 
 #include <QString>
 #include <QDir>
@@ -29,6 +30,12 @@
 #include <vector>
 #include "benchmark-utils.hpp"
 
+/*!
+ * \class Controls execution of the Sparse benchmark
+ * If no custom matrix has been selected, the default matrix is generated on-the-fly.
+ * Otherwise, the benchmark attempts to load the specified matrix and run tests with it.
+ * Each test is run \ref BENCHMARK_RUNS times.
+ */
 class Benchmark_Sparse : public AbstractBenchmark
 {
   Q_OBJECT
@@ -39,12 +46,13 @@ public:
   template<typename ScalarType>
   void run_benchmark();
 private:
-  viennacl::vcl_size_t xPoints;
-  viennacl::vcl_size_t yPoints;
-  QString customSparseMatrixPath;
-  QVector<double> testResultHolder;
+  viennacl::vcl_size_t xPoints; ///< X dimension of on-the-fly generated matrix
+  viennacl::vcl_size_t yPoints; ///< Y dimension of on-the-fly generated matrix
+  QString customSparseMatrixPath; ///< Absolute path to a user-specified sparse matrix
+  QVector<double> testResultHolder; ///< Holds results of each taken test. Median test value is marked as the final benchmark result.
 signals:
   /* Inherited signals:
+   * void errorMessage(QString message);
    * void benchmarkStarted(int benchmarkIdNumber);
    * void finalResultSignal(QString benchmarkName, double finalValue);
    * void resultSignal(QString benchmarkName, double bandwidthValue);

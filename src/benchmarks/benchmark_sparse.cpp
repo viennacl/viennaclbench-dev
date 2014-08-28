@@ -23,8 +23,11 @@
 #include "benchmark_sparse.h"
 #include <QDebug>
 
-#include "viennacl/tools/matrix_generation.hpp"
-
+/*!
+ * \brief Default constructor.
+ * Sets the precision to double and loads default matrix sizes & custom matrix path from \ref BenchmarkSettings
+ * \param parent Optional parent object.
+ */
 Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   AbstractBenchmark(parent)
 {
@@ -36,6 +39,11 @@ Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   customSparseMatrixPath = settings.sparseCustomMatrix;
 }
 
+/*!
+ * \brief Constructor with precision and settings
+ * \param precision Benchmark precision
+ * \param settings Settings from which to load matrix sizes & custom matrix path
+ */
 Benchmark_Sparse::Benchmark_Sparse(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Sparse();
@@ -45,6 +53,11 @@ Benchmark_Sparse::Benchmark_Sparse(bool precision, BenchmarkSettings settings)
   customSparseMatrixPath = settings.sparseCustomMatrix;
 }
 
+/*!
+ * \brief Main benchmarking function
+ * Should only be called by the \ref Benchmark_Sparse::execute() function,
+ * since there are certain requirements that need to be fulfilled before starting the benchmarking procedure.
+ */
 template<typename ScalarType>
 void Benchmark_Sparse::run_benchmark()
 {

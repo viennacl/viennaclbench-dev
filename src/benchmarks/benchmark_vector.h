@@ -23,8 +23,13 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-#define BENCHMARK_RUNS          10
+#define BENCHMARK_RUNS          10 ///< Number of runs each test is to be run.
 
+/*!
+ * \class Controls execution of the Vector benchmark
+ * The benchmark iterates through selected vector sizes and runs the entire test suite, one size at a time.
+ * Each test is run \ref BENCHMARK_RUNS times.
+ */
 class Benchmark_Vector : public AbstractBenchmark
 {
   Q_OBJECT
@@ -38,12 +43,13 @@ public:
   void resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
                      viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2);
 private:
-  int MAX_BENCHMARK_VECTOR_SIZE;
-  int MIN_BENCHMARK_VECTOR_SIZE;
-  int INCREMENT_FACTOR;
-  QVector<double> testResultHolder;
+  int MAX_BENCHMARK_VECTOR_SIZE; ///< Maximum benchmark vector size. The benchmark ends when the vector size exceeds or matches this limit.
+  int MIN_BENCHMARK_VECTOR_SIZE; ///< Starting benchmark vector size
+  int INCREMENT_FACTOR; ///< Amount by which the vector size is multiplied on each run
+  QVector<double> testResultHolder; ///< Holds results of each taken test. Median test value is marked as the final benchmark result.
 signals:
   /* Inherited signals:
+   * void errorMessage(QString message);
    * void benchmarkStarted(int benchmarkIdNumber);
    * void finalResultSignal(QString benchmarkName, double finalValue);
    * void resultSignal(QString benchmarkName, double bandwidthValue);

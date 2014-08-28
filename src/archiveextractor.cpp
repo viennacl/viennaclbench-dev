@@ -8,7 +8,7 @@
 /*!
  * \brief Default constructor.
  * Not really needed since all functions are static.
- * \param parent
+ * \param parent Optional parent object.
  */
 ArchiveExtractor::ArchiveExtractor(QObject *parent) :
   QObject(parent)

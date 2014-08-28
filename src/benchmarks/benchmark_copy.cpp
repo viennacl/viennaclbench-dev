@@ -24,6 +24,11 @@
 #include "benchmark_copy.h"
 #include <QDebug>
 
+/*!
+ * \brief Default constructor.
+ * Sets the precision to double and loads default vector sizes & increment factor from \ref BenchmarkSettings
+ * \param parent Optional parent object.
+ */
 Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   AbstractBenchmark(parent)
 {
@@ -35,6 +40,11 @@ Benchmark_Copy::Benchmark_Copy(QObject *parent) :
   INCREMENT_FACTOR = settings.copyIncFactor;
 }
 
+/*!
+ * \brief Constructor with precision and settings
+ * \param precision Benchmark precision
+ * \param settings Settings from which to load vector sizes & increment factor
+ */
 Benchmark_Copy::Benchmark_Copy(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Copy();
@@ -44,7 +54,17 @@ Benchmark_Copy::Benchmark_Copy(bool precision, BenchmarkSettings settings)
   INCREMENT_FACTOR = settings.copyIncFactor;
 }
 
+
 template<typename ScalarType>
+/*!
+ * \brief Resizes the benchmark vectors to \a size.
+ * This function is called each time the benchmark vectors need to be increased by \ref INCREMENT_FACTOR
+ * \param size New vector size.
+ * \param std_vec1 std vector 1
+ * \param std_vec2 std vector 2
+ * \param vcl_vec1 vcl vector 1
+ * \param vcl_vec2 vcl vector 2
+ */
 void Benchmark_Copy::resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
                                    viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2){
 
@@ -68,6 +88,11 @@ void Benchmark_Copy::resizeVectors(int size, std::vector<ScalarType> &std_vec1, 
   viennacl::backend::finish();
 }
 
+/*!
+ * \brief Main benchmarking function
+ * Should only be called by the \ref Benchmark_Copy::execute() function,
+ * since there are certain requirements that need to be fulfilled before starting the benchmarking procedure.
+ */
 template<typename ScalarType>
 void Benchmark_Copy::run_benchmark()
 {

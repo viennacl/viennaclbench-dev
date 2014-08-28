@@ -23,6 +23,11 @@
 
 #include "benchmark_blas3.h"
 
+/*!
+ * \brief Default constructor.
+ * Sets the precision to double and loadd defaults matrix sizes from \ref BenchmarkSettings
+ * \param parent Optional parent object.
+ */
 Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   AbstractBenchmark(parent)
 {
@@ -34,7 +39,12 @@ Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   blas3MatrixSizeC = settings.blas3MatSizeC;
 }
 
-Benchmark_Blas3::Benchmark_Blas3(bool precision, BenchmarkSettings settings)//, cl_platform_id platform, cl_device_id device)
+/*!
+ * \brief Constructor with precision and settings
+ * \param precision Benchmark precision
+ * \param settings Settings from which to load matrix sizes
+ */
+Benchmark_Blas3::Benchmark_Blas3(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Blas3();
   setPrecision(precision);
@@ -43,7 +53,13 @@ Benchmark_Blas3::Benchmark_Blas3(bool precision, BenchmarkSettings settings)//, 
   blas3MatrixSizeC = settings.blas3MatSizeC;
 }
 
+
 template<typename ScalarType>
+/*!
+ * \brief Main benchmarking function
+ * Should only be called by the \ref Benchmark_Blas3::execute() function,
+ * since there are certain requirements that need to be fulfilled before starting the benchmarking procedure.
+ */
 void Benchmark_Blas3::run_benchmark()
 {
   Timer timer;
