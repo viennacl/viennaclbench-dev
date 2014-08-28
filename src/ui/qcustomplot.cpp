@@ -22,7 +22,7 @@
 **             Date: 07.04.14                                             **
 **          Version: 1.2.1                                                **
 ****************************************************************************/
-
+/// @cond DISABLE_QCUSTOMPLOT_DOC
 #include "qcustomplot.h"
 
 
@@ -21367,4 +21367,5 @@ QPen QCPItemBracket::mainPen() const
 {
     return mSelected ? mSelectedPen : mPen;
 }
+/// @endcond
 

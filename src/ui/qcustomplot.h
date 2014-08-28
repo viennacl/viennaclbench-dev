@@ -22,7 +22,7 @@
 **             Date: 07.04.14                                             **
 **          Version: 1.2.1                                                **
 ****************************************************************************/
-
+/// @cond DISABLE_QCUSTOMPLOT_DOC
 #ifndef QCUSTOMPLOT_H
 #define QCUSTOMPLOT_H
 
@@ -3528,4 +3528,5 @@ protected:
 };
 
 #endif // QCUSTOMPLOT_H
+/// @endcond
 
