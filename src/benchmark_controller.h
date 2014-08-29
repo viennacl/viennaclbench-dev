@@ -1,9 +1,9 @@
 #ifndef BENCHMARK_CONTROLLER_H
 #define BENCHMARK_CONTROLLER_H
 /*
- * Central benchmark execution controller
- * Basically acts as a central connection hub between the UI and benchmarks
- * Forwards relevant signals from active benchmarks to the UI
+ * Main benchmark execution controller
+ * Acts as a central communication hub between the UI and benchmarks
+ * Passes on relevant signals from active benchmarks to the UI
  * */
 #include <QObject>
 #include <QString>
@@ -23,19 +23,27 @@
 #include "benchmarkinstance.h"
 #include "benchmark_model.h"
 
+
+/*!
+ * \class Benchmark_Controller
+ * \brief Main controller. Handles benchmark execution; communicates benchmark data from/to the UI;, orders result saving/uploading.
+ * Refer to the mainpage (\ref mvc-backbone  ) for a brief overview of how the execution flow works.
+ * Some of the slots/signals in this class are only used to pass on the results from a running benchmark to the UI.
+ * The "expert_" prefix is used to mark the signals that are used in expert mode.
+ */
 class Benchmark_Controller : public QObject
 {
   Q_OBJECT
 public:
   explicit Benchmark_Controller(QObject *parent = 0);
 private:
-  QQueue<QString> benchmarkQ;
+  QQueue<QString> benchmarkQ; ///< The main benchmark queue.
   void enqueueBenchmarks(QStringList benchmarkNames);
-  bool precision; // false(0) - SINGLE | true(1) - DOUBLE
-  QThread *currentBenchmark_Thread;
-  BenchmarkSettings currentBenchmark_Settings;
-  BenchmarkInstance currentBenchmark_Instance;
-  int mode;
+  bool precision; ///<  Precision in which to run benchmark; false(0) - SINGLE | true(1) - DOUBLE
+  QThread *currentBenchmark_Thread; ///< The thread in which the current benchmark is running.
+  BenchmarkSettings currentBenchmark_Settings; ///< Holds settings for the current benchmark session.
+  BenchmarkInstance currentBenchmark_Instance; ///< Holds results & other info of the current benchmark session.
+  int mode; ///< The benchmark mode (basic/expert)
 signals:
   void emptyBenchmarkQ();
   void benchmarkStopped();
@@ -61,12 +69,11 @@ public slots:
   void stopExecution();
   void setPrecision(bool p);
   bool getPrecision();
-  void executeSelectedBenchmark(QStringList benchmarkNamesList, BenchmarkSettings settings, bool precision, int mode);
+  void executeSelectedBenchmarks(QStringList benchmarkNamesList, BenchmarkSettings settings, bool precision, int mode);
   void startNextBenchmark();
-  void workerFinishedSlot();
   void setMode(int m);
   int getMode();
-  void createBenchmark(AbstractBenchmark *benchmark);
+  void startBenchmarkThread(AbstractBenchmark *benchmark);
   void processBenchmarkInstance(BenchmarkInstance instance);
   void errorMessageSlot(QString message);
 
@@ -74,7 +81,7 @@ public slots:
   void testProgressSlot();
   void benchmarkStartedSlot(int benchmarkIdNumber);
   void finalResultSignalSlot(QString benchmarkName, double finalValue);
-  void resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId);
+  void resultSignalSlot(QString testName, double key, double resultValue, int graphType, int testId);
   void benchmarkCompleteSlot();
   void unitMeasureSignalSlot(QString unitMeasureName, int axis);
 

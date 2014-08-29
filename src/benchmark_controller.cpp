@@ -1,6 +1,11 @@
 #include "benchmark_controller.h"
 #include "QDebug"
 
+/*!
+ * \brief Default constructor.
+ * Loads default settings on creation: \ref BenchmarkSettings, \ref DOUBLE_PRECISION and \ref BENCHMARK_MODE_BASIC
+ * \param parent Optional parent object.
+ */
 Benchmark_Controller::Benchmark_Controller(QObject *parent) :
   QObject(parent)
 {
@@ -10,8 +15,13 @@ Benchmark_Controller::Benchmark_Controller(QObject *parent) :
   currentBenchmark_Settings.setSettings(defaultSettings);
 }
 
-//Starts execution of a new benchmark test in a separate thread
-void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
+/*!
+ * \brief Creates a new thread, assigns the benchmark to it, and starts the benchmark execution.
+ * This function is responsible for starting benchmarks in threads and communicating its signals to the controller.
+ * A benchmark's completion orders its thread to self-destruct after the benchmark itself was destroyed.
+ * \param benchmark The benchmark to be started in a new thread.
+ */
+void Benchmark_Controller::startBenchmarkThread(AbstractBenchmark *benchmark){
   //  qDebug()<<"Creating Benchmark Thread Object";
   QThread *workerThread = new QThread();
   currentBenchmark_Thread = workerThread;
@@ -19,7 +29,6 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
 
   connect(workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );
   connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
-  connect(workerThread, SIGNAL(finished()), this, SLOT(workerFinishedSlot()) );
   connect(workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
 
   if(mode == BENCHMARK_MODE_BASIC){
@@ -51,14 +60,10 @@ void Benchmark_Controller::createBenchmark(AbstractBenchmark *benchmark){
 
 }
 
-void Benchmark_Controller::errorMessageSlot(QString message){
-  emit errorMessage(message);
-}
-
-void Benchmark_Controller::workerFinishedSlot(){
-  //  qDebug()<<"worker thread finished";
-}
-
+/*!
+ * \brief Fills the benchmark queue with names of selected benchmarks
+ * \param benchmarkNamesList The list of benchmarks to be enqueued
+ */
 void Benchmark_Controller::enqueueBenchmarks(QStringList benchmarkNamesList){
   if(!benchmarkNamesList.isEmpty()){
     foreach(QString benchmark, benchmarkNamesList){
@@ -67,11 +72,9 @@ void Benchmark_Controller::enqueueBenchmarks(QStringList benchmarkNamesList){
   }
 }
 
-void Benchmark_Controller::testProgressSlot()
-{
-  emit testProgress();
-}
-
+/*!
+ * \brief Stops the current benchmark. Clears the benchmark queue. Emits benchmarkStopped() signal when its done.
+ */
 void Benchmark_Controller::stopExecution()
 {
   qDebug()<<"---STOPPING BENCHMARK EXECUTION---";
@@ -83,11 +86,9 @@ void Benchmark_Controller::stopExecution()
   emit benchmarkStopped();
 }
 
-void Benchmark_Controller::benchmarkStartedSlot(int benchmarkIdNumber)
-{
-  emit benchmarkStarted(benchmarkIdNumber);
-}
-
+/*!
+ * \brief Starts the next queued benchmark. Emits emptyBenchmarkQ() signal if there are no more queued benchmarks.
+ */
 void Benchmark_Controller::startNextBenchmark(){
   if(!benchmarkQ.isEmpty()){
     QString nextBenchmarkName;
@@ -95,10 +96,10 @@ void Benchmark_Controller::startNextBenchmark(){
 
     //    qDebug()<<"String Next benchmark: "<<nextBenchmarkName;
     if(nextBenchmarkName == "Blas3"){
-      createBenchmark(new Benchmark_Blas3( getPrecision(), currentBenchmark_Settings ));
+      startBenchmarkThread(new Benchmark_Blas3( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Copy"){
-      createBenchmark(new Benchmark_Copy( getPrecision(), currentBenchmark_Settings ));
+      startBenchmarkThread(new Benchmark_Copy( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Scheduler"){
       //      createBenchmark(new Benchmark_Scheduler( getPrecision(), *currentBenchmarkSettings ));
@@ -107,10 +108,10 @@ void Benchmark_Controller::startNextBenchmark(){
       //      createBenchmark(new Benchmark_Solver( getPrecision(), *currentBenchmarkSettings ));
     }
     else if(nextBenchmarkName == "Sparse"){
-      createBenchmark(new Benchmark_Sparse( getPrecision(), currentBenchmark_Settings ));
+      startBenchmarkThread(new Benchmark_Sparse( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Vector"){
-      createBenchmark(new Benchmark_Vector( getPrecision(), currentBenchmark_Settings ));
+      startBenchmarkThread(new Benchmark_Vector( getPrecision(), currentBenchmark_Settings ));
     }
     else if(nextBenchmarkName == "Qr"){
       //      createBenchmark(new Benchmark_Qr());
@@ -128,30 +129,14 @@ void Benchmark_Controller::startNextBenchmark(){
   }
 }
 
-void Benchmark_Controller::processBenchmarkInstance(BenchmarkInstance instance){
-  Benchmark_Model model;
-  model.processBenchmarkInstance(instance);
-}
-
-void Benchmark_Controller::setPrecision(bool p)
-{
-  this->precision = p;
-}
-
-bool Benchmark_Controller::getPrecision()
-{
-  return this->precision;
-}
-
-int Benchmark_Controller::getMode(){
-  return this->mode;
-}
-
-void Benchmark_Controller::setMode(int m){
-  this->mode = m;
-}
-
-void Benchmark_Controller::executeSelectedBenchmark(QStringList benchmarkNamesList,
+/*!
+ * \brief This function sets up everything needed before a benchmark session can start and then issues an order to start execution.
+ * \param benchmarkNamesList List of selected benchmark names
+ * \param settings Settings to be used when running the benchmarks
+ * \param precision Benchmark precision
+ * \param mode Benchmark mode
+ */
+void Benchmark_Controller::executeSelectedBenchmarks(QStringList benchmarkNamesList,
                                                     BenchmarkSettings settings,
                                                     bool precision = DOUBLE_PRECISION,
                                                     int mode = BENCHMARK_MODE_BASIC)
@@ -190,6 +175,45 @@ void Benchmark_Controller::executeSelectedBenchmark(QStringList benchmarkNamesLi
   }
 }
 
+/*!
+ * \brief Calls on the model to process and save the benchmark results.
+ * \param instance Instance object that holds all the result info.
+ */
+void Benchmark_Controller::processBenchmarkInstance(BenchmarkInstance instance){
+  Benchmark_Model model;
+  model.processBenchmarkInstance(instance);
+}
+
+/*!
+ * \brief Passes on the error message from \ref AbstractBenchmark::errorMessage()
+ * \param message The error message
+ */
+void Benchmark_Controller::errorMessageSlot(QString message){
+  emit errorMessage(message);
+}
+
+/*!
+ * \brief Passes on the signal from \ref AbstractBenchmark::testProgress()
+ */
+void Benchmark_Controller::testProgressSlot()
+{
+  emit testProgress();
+}
+
+/*!
+ * \brief Passes on the benchmark ID number from \ref AbstractBenchmark::benchmarkStarted()
+ * \param benchmarkIdNumber The benchmark ID number
+ */
+void Benchmark_Controller::benchmarkStartedSlot(int benchmarkIdNumber)
+{
+  emit benchmarkStarted(benchmarkIdNumber);
+}
+
+/*!
+ * \brief Adds the finished benchmark result to the current instance and passes on the result from \ref AbstractBenchmark::finalResultSignal()
+ * \param benchmarkName Name of the finished benchmark
+ * \param finalValue Final result of the finished benchmark
+ */
 void Benchmark_Controller::finalResultSignalSlot(QString benchmarkName, double finalValue)
 {
   //intercept final results and store them in the benchmark instance
@@ -208,32 +232,60 @@ void Benchmark_Controller::finalResultSignalSlot(QString benchmarkName, double f
   emit finalResultSignal(benchmarkName, finalValue);
 }
 
-void Benchmark_Controller::resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId)
+/*!
+ * \brief Passes on test results from \ref AbstractBenchmark::resultSignal()
+ * \param testName The name of the completed test (e.g. ""Matrix-Matrix product")
+ * \param key The key on x/y axis for which the result is to be displayed
+ * \param value The test result value
+ * \param graphType Which graph type is to be used when showing the result see \see GraphType ref \ref GraphType
+ * \param testId Used to identify the test result so that it can receive "special" graphing treatment (different graph color)
+ */
+void Benchmark_Controller::resultSignalSlot(QString testName, double key, double resultValue, int graphType, int testId)
 {
-  emit resultSignal(benchmarkName, key, resultValue, graphType, testId);
+  emit resultSignal(testName, key, resultValue, graphType, testId);
 }
 
+/*!
+ * \brief Passes on the signal from \ref AbstractBenchmark::benchmarkComplete()
+ */
 void Benchmark_Controller::benchmarkCompleteSlot()
 {
   //  qDebug()<<"A benchmark has been completed;";
   emit benchmarkComplete();
 }
 
+/*!
+ * \brief Passes on the measure from \ref AbstractBenchmark::unitMeasureSignal()
+ * \param unitMeasureName The name of the measure (e.g. "GB/s")
+ * \param axis The axis on which to show the measure (Qt::XAxis/Qt::YAxis)
+ */
 void Benchmark_Controller::unitMeasureSignalSlot(QString unitMeasureName, int axis)
 {
   emit unitMeasureSignal(unitMeasureName, axis);
 }
 
+/*!
+ * \brief Expert mode version of \ref Benchmark_Controller::testProgressSlot()
+ */
 void Benchmark_Controller::expert_testProgressSlot()
 {
   emit expert_testProgress();
 }
 
+/*!
+ * \brief Expert mode version of \ref Benchmark_Controller::benchmarkStartedSlot()
+ * \param benchmarkIdNumber The benchmark ID number
+ */
 void Benchmark_Controller::expert_benchmarkStartedSlot(int benchmarkIdNumber)
 {
   emit expert_benchmarkStarted(benchmarkIdNumber);
 }
 
+/*!
+ * \brief Expert mode version of \ref Benchmark_Controller::finalResultSignalSlot()
+ * \param benchmarkName Name of the finished benchmark
+ * \param finalValue Final result of the finished benchmark
+ */
 void Benchmark_Controller::expert_finalResultSignalSlot(QString benchmarkName, double finalValue)
 {
   //intercept final results and store them in the benchmark instance
@@ -252,17 +304,67 @@ void Benchmark_Controller::expert_finalResultSignalSlot(QString benchmarkName, d
   emit expert_finalResultSignal(benchmarkName, finalValue);
 }
 
+/*!
+ * \brief Expert mode version of \ref Benchmark_Controller::resultSignal()
+ * \param testName The name of the completed test (e.g. ""Matrix-Matrix product")
+ * \param key The key on x/y axis for which the result is to be displayed
+ * \param value The test result value
+ * \param graphType Which graph type is to be used when showing the result see \see GraphType ref \ref GraphType
+ * \param testId Used to identify the test result so that it can receive "special" graphing treatment (different graph color)
+ */
 void Benchmark_Controller::expert_resultSignalSlot(QString benchmarkName, double key, double resultValue, int graphType, int testId)
 {
   emit expert_resultSignal(benchmarkName, key, resultValue, graphType, testId);
 }
 
+/*!
+ * \brief Expert mode version of \ref Benchmark_Controller::benchmarkCompleteSlot()
+ */
 void Benchmark_Controller::expert_benchmarkCompleteSlot()
 {
   emit expert_benchmarkComplete();
 }
 
+/*!
+ * \brief Expert mode version of \ref Benchmark_Controller::unitMeasureSignalSlot()
+ * \param unitMeasureName The name of the measure (e.g. "GB/s")
+ * \param axis The axis on which to show the measure (Qt::XAxis/Qt::YAxis)
+ */
 void Benchmark_Controller::expert_unitMeasureSignalSlot(QString unitMeasureName, int axis)
 {
   emit expert_unitMeasureSignal(unitMeasureName, axis);
+}
+
+/*!
+ * \brief Set the benchmark precision
+ * \param p Precision to be set
+ */
+void Benchmark_Controller::setPrecision(bool p)
+{
+  this->precision = p;
+}
+
+/*!
+ * \brief Currently set precision
+ * \return Currently set precision
+ */
+bool Benchmark_Controller::getPrecision()
+{
+  return this->precision;
+}
+
+/*!
+ * \brief Currently selected benchmark mode
+ * \return Currently selected benchmark mode
+ */
+int Benchmark_Controller::getMode(){
+  return this->mode;
+}
+
+/*!
+ * \brief Changes the currently selected benchmark mode
+ * \param m Benchmark mode to be set
+ */
+void Benchmark_Controller::setMode(int m){
+  this->mode = m;
 }
