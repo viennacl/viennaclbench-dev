@@ -81,13 +81,13 @@ signals:
 
   /*!
    * \brief Used to emit the result of benchmark tests.
-   * \param benchmarkName The name of the completed test (e.g. ""Matrix-Matrix product")
+   * \param testName The name of the completed test (e.g. ""Matrix-Matrix product")
    * \param key The key on x/y axis for which the result is to be displayed
    * \param value The test result value
    * \param graphType Which graph type is to be used when showing the result see \see GraphType ref \ref GraphType
    * \param testId Used to identify the test result so that it can receive "special" graphing treatment (different graph color)
    */
-  void resultSignal(QString benchmarkName, double key, double value, int graphType, int testId);
+  void resultSignal(QString testName, double key, double value, int graphType, int testId);
 
   /*!
    * \brief Indicates a benchmark has completed all of its tests.

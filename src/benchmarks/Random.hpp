@@ -20,6 +20,9 @@
 
 #include <time.h>
 #include <stdlib.h>
+/*! \file Random.hpp
+ * \brief Random number generation is implemented here.
+ * */
 
 inline void init()
 {

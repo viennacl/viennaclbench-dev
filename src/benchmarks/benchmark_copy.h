@@ -24,7 +24,8 @@ using std::endl;
 #include <QString>
 
 /*!
- * \class  Controls execution of the Copy benchmark
+ * \class Benchmark_Copy
+ * \brief Controls execution of the Copy benchmark
  * Tests are run one by one, with each iterating through all specified vector sizes before the next one starts.
  */
 class Benchmark_Copy : public AbstractBenchmark

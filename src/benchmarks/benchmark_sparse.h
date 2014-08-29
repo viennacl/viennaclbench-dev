@@ -31,7 +31,8 @@
 #include "benchmark-utils.hpp"
 
 /*!
- * \class Controls execution of the Sparse benchmark
+ * \class Benchmark_Sparse
+ * \brief Controls execution of the Sparse benchmark
  * If no custom matrix has been selected, the default matrix is generated on-the-fly.
  * Otherwise, the benchmark attempts to load the specified matrix and run tests with it.
  * Each test is run \ref BENCHMARK_RUNS times.

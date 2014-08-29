@@ -1,10 +1,6 @@
 #include "archiveextractor.h"
 #include <QDebug>
 
-/*! \class ArchiveExtractor
- * ArchiveExtractor class provides easy decompression of .tar.gz files. Use the extractFile functions to perform the extraction.
- * */
-
 /*!
  * \brief Default constructor.
  * Not really needed since all functions are static.

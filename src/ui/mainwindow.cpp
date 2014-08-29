@@ -273,7 +273,7 @@ void MainWindow::startExpertBenchmarkExecution(){
   switchContext( expertContextComboBox->currentIndex() );//switch to currently selected context
   BenchmarkSettings customSettings;
   customSettings.setSettings(ui->expertBenchmark->getExpertSettings());
-  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, customSettings, getExpertPrecision(), BENCHMARK_MODE_EXPERT );//start the benchmark
+  benchmarkController.executeSelectedBenchmarks( selectedBenchmarkItems, customSettings, getExpertPrecision(), BENCHMARK_MODE_EXPERT );//start the benchmark
 }
 
 //execute the currently selected benchmark
@@ -314,7 +314,7 @@ void MainWindow::startBasicBenchmarkExecution(){
 
   switchContext( basicContextComboBox->currentIndex() );//switch to currently selected context
   BenchmarkSettings defaultSettings;
-  benchmarkController.executeSelectedBenchmark( selectedBenchmarkItems, defaultSettings, getBasicPrecision(), BENCHMARK_MODE_BASIC );//start the benchmark
+  benchmarkController.executeSelectedBenchmarks( selectedBenchmarkItems, defaultSettings, getBasicPrecision(), BENCHMARK_MODE_BASIC );//start the benchmark
 }
 
 MainWindow::~MainWindow()

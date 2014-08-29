@@ -60,7 +60,7 @@
   \section helper-classes Helper classes
   Besides the classes that represent the MVC pattern, there are other classes that are used as helpers.
   \li \ref BenchmarkInstance
-  \li \ref BenchmarkSetting
+  \li \ref BenchmarkSettings
   \li \ref ArchiveExtractor
  */
 

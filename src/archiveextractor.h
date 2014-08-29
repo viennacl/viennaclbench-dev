@@ -12,6 +12,12 @@
 #include "archive_entry.h"
 #include <iostream>
 
+
+/*! \class ArchiveExtractor
+ * \brief Provides easy decompression functionality of .tar.gz files.
+ * Use the extractFile functions to perform the extraction. All functions are static.
+ * */
+
 class ArchiveExtractor : public QObject
 {
   Q_OBJECT

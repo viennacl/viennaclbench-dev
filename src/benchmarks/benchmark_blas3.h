@@ -34,7 +34,8 @@
 #include "benchmark-utils.hpp"
 
 /*!
- * \class  Controls execution of the BLAS3 benchmark
+ * \class Benchmark_Blas3
+ * \brief Controls execution of the BLAS3 benchmark
  * This benchmark is straightforward. Creates matrices of specified sizes, and runs 3 tests with them.
  * The 4th test (LU Factorization) is disabled since it does not support non-square matrices.
  */

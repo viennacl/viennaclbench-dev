@@ -26,7 +26,8 @@ using std::endl;
 #define BENCHMARK_RUNS          10 ///< Number of runs each test is to be run.
 
 /*!
- * \class Controls execution of the Vector benchmark
+ * \class Benchmark_Vector
+ * \brief Controls execution of the Vector benchmark
  * The benchmark iterates through selected vector sizes and runs the entire test suite, one size at a time.
  * Each test is run \ref BENCHMARK_RUNS times.
  */

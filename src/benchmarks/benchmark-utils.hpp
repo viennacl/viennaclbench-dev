@@ -20,6 +20,16 @@
 
 #include <iostream>
 
+/*! \file benchmark-utils.hpp
+ * \brief GFLOPs calculation and Timer class are implemented here.
+*/
+
+/*!
+ * \brief Calculates GFLOPs.
+ * \param num_ops Number of operations
+ * \param exec_time Execution time
+ * \return GFLOPs value
+ */
 inline double printOps(double num_ops, double exec_time)
 {
 //  std::cout << "GFLOPs: " << num_ops / (1000000 * exec_time * 1000) << std::endl;
@@ -34,6 +44,9 @@ inline double printOps(double num_ops, double exec_time)
 #undef min
 #undef max
 
+/*! \class Timer
+ * \brief Provides convenient start/stop timer functionality.
+ * */
 class Timer
 {
 public:
@@ -43,11 +56,18 @@ public:
     QueryPerformanceFrequency(&freq);
   }
 
+  /*!
+   * \brief Starts the timer
+   */
   void start()
   {
     QueryPerformanceCounter((LARGE_INTEGER*) &start_time);
   }
 
+  /*!
+   * \brief Returns time elapsed
+   * \return Returns time elapsed
+   */
   double get() const
   {
     LARGE_INTEGER  end_time;
@@ -72,6 +92,9 @@ public:
   Timer() : ts(0)
   {}
 
+  /*!
+   * \brief Starts the timer
+   */
   void start()
   {
     struct timeval tval;
@@ -79,6 +102,10 @@ public:
     ts = static_cast<double>(tval.tv_sec * 1000000 + tval.tv_usec);
   }
 
+  /*!
+   * \brief Returns time elapsed
+   * \return Returns time elapsed
+   */
   double get() const
   {
     struct timeval tval;
