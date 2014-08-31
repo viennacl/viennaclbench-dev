@@ -1,7 +1,8 @@
 #include "benchmarkinstance.h"
 
-//BenchmarkInstance::BenchmarkInstance() :
-//  QObject(parent)
+/*!
+ * \brief Default constructor. Loads default settings (standard mode, double precision).
+ */
 BenchmarkInstance::BenchmarkInstance()
 {
   blas3Result = 0;
@@ -14,6 +15,10 @@ BenchmarkInstance::BenchmarkInstance()
   precision = "Double";
 }
 
+/*!
+ * \brief Sets this instance's settings.
+ * \param s The settings to be set
+ */
 void BenchmarkInstance::setSettings(BenchmarkSettings s)
 {
   this->settings.blas3MatSizeA = s.blas3MatSizeA;

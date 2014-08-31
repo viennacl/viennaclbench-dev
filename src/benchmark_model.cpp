@@ -1,18 +1,29 @@
 #include "benchmark_model.h"
 #include <QDebug>
 
+/*!
+ * \brief Default constructor.
+ * \param parent Optional parent object.
+ */
 Benchmark_Model::Benchmark_Model(QObject *parent) :
   QObject(parent)
 {
 }
 
+/*!
+ * \brief Convenience function for both saving and uploading results.
+ * \param instance The benchmark instance to be processed
+ */
 void Benchmark_Model::processBenchmarkInstance(BenchmarkInstance instance)
 {
   saveResults(instance);
   uploadResults(instance);
 }
 
-//save results to local file in json format
+/*!
+ * \brief Saves results in JSON format to local file system (userHomeFolder/ViennaCL-Benchmark/benchmarkHistory).
+ * \param instance The benchmark instance to be saved
+ */
 void Benchmark_Model::saveResults(BenchmarkInstance instance)
 {
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
@@ -40,6 +51,10 @@ void Benchmark_Model::saveResults(BenchmarkInstance instance)
 #endif
 }
 
+/*!
+ * \brief Uploads results to ViennaCL's server.
+ * \param instance The benchmark instance to uploaded
+ */
 void Benchmark_Model::uploadResults(BenchmarkInstance instance)
 {
   //todo
@@ -48,6 +63,11 @@ void Benchmark_Model::uploadResults(BenchmarkInstance instance)
 
 //Converts a given benchmark instance object to a QJsonDocument
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
+/*!
+ * \brief Converts a given benchmark instance object to JSON format (QJsonDocument).
+ * \param instance The benchmark instance to be converted
+ * \return Returns the supplied benchmark instance in JSON format
+ */
 QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
   QJsonObject rootObject;
 

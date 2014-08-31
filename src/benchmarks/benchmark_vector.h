@@ -22,8 +22,13 @@
 using std::cout;
 using std::cin;
 using std::endl;
+/*! \file benchmark_vector.h */
 
-#define BENCHMARK_RUNS          10 ///< Number of runs each test is to be run.
+/*!
+  \def BENCHMARK_RUNS
+  Number of times each test is to be run.
+ */
+#define BENCHMARK_RUNS          10
 
 /*!
  * \class Benchmark_Vector

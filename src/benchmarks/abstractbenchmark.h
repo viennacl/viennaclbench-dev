@@ -8,7 +8,7 @@
 #include "../benchmarksettings.h"
 
 /*!
-  \enum Benchmark ID number.
+  \enum BenchmarkId Benchmark ID number.
 */
 enum BenchmarkId { BLAS3,     ///< BLAS3 0
                    COPY,      ///< COPY 1
@@ -21,14 +21,14 @@ enum BenchmarkId { BLAS3,     ///< BLAS3 0
                  };
 
 /*!
- * \enum Benchmark precision.
+ * \enum BenchmarkPrecision Benchmark precision.
  */
 enum BenchmarkPrecision { SINGLE_PRECISION, ///< Single precision 0
                           DOUBLE_PRECISION  ///< Double precision 1
                         };
 
 /*!
- * \enum Graph type to be used when plotting test results.
+ * \enum GraphType Graph type to be used when plotting test results.
  */
 enum GraphType { BAR_GRAPH, ///< Bar graph 0
                  LINE_GRAPH ///< Line graph 1
@@ -36,7 +36,7 @@ enum GraphType { BAR_GRAPH, ///< Bar graph 0
 
 
 /*!
- * \enum Benchmark mode.
+ * \enum BenchmarkMode Benchmark mode.
  */
 enum BenchmarkMode { BENCHMARK_MODE_BASIC, ///< Basic (standard) benchmark mode 0
                      BENCHMARK_MODE_EXPERT ///< Expert (advanced) benchmark mode 1

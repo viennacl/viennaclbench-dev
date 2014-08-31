@@ -1,6 +1,10 @@
 #include "matrixmarket_webview.h"
 #include <QDebug>
 
+/*!
+ * \brief Default constructor.
+ * \param parent Optional parent object.
+ */
 MatrixMarket_WebView::MatrixMarket_WebView(QWidget *parent) :
   QWebView(parent)
 {
@@ -11,6 +15,11 @@ MatrixMarket_WebView::MatrixMarket_WebView(QWidget *parent) :
   connect(this->page(), SIGNAL(unsupportedContent(QNetworkReply*)), this, SLOT(unsupportedContentSlot(QNetworkReply*)) );//detect non-html files (i.e. .tar.gz matrix files)
 }
 
+/*!
+ * \brief Filters URL click events. Processes .tar.gz links, redirects all other links to system default browser.
+ * Custom processing of external links must be enabled in order for this to work.
+ * \param url Clicked URL
+ */
 void MatrixMarket_WebView::linkClickedSlot(QUrl url){
   qDebug()<<"link clicked";
   if(url.toString().endsWith(".tar.gz")){
@@ -23,6 +32,10 @@ void MatrixMarket_WebView::linkClickedSlot(QUrl url){
   }
 }
 
+/*!
+ * \brief Saves the downloaded matrix file into userHomeFolder/ViennaCL-Benchmark/MatrixMarket. Emits \ref fileReadyForBenchmark if successful.
+ * \param reply Network reply object containing the downloaded matrix file
+ */
 void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
   QByteArray mmFile;
   mmFile = reply->readAll();
@@ -69,6 +82,10 @@ void MatrixMarket_WebView::processDownloadedFile(QNetworkReply* reply){
   reply->deleteLater();
 }
 
+/*!
+ * \brief Handles file download requests. Assigns the network request to the downloaded manager that handles downloading.
+ * \param request Network request that requested the file
+ */
 void MatrixMarket_WebView::downloadSlot(QNetworkRequest request)
 {
   qDebug()<<"Download requested: "<<request.url();
@@ -81,10 +98,20 @@ void MatrixMarket_WebView::downloadSlot(QNetworkRequest request)
   connect(downloadManager, SIGNAL(finished(QNetworkReply*)), downloadManager, SLOT(deleteLater()) );
 }
 
+/*!
+ * \brief Used to emit download progress status without accessing the download manager directly.
+ * \param bytesReceived Bytes downloaded so far
+ * \param bytesTotal Total bytes to download
+ */
 void MatrixMarket_WebView::currentDownloadProgressSlot(qint64 bytesReceived, qint64 bytesTotal){
   emit currentDownloadProgress(bytesReceived, bytesTotal);
 }
 
+/*!
+ * \brief Filters URL requests that contain unsupported content (.tar.gz files and such).
+ * Forwards .tar.gz requests to \ref downloadSlot , ignores all other requests.
+ * \param reply Network reply containing the unsupported file
+ */
 void MatrixMarket_WebView::unsupportedContentSlot(QNetworkReply *reply)
 {
   QString contentUrl = reply->url().toString();
@@ -96,6 +123,10 @@ void MatrixMarket_WebView::unsupportedContentSlot(QNetworkReply *reply)
   reply->deleteLater();
 }
 
+/*!
+ * \brief Overridden event filter. Binds back/forward mouse buttons to back/forward web navigation buttons.
+ * \param e Mouse event
+ */
 void MatrixMarket_WebView::mouseReleaseEvent(QMouseEvent *e)
 {
   e->accept();

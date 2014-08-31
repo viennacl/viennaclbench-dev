@@ -18,18 +18,21 @@
 #include <QDir>
 #include "../archiveextractor.h"
 
+/*! \class MatrixMarket_WebView
+ * \brief This is a customized WebView class for the MatrixMarket.
+ */
 class MatrixMarket_WebView : public QWebView
 {
   Q_OBJECT
 public:
   explicit MatrixMarket_WebView(QWidget *parent = 0);
-  QNetworkReply *currentDownload;
+  QNetworkReply *currentDownload; ///< Keeps track of what is currently being downloaded.
 private:
   QNetworkAccessManager *downloadManager;
 
 signals:
-  void currentDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-  void fileReadyForBenchmark(QString filename);
+  void currentDownloadProgress(qint64 bytesReceived, qint64 bytesTotal); ///< Emits current download progress status
+  void fileReadyForBenchmark(QString filename); ///< Emitted after a matrix file is downloaded, saved and ready for benchmarking
 
 public slots:
   void downloadSlot(QNetworkRequest request);

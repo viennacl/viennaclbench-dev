@@ -27,6 +27,9 @@
 #include "benchmarkinstance.h"
 #include "benchmarksettings.h"
 
+/*! \class Benchmark_Model
+ * \brief Responsible for saving and uploading benchmark results
+ * */
 class Benchmark_Model : public QObject
 {
   Q_OBJECT

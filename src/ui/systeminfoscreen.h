@@ -16,6 +16,9 @@ namespace Ui {
   class SystemInfoScreen;
 }
 
+/*! \class SystemInfoScreen
+ * \brief System Info widget is created with this class.
+ */
 class SystemInfoScreen : public QWidget
 {
   Q_OBJECT

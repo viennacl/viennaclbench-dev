@@ -87,7 +87,7 @@ void Benchmark_Controller::stopExecution()
 }
 
 /*!
- * \brief Starts the next queued benchmark. Emits emptyBenchmarkQ() signal if there are no more queued benchmarks.
+ * \brief Starts the next queued benchmark. Emits \ref emptyBenchmarkQ() signal if there are no more queued benchmarks.
  */
 void Benchmark_Controller::startNextBenchmark(){
   if(!benchmarkQ.isEmpty()){
@@ -305,7 +305,7 @@ void Benchmark_Controller::expert_finalResultSignalSlot(QString benchmarkName, d
 }
 
 /*!
- * \brief Expert mode version of \ref Benchmark_Controller::resultSignal()
+ * \brief Expert mode version of \ref Benchmark_Controller::resultSignalSlot()
  * \param testName The name of the completed test (e.g. ""Matrix-Matrix product")
  * \param key The key on x/y axis for which the result is to be displayed
  * \param value The test result value

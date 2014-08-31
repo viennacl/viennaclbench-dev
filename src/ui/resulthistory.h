@@ -1,10 +1,6 @@
 #ifndef RESULTHISTORY_H
 #define RESULTHISTORY_H
-/*
- * Handles result history
- * Loads all result files found in userHomeFolder/ViennaCL-Benchmark/benchmarkHistory
- * And shows them in the table widget
- * */
+
 #include <QWidget>
 #include <QAbstractItemModel>
 #include <QDir>
@@ -22,6 +18,9 @@ namespace Ui {
   class ResultHistory;
 }
 
+/*! \class ResultHistory
+ * \brief Handles loading and displaying the result history.
+ */
 class ResultHistory : public QWidget
 {
   Q_OBJECT

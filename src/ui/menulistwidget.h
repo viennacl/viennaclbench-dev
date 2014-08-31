@@ -4,6 +4,9 @@
 #include <QListWidget>
 #include <QMouseEvent>
 
+/*! \class MenuListWidget
+ * \brief Main menu list widget. Customized to display menu items with icons in a proper centered way, among other things.
+ */
 class MenuListWidget : public QListWidget
 {
   Q_OBJECT

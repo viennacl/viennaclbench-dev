@@ -339,6 +339,9 @@ void Benchmark_Vector::run_benchmark()
   }
 }
 
+/*!
+ * \brief Begins the benchmark execution.
+ */
 void Benchmark_Vector::execute()
 {
   emit benchmarkStarted(VECTOR);

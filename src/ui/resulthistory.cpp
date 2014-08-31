@@ -2,6 +2,10 @@
 #include "ui_resulthistory.h"
 #include <QDebug>
 
+/*!
+ * \brief Default constructor.
+ * \param parent Optional parent object.
+ */
 ResultHistory::ResultHistory(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ResultHistory)
@@ -10,7 +14,9 @@ ResultHistory::ResultHistory(QWidget *parent) :
   loadHistory();
 }
 
-//loads all result files and displays them in the table widget
+/*!
+ * \brief Loads all result files and displays them in the table widget.
+ */
 void ResultHistory::loadHistory(){
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
   QDir historyDir( QDir::home().absolutePath() + QString("/ViennaCL-Benchmark/benchmarkHistory/") );
@@ -35,8 +41,11 @@ void ResultHistory::loadHistory(){
 
 }
 
-//reads a single result file and displays it in the table widget
 #if (QT_VERSION > QT_VERSION_CHECK(5, 0, 0))
+/*!
+ * \brief Reads a single JSON result file and displays its content in the table widget.
+ * \param jsonRoot JSON file to be read
+ */
 void ResultHistory::readResultFile(const QJsonObject &jsonRoot){
   int currentRow = ui->tableWidget->rowCount();
   ui->tableWidget->insertRow(currentRow);
@@ -68,6 +77,9 @@ void ResultHistory::readResultFile(const QJsonObject &jsonRoot){
 }
 #endif
 
+/*!
+ * \brief Destructor.
+ */
 ResultHistory::~ResultHistory()
 {
   delete ui;

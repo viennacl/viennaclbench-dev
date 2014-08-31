@@ -11,6 +11,9 @@ namespace Ui {
   class HomeScreen;
 }
 
+/*! \class HomeScreen
+ * \brief Homescreen widget is created with this class.
+ */
 class HomeScreen : public QWidget
 {
   Q_OBJECT
@@ -18,7 +21,7 @@ class HomeScreen : public QWidget
 public:
   explicit HomeScreen(QWidget *parent = 0);
   ~HomeScreen();
-  QPushButton* quickStartButton;
+  QPushButton* quickStartButton; ///< Exposes the quickstart button for usage in other widgets
 
 private:
   Ui::HomeScreen *ui;

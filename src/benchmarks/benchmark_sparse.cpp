@@ -224,6 +224,9 @@ void Benchmark_Sparse::run_benchmark()
   emit testProgress();
 }
 
+/*!
+ * \brief Begins the benchmark execution.
+ */
 void Benchmark_Sparse::execute()
 {
   emit benchmarkStarted(SPARSE);

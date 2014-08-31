@@ -189,6 +189,9 @@ void Benchmark_Blas3::run_benchmark()
 */
 }
 
+/*!
+ * \brief Begins the benchmark execution.
+ */
 void Benchmark_Blas3::execute()
 {
   emit benchmarkStarted(BLAS3);

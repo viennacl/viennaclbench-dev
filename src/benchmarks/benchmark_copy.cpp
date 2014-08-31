@@ -229,6 +229,9 @@ void Benchmark_Copy::run_benchmark()
   emit testProgress();
 }
 
+/*!
+ * \brief Begins the benchmark execution.
+ */
 void Benchmark_Copy::execute(){
   emit benchmarkStarted(COPY);
   emit unitMeasureSignal("GB/s", Qt::YAxis);

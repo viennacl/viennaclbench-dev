@@ -45,25 +45,25 @@ private:
   BenchmarkInstance currentBenchmark_Instance; ///< Holds results & other info of the current benchmark session.
   int mode; ///< The benchmark mode (basic/expert)
 signals:
-  void emptyBenchmarkQ();
-  void benchmarkStopped();
-  void errorMessage(QString message);
+  void emptyBenchmarkQ(); ///< Emitted when all queued benchmarks have finished execution
+  void benchmarkStopped(); ///< Emitted when a benchmark was stopped
+  void errorMessage(QString message); ///< Same as \ref AbstractBenchmark::errorMessage()
 
   //basic mode signals
-  void benchmarkComplete();
-  void benchmarkStarted(int benchmarkIdNumber);
-  void unitMeasureSignal(QString, int axis);
-  void testProgress();
-  void resultSignal(QString benchmarkName, double key, double resultValue, int graphType, int testId);
-  void finalResultSignal(QString benchmarkName, double finalValue);
+  void benchmarkComplete(); ///< Same as \ref AbstractBenchmark::benchmarkComplete()
+  void benchmarkStarted(int benchmarkIdNumber); ///< Same as \ref AbstractBenchmark::benchmarkStarted()
+  void unitMeasureSignal(QString, int axis); ///< Same as \ref AbstractBenchmark::unitMeasureSignal()
+  void testProgress(); ///< Same as \ref AbstractBenchmark::testProgress()
+  void resultSignal(QString benchmarkName, double key, double resultValue, int graphType, int testId); ///< Same as \ref AbstractBenchmark::resultSignal()
+  void finalResultSignal(QString benchmarkName, double finalValue); ///< Same as \ref AbstractBenchmark::finalResultSignal()
 
   //expert mode signals
-  void expert_benchmarkComplete();
-  void expert_benchmarkStarted(int benchmarkIdNumber);
-  void expert_unitMeasureSignal(QString, int axis);
-  void expert_testProgress();
-  void expert_resultSignal(QString benchmarkName, double key, double resultValue, int graphType, int testId);
-  void expert_finalResultSignal(QString benchmarkName, double finalValue);
+  void expert_benchmarkComplete(); ///< Same as \ref AbstractBenchmark::benchmarkComplete()
+  void expert_benchmarkStarted(int benchmarkIdNumber); ///< Same as \ref AbstractBenchmark::benchmarkStarted()
+  void expert_unitMeasureSignal(QString, int axis); ///< Same as \ref AbstractBenchmark::unitMeasureSignal()
+  void expert_testProgress(); ///< Same as \ref AbstractBenchmark::testProgress()
+  void expert_resultSignal(QString benchmarkName, double key, double resultValue, int graphType, int testId); ///< Same as \ref AbstractBenchmark::resultSignal()
+  void expert_finalResultSignal(QString benchmarkName, double finalValue); ///< Same as \ref AbstractBenchmark::finalResultSignal()
 
 public slots:
   void stopExecution();

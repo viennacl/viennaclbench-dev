@@ -46,7 +46,7 @@ inline double printOps(double num_ops, double exec_time)
 
 /*! \class Timer
  * \brief Provides convenient start/stop timer functionality.
- * */
+ */
 class Timer
 {
 public:
@@ -85,6 +85,9 @@ private:
 
 #include <sys/time.h>
 
+/*! \class Timer
+ * \brief Provides convenient start/stop timer functionality.
+ */
 class Timer
 {
 public:

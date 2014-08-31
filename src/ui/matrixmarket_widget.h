@@ -8,6 +8,9 @@ namespace Ui {
   class MatrixMarket_Widget;
 }
 
+/*! \class MatrixMarket_Widget
+ * \brief MatrixMarket widget is implemented here.
+ */
 class MatrixMarket_Widget : public QWidget
 {
   Q_OBJECT
@@ -15,7 +18,7 @@ class MatrixMarket_Widget : public QWidget
 public:
   explicit MatrixMarket_Widget(QWidget *parent = 0);
   ~MatrixMarket_Widget();
-  MatrixMarket_WebView *webView;
+  MatrixMarket_WebView *webView; ///< The WebView used for rendering HTML pages.
 
 public slots:
   void updateDownloadProgressBar(qint64 bytesReceived, qint64 bytesTotal);

@@ -1,6 +1,10 @@
 #include "systeminfoscreen.h"
 #include "ui_systeminfoscreen.h"
 
+/*!
+ * \brief Default constructor. Inits the UI and creates tables with detailed platform and device info.
+ * \param parent Optional parent object.
+ */
 SystemInfoScreen::SystemInfoScreen(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::SystemInfoScreen)
@@ -282,6 +286,9 @@ SystemInfoScreen::SystemInfoScreen(QWidget *parent) :
 
 }
 
+/*!
+ * \brief Destructor.
+ */
 SystemInfoScreen::~SystemInfoScreen()
 {
   delete ui;

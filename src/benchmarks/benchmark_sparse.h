@@ -6,8 +6,13 @@
 #ifndef NDEBUG
 #define NDEBUG
 #endif
+/*! \file benchmark_sparse.h */
 
-#define BENCHMARK_RUNS          10 ///< Number of runs each test is to be run.
+/*!
+  \def BENCHMARK_RUNS
+  Number of times each test is to be run.
+ */
+#define BENCHMARK_RUNS          10
 
 #include "viennacl/compressed_matrix.hpp"
 #include "viennacl/coordinate_matrix.hpp"

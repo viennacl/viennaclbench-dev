@@ -1,6 +1,10 @@
 #include "homescreen.h"
 #include "ui_homescreen.h"
 
+/*!
+ * \brief Default constructor. Inits the UI and creates the system info box with platforms and devices.
+ * \param parent Optional parent object.
+ */
 HomeScreen::HomeScreen(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::HomeScreen)
@@ -122,6 +126,9 @@ HomeScreen::HomeScreen(QWidget *parent) :
 #endif
 }
 
+/*!
+ * \brief Destructor.
+ */
 HomeScreen::~HomeScreen()
 {
   delete ui;

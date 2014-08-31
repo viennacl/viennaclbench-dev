@@ -1,12 +1,17 @@
 #include "benchmarksettings.h"
 
-//BenchmarkSettings::BenchmarkSettings() :
-//  QObject(parent)
+
+/*!
+ * \brief Default constructor. Loads default settings from \ref BenchmarkSettings::initBasicDefaults()
+ */
 BenchmarkSettings::BenchmarkSettings()
 {
   initBasicDefaults();
 }
 
+/*!
+ * \brief The default benchmark settings are initialized here.
+ */
 void BenchmarkSettings::initBasicDefaults(){
   copyMinVectorSize = 10000; //
   copyMaxVectorSize = 10240000;//
@@ -25,6 +30,10 @@ void BenchmarkSettings::initBasicDefaults(){
   sparseCustomMatrix = QString("");//empty string for default matrix (generated on the fly)
 }
 
+/*!
+ * \brief Leads settings from another object
+ * \param s Settings from which to load
+ */
 void BenchmarkSettings::setSettings(BenchmarkSettings s){
   this->blas3MatSizeA = s.blas3MatSizeA;
   this->blas3MatSizeB = s.blas3MatSizeB;
@@ -43,26 +52,12 @@ void BenchmarkSettings::setSettings(BenchmarkSettings s){
   this->sparseCustomMatrix = s.sparseCustomMatrix;
 }
 
-BenchmarkSettings& BenchmarkSettings::operator =(const BenchmarkSettings& other)
-{
-  this->blas3MatSizeA = other.blas3MatSizeA;
-  this->blas3MatSizeB = other.blas3MatSizeB;
-  this->blas3MatSizeC = other.blas3MatSizeC;
-
-  this->copyIncFactor = other.copyIncFactor;
-  this->copyMaxVectorSize = other.copyMaxVectorSize;
-  this->copyMinVectorSize = other.copyMinVectorSize;
-
-  this->vectorMinVectorSize = other.vectorMinVectorSize;
-  this->vectorMaxVectorSize = other.vectorMaxVectorSize;
-  this->vectorIncFactor = other.vectorIncFactor;
-
-  this->sparseMatSizeA = other.sparseMatSizeA;
-  this->sparseMatSizeB = other.sparseMatSizeB;
-  this->sparseCustomMatrix = other.sparseCustomMatrix;
-  return *this;
-}
-
+/*!
+ * \brief Sets Copy benchmark settings
+ * \param min Vector min size
+ * \param max Vector max size
+ * \param increment Increment factor
+ */
 void BenchmarkSettings::setCopySettings(int min, int max, int increment)
 {
   copyMinVectorSize = min;
@@ -70,6 +65,12 @@ void BenchmarkSettings::setCopySettings(int min, int max, int increment)
   copyIncFactor = increment;
 }
 
+/*!
+ * \brief Sets Vector benchmark settings
+ * \param min Vector min size
+ * \param max Vector max size
+ * \param increment Increment factor
+ */
 void BenchmarkSettings::setVectorSettings(int min, int max, int increment)
 {
   vectorMinVectorSize = min;
@@ -77,6 +78,12 @@ void BenchmarkSettings::setVectorSettings(int min, int max, int increment)
   vectorIncFactor = increment;
 }
 
+/*!
+ * \brief Sets Blas3 benchmark settings
+ * \param matA Matrix size1
+ * \param matB Matrix size2
+ * \param matC Matrix size3
+ */
 void BenchmarkSettings::setBlas3Settings(int matA, int matB, int matC)
 {
   blas3MatSizeA = matA;
@@ -84,6 +91,12 @@ void BenchmarkSettings::setBlas3Settings(int matA, int matB, int matC)
   blas3MatSizeC = matC;
 }
 
+/*!
+ * \brief Sets Sparse benchmark settings
+ * \param matA Matrix size x
+ * \param matB Matrix size y
+ * \param pathToCustomMatrix Absolute path to cusotm matrix
+ */
 void BenchmarkSettings::setSparseSettings(int matA, int matB, QString pathToCustomMatrix)
 {
   sparseMatSizeA = matA;

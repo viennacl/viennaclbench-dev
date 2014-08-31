@@ -7,6 +7,9 @@ namespace Ui {
   class CollapseWidget;
 }
 
+/*! \class CollapseWidget
+ * \brief A simple widget for displaying a collapsible child widget.
+ */
 class CollapseWidget : public QWidget
 {
   Q_OBJECT

@@ -4,6 +4,9 @@
 #include <QSplashScreen>
 #include <QEvent>
 
+/*! \class SplashScreen
+ * \brief Customized splash screen widget. Does not disappear when clicked on.
+ */
 class SplashScreen : public QSplashScreen
 {
   Q_OBJECT

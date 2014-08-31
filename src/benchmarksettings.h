@@ -1,13 +1,11 @@
 #ifndef BENCHMARKSETTINGS_H
 #define BENCHMARKSETTINGS_H
 
-/*
- * Holds all settings of selected benchmarks
- * */
 #include <QString>
 
-//#include <QObject>
-//inheriting from QObject prevents usage of assignment operator
+/*! \class BenchmarkSettings
+ * \brief Container class for all benchmarks' settings
+ */
 class BenchmarkSettings// : public QObject
 {
 //  Q_OBJECT
@@ -15,23 +13,21 @@ public:
 //  explicit BenchmarkSettings(QObject *parent = 0);
   explicit BenchmarkSettings();
 
-  int copyMinVectorSize;
-  int copyMaxVectorSize;
-  int copyIncFactor;
+  int copyMinVectorSize; ///< MAX_BENCHMARK_VECTOR_SIZE
+  int copyMaxVectorSize; ///< MIN_BENCHMARK_VECTOR_SIZE
+  int copyIncFactor; ///< INCREMENT_FACTOR
 
-  int vectorMinVectorSize;
-  int vectorMaxVectorSize;
-  int vectorIncFactor;
+  int vectorMinVectorSize; ///< MIN_BENCHMARK_VECTOR_SIZE
+  int vectorMaxVectorSize; ///< MAX_BENCHMARK_VECTOR_SIZE
+  int vectorIncFactor; ///< INCREMENT_FACTOR
 
-  int blas3MatSizeA;
-  int blas3MatSizeB;
-  int blas3MatSizeC;
+  int blas3MatSizeA; ///< blas3MatrixSizeA
+  int blas3MatSizeB; ///< blas3MatrixSizeB
+  int blas3MatSizeC; ///< blas3MatrixSizeC
 
-  int sparseMatSizeA;
-  int sparseMatSizeB;
-  QString sparseCustomMatrix;
-
-  BenchmarkSettings& operator =(const BenchmarkSettings &other);
+  int sparseMatSizeA; ///< xPoints
+  int sparseMatSizeB; ///< yPoints
+  QString sparseCustomMatrix; ///< customSparseMatrixPath
 
   void setCopySettings(int min, int max, int increment);
   void setVectorSettings(int min, int max, int increment);
