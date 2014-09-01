@@ -1,6 +1,10 @@
 #include "expertbenchmark.h"
 #include "ui_expertbenchmark.h"
 
+/*!
+ * \brief Default constructor.
+ * \param parent Optional parent object.
+ */
 ExpertBenchmark::ExpertBenchmark(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::ExpertBenchmark)
@@ -22,11 +26,17 @@ ExpertBenchmark::ExpertBenchmark(QWidget *parent) :
   initExpert();
 }
 
+/*!
+ * \brief Destructor
+ */
 ExpertBenchmark::~ExpertBenchmark()
 {
   delete ui;
 }
 
+/*!
+ * \brief Initializes all benchmark plots.
+ */
 void ExpertBenchmark::initExpert(){
   //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
   //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
@@ -203,12 +213,19 @@ void ExpertBenchmark::initExpert(){
   connect(ui->expert_CustomMatrixDefaultButton, SIGNAL(clicked()), ui->expert_SparseCustomMatrix, SLOT(clear()) );
 }
 
+/*!
+ * \brief Shows the start button, hides the stop button, writes "Done" in progressbar.
+ * Used after a benchmark seesion is completed.
+ */
 void ExpertBenchmark::showBenchmarkStartButton(){
   ui->expert_StopBenchmarkButton->hide();
   ui->expert_StartBenchmarkButton->show();
   ui->expert_ProgressBar->setFormat("Done");
 }
 
+/*!
+ * \brief Changes state of the precision buttons. Single precision - checked, double - unchecked.
+ */
 void ExpertBenchmark::updateSinglePrecisionButtons(){
   ui->expert_SingleButton->setChecked(true);
   ui->expert_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
@@ -218,6 +235,9 @@ void ExpertBenchmark::updateSinglePrecisionButtons(){
 
 }
 
+/*!
+ * \brief Changes state of the precision buttons. Double precision - checked, single - unchecked.
+ */
 void ExpertBenchmark::updateDoublePrecisionButtons(){
   ui->expert_DoubleButton->setChecked(true);
   ui->expert_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
@@ -227,16 +247,28 @@ void ExpertBenchmark::updateDoublePrecisionButtons(){
 
 }
 
+/*!
+ * \brief Changes focus of detailed plots to the currently running benchmark.
+ * \param benchmarkIdNumber Id number of the currently active benchmark
+ */
 void ExpertBenchmark::setActiveBenchmarkPlot(int benchmarkIdNumber){
   expert_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
   activeBenchmark = benchmarkIdNumber;
 }
 
+/*!
+ * \brief Adds a final benchmark result to the final result plot.
+ * \param benchmarkName Benchmark name
+ * \param finalResult Benchmark result
+ */
 void ExpertBenchmark::updateFinalResultPlot(QString benchmarkName, double finalResult){
   plotFinalResult(benchmarkName, finalResult, ui->expert_FinalResultPlot);
 }
 
-//shows the detailed graph of a clicked final result bar
+/*!
+ * \brief Shows the appropriate detailed graph when a result was clicked on in the final plot.
+ * \param plottable Plot result that was clicked
+ */
 void ExpertBenchmark::graphClicked(QCPAbstractPlottable *plottable)
 {
   QString clickedBenchmarkBar = plottable->name();
@@ -263,7 +295,9 @@ void ExpertBenchmark::graphClicked(QCPAbstractPlottable *plottable)
   }
 }
 
-//detailed plot selection filter
+/*!
+ * \brief Detailed plot selection event filter. Highlights a clicked plot on the legend and vice versa.
+ */
 void ExpertBenchmark::selectionChanged()
 {
   int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
@@ -280,12 +314,20 @@ void ExpertBenchmark::selectionChanged()
     }
   }
 }
+
+/*!
+ * \brief Updates the progressbar.
+ */
 void ExpertBenchmark::updateBenchProgress(){
   currentBenchProgress++;
   ui->expert_ProgressBar->setValue(currentBenchProgress);
   ui->expert_ProgressBar->setFormat("Running Test %v of %m");
 }
 
+/*!
+ * \brief Handles list widget's selection events. Called whenever a list item was selected. Checks all items and updates their selected/deselected status appropriately.
+ * \param item The item that was clicked.
+ */
 void ExpertBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
 {
   //item(0) is the 'All' benchmarks selection option
@@ -310,6 +352,9 @@ void ExpertBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
   }
 }
 
+/*!
+ * \brief Resets plot data and tick vectors of all plots.
+ */
 void ExpertBenchmark::resetAllPlots(){
   resetPlotData(ui->expert_FinalResultPlot);
   //reset all plots
@@ -325,6 +370,9 @@ void ExpertBenchmark::resetAllPlots(){
   }
 }
 
+/*!
+ * \brief Opens a file dialog to choose a custom matrix for the sparse benchmark.
+ */
 void ExpertBenchmark::setCustomSparseMatrixPath(){
   ui->expert_SparseCustomMatrix->setText( QFileDialog::getOpenFileName(this,
                                                                        QString("Select a Custom Sparse Matrix"),
@@ -333,6 +381,10 @@ void ExpertBenchmark::setCustomSparseMatrixPath(){
                                           );
 }
 
+/*!
+ * \brief Collects expert benchmark settings from the UI.
+ * \return Returns a \ref BenchmarkSettings object containing all expert settings.
+ */
 BenchmarkSettings ExpertBenchmark::getExpertSettings()
 {
   BenchmarkSettings settings;
@@ -356,12 +408,19 @@ BenchmarkSettings ExpertBenchmark::getExpertSettings()
   return settings;
 }
 
+/*!
+ * \brief Hides the stop button, shows the start button. Kinda unnecessary, but oh well.
+ */
 void ExpertBenchmark::hideStopButton()
 {
   ui->expert_StopBenchmarkButton->hide();
   ui->expert_StartBenchmarkButton->show();
 }
-//reset the graph
+
+/*!
+ * \brief Resets plot data of a selected graph.
+ * \param benchmarkGraph The graph to be reset
+ */
 void ExpertBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
 {
   benchmarkGraph->clearGraphs();
@@ -370,7 +429,12 @@ void ExpertBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
   benchmarkGraph->xAxis->setRange(0,1);
   benchmarkGraph->replot();
 }
-//set the benchmark's unit measure
+
+/*!
+ * \brief Sets the unit measure for the currently active benchmark.
+ * \param unitMeasureName Measure name
+ * \param axis Axis on which to show the measure
+ */
 void ExpertBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
 {
   switch(axis){
@@ -386,8 +450,16 @@ void ExpertBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int ax
     break;
   }
 
-}//parse the received benchmark result name and value
+}
 
+/*!
+ * \brief Parses the received benchmark result signal and displays it using the selected graph type.
+ * \param benchmarkName Benchmark name
+ * \param key Key value
+ * \param resultValue Result value
+ * \param graphType See \ref GraphType
+ * \param testId Test id number
+ */
 void ExpertBenchmark::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
   if(graphType == BAR_GRAPH){
     plotBarResult(benchmarkName, key, resultValue, expert_DetailedPlotsVector[activeBenchmark]);
@@ -397,6 +469,15 @@ void ExpertBenchmark::parseBenchmarkResult(QString benchmarkName, double key, do
   }
 }
 
+/*!
+ * \brief Draws received test results using a line graph on the selected plot.
+ * Adds a legend entry for each result graph.
+ * \param benchmarkName Benchmark test name
+ * \param key Key value on the x-axis (e.g. vector size)
+ * \param value Result value on the y-axis (e.g. the actual result for a given vector size)
+ * \param customPlot Which plot is to be used to draw the graph
+ * \param testId Id of the graph to be plotted, used to give different colors to graphs.
+ */
 void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
   if(customPlot->legend->visible() == false){
     customPlot->plotLayout()->addElement(0,1, customPlot->legend);
@@ -494,8 +575,14 @@ void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double v
   customPlot->replot();
 }
 
-//main result diplay function
-//x and y axis are swapped to achieve horizontal bar display
+/*!
+ * \brief Draws received test results using a bar graph on the selected plot.
+ * X and Y axis are swapped to achieve horizontal bar display
+ * \param benchmarkName Benchmark test name
+ * \param key Graph's position on Yaxis - not used. Y-axis positioning of graphs is calculated automatically to avoid wrong grpah placement.
+ * \param value Result value
+ * \param customPlot Plot on which the graph is to be drawn
+ */
 void ExpertBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
@@ -545,6 +632,12 @@ void ExpertBenchmark::plotBarResult(QString benchmarkName, double key, double va
   customPlot->replot();
 }
 
+/*!
+ * \brief Draws a final benchmark result using a bar graph on the final result plot.
+ * \param benchmarkName Benchmark name
+ * \param value Result value
+ * \param customPlot Plot on which to draw the graph
+ */
 void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
   //  Plot mapping
   //  Vector - 1

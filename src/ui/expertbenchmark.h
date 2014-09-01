@@ -42,6 +42,10 @@ namespace Ui {
   class ExpertBenchmark;
 }
 
+/*! \class ExpertBenchmark
+ * \brief The expert (advanced) benchmark user interface is implemented here.
+ * Handles benchmark selecting, progress updating, result plotting, starting\stopping, and changing benchmark settings.
+ */
 class ExpertBenchmark : public QWidget
 {
   Q_OBJECT
@@ -56,12 +60,13 @@ public:
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
   BenchmarkSettings getExpertSettings();
-  QPushButton *startBenchmarkButton;
-  QPushButton *stopBenchmarkButton;
-  QPushButton  *singlePrecisionButton;
-  QProgressBar *progressBar;
-  BenchmarkListWidget *benchmarkListWidget;
-  QComboBox *contextComboBox;
+
+  QPushButton *startBenchmarkButton; ///< Exposes the start button
+  QPushButton *stopBenchmarkButton; ///< Exposes the stop button
+  QPushButton  *singlePrecisionButton; ///< Exposes the single precision button
+  QProgressBar *progressBar; ///< Exposes the progressbar
+  BenchmarkListWidget *benchmarkListWidget; ///< Exposes the benchmark selection list widget
+  QComboBox *contextComboBox; ///< Exposes the context chooser
 
 public slots:
   void hideStopButton();

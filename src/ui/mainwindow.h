@@ -52,6 +52,12 @@ namespace Ui {
   class MainWindow;
 }
 
+/*! \class MainWindow
+ * \brief Main UI class. This is where the magic happens. Root and anchor of every other UI component in this program.
+ * Inits its UI and all other UI widget components.
+ * Communicates events & signals between child widgets and the controller.
+ * Keeps track of available ViennaCL contexts and switches contexts before starting benchmarks.
+ */
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -61,21 +67,15 @@ public:
   ~MainWindow();
 
   void initMatrixMarket();
-  void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
-  void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
-  void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
-  void resetAllPlots();
   bool getBasicPrecision();
   bool getExpertPrecision();
-  void interconnectViews();
   void initPlatformDeviceChooser();
 private:
-  QMap<int, QString> contextMap;
+  QMap<int, QString> contextMap; ///< Maps available contexts for easier switching.
   Ui::MainWindow *ui;
-  Benchmark_Controller benchmarkController;
-  int currentBenchProgress;
-  int maximumBenchProgress;
-
+  Benchmark_Controller benchmarkController; ///< The main controller object
+  int currentBenchProgress; ///< Current benchmark progress
+  int maximumBenchProgress; ///< Maximum benchmark progress
 
   BenchmarkListWidget *basicBenchmarkListWidget;
   QPushButton *basicStartBenchmarkButton;
@@ -91,11 +91,9 @@ private:
   QComboBox *expertContextComboBox;
   QPushButton  *expertSinglePrecisionButton;
 
-
-  QString jsString;
+  QString jsString; ///< A simple JavaScript script that filters all links on a page to remove non .tar.gz file links in .mtx format. Not used anymore.
 
 public slots:
-  //BASIC MODE SLOTS
   void startBasicBenchmarkExecution();
   void quickstartFullBenchmark();
   void modifyMatrixMarketWeb();

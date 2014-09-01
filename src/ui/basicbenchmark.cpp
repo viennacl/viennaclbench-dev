@@ -1,6 +1,10 @@
 #include "basicbenchmark.h"
 #include "ui_basicbenchmark.h"
 
+/*!
+ * \brief Default constructor.
+ * \param parent Optional parent object.
+ */
 BasicBenchmark::BasicBenchmark(QWidget *parent) :
   QWidget(parent),
   ui(new Ui::BasicBenchmark)
@@ -21,11 +25,17 @@ BasicBenchmark::BasicBenchmark(QWidget *parent) :
   initBasic();
 }
 
+/*!
+ * \brief Destructor
+ */
 BasicBenchmark::~BasicBenchmark()
 {
   delete ui;
 }
 
+/*!
+ * \brief Initializes all benchmark plots.
+ */
 void BasicBenchmark::initBasic(){
   basic_DetailedPlotTab = new QTabWidget(this);
   basic_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
@@ -197,39 +207,60 @@ void BasicBenchmark::initBasic(){
   }
 }
 
+/*!
+ * \brief Shows the start button, hides the stop button, writes "Done" in progressbar.
+ * Used after a benchmark seesion is completed.
+ */
 void BasicBenchmark::showBenchmarkStartButton(){
   ui->basic_StopBenchmarkButton->hide();
   ui->basic_StartBenchmarkButton->show();
   ui->basic_ProgressBar->setFormat("Done");
 }
 
+/*!
+ * \brief Changes state of the precision buttons. Single precision - checked, double - unchecked.
+ */
 void BasicBenchmark::updateSinglePrecisionButtons(){
   ui->basic_SingleButton->setChecked(true);
   ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
   ui->basic_DoubleButton->setChecked(false);
   ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/empty.png"));
-
 }
+
+/*!
+ * \brief Changes state of the precision buttons. Double precision - checked, single - unchecked.
+ */
 void BasicBenchmark::updateDoublePrecisionButtons(){
   ui->basic_DoubleButton->setChecked(true);
   ui->basic_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
   ui->basic_SingleButton->setChecked(false);
   ui->basic_SingleButton->setIcon(QIcon(":/icons/icons/empty.png"));
-
 }
 
+/*!
+ * \brief Changes focus of detailed plots to the currently running benchmark.
+ * \param benchmarkIdNumber Id number of the currently active benchmark
+ */
 void BasicBenchmark::setActiveBenchmarkPlot(int benchmarkIdNumber){
   basic_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
   activeBenchmark = benchmarkIdNumber;
 }
 
+/*!
+ * \brief Adds a final benchmark result to the final result plot.
+ * \param benchmarkName Benchmark name
+ * \param finalResult Benchmark result
+ */
 void BasicBenchmark::updateFinalResultPlot(QString benchmarkName, double finalResult){
   plotFinalResult(benchmarkName, finalResult, ui->basic_FinalResultPlot);
 }
 
-//shows the detailed graph of a clicked final result bar
+/*!
+ * \brief Shows the appropriate detailed graph when a result was clicked on in the final plot.
+ * \param plottable Plot result that was clicked
+ */
 void BasicBenchmark::graphClicked(QCPAbstractPlottable *plottable)
 {
   QString clickedBenchmarkBar = plottable->name();
@@ -256,9 +287,10 @@ void BasicBenchmark::graphClicked(QCPAbstractPlottable *plottable)
   }
 }
 
-//detailed plot selection filter
-void BasicBenchmark::selectionChanged()
-{
+/*!
+ * \brief Detailed plot selection event filter. Highlights a clicked plot on the legend and vice versa.
+ */
+void BasicBenchmark::selectionChanged(){
   int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
   QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
   // synchronize selection of graphs with selection of corresponding legend items:
@@ -273,15 +305,23 @@ void BasicBenchmark::selectionChanged()
     }
   }
 }
+
+/*!
+ * \brief Updates the progressbar.
+ */
 void BasicBenchmark::updateBenchProgress(){
   currentBenchProgress++;
   ui->basic_ProgressBar->setValue(currentBenchProgress);
   ui->basic_ProgressBar->setFormat("Running Test %v of %m");
 }
 
+/*!
+ * \brief Handles list widget's selection events. Called whenever a list item was selected. Checks all items and updates their selected/deselected status appropriately.
+ * \param item The item that was clicked.
+ */
 void BasicBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
 {
-  //item(0) is the 'All' benchmarks selection option
+  //item(0) is the 'All' benchmarks selection item
   if(ui->basic_BenchmarkListWidget->row(item) == 0){
     if(item->isSelected()){
       ui->basic_BenchmarkListWidget->selectAllItems();
@@ -303,6 +343,9 @@ void BasicBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
   }
 }
 
+/*!
+ * \brief Resets plot data and tick vectors of all plots.
+ */
 void BasicBenchmark::resetAllPlots(){
   resetPlotData(ui->basic_FinalResultPlot);
   //reset all plots
@@ -318,12 +361,19 @@ void BasicBenchmark::resetAllPlots(){
   }
 }
 
+/*!
+ * \brief Hides the stop button, shows the start button. Kinda unnecessary, but oh well.
+ */
 void BasicBenchmark::hideStopButton()
 {
   ui->basic_StopBenchmarkButton->hide();
   ui->basic_StartBenchmarkButton->show();
 }
-//reset the graph
+
+/*!
+ * \brief Resets plot data of a selected graph.
+ * \param benchmarkGraph The graph to be reset
+ */
 void BasicBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
 {
   benchmarkGraph->clearGraphs();
@@ -332,7 +382,12 @@ void BasicBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
   benchmarkGraph->xAxis->setRange(0,1);
   benchmarkGraph->replot();
 }
-//set the benchmark's unit measure
+
+/*!
+ * \brief Sets the unit measure for the currently active benchmark.
+ * \param unitMeasureName Measure name
+ * \param axis Axis on which to show the measure
+ */
 void BasicBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
 {
   switch(axis){
@@ -348,8 +403,16 @@ void BasicBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axi
     break;
   }
 
-}//parse the received benchmark result name and value
+}
 
+/*!
+ * \brief Parses the received benchmark result signal and displays it using the selected graph type.
+ * \param benchmarkName Benchmark name
+ * \param key Key value
+ * \param resultValue Result value
+ * \param graphType See \ref GraphType
+ * \param testId Test id number
+ */
 void BasicBenchmark::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
   if(graphType == BAR_GRAPH){
     plotBarResult(benchmarkName, key, resultValue, basic_DetailedPlotsVector[activeBenchmark]);
@@ -359,7 +422,18 @@ void BasicBenchmark::parseBenchmarkResult(QString benchmarkName, double key, dou
   }
 }
 
+/*!
+ * \brief Draws received test results using a line graph on the selected plot.
+ * Adds a legend entry for each result graph.
+ * \param benchmarkName Benchmark test name
+ * \param key Key value on the x-axis (e.g. vector size)
+ * \param value Result value on the y-axis (e.g. the actual result for a given vector size)
+ * \param customPlot Which plot is to be used to draw the graph
+ * \param testId Id of the graph to be plotted, used to give different colors to graphs.
+ */
 void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
+  //add the legend if it doesnt exist already
+  //make sure there is enough margin room for the legend to fit
   if(customPlot->legend->visible() == false){
     customPlot->plotLayout()->addElement(0,1, customPlot->legend);
     customPlot->legend->setVisible(true);
@@ -456,8 +530,14 @@ void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double va
   customPlot->replot();
 }
 
-//main result diplay function
-//x and y axis are swapped to achieve horizontal bar display
+/*!
+ * \brief Draws received test results using a bar graph on the selected plot.
+ * X and Y axis are swapped to achieve horizontal bar display
+ * \param benchmarkName Benchmark test name
+ * \param key Graph's position on Yaxis - not used. Y-axis positioning of graphs is calculated automatically to avoid wrong grpah placement.
+ * \param value Result value
+ * \param customPlot Plot on which the graph is to be drawn
+ */
 void BasicBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
@@ -507,6 +587,12 @@ void BasicBenchmark::plotBarResult(QString benchmarkName, double key, double val
   customPlot->replot();
 }
 
+/*!
+ * \brief Draws a final benchmark result using a bar graph on the final result plot.
+ * \param benchmarkName Benchmark name
+ * \param value Result value
+ * \param customPlot Plot on which to draw the graph
+ */
 void BasicBenchmark::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
   //  Plot mapping
   //  Vector - 1

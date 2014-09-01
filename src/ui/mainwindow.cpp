@@ -2,17 +2,23 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 
+/*!
+ * \brief Default constructor. Inits everything UI-related, sets up proper UI sizes & settings, connects child widgets & the benchmark controller.
+ * \param parent Optional parent object.
+ */
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  /*
   jsString = "for (var index = 0, elems = document.body.getElementsByTagName('a'); index < elems.length; ++index) {"
       "if( elems[index].href.indexOf('.mat') != -1 ){"
       "elems[index].parentNode.removeChild(elems[index]);}"
       "else if(elems[index].href.indexOf('/RB/') != -1 ) {"
       "elems[index].parentNode.removeChild(elems[index]);}"
       "}";
+  */
 
   ui->mainMenuListWidget->item(3)->setHidden(true);
   //normalize size of each main menu item
@@ -50,9 +56,8 @@ MainWindow::MainWindow(QWidget *parent) :
   //HomeScreen class takes care of its own init
   //BasicBenchmark class takes care of its own init
   //ExpertBenchmark class takes care of its own init
-  interconnectViews();
-  initMatrixMarket();
   //SystemInfoScreen class takes care of its own init
+  initMatrixMarket();
   initPlatformDeviceChooser();
 
   //connect quickstart button
@@ -105,10 +110,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+/*!
+ * \brief Show an error message box with the received error message.
+ * \param message Received error message to be shown
+ */
 void MainWindow::showErrorMessageBox(QString message){
   QMessageBox::warning(this, QString("ViennaCL Benchmark"), message);
 }
 
+/*!
+ * \brief Inits the platform choose UI component and adds all available ViennaCL contexts to the context map.
+ */
 void MainWindow::initPlatformDeviceChooser(){
   typedef std::vector< viennacl::ocl::platform > platforms_type;
   typedef std::vector< viennacl::ocl::device > devices_type;
@@ -155,15 +167,13 @@ void MainWindow::initPlatformDeviceChooser(){
     expertContextComboBox->insertItem( i, contextMap.value(i) );
   }
 
-  //  connect(ui->basic_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->expert_platformsComboBox, SLOT(setCurrentIndex(int)) );
-  //  connect(ui->expert_platformsComboBox, SIGNAL(currentIndexChanged(int)), ui->basic_platformsComboBox, SLOT(setCurrentIndex(int)) );
-  //  connect(ui->basic_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
-  //  connect(ui->expert_contextComboBox, SIGNAL(activated(int)), this, SLOT(switchContext(int)) );
-
-
 }
 
-//switches viennacl to selected context and displays its devices
+/*!
+ * \brief Switches current ViennaCL context to the selected context.
+ * Context numbers coming from the UI are the same as in the context map.
+ * \param contextNumber Context id number as marked in the context map
+ */
 void MainWindow::switchContext(int contextNumber){
   viennacl::ocl::switch_context((long)contextNumber);
 #ifndef QT_NO_DEBUG_OUTPUT
@@ -173,14 +183,19 @@ void MainWindow::switchContext(int contextNumber){
 #endif
 }
 
-//starts a full basic benchmark
+/*!
+ * \brief Called when the \ref HomeScreen "quickstart" button is clicked. Starts a full, basic benchmark.
+ */
 void MainWindow::quickstartFullBenchmark(){
   ui->mainMenuListWidget->setCurrentRow(1);//switch to benchmark tab
   ui->benchmarkPageTabWidget->setCurrentIndex(0);//switch to basic benchmark tab
   basicBenchmarkListWidget->selectAllItems();//select all benchmarks
-  startBasicBenchmarkExecution();
+  startBasicBenchmarkExecution();//start basic benchmark
 }
 
+/*!
+ * \brief Inits the MatrixMarket widget.
+ */
 void MainWindow::initMatrixMarket(){
   //enable cache
   QWebSettings::globalSettings()->setAttribute(QWebSettings::LocalStorageEnabled, true);
@@ -199,10 +214,17 @@ void MainWindow::initMatrixMarket(){
   connect(ui->matrixMarket_Widget->webView, SIGNAL(fileReadyForBenchmark(QString)), this, SLOT( startMatrixMarketBenchmark(QString) ) );
 }
 
+/*!
+ * \brief Starts a Sparse benchmark with a custom matrix downloaded via the MatrixMarket. Not yet functional.
+ * \param filename Absolute path to custom matrix
+ */
 void MainWindow::startMatrixMarketBenchmark(QString filename){
   //todo
 }
 
+/*!
+ * \brief Modifies the current web page with \ref jsString. Unused.
+ */
 void MainWindow::modifyMatrixMarketWeb(){
   //  qDebug()<<"---HTML---"<<ui->matrixMarket_Widget->webView->page()->mainFrame()->toHtml();
   //  qDebug()<<"load finished";
@@ -212,11 +234,10 @@ void MainWindow::modifyMatrixMarketWeb(){
   //  ui->matrixMarket_Widget->webView->page()->mainFrame()->evaluateJavaScript(jsString);
 }
 
-void MainWindow::interconnectViews(){
-  //  connect(ui->basic_BenchmarkListWidget, SIGNAL()
-
-}
-
+/*!
+ * Returns the current precision setting the basic benchmark.
+ * \return Current basic benchmark precision setting.
+ */
 bool MainWindow::getBasicPrecision(){
   if(basicSinglePrecisionButton->isChecked()){
     return SINGLE_PRECISION;
@@ -226,6 +247,10 @@ bool MainWindow::getBasicPrecision(){
   }
 }
 
+/*!
+ * Returns the current precision setting the expert benchmark.
+ * \return Current expert benchmark precision setting.
+ */
 bool MainWindow::getExpertPrecision(){
   if(expertSinglePrecisionButton->isChecked()){
     return SINGLE_PRECISION;
@@ -235,6 +260,12 @@ bool MainWindow::getExpertPrecision(){
   }
 }
 
+/*!
+ * \brief Starts the expert benchmark.
+ * Collects expert benchmark settings from the UI and instructs the controller to start a new benchmark session with mode set to \ref BENCHMARK_MODE_EXPERT
+ * Switches context before benchmarking starts.
+ * Disables the possibility to start the basic benchmark in parallel, or to start a new expert benchmark.
+ */
 void MainWindow::startExpertBenchmarkExecution(){
   ui->expertBenchmark->resetAllPlots();
   currentBenchProgress = 0;
@@ -276,7 +307,12 @@ void MainWindow::startExpertBenchmarkExecution(){
   benchmarkController.executeSelectedBenchmarks( selectedBenchmarkItems, customSettings, getExpertPrecision(), BENCHMARK_MODE_EXPERT );//start the benchmark
 }
 
-//execute the currently selected benchmark
+/*!
+ * \brief Starts the basic benchmark.
+ * Loads default benchmark settings and instructs the controller to start a new benchmark session with mode set to \ref BENCHMARK_MODE_BASIC
+ * Switches context before benchmarking starts.
+ * Disables the possibility to start the expert benchmark in parallel, or to start a new basic benchmark.
+ */
 void MainWindow::startBasicBenchmarkExecution(){
   ui->basicBenchmark->resetAllPlots();
   currentBenchProgress = 0;
@@ -317,6 +353,9 @@ void MainWindow::startBasicBenchmarkExecution(){
   benchmarkController.executeSelectedBenchmarks( selectedBenchmarkItems, defaultSettings, getBasicPrecision(), BENCHMARK_MODE_BASIC );//start the benchmark
 }
 
+/*!
+ * \brief Destructor.
+ */
 MainWindow::~MainWindow()
 {
   delete ui;
