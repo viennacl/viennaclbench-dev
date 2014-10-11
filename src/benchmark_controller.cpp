@@ -27,6 +27,7 @@ void Benchmark_Controller::startBenchmarkThread(AbstractBenchmark *benchmark){
   currentBenchmark_Thread = workerThread;
   benchmark->moveToThread(workerThread);
 
+  connect(benchmark, SIGNAL(benchmarkComplete()), workerThread, SLOT(quit()) );//order the worker thread to self-destruct once the benchmark is done
   connect(workerThread, SIGNAL(finished()), benchmark, SLOT(deleteLater()) );
   connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()) );
   connect(workerThread, SIGNAL(started()), benchmark, SLOT(execute()) );
@@ -52,8 +53,8 @@ void Benchmark_Controller::startBenchmarkThread(AbstractBenchmark *benchmark){
     connect(benchmark, SIGNAL(testProgress()), this, SLOT(expert_testProgressSlot()) );
 
     connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(expert_benchmarkCompleteSlot()) );
-
   }
+
   connect(benchmark, SIGNAL(errorMessage(QString)), this, SLOT(errorMessageSlot(QString)) );
   connect(benchmark, SIGNAL(benchmarkComplete()), this, SLOT(startNextBenchmark()) );
   workerThread->start();
