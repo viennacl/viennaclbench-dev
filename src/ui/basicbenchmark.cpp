@@ -215,6 +215,7 @@ void BasicBenchmark::showBenchmarkStartButton(){
   ui->basic_StopBenchmarkButton->hide();
   ui->basic_StartBenchmarkButton->show();
   ui->basic_ProgressBar->setFormat("Done");
+  currentBenchProgress = 0;
 }
 
 /*!

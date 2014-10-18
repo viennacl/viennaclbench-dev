@@ -221,6 +221,7 @@ void ExpertBenchmark::showBenchmarkStartButton(){
   ui->expert_StopBenchmarkButton->hide();
   ui->expert_StartBenchmarkButton->show();
   ui->expert_ProgressBar->setFormat("Done");
+  currentBenchProgress = 0;
 }
 
 /*!
