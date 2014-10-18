@@ -233,11 +233,11 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
-          <string notr="true">QWidget 
+          <string notr="true">QWidget#homePage
 { 
 background: #F0F0F0; 
 }</string>
@@ -250,7 +250,7 @@ background: #F0F0F0;
         </widget>
         <widget class="QWidget" name="benchmarkPage">
          <property name="styleSheet">
-          <string notr="true">QWidget 
+          <string notr="true">QWidget#benchmarkPage
 { 
 background:#F0F0F0; 
 }
@@ -538,8 +538,8 @@ QMenuBar:item:selected{
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../resources/icons.qrc"/>
   <include location="../../resources/otherFiles.qrc"/>
+  <include location="../../resources/icons.qrc"/>
  </resources>
  <connections/>
  <slots>
