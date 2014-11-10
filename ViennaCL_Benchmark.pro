@@ -51,7 +51,6 @@ HEADERS  +=    src/benchmark_controller.h \
     src/benchmarks/Random.hpp \
     src/benchmarks/benchmark_copy.h \
     src/benchmarks/benchmark_qr.h \
-    src/benchmarks/matrix_market.hpp \
     src/benchmarks/abstractbenchmark.h \
     src/ui/mainwindow.h \
     src/ui/qcustomplot.h \

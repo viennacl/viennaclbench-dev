@@ -91,13 +91,12 @@ void Benchmark_Sparse::run_benchmark()
     //  std::cout << "Generating Matrix..." << std::endl;
     viennacl::tools::generate_fdm_laplace(adapted_A, xPoints, yPoints );
   }
-  else{
+  else
+  {
     //load matrix from file
-    if(!viennacl::io::read_matrix_market_file(adapted_A /* Is this the right variable to read into? */, customSparseMatrixPath.toStdString()) ){
-      std::cout << "Custom sparse matrix read successfully" <<std::endl;
-    }
-    else{
-      std::cout << "Failed to read custom sparse matrix" <<std::endl;
+    long success = viennacl::io::read_matrix_market_file(adapted_A, customSparseMatrixPath.toStdString());
+    if(!success)
+    {
       emit errorMessage("Failed to read selected sparse matrix");//tell the GUI thread to show a popup error message
       return;
     }
