@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1039</width>
+    <width>1328</width>
     <height>673</height>
    </rect>
   </property>
@@ -78,7 +78,7 @@ QGroupBox::title  {
          <string>Automatic benchmark result upload</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
