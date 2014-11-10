@@ -450,28 +450,23 @@ void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double va
   customPlot->xAxis->setAutoSubTicks(false);
 
   QVector<double> tickPositions = customPlot->xAxis->tickVector();
-  QVector<QString> tickLabels =  customPlot->xAxis->tickVectorLabels();
-
-  double newTickPosition = key;
-  QString newTickLabel = QString::number(key, 'f', 0);
-
-  tickPositions.append( newTickPosition );
-  tickLabels.append( newTickLabel );
-
+  tickPositions.append( key );
   customPlot->xAxis->setTickVector(tickPositions);
-  customPlot->xAxis->setTickVectorLabels(tickLabels);
 
   //  customPlot->xAxis->grid()->setSubGridVisible(true);
   customPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
   customPlot->xAxis->setScaleLogBase(10);
-  customPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
+  customPlot->xAxis->setNumberFormat("eb"); // e = exponential, b = beautiful decimal powers
   customPlot->xAxis->setNumberPrecision(0);
+  customPlot->xAxis->setAutoTickLabels(true);
   QFont axisTickFont;
   axisTickFont.setBold(false);
   customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
 
   customPlot->xAxis->setLabelFont(axisTickFont);
   customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
+
+  customPlot->yAxis->setScaleType(QCPAxis::stLogarithmic);
 
   //  customPlot->xAxis->setAutoTicks(true);
   customPlot->yAxis->setAutoTicks(true);
