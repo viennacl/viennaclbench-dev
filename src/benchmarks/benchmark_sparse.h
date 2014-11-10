@@ -17,6 +17,7 @@
 #include "viennacl/compressed_matrix.hpp"
 #include "viennacl/coordinate_matrix.hpp"
 #include "viennacl/ell_matrix.hpp"
+#include "viennacl/sliced_ell_matrix.hpp"
 #include "viennacl/hyb_matrix.hpp"
 #include "viennacl/scalar.hpp"
 #include "viennacl/vector.hpp"

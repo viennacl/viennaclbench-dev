@@ -80,6 +80,8 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::coordinate_matrix<ScalarType> vcl_coordinate_matrix_128;
 
   viennacl::ell_matrix<ScalarType, 1> vcl_ell_matrix_1;
+  viennacl::sliced_ell_matrix<ScalarType> vcl_sliced_ell_matrix_1;
+
   viennacl::hyb_matrix<ScalarType, 1> vcl_hyb_matrix_1;
 
   std::vector< std::map<unsigned int, ScalarType> > stl_A;
@@ -111,6 +113,7 @@ void Benchmark_Sparse::run_benchmark()
   viennacl::copy(adapted_A, vcl_compressed_matrix_8);
   viennacl::copy(adapted_A, vcl_coordinate_matrix_128);
   viennacl::copy(adapted_A, vcl_ell_matrix_1);
+  viennacl::copy(adapted_A, vcl_sliced_ell_matrix_1);
   viennacl::copy(adapted_A, vcl_hyb_matrix_1);
 
 
@@ -204,6 +207,25 @@ void Benchmark_Sparse::run_benchmark()
   emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
+
+  //  std::cout << "------- Matrix-Vector product with sliced_ell_matrix ----------" << std::endl;
+
+  vcl_vec1 = viennacl::linalg::prod(vcl_sliced_ell_matrix_1, vcl_vec2); //startup calculation
+  viennacl::backend::finish();
+
+  timer.start();
+  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+  {
+    vcl_vec1 = viennacl::linalg::prod(vcl_sliced_ell_matrix_1, vcl_vec2);
+  }
+  viennacl::backend::finish();
+  exec_time = timer.get();
+  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+  emit resultSignal("Matrix-Vector product(sliced_ell_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  testResultHolder.append(tempResultValue);
+  emit testProgress();
+
 
 //  std::cout << "------- Matrix-Vector product with hyb_matrix ----------" << std::endl;
 
