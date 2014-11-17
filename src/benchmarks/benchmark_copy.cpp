@@ -133,7 +133,7 @@ void Benchmark_Copy::run_benchmark()
     }
     exec_time_complete = timer.get();
 
-    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete * BENCHMARK_RUNS / 1e9;
     emit resultSignal("Copy Host -> Device", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
@@ -156,7 +156,7 @@ void Benchmark_Copy::run_benchmark()
     }
     exec_time_complete = timer.get();
 
-    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete / 1e9;
+    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete * BENCHMARK_RUNS / 1e9;
     emit resultSignal("Copy Device -> Host", vectorSize, tempResultValue, LINE_GRAPH, testId);
     testResultHolder.append(tempResultValue);
   }
