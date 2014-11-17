@@ -112,8 +112,8 @@ void BasicBenchmark::initBasic(){
   }
 
 
-  ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
+  //ui->basic_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
+  //ui->basic_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
   ui->basic_FinalResultPlot->axisRect()->setupFullAxesBox();
   //Disable secondary axes & legend
   ui->basic_FinalResultPlot->yAxis2->setVisible(false);
@@ -126,11 +126,11 @@ void BasicBenchmark::initBasic(){
   connect(ui->basic_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
   QVector<QString> finalResultPlotLabels;
-  finalResultPlotLabels.append("Vector - GFLOPs");
+  finalResultPlotLabels.append("Vector - GB/sec");
   finalResultPlotLabels.append("Sparse - GFLOPs");
   //  finalResultPlotLabels.append("Solver - GFLOPs");
   //  finalResultPlotLabels.append("Qr - GFLOPs");
-  finalResultPlotLabels.append("Copy - GB/s");
+  finalResultPlotLabels.append("Copy - GB/sec");
   finalResultPlotLabels.append("Blas3 - GFLOPs");
 
   //  Plot mapping
@@ -159,42 +159,9 @@ void BasicBenchmark::initBasic(){
   ui->basic_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
   ui->basic_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
   ui->basic_FinalResultPlot->xAxis->setScaleLogBase(10);
-  ui->basic_FinalResultPlot->xAxis->setNumberFormat("f"); // e = exponential, b = beautiful decimal powers
+  ui->basic_FinalResultPlot->xAxis->setNumberFormat("gb"); // e = exponential, b = beautiful decimal powers
   ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
-  ui->basic_FinalResultPlot->xAxis->setAutoTicks(false);
-  ui->basic_FinalResultPlot->xAxis->setAutoTickLabels(false);
-  ui->basic_FinalResultPlot->xAxis->setAutoTickStep(false);
-  QVector<double> ticks;
-  ticks.append(0.5);
-  ticks.append(1);
-  ticks.append(5);
-  ticks.append(10);
-  ticks.append(20);
-  ticks.append(50);
-  ticks.append(100);
-  ticks.append(200);
-  ticks.append(500);
-  ticks.append(1000);
-  ticks.append(2000);
-  ui->basic_FinalResultPlot->xAxis->setTickVector(ticks);
-
-  QVector<QString> tickLabels;
-  tickLabels.append("0.5");
-  tickLabels.append("1");
-  tickLabels.append("5");
-  tickLabels.append("10");
-  tickLabels.append("20");
-  tickLabels.append("50");
-  tickLabels.append("100");
-  tickLabels.append("200");
-  tickLabels.append("500");
-  tickLabels.append("1000");
-  tickLabels.append("2000");
-  ui->basic_FinalResultPlot->xAxis->setTickVectorLabels(tickLabels);
-
-  //  ui->basic_FinalResultPlot->xAxis->setTickLengthOut(200);
-  ui->basic_FinalResultPlot->xAxis->setRangeLower(0);
-  //  ui->basic_FinalResultPlot->xAxis->setRange(0,1);
+  ui->basic_FinalResultPlot->xAxis->setRange( 0.1, 5000.0);
 
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
@@ -380,7 +347,7 @@ void BasicBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
   benchmarkGraph->clearGraphs();
   benchmarkGraph->clearPlottables();
   benchmarkGraph->clearItems();
-  benchmarkGraph->xAxis->setRange(0,1);
+  //benchmarkGraph->xAxis->setRange(0,1);
   benchmarkGraph->replot();
 }
 
@@ -647,6 +614,6 @@ void BasicBenchmark::plotFinalResult(QString benchmarkName, double value, QCusto
 
   customPlot->addItem(text);
 
-  customPlot->xAxis->rescale();
+  //customPlot->xAxis->rescale();
   customPlot->replot();
 }
