@@ -137,7 +137,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align1", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("CSR format (no padding)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -152,7 +152,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align4", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("CSR format (padding 4)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -166,7 +166,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(compressed_matrix) align8", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("CSR format (padding 8)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -185,7 +185,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(coordinate_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("COO format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -203,7 +203,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(ell_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("ELL format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -221,7 +221,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(sliced_ell_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("Sliced ELL format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 
@@ -240,7 +240,7 @@ void Benchmark_Sparse::run_benchmark()
   exec_time = timer.get();
   tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("Matrix-Vector product(hyb_matrix)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+  emit resultSignal("HYB (ELL+CCSR)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
   testResultHolder.append(tempResultValue);
   emit testProgress();
 }
