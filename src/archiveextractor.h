@@ -8,8 +8,8 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include "archive.h"
-#include "archive_entry.h"
+#include "external/libarchive/libarchive/archive.h"
+#include "external/libarchive/libarchive/archive_entry.h"
 #include <iostream>
 
 
