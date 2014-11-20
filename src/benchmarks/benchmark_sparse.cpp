@@ -270,6 +270,6 @@ void Benchmark_Sparse::execute()
   }
 
   qSort(testResultHolder);//sort test results in ascending order
-  emit finalResultSignal("Sparse", testResultHolder[testResultHolder.size()/2]);
+  emit finalResultSignal("Sparse", testResultHolder[testResultHolder.size()-1]);
   emit benchmarkComplete();
 }

@@ -192,6 +192,6 @@ void Benchmark_Copy::execute(){
   }
 
   qSort(testResultHolder);//sort test results in ascending order
-  emit finalResultSignal("Copy", testResultHolder[testResultHolder.size()/2]);
+  emit finalResultSignal("Copy", testResultHolder[testResultHolder.size()-1]);
   emit benchmarkComplete();
 }
