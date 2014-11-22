@@ -41,6 +41,9 @@ void ExpertBenchmark::initExpert(){
   //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
   //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
 
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
+
   expert_DetailedPlotTab = new QTabWidget(this);
   expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
 
@@ -51,6 +54,7 @@ void ExpertBenchmark::initExpert(){
   //  qr_DetailedPlot = new QCustomPlot();
   //  solver_DetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
+  sparse_DetailedPlot->setBackground(backgroundBrush);
   sparse_DetailedPlot->yAxis->setTickLength( 0, 2);
   sparse_DetailedPlot->yAxis->grid()->setVisible(true);
   sparse_DetailedPlot->yAxis->setTickLabelRotation( 0 );
@@ -87,8 +91,6 @@ void ExpertBenchmark::initExpert(){
   //yAxis left
   //xAxis2 top
   //yAxis2 right
-  QColor backgroundColor(240,240,240);
-  QBrush backgroundBrush(backgroundColor);
 
   foreach(QCustomPlot* plot, expert_DetailedPlotsVector)
   {
@@ -426,6 +428,17 @@ void ExpertBenchmark::parseBenchmarkResult(QString benchmarkName, double key, do
  * \param testId Id of the graph to be plotted, used to give different colors to graphs.
  */
 void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
+  if(customPlot->legend->visible() == false){
+    customPlot->plotLayout()->addElement(0,1, customPlot->legend);
+    customPlot->legend->setVisible(true);
+    customPlot->legend->setSelectableParts( QCPLegend::spItems );
+    customPlot->legend->setMaximumSize( 110, QWIDGETSIZE_MAX );
+    customPlot->legend->setFont(QFont("Helvetica", 9));
+    customPlot->legend->setRowSpacing(-3);
+    QColor backgroundColor(240,240,240);
+    QBrush backgroundBrush(backgroundColor);
+    customPlot->legend->setBrush(backgroundBrush);
+  }
 
   QCPGraph *currentResultGraph;
 
@@ -481,6 +494,7 @@ void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double v
  * \param customPlot Plot on which the graph is to be drawn
  */
 void ExpertBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
   margins.setRight(60);//reserve space for the largest result

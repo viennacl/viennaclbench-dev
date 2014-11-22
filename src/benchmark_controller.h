@@ -50,17 +50,6 @@ static void init_plot(QCustomPlot * plot,
 
   plot->setBackground(backgroundBrush);
 
-  //add the legend if it doesnt exist already
-  //make sure there is enough margin room for the legend to fit
-  if(plot->legend->visible() == false){
-    plot->plotLayout()->addElement(0,1, plot->legend);
-    plot->legend->setVisible(true);
-    plot->legend->setSelectableParts( QCPLegend::spItems );
-    plot->legend->setMaximumSize( 110, QWIDGETSIZE_MAX );
-  }
-  plot->legend->setFont(QFont("Helvetica", 9));
-  plot->legend->setRowSpacing(-3);
-
   //plot->xAxis->setAutoTicks(false);
   //plot->xAxis->setAutoTickLabels(false);
   //plot->xAxis->setAutoTickStep(false);

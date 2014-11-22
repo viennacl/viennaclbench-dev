@@ -44,11 +44,16 @@ void BasicBenchmark::initBasic(){
 
   blas3_DetailedPlot = new QCustomPlot();
   init_plot(blas3_DetailedPlot, 100, 10000, true, .1, 10000, true);
+
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
+
   copy_DetailedPlot = new QCustomPlot();
   init_plot(copy_DetailedPlot, 1000, 11000000, true, .1, 100, true);
   //  qr_DetailedPlot = new QCustomPlot();
   //  solver_DetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
+  sparse_DetailedPlot->setBackground(backgroundBrush);
   sparse_DetailedPlot->yAxis->setTickLength( 0, 2);
   sparse_DetailedPlot->yAxis->grid()->setVisible(true);
   sparse_DetailedPlot->yAxis->setTickLabelRotation( 0 );
@@ -146,8 +151,6 @@ void BasicBenchmark::initBasic(){
   ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
   ui->basic_FinalResultPlot->xAxis->setRange( 0.1, 5000.0);
 
-  QColor backgroundColor(240,240,240);
-  QBrush backgroundBrush(backgroundColor);
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
   ui->basic_StopBenchmarkButton->hide();
@@ -380,6 +383,17 @@ void BasicBenchmark::parseBenchmarkResult(QString benchmarkName, double key, dou
  * \param testId Id of the graph to be plotted, used to give different colors to graphs.
  */
 void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
+  if(customPlot->legend->visible() == false){
+    customPlot->plotLayout()->addElement(0,1, customPlot->legend);
+    customPlot->legend->setVisible(true);
+    customPlot->legend->setSelectableParts( QCPLegend::spItems );
+    customPlot->legend->setMaximumSize( 110, QWIDGETSIZE_MAX );
+    customPlot->legend->setFont(QFont("Helvetica", 9));
+    customPlot->legend->setRowSpacing(-3);
+    QColor backgroundColor(240,240,240);
+    QBrush backgroundBrush(backgroundColor);
+    customPlot->legend->setBrush(backgroundBrush);
+  }
 
   QCPGraph *currentResultGraph;
 
@@ -435,6 +449,7 @@ void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double va
  * \param customPlot Plot on which the graph is to be drawn
  */
 void BasicBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
   margins.setRight(60);//reserve space for the largest result
