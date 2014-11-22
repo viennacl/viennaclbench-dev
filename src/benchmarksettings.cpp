@@ -13,11 +13,11 @@ BenchmarkSettings::BenchmarkSettings()
  * \brief The default benchmark settings are initialized here.
  */
 void BenchmarkSettings::initBasicDefaults(){
-  copyMinVectorSize = 10000; //
+  copyMinVectorSize = 1000; //
   copyMaxVectorSize = 10240000;//
   copyIncFactor = 2; //size x2 each step
 
-  vectorMinVectorSize = 10000; //
+  vectorMinVectorSize = 1000; //
   vectorMaxVectorSize = 10240000;//
   vectorIncFactor = 2; //size x2 each step
 

@@ -1,6 +1,8 @@
 #include "basicbenchmark.h"
 #include "ui_basicbenchmark.h"
 
+
+
 /*!
  * \brief Default constructor.
  * \param parent Optional parent object.
@@ -41,11 +43,28 @@ void BasicBenchmark::initBasic(){
   basic_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
+  init_plot(blas3_DetailedPlot, 100, 10000, true, .1, 10000, true);
   copy_DetailedPlot = new QCustomPlot();
+  init_plot(copy_DetailedPlot, 1000, 11000000, true, .1, 100, true);
   //  qr_DetailedPlot = new QCustomPlot();
   //  solver_DetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
+  sparse_DetailedPlot->yAxis->setTickLength( 0, 2);
+  sparse_DetailedPlot->yAxis->grid()->setVisible(true);
+  sparse_DetailedPlot->yAxis->setTickLabelRotation( 0 );
+  sparse_DetailedPlot->yAxis->setAutoSubTicks(false);
+  sparse_DetailedPlot->yAxis->setAutoTickLabels(false);
+  sparse_DetailedPlot->yAxis->setAutoTicks(false);
+  sparse_DetailedPlot->yAxis->setAutoTickStep(false);
+  QVector<double> emptyTickVector;
+  sparse_DetailedPlot->yAxis->setTickVector(emptyTickVector);
+  QVector<QString> emptyTickVectorLabels;
+  sparse_DetailedPlot->yAxis->setTickVectorLabels(emptyTickVectorLabels);
+
   vector_DetailedPlot = new QCustomPlot();
+  init_plot(vector_DetailedPlot, 100, 11000000, true, .1, 1000, true);
+
+
 
   basic_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
   basic_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
@@ -64,51 +83,15 @@ void BasicBenchmark::initBasic(){
   ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
   ui->basic_CollapseWidget->setText("Detailed Test Results");
 
-  //xAxis bottom
-  //yAxis left
-  //xAxis2 top
-  //yAxis2 right
-  QColor backgroundColor(240,240,240);
-  QBrush backgroundBrush(backgroundColor);
-
-  foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
-
+  foreach(QCustomPlot* plot, basic_DetailedPlotsVector)
+  {
     // connect slot that shows a message in the status bar when a graph is clicked:
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
     //filter each item selection
     connect(plot, SIGNAL( selectionChangedByUser()), this, SLOT(selectionChanged()) );
-    //    plot->axisRect()->setAutoMargins(QCP::msNone);
-    //    plot->axisRect()->setMargins(QMargins( 0, 0, 50, 0 ));
 
-    plot->axisRect()->setupFullAxesBox();
-    //Disable secondary axes
-    plot->yAxis2->setVisible(false);
-    plot->xAxis2->setVisible(false);
-
-    plot->setInteractions(QCP::iSelectPlottables | QCP::iSelectLegend);
-    plot->legend->setVisible(false);
-
-
-    plot->yAxis->setTickLength( 0, 2);
-    plot->yAxis->grid()->setVisible(true);
-    plot->yAxis->setTickLabelRotation( 0 );
-
-    plot->yAxis->setAutoSubTicks(false);
-    plot->yAxis->setAutoTickLabels(false);
-    plot->yAxis->setAutoTicks(false);
-    plot->yAxis->setAutoTickStep(false);
-    QVector<double> emptyTickVector;
-    plot->yAxis->setTickVector(emptyTickVector);
-    QVector<QString> emptyTickVectorLabels;
-    plot->yAxis->setTickVectorLabels(emptyTickVectorLabels);
-
-    plot->xAxis->setAutoSubTicks(true);
-    plot->xAxis->setAutoTickLabels(true);
-    plot->xAxis->setAutoTicks(true);
-    plot->xAxis->setAutoTickStep(true);
-
-    plot->setBackground(backgroundBrush);
+    plot->replot();
   }
 
 
@@ -163,6 +146,8 @@ void BasicBenchmark::initBasic(){
   ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
   ui->basic_FinalResultPlot->xAxis->setRange( 0.1, 5000.0);
 
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 
   ui->basic_StopBenchmarkButton->hide();
@@ -319,12 +304,8 @@ void BasicBenchmark::resetAllPlots(){
   //reset all plots
   foreach(QCustomPlot* plot, basic_DetailedPlotsVector){
     resetPlotData(plot);
-    plot->yAxis->setTickVector(QVector<double>() );
-    plot->yAxis->setTickVectorLabels(QVector<QString>() );
-    plot->yAxis->setRange(0,5);
-    plot->xAxis->setTickVector(QVector<double>() );
-    plot->xAxis->setTickVectorLabels(QVector<QString>() );
-    plot->xAxis->setRange(0,5);
+    plot->yAxis->setTickVector(QVector<double>() ); // for BarPlots
+    plot->yAxis->setTickVectorLabels(QVector<QString>() ); // for BarPlots
     plot->replot();
   }
 }
@@ -347,7 +328,6 @@ void BasicBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
   benchmarkGraph->clearGraphs();
   benchmarkGraph->clearPlottables();
   benchmarkGraph->clearItems();
-  //benchmarkGraph->xAxis->setRange(0,1);
   benchmarkGraph->replot();
 }
 
@@ -400,49 +380,6 @@ void BasicBenchmark::parseBenchmarkResult(QString benchmarkName, double key, dou
  * \param testId Id of the graph to be plotted, used to give different colors to graphs.
  */
 void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
-  //add the legend if it doesnt exist already
-  //make sure there is enough margin room for the legend to fit
-  if(customPlot->legend->visible() == false){
-    customPlot->plotLayout()->addElement(0,1, customPlot->legend);
-    customPlot->legend->setVisible(true);
-    customPlot->legend->setSelectableParts( QCPLegend::spItems );
-    customPlot->legend->setMaximumSize( 150, QWIDGETSIZE_MAX );
-  }
-  customPlot->legend->setFont(QFont("Helvetica", 9));
-  customPlot->legend->setRowSpacing(-3);
-
-  customPlot->xAxis->setAutoTicks(false);
-  customPlot->xAxis->setAutoTickLabels(false);
-  customPlot->xAxis->setAutoTickStep(false);
-  customPlot->xAxis->setAutoSubTicks(false);
-
-  QVector<double> tickPositions = customPlot->xAxis->tickVector();
-  tickPositions.append( key );
-  customPlot->xAxis->setTickVector(tickPositions);
-
-  //  customPlot->xAxis->grid()->setSubGridVisible(true);
-  customPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
-  customPlot->xAxis->setScaleLogBase(10);
-  customPlot->xAxis->setNumberFormat("eb"); // e = exponential, b = beautiful decimal powers
-  customPlot->xAxis->setNumberPrecision(0);
-  customPlot->xAxis->setAutoTickLabels(true);
-  QFont axisTickFont;
-  axisTickFont.setBold(false);
-  customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
-
-  customPlot->xAxis->setLabelFont(axisTickFont);
-  customPlot->xAxis->setTickLabelFont(QFont(axisTickFont));
-
-  customPlot->yAxis->setScaleType(QCPAxis::stLogarithmic);
-
-  //  customPlot->xAxis->setAutoTicks(true);
-  customPlot->yAxis->setAutoTicks(true);
-
-  //  customPlot->xAxis->setAutoTickStep(true);
-  customPlot->yAxis->setAutoTickStep(true);
-
-  //  customPlot->xAxis->setAutoTickLabels(true);
-  customPlot->yAxis->setAutoTickLabels(true);
 
   QCPGraph *currentResultGraph;
 
@@ -482,14 +419,10 @@ void BasicBenchmark::plotLineResult(QString benchmarkName, double key, double va
   }
   currentResultGraph->setName(benchmarkName);
   currentResultGraph->addData( key, value );
-  currentResultGraph->rescaleAxes(true);
   currentResultGraph->setPen(pen);
   currentResultGraph->setLineStyle(QCPGraph::lsLine);
   currentResultGraph->setScatterStyle(QCPScatterStyle::ssCrossSquare);
 
-  customPlot->rescaleAxes();
-
-  //  customPlot->axisRect()->setupFullAxesBox();
   customPlot->replot();
 }
 

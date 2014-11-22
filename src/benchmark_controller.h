@@ -23,6 +23,88 @@
 #include "benchmarkinstance.h"
 #include "benchmark_model.h"
 
+#include "ui/qcustomplot.h"
+
+
+/// common initialization for plots. Avoids code duplication */
+static void init_plot(QCustomPlot * plot,
+                      double xmin, double xmax, bool xlogarithmic,
+                      double ymin, double ymax, bool ylogarithmic)
+{
+
+  //xAxis bottom
+  //yAxis left
+  //xAxis2 top
+  //yAxis2 right
+  QColor backgroundColor(240,240,240);
+  QBrush backgroundBrush(backgroundColor);
+
+
+  plot->axisRect()->setupFullAxesBox();
+  //Disable secondary axes
+  plot->yAxis2->setVisible(false);
+  plot->xAxis2->setVisible(false);
+
+  plot->setInteractions(QCP::iSelectPlottables | QCP::iSelectLegend);
+  plot->legend->setVisible(false);
+
+  plot->setBackground(backgroundBrush);
+
+  //add the legend if it doesnt exist already
+  //make sure there is enough margin room for the legend to fit
+  if(plot->legend->visible() == false){
+    plot->plotLayout()->addElement(0,1, plot->legend);
+    plot->legend->setVisible(true);
+    plot->legend->setSelectableParts( QCPLegend::spItems );
+    plot->legend->setMaximumSize( 110, QWIDGETSIZE_MAX );
+  }
+  plot->legend->setFont(QFont("Helvetica", 9));
+  plot->legend->setRowSpacing(-3);
+
+  //plot->xAxis->setAutoTicks(false);
+  //plot->xAxis->setAutoTickLabels(false);
+  //plot->xAxis->setAutoTickStep(false);
+  //plot->xAxis->setAutoSubTicks(false);
+
+  QFont axisTickFont;
+  axisTickFont.setBold(false);
+
+  //  customPlot->xAxis->grid()->setSubGridVisible(true);
+  if (xlogarithmic)
+  {
+    plot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+    plot->xAxis->setScaleLogBase(10);
+  }
+  plot->xAxis->setNumberFormat("eb"); // e = exponential, b = beautiful decimal powers
+  plot->xAxis->setNumberPrecision(0);
+  plot->xAxis->setLabelFont(axisTickFont);
+  plot->xAxis->setTickLabelFont(QFont(axisTickFont));
+  plot->xAxis->setRange(xmin, xmax);
+
+
+  if (ylogarithmic)
+  {
+    plot->yAxis->setScaleType(QCPAxis::stLogarithmic);
+    plot->yAxis->setScaleLogBase(10);
+  }
+  plot->yAxis->setNumberFormat("eb"); // e = exponential, b = beautiful decimal powers
+  plot->yAxis->setNumberPrecision(0);
+  plot->yAxis->setLabelFont(axisTickFont);
+  plot->yAxis->setTickLabelFont(QFont(axisTickFont));
+  plot->yAxis->setRange(ymin, ymax);
+
+  plot->yAxis->grid()->setVisible(true);
+  plot->yAxis->setTickLabelRotation( 0 );
+
+  QVector<double> emptyTickVector;
+  plot->yAxis->setTickVector(emptyTickVector);
+
+  plot->repaint();
+  plot->replot();
+}
+
+
+
 
 /*!
  * \class Benchmark_Controller
