@@ -40,7 +40,7 @@ BasicBenchmark::~BasicBenchmark()
  */
 void BasicBenchmark::initBasic(){
   basic_DetailedPlotTab = new QTabWidget(this);
-  basic_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
+  basic_DetailedPlotTab->setStyleSheet("QTabBar::tab{width:200px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
   init_plot(blas3_DetailedPlot, 100, 10000, true, .1, 10000, true);
@@ -78,12 +78,12 @@ void BasicBenchmark::initBasic(){
   basic_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
   basic_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
 
-  basic_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
-  basic_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
+  basic_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Dense Matrix-Matrix-Products");
+  basic_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Host-Device Copy");
   //  basic_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
   //  basic_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
-  basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
-  basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
+  basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse Matrix-Vector Product");
+  basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector Operations");
 
   ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
   ui->basic_CollapseWidget->setText("Detailed Test Results");

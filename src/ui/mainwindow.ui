@@ -233,7 +233,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>5</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -275,7 +275,8 @@ background:#F0F0F0;
           <item row="0" column="0">
            <widget class="QTabWidget" name="benchmarkPageTabWidget">
             <property name="styleSheet">
-             <string notr="true">QTabBar::tab{width: 250px;
+             <string notr="true">QTabBar::tab{
+width: 250px;
 height: 35px;
 /*
 background: gray;*//*
@@ -303,7 +304,7 @@ border-top: 1px groove gray;*/
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="basic_BenchmarkTab">
              <property name="sizePolicy">
@@ -311,6 +312,19 @@ border-top: 1px groove gray;*/
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QTabBar::tab{
+/*
+background: gray;*//*
+border-bottom: 1px groove gray;*/
+}
+QTabWidget::pane {
+
+}
+QTabBar::tab:selected{
+
+}</string>
              </property>
              <attribute name="title">
               <string>Standard</string>
@@ -538,8 +552,8 @@ QMenuBar:item:selected{
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../resources/otherFiles.qrc"/>
   <include location="../../resources/icons.qrc"/>
+  <include location="../../resources/otherFiles.qrc"/>
  </resources>
  <connections/>
  <slots>

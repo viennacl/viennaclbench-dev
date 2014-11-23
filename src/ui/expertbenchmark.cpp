@@ -45,7 +45,7 @@ void ExpertBenchmark::initExpert(){
   QBrush backgroundBrush(backgroundColor);
 
   expert_DetailedPlotTab = new QTabWidget(this);
-  expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 75px;height: 25px;}");
+  expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 200px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
   init_plot(blas3_DetailedPlot, 100, 10000, true, .1, 10000, true);
@@ -77,12 +77,12 @@ void ExpertBenchmark::initExpert(){
   expert_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
   expert_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
 
-  expert_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Blas3");
-  expert_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Copy");
+  expert_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Dense Matrix-Matrix-Products");
+  expert_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Host-Device Copy");
   //  expert_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
   //  expert_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
-  expert_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse");
-  expert_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector");
+  expert_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse Matrix-Vector Product");
+  expert_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector Operations");
 
   ui->expert_CollapseWidget->setChildWidget(expert_DetailedPlotTab);
   ui->expert_CollapseWidget->setText("Detailed Test Results");
