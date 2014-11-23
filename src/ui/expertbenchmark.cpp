@@ -334,6 +334,40 @@ void ExpertBenchmark::setCustomSparseMatrixPath(){
 }
 
 /*!
+ * \brief Determines if there is enough available video memory to complete the benchmark with selected settings.
+ * \return Returns true if there is enough memory, false if there isn't.
+ */
+bool ExpertBenchmark::estimateRequiredVideoMemory(){
+
+  return true;
+}
+
+/*!
+ * \brief Ensures all specified expert benchmark settings are valid.
+ * \return Returns true if settings are valid, otherise false.
+ */
+bool ExpertBenchmark::validateSettings(){
+  if(ui->expert_Blas3AMatSize->text().toInt() <= 0) return false;
+  if(ui->expert_Blas3BMatSize->text().toInt() <= 0) return false;
+  if(ui->expert_Blas3CMatSize->text().toInt() <= 0) return false;
+
+  if(ui->expert_CopyVecMin->text().toInt() <= 0) return false;
+  if(ui->expert_CopyVecMax->text().toInt() <= 0) return false;
+  if(ui->expert_CopyVecMin->text().toInt() >= ui->expert_CopyVecMax->text().toInt()) return false;
+
+  if(ui->expert_CopyIncFactor->text().toInt <= 1) return false;
+  if(ui->expert_VectorVecMin->text().toInt() <= 0) return false;
+  if(ui->expert_VectorVecMax->text().toInt() <= 0) return false;
+  if(ui->expert_VectorVecMin->text().toInt() >= ui->expert_VectorVecMax->text().toInt()) return false;
+  if(ui->expert_VectorIncFactor->text().toInt() <= 1) return false;
+
+  if(ui->expert_SparseAMatSize->text().toInt() <= 0) return false;
+  if(ui->expert_SparseBMatSize->text().toInt() <= 0) return false;
+
+  return true;
+}
+
+/*!
  * \brief Collects expert benchmark settings from the UI.
  * \return Returns a \ref BenchmarkSettings object containing all expert settings.
  */

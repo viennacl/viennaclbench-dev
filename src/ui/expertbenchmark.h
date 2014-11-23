@@ -59,6 +59,8 @@ public:
   void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
+  bool validateSettings();
+  bool estimateRequiredVideoMemory();
   BenchmarkSettings getExpertSettings();
 
   QPushButton *startBenchmarkButton; ///< Exposes the start button
