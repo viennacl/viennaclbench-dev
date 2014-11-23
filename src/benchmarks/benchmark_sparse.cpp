@@ -97,7 +97,7 @@ void Benchmark_Sparse::run_benchmark()
     long success = viennacl::io::read_matrix_market_file(adapted_A, customSparseMatrixPath.toStdString());
     if(!success)
     {
-      emit errorMessage("Failed to read selected sparse matrix");//tell the GUI thread to show a popup error message
+      emit errorMessage("The matrix market reader cannot read the provided file. Only real-valued matrices in coordinate-format are supported.");//tell the GUI thread to show a popup error message
       return;
     }
   }
