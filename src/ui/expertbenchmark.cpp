@@ -166,6 +166,8 @@ void ExpertBenchmark::initExpert(){
   }
   connect(ui->expert_CustomMatrixBrowsebutton, SIGNAL(clicked()), this, SLOT(setCustomSparseMatrixPath()) );
   connect(ui->expert_CustomMatrixDefaultButton, SIGNAL(clicked()), ui->expert_SparseCustomMatrix, SLOT(clear()) );
+
+  connect(ui->expert_ResetSettingsButton, SIGNAL(clicked()), this, SLOT(loadDefaultSettings()) );
 }
 
 /*!
@@ -609,4 +611,24 @@ void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCust
 
   //customPlot->xAxis->rescale();
   customPlot->replot();
+}
+
+void ExpertBenchmark::loadDefaultSettings(){
+  BenchmarkSettings defaultSettings;
+
+  ui->expert_Blas3AMatSize->setText(QString::number(defaultSettings.blas3MatSizeA));
+  ui->expert_Blas3BMatSize->setText(QString::number(defaultSettings.blas3MatSizeB));
+  ui->expert_Blas3CMatSize->setText(QString::number(defaultSettings.blas3MatSizeC));
+
+  ui->expert_CopyIncFactor->setText(QString::number(defaultSettings.copyIncFactor));
+  ui->expert_CopyVecMax->setText(QString::number(defaultSettings.copyMaxVectorSize / 1000));
+  ui->expert_CopyVecMin->setText(QString::number(defaultSettings.copyMinVectorSize / 1000));
+
+  ui->expert_VectorVecMin->setText(QString::number(defaultSettings.vectorMinVectorSize / 1000));
+  ui->expert_VectorVecMax->setText(QString::number(defaultSettings.vectorMaxVectorSize / 1000));
+  ui->expert_VectorIncFactor->setText(QString::number(defaultSettings.vectorIncFactor));
+
+  ui->expert_SparseAMatSize->setText(QString::number(defaultSettings.sparseMatSizeA));
+  ui->expert_SparseBMatSize->setText(QString::number(defaultSettings.sparseMatSizeB));
+  ui->expert_SparseCustomMatrix->setText(defaultSettings.sparseCustomMatrix);
 }

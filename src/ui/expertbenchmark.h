@@ -83,6 +83,7 @@ public slots:
   void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
   void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
   void setCustomSparseMatrixPath();
+  void loadDefaultSettings();
 private:
   int activeBenchmark;
   int currentBenchProgress;
