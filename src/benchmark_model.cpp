@@ -16,6 +16,7 @@ Benchmark_Model::Benchmark_Model(QObject *parent) :
  */
 void Benchmark_Model::processBenchmarkInstance(BenchmarkInstance instance)
 {
+  return; //disable result processing for 1.0.0 release
   saveResults(instance);
   uploadResults(instance);
 }

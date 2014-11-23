@@ -20,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
       "}";
   */
 
-  ui->mainMenuListWidget->item(3)->setHidden(true);
+  ui->mainMenuListWidget->item(2)->setHidden(true);//my results
+  ui->mainMenuListWidget->item(3)->setHidden(true);//result database
   //normalize size of each main menu item
   //otherwise items would not be centered
   for ( int i = 0; i < ui->mainMenuListWidget->count(); i++ ) {
