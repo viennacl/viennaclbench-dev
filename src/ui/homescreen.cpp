@@ -12,6 +12,7 @@ HomeScreen::HomeScreen(QWidget *parent) :
   ui->setupUi(this);
   this->quickStartButton = ui->homeQuickStartButon;
   ui->homeAutoUploadCheckBox->hide();//hide for 1.0.0 release
+  ui->homeOptionsBox->hide();
 
 #ifdef VIENNACL_WITH_OPENCL
   QHBoxLayout *systemInfoLayout = new QHBoxLayout();
