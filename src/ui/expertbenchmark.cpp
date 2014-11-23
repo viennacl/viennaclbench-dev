@@ -355,7 +355,7 @@ bool ExpertBenchmark::validateSettings(){
   if(ui->expert_CopyVecMax->text().toInt() <= 0) return false;
   if(ui->expert_CopyVecMin->text().toInt() >= ui->expert_CopyVecMax->text().toInt()) return false;
 
-  if(ui->expert_CopyIncFactor->text().toInt <= 1) return false;
+  if(ui->expert_CopyIncFactor->text().toInt() <= 1) return false;
   if(ui->expert_VectorVecMin->text().toInt() <= 0) return false;
   if(ui->expert_VectorVecMax->text().toInt() <= 0) return false;
   if(ui->expert_VectorVecMin->text().toInt() >= ui->expert_VectorVecMax->text().toInt()) return false;
