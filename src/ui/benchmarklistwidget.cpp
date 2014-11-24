@@ -46,6 +46,24 @@ void BenchmarkListWidget::deselectAllItems()
 }
 
 /*!
+ * \brief Selects the specified item (updates the icon aswell)
+ * \param itemRow Item row
+ */
+void BenchmarkListWidget::setSelected(int itemRow){
+  this->item(itemRow)->setSelected(true);
+  this->item(itemRow)->setIcon(QIcon(":/icons/icons/checkTrue.png"));
+}
+
+/*!
+ * \brief Deselects the specified item (updates the icon aswell)
+ * \param itemRow Item row
+ */
+void BenchmarkListWidget::setDeselected(int itemRow){
+  this->item(itemRow)->setSelected(false);
+  this->item(itemRow)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
+}
+
+/*!
  * \brief Checks if all items are selected and updates the first item ("select all" item) to be selected aswell.
  */
 void BenchmarkListWidget::checkSelectedItems()

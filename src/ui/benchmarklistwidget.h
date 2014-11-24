@@ -20,6 +20,8 @@ public slots:
   void selectAllItems();
   void deselectAllItems();
   void checkSelectedItems();
+  void setSelected(int itemRow);
+  void setDeselected(int itemRow);
 };
 
 #endif // BENCHMARKLISTWIDGET_H

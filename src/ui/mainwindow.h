@@ -98,7 +98,7 @@ public slots:
   void quickstartFullBenchmark();
   void modifyMatrixMarketWeb();
   void switchContext(int contextNumber);
-  void startMatrixMarketBenchmark(QString filename);
+  void startMatrixMarketBenchmark(QString matrixFilename);
   void startExpertBenchmarkExecution();
   void showErrorMessageBox(QString message);
 };
