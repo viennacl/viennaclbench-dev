@@ -14,16 +14,16 @@ BenchmarkSettings::BenchmarkSettings()
  */
 void BenchmarkSettings::initBasicDefaults(){
   copyMinVectorSize = 1000; //
-  copyMaxVectorSize = 10240000;//
+  copyMaxVectorSize = 5120000;//
   copyIncFactor = 2; //size x2 each step
 
   vectorMinVectorSize = 1000; //
-  vectorMaxVectorSize = 10240000;//
+  vectorMaxVectorSize = 5120000;//
   vectorIncFactor = 2; //size x2 each step
 
-  blas3MatSizeA = 1920;
-  blas3MatSizeB = 1920;
-  blas3MatSizeC = 1920;
+  blas3MatSizeA = 2048;
+  blas3MatSizeB = 2048;
+  blas3MatSizeC = 2048;
 
   sparseMatSizeA = 200;
   sparseMatSizeB = 200;
