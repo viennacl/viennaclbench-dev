@@ -296,7 +296,23 @@ void MainWindow::startExpertBenchmarkExecution(){
       case 1: maximumBenchProgress += 3; break;//blas3 3 tests
       case 2: maximumBenchProgress += 6; break;//copy 6 tests
       case 3: maximumBenchProgress += 6; break;//sparse 6 tests
-      case 4: maximumBenchProgress += 10; break;//vector 10 tests
+      case 4:
+      {
+        int maxVectorSize = ui->expertBenchmark->getExpertSettings().vectorMaxVectorSize;
+        int minVectorSize = ui->expertBenchmark->getExpertSettings().vectorMinVectorSize;
+        int incrementFactor = ui->expertBenchmark->getExpertSettings().vectorIncFactor;
+        int vectorTests = 0;
+        //calculate the number of tests to be done by the vector benchmark
+        for(int vectorSize = minVectorSize; vectorSize <= maxVectorSize; vectorSize *= incrementFactor){
+          vectorTests += 6;//6 vector tests with each run
+        }
+        //calculating the number of tests should be handled by benchmarks themselves;
+        //so that each would announce how many tests it intends to do;
+        //but that would probably require some major architecture changes,
+        //so lets leave it like this for the time being
+
+        maximumBenchProgress += vectorTests; break;//add the number of vector tests to the max bench progress count
+      }
       default: break;
       }
     }
@@ -342,7 +358,24 @@ void MainWindow::startBasicBenchmarkExecution(){
       case 1: maximumBenchProgress += 3; break;//blas3 3 tests
       case 2: maximumBenchProgress += 6; break;//copy 6 tests
       case 3: maximumBenchProgress += 6; break;//sparse 6 tests
-      case 4: maximumBenchProgress += 10; break;//vector 10 tests
+      case 4:
+      {
+        BenchmarkSettings defaultSettings;
+        int maxVectorSize = defaultSettings.vectorMaxVectorSize;
+        int minVectorSize = defaultSettings.vectorMinVectorSize;
+        int incrementFactor = defaultSettings.vectorIncFactor;
+        int vectorTests = 0;
+        //calculate the number of tests to be done by the vector benchmark
+        for(int vectorSize = minVectorSize; vectorSize <= maxVectorSize; vectorSize *= incrementFactor){
+          vectorTests += 6;//6 vector tests with each run
+        }
+        //calculating the number of tests should be handled by benchmarks themselves;
+        //so that each would announce how many tests it intends to do;
+        //but that would probably require some major architecture changes,
+        //so lets leave it like this for the time being
+
+        maximumBenchProgress += vectorTests; break;//add the number of vector tests to the max bench progress count
+      }
       default: break;
       }
     }
