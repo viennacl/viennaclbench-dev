@@ -319,6 +319,8 @@ void ExpertBenchmark::resetAllPlots(){
   //reset all plots
   foreach(QCustomPlot* plot, expert_DetailedPlotsVector){
     resetPlotData(plot);
+    plot->yAxis->setTickVector(QVector<double>() ); // for BarPlots
+    plot->yAxis->setTickVectorLabels(QVector<QString>() ); // for BarPlots
     plot->replot();
   }
 }
