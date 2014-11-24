@@ -79,9 +79,9 @@ QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
 
   QJsonObject blas3Object;
   blas3Object["result"] = instance.blas3Result;
-  blas3Object["mSize"] = instance.settings.blas3MatSizeA;
-  blas3Object["nSize"] = instance.settings.blas3MatSizeB;
-  blas3Object["kSize"] = instance.settings.blas3MatSizeC;
+  blas3Object["minSize"] = instance.settings.blas3MinSize;
+  blas3Object["maxSize"] = instance.settings.blas3MaxSize;
+  blas3Object["incFactor"] = instance.settings.blas3IncFactor;
 
   rootObject["blas3"] = blas3Object;
 
@@ -95,8 +95,7 @@ QJsonDocument Benchmark_Model::generateJson(BenchmarkInstance instance){
 
   QJsonObject sparseObject;
   sparseObject["result"] = instance.sparseResult;
-  sparseObject["sizeM"] = instance.settings.sparseMatSizeA;
-  sparseObject["sizeN"] = instance.settings.sparseMatSizeB;
+  sparseObject["matrixSize"] = instance.settings.sparseMatSize;
   sparseObject["customMatrix"] = instance.settings.sparseCustomMatrix;
 
   rootObject["sparse"] = sparseObject;

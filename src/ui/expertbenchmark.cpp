@@ -670,3 +670,15 @@ void ExpertBenchmark::loadDefaultSettings(){
   ui->expert_SparseMatSize->setValue(defaultSettings.sparseMatSize);
   ui->expert_SparseCustomMatrix->setText(defaultSettings.sparseCustomMatrix);
 }
+
+/*!
+ * \brief Prepares the benchmark for execution with a custom sparse matrix
+ * \param matrixFilePath Absolute path to the selected matrix file
+ */
+void ExpertBenchmark::setupCustomSparseMatrix(QString matrixFilePath)
+{
+  loadDefaultSettings();//use the default settings for custom matrix benchmarking
+  ui->expert_SparseCustomMatrix->setText(matrixFilePath);//use the custom matrix file
+  ui->expert_BenchmarkListWidget->deselectAllItems();
+  ui->expert_BenchmarkListWidget->setSelected(3);//only run the sparse benchmark
+}
