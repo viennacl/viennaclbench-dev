@@ -219,8 +219,10 @@ void MainWindow::initMatrixMarket(){
  * \brief Starts a Sparse benchmark with a custom matrix downloaded via the MatrixMarket. Not yet functional.
  * \param filename Absolute path to custom matrix
  */
-void MainWindow::startMatrixMarketBenchmark(QString filename){
+void MainWindow::startMatrixMarketBenchmark(QString filename)
+{
   //todo
+  QMessageBox::information(this, QString("ViennaCL Benchmark"), "MatrixMarket file downloaded successfully. Please select matrix from the advanced benchmark tab to run benchmarks.");
 }
 
 /*!
