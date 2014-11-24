@@ -301,26 +301,10 @@ void MainWindow::startExpertBenchmarkExecution(){
       selectedBenchmarkItems.append(expertBenchmarkListWidget->item(i)->text());
       //add each selected benchmark's number of tests to maximumBenchProgress
       switch(i){
-      case 1: maximumBenchProgress += 1; break;//blas3 1 tests
+      case 1: maximumBenchProgress += 4; break;//blas3 1 tests
       case 2: maximumBenchProgress += 2; break;//copy 2 tests
       case 3: maximumBenchProgress += 7; break;//sparse 7 tests
-      case 4:
-      {
-        int maxVectorSize = ui->expertBenchmark->getExpertSettings().vectorMaxVectorSize;
-        int minVectorSize = ui->expertBenchmark->getExpertSettings().vectorMinVectorSize;
-        int incrementFactor = ui->expertBenchmark->getExpertSettings().vectorIncFactor;
-        int vectorTests = 0;
-        //calculate the number of tests to be done by the vector benchmark
-        for(int vectorSize = minVectorSize; vectorSize <= maxVectorSize; vectorSize *= incrementFactor){
-          vectorTests += 6;//6 vector tests with each run
-        }
-        //calculating the number of tests should be handled by benchmarks themselves;
-        //so that each would announce how many tests it intends to do;
-        //but that would probably require some major architecture changes,
-        //so lets leave it like this for the time being
-
-        maximumBenchProgress += vectorTests; break;//add the number of vector tests to the max bench progress count
-      }
+      case 4: maximumBenchProgress += 6; break;//vector 6 tests
       default: break;
       }
     }
@@ -363,27 +347,10 @@ void MainWindow::startBasicBenchmarkExecution(){
       selectedBenchmarkItems.append(basicBenchmarkListWidget->item(i)->text());
       //add each selected benchmark's number of tests to maximumBenchProgress
       switch(i){
-      case 1: maximumBenchProgress += 3; break;//blas3 3 tests
-      case 2: maximumBenchProgress += 6; break;//copy 6 tests
-      case 3: maximumBenchProgress += 6; break;//sparse 6 tests
-      case 4:
-      {
-        BenchmarkSettings defaultSettings;
-        int maxVectorSize = defaultSettings.vectorMaxVectorSize;
-        int minVectorSize = defaultSettings.vectorMinVectorSize;
-        int incrementFactor = defaultSettings.vectorIncFactor;
-        int vectorTests = 0;
-        //calculate the number of tests to be done by the vector benchmark
-        for(int vectorSize = minVectorSize; vectorSize <= maxVectorSize; vectorSize *= incrementFactor){
-          vectorTests += 6;//6 vector tests with each run
-        }
-        //calculating the number of tests should be handled by benchmarks themselves;
-        //so that each would announce how many tests it intends to do;
-        //but that would probably require some major architecture changes,
-        //so lets leave it like this for the time being
-
-        maximumBenchProgress += vectorTests; break;//add the number of vector tests to the max bench progress count
-      }
+      case 1: maximumBenchProgress += 4; break;//blas3 4 tests
+      case 2: maximumBenchProgress += 2; break;//copy 2 tests
+      case 3: maximumBenchProgress += 7; break;//sparse 7 tests
+      case 4: maximumBenchProgress += 6; break;//vector 6 tests
       default: break;
       }
     }

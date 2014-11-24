@@ -282,7 +282,7 @@ void ExpertBenchmark::selectionChanged()
 void ExpertBenchmark::updateBenchProgress(){
   currentBenchProgress++;
   ui->expert_ProgressBar->setValue(currentBenchProgress);
-  ui->expert_ProgressBar->setFormat("Running Test %v of %m");
+  ui->expert_ProgressBar->setFormat("Running Benchmark %v of %m");
 }
 
 /*!

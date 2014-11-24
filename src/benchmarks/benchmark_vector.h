@@ -45,9 +45,10 @@ public:
 
   template<typename ScalarType>
   void run_benchmark();
-  template<typename ScalarType>
-  void resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
-                     viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2);
+
+  template<typename ScalarType, typename FuncT>
+  void run_benchmark_impl(std::string testlabel, std::size_t entries_per_op, int testId);
+
 private:
   int MAX_BENCHMARK_VECTOR_SIZE; ///< Maximum benchmark vector size. The benchmark ends when the vector size exceeds or matches this limit.
   int MIN_BENCHMARK_VECTOR_SIZE; ///< Starting benchmark vector size

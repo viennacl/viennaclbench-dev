@@ -23,6 +23,78 @@
 
 #include "benchmark_vector.h"
 
+// inner prod
+struct exec_inner_prod_host
+{
+  template<typename HostVectorT, typename DeviceVectorT, typename DeviceScalarT>
+  static void apply(  HostVectorT &   host_x,   HostVectorT &   host_y,   HostVectorT &   host_z,
+                    DeviceVectorT & device_x, DeviceVectorT & device_y, DeviceVectorT & device_z, DeviceScalarT & device_alpha)
+  {
+    typename HostVectorT::value_type  result;
+
+    for (std::size_t i=0; i<host_x.size(); ++i)
+      result += host_x[i] * host_y[i];
+
+    host_z[0] = result;
+  }
+};
+
+struct exec_inner_prod_device
+{
+  template<typename HostVectorT, typename DeviceVectorT, typename DeviceScalarT>
+  static void apply(  HostVectorT &   host_x,   HostVectorT &   host_y,   HostVectorT &   host_z,
+                    DeviceVectorT & device_x, DeviceVectorT & device_y, DeviceVectorT & device_z, DeviceScalarT & device_alpha)
+  {
+    device_alpha = viennacl::linalg::inner_prod(device_x, device_y);
+  }
+};
+
+// addition
+struct exec_addition_host
+{
+  template<typename HostVectorT, typename DeviceVectorT, typename DeviceScalarT>
+  static void apply(  HostVectorT &   host_x,   HostVectorT &   host_y,   HostVectorT &   host_z,
+                    DeviceVectorT & device_x, DeviceVectorT & device_y, DeviceVectorT & device_z, DeviceScalarT & device_alpha)
+  {
+    for (std::size_t i=0; i<host_x.size(); ++i)
+      host_z[i] = host_x[i] * host_y[i];
+  }
+};
+
+struct exec_addition_device
+{
+  template<typename HostVectorT, typename DeviceVectorT, typename DeviceScalarT>
+  static void apply(  HostVectorT &   host_x,   HostVectorT &   host_y,   HostVectorT &   host_z,
+                    DeviceVectorT & device_x, DeviceVectorT & device_y, DeviceVectorT & device_z, DeviceScalarT & device_alpha)
+  {
+    device_z = device_x + device_y;
+  }
+};
+
+// mult-add
+struct exec_multadd_host
+{
+  template<typename HostVectorT, typename DeviceVectorT, typename DeviceScalarT>
+  static void apply(  HostVectorT &   host_x,   HostVectorT &   host_y,   HostVectorT &   host_z,
+                    DeviceVectorT & device_x, DeviceVectorT & device_y, DeviceVectorT & device_z, DeviceScalarT & device_alpha)
+  {
+    for (std::size_t i=0; i<host_x.size(); ++i)
+      host_z[i] += host_x[0] * host_y[i];
+  }
+};
+
+struct exec_multadd_device
+{
+  template<typename HostVectorT, typename DeviceVectorT, typename DeviceScalarT>
+  static void apply(  HostVectorT &   host_x,   HostVectorT &   host_y,   HostVectorT &   host_z,
+                    DeviceVectorT & device_x, DeviceVectorT & device_y, DeviceVectorT & device_z, DeviceScalarT & device_alpha)
+  {
+    device_z += device_alpha * device_y;
+  }
+};
+
+
+
 /*!
  * \brief Default constructor.
  * Sets the precision to double and load default vector sizes & increment factor from \ref BenchmarkSettings
@@ -53,39 +125,6 @@ Benchmark_Vector::Benchmark_Vector(bool precision, BenchmarkSettings settings)
   INCREMENT_FACTOR = settings.vectorIncFactor;
 }
 
-template<typename ScalarType>
-/*!
- * \brief Resizes the benchmark vectors to \a size.
- * Not used. The benchmark runs a for-loop and initiates new vectors on each run.
- * Should be used if any changes are to occur in the future.
- * \param size New vector size.
- * \param std_vec1 std vector 1
- * \param std_vec2 std vector 2
- * \param vcl_vec1 vcl vector 1
- * \param vcl_vec2 vcl vector 2
- */
-void Benchmark_Vector::resizeVectors(int size, std::vector<ScalarType> &std_vec1, std::vector<ScalarType> &std_vec2,
-                                     viennacl::vector<ScalarType> &vcl_vec1, viennacl::vector<ScalarType> &vcl_vec2){
-
-  std_vec1.resize(size);
-  std_vec2.resize(size);
-  vcl_vec1.resize(size);
-  vcl_vec2.resize(size);
-
-  std_vec1[0] = 1.0;
-  std_vec2[0] = 1.0;
-  for (std::size_t i=1; i<size; ++i)
-  {
-    std_vec1[i] = std_vec1[i-1] * ScalarType(1.000001);
-    std_vec2[i] = std_vec1[i-1] * ScalarType(0.999999);
-  }
-
-  // warmup:
-  viennacl::copy(std_vec1, vcl_vec1);
-  viennacl::fast_copy(std_vec2, vcl_vec2);
-  viennacl::async_copy(std_vec2, vcl_vec1);
-  viennacl::backend::finish();
-}
 
 /*!
  * \brief Main benchmarking function
@@ -95,164 +134,57 @@ void Benchmark_Vector::resizeVectors(int size, std::vector<ScalarType> &std_vec1
 template<typename ScalarType>
 void Benchmark_Vector::run_benchmark()
 {
+  run_benchmark_impl<ScalarType, exec_inner_prod_host  >("Inner Product - Host",   2, 0);
+  run_benchmark_impl<ScalarType, exec_inner_prod_device>("Inner Product - Device", 2, 1);
+
+  run_benchmark_impl<ScalarType, exec_addition_host  >("Addition - Host",   3, 2);
+  run_benchmark_impl<ScalarType, exec_addition_device>("Addition - Device", 3, 3);
+
+  run_benchmark_impl<ScalarType, exec_multadd_host  >("Multiply&Add - Host",   3, 4);
+  run_benchmark_impl<ScalarType, exec_multadd_device>("Multiply&Add - Device", 3, 5);
+}
+
+
+template<typename ScalarType, typename FuncT>
+void Benchmark_Vector::run_benchmark_impl(std::string testlabel, std::size_t entries_per_op, int testId)
+{
   Timer timer;
   double exec_time;
+  double effective_bandwidth;
 
-//  std::cout << "Benchmarking..." << std::endl;
-//  std::cout << "Platform id: "<< viennacl::ocl::current_context().platform_index() //platform id != context id
-//            <<" Context value: " << viennacl::ocl::current_context().handle().get() << std::endl;
-
-//  std::cout << "Running on device name: "<< viennacl::ocl::current_device().name() << std::endl;
-
-
-  /* HOLD MY BEER, IMMA GONNA FORLOOP EVERYTHING */
-  /* Seriously, I run the entire test suite for each vector size */
-
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize <= MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
-
-    int testId = 0;
-    ScalarType std_result = 0;
-
-    ScalarType std_factor1 = static_cast<ScalarType>(3.1415);
-    ScalarType std_factor2 = static_cast<ScalarType>(42.0);
-    viennacl::scalar<ScalarType> vcl_factor1(std_factor1);
-    viennacl::scalar<ScalarType> vcl_factor2(std_factor2);
-
-    std::vector<ScalarType> std_vec1(vectorSize);
-    std::vector<ScalarType> std_vec2(vectorSize);
-    std::vector<ScalarType> std_vec3(vectorSize);
+  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize <= MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR)
+  {
+    std::vector<ScalarType> std_vec1(vectorSize, ScalarType(1.0));
+    std::vector<ScalarType> std_vec2(vectorSize, ScalarType(1.1));
+    std::vector<ScalarType> std_vec3(vectorSize, ScalarType(1.2));
     viennacl::vector<ScalarType> vcl_vec1(vectorSize);
     viennacl::vector<ScalarType> vcl_vec2(vectorSize);
     viennacl::vector<ScalarType> vcl_vec3(vectorSize);
 
-
-    ///////////// Vector operations /////////////////
-
-    double effective_bandwidth;
-
-    std_vec1[0] = 1.0;
-    std_vec2[0] = 1.0;
-    for (std::size_t i=1; i<vectorSize; ++i)
-    {
-      std_vec1[i] = std_vec1[i-1] * ScalarType(1.000001);
-      std_vec2[i] = std_vec1[i-1] * ScalarType(0.999999);
-    }
+    viennacl::scalar<ScalarType> vcl_alpha(0);
 
     viennacl::copy(std_vec1, vcl_vec1);
     viennacl::copy(std_vec2, vcl_vec2);
 
-    //
-    // inner product
-    //
-    viennacl::backend::finish();
+    // warmup:
+    FuncT::apply(std_vec1, std_vec2, std_vec3,
+                 vcl_vec1, vcl_vec2, vcl_vec3, vcl_alpha);
 
-    timer.start();
-    std_result = 0;
-    for (std::size_t runs=0; runs<BENCHMARK_RUNS; ++runs)
-    {
-      for (std::size_t i=0; i<vectorSize; ++i)
-        std_result += std_vec1[i] * std_vec2[i];
-    }
-    exec_time = timer.get();
-
-    if (std_result > 0) // trivially true, but ensures nothing is optimized away
-      effective_bandwidth = 2 * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
-
-    emit resultSignal("Vector inner products - CPU", vectorSize, effective_bandwidth, LINE_GRAPH, testId );
-    testId++;
-    testResultHolder.append(effective_bandwidth);
-    emit testProgress();
-
-
-    std_result = viennacl::linalg::inner_prod(vcl_vec1, vcl_vec2); //startup calculation
-    std_result = 0.0;
     viennacl::backend::finish();
     timer.start();
     for (std::size_t runs=0; runs<BENCHMARK_RUNS; ++runs)
-    {
-      vcl_factor2 = viennacl::linalg::inner_prod(vcl_vec1, vcl_vec2);
-    }
+      FuncT::apply(std_vec1, std_vec2, std_vec3,
+                   vcl_vec1, vcl_vec2, vcl_vec3, vcl_alpha);
     viennacl::backend::finish();
     exec_time = timer.get();
 
-    effective_bandwidth = 2 * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Vector inner products - GPU", vectorSize, effective_bandwidth, LINE_GRAPH, testId );
-    testId++;
+    if (std_vec3[0] > 0) // trivially true, but ensures nothing gets optimized away
+      effective_bandwidth = entries_per_op * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
+
+    emit resultSignal(testlabel.c_str(), vectorSize, effective_bandwidth, LINE_GRAPH, testId );
     testResultHolder.append(effective_bandwidth);
-    emit testProgress();
-
-
-
-    //
-    // vector addition
-    //
-
-    timer.start();
-    for (std::size_t runs=0; runs<BENCHMARK_RUNS; ++runs)
-    {
-      for (std::size_t i=0; i<vectorSize; ++i)
-        std_vec3[i] = std_vec1[i] + std_vec2[i];
-    }
-    exec_time = timer.get();
-
-    effective_bandwidth = 3 * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Vector addition - CPU", vectorSize, effective_bandwidth, LINE_GRAPH, testId );
-    testId++;
-    testResultHolder.append(effective_bandwidth);
-    emit testProgress();
-
-    vcl_vec3 = vcl_vec1 + vcl_vec2; //startup calculation
-    viennacl::backend::finish();
-    std_result = 0.0;
-    timer.start();
-    for (std::size_t runs=0; runs<BENCHMARK_RUNS; ++runs)
-    {
-      vcl_vec3 = vcl_vec1 + vcl_vec2;
-    }
-    viennacl::backend::finish();
-    exec_time = timer.get();
-
-    effective_bandwidth = 3 * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Vector addition - GPU", vectorSize, effective_bandwidth, LINE_GRAPH, testId );
-    testId++;
-    testResultHolder.append(effective_bandwidth);
-    emit testProgress();
-
-    //
-    // multiply add:
-    //
-    timer.start();
-    for (std::size_t runs=0; runs<BENCHMARK_RUNS; ++runs)
-    {
-      for (std::size_t i=0; i<vectorSize; ++i)
-        std_vec1[i] += std_factor1 * std_vec2[i];
-    }
-    exec_time = timer.get();
-
-    effective_bandwidth = 3 * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Vector multiply add - CPU", vectorSize, effective_bandwidth, LINE_GRAPH, testId );
-    testId++;
-    testResultHolder.append(effective_bandwidth);
-    emit testProgress();
-
-    vcl_vec1 += vcl_factor1 * vcl_vec2; //startup calculation
-    viennacl::backend::finish();
-    timer.start();
-    for (std::size_t runs=0; runs<BENCHMARK_RUNS; ++runs)
-    {
-      vcl_vec1 += vcl_factor1 * vcl_vec2;
-    }
-    viennacl::backend::finish();
-    exec_time = timer.get();
-
-    effective_bandwidth = 3 * vectorSize * sizeof(ScalarType) / exec_time * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Vector multiply add - GPU", vectorSize, effective_bandwidth, LINE_GRAPH, testId );
-    testId++;
-    testResultHolder.append(effective_bandwidth);
-    emit testProgress();
-
-
   }
+  emit testProgress();
 }
 
 /*!

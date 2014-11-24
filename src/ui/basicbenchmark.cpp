@@ -270,7 +270,7 @@ void BasicBenchmark::selectionChanged(){
 void BasicBenchmark::updateBenchProgress(){
   currentBenchProgress++;
   ui->basic_ProgressBar->setValue(currentBenchProgress);
-  ui->basic_ProgressBar->setFormat("Running Test %v of %m");
+  ui->basic_ProgressBar->setFormat("Running Benchmark %v of %m");
 }
 
 /*!

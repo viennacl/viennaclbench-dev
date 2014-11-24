@@ -120,11 +120,11 @@ void Benchmark_Blas3::run_benchmark_impl(bool trans_A, bool trans_B, int testId)
     double gflops_per_second = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
     emit resultSignal(line_desc.c_str(), N, gflops_per_second, LINE_GRAPH, testId);
     testResultHolder.append(gflops_per_second);
-    emit testProgress();
 
     if (exec_time > 10.0) // we don't want the benchmark to get stuck here. The relevant information can already be obtained with less than 10 seconds of execution time.
       break;
   }
+  emit testProgress();
 
 }
 
