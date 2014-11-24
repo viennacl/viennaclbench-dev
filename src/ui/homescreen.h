@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QScrollArea>
 
 #include "viennacl/ocl/device.hpp"
 #include "viennacl/ocl/platform.hpp"

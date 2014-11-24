@@ -15,6 +15,7 @@ HomeScreen::HomeScreen(QWidget *parent) :
   ui->homeOptionsBox->hide();
 
 #ifdef VIENNACL_WITH_OPENCL
+
   QHBoxLayout *systemInfoLayout = new QHBoxLayout();
 
   typedef std::vector< viennacl::ocl::platform > platforms_type;
@@ -117,7 +118,17 @@ HomeScreen::HomeScreen(QWidget *parent) :
     deviceCounter = 0;
     devicesLayout->insertStretch(-1,1); //add a spacer at the end
 
-    platformBox->setLayout(devicesLayout);
+    QWidget *deviceContainer = new QWidget();
+    deviceContainer->setLayout(devicesLayout);
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setWidget(deviceContainer);
+    scrollArea->setFrameStyle(QFrame::Panel);
+
+    QVBoxLayout *scrollLayout = new QVBoxLayout();
+    scrollLayout->addWidget(scrollArea);
+
+    platformBox->setLayout(scrollLayout);
+
     platformLayout->addWidget(platformBox);
     //    systemInfoLayout->addWidget(platformBox);
     systemInfoLayout->addLayout(platformLayout);

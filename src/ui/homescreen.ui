@@ -13,39 +13,29 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="3">
-    <widget class="QLabel" name="homeLabel">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../resources/otherFiles.qrc">:/resources/images/benchmarkTestLogo.png</pixmap>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignHCenter|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="3">
-    <widget class="QGroupBox" name="homeSystemInfoBox">
-     <property name="styleSheet">
-      <string notr="true">QGroupBox  {
+  <property name="styleSheet">
+   <string notr="true">/*QGroupBox#homeSystemInfoBox  {
     border: 2px solid gray;
     border-radius: 5px;
     margin-top: 6ex; /* leave space at the top for the title */
+/*
 }
-QGroupBox::title  {
+QGroupBox#homeSystemInfoBox::title  {
      subcontrol-origin: margin;
      subcontrol-position: top center; /* position at the top center */
+/*
 }
- QGroupBox::indicator {
+ QGroupBox#homeSystemInfoBox::indicator {
      width: 55px;
      height: 32px;
- }</string>
+ }
+*/</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="0" colspan="3">
+    <widget class="QGroupBox" name="homeSystemInfoBox">
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="title">
       <string/>
@@ -53,39 +43,6 @@ QGroupBox::title  {
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QGroupBox" name="homeOptionsBox">
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The ViennaCL project will greatly benefit from your uploaded benchmark results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 2ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}</string>
-     </property>
-     <property name="title">
-      <string>Options</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_9">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="homeAutoUploadCheckBox">
-        <property name="text">
-         <string>Automatic benchmark result upload</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="2" column="1">
     <widget class="QGroupBox" name="homeAboutBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -94,15 +51,7 @@ QGroupBox::title  {
       </sizepolicy>
      </property>
      <property name="styleSheet">
-      <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 2ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}</string>
+      <string notr="true"/>
      </property>
      <property name="title">
       <string>About</string>
@@ -136,18 +85,35 @@ QGroupBox::title  {
      </layout>
     </widget>
    </item>
+   <item row="2" column="1">
+    <widget class="QGroupBox" name="homeOptionsBox">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The ViennaCL project will greatly benefit from your uploaded benchmark results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_9">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="homeAutoUploadCheckBox">
+        <property name="text">
+         <string>Automatic benchmark result upload</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="2" column="2">
     <widget class="QGroupBox" name="homeQuickStartBox">
      <property name="styleSheet">
-      <string notr="true">QGroupBox  {
-    border: 2px solid gray;
-    border-radius: 5px;
-    margin-top: 2ex; /* leave space at the top for the title */
-}
-QGroupBox::title  {
-     subcontrol-origin: margin;
-     subcontrol-position: top center; /* position at the top center */
-}</string>
+      <string notr="true"/>
      </property>
      <property name="title">
       <string>Quick Start</string>
@@ -174,6 +140,22 @@ QGroupBox::title  {
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="homeLabel">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../resources/otherFiles.qrc">:/resources/images/benchmarkTestLogo.png</pixmap>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
   </layout>
