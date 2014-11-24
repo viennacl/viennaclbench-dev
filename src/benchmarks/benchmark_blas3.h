@@ -48,11 +48,15 @@ public:
 
   template<typename ScalarType>
   void run_benchmark();
+
+  template<typename ScalarType>
+  void run_benchmark_impl(bool trans_A, bool trans_B, int testId);
+
 private:
   QVector<double> testResultHolder; ///< Holds results of each taken test. Median test value is marked as the final benchmark result.
-  int blas3MatrixSizeA; ///< Matrix size1
-  int blas3MatrixSizeB; ///< Matrix size2
-  int blas3MatrixSizeC; ///< Matrix size3
+  int blas3MinSize; ///< Minimum matrix size
+  int blas3MaxSize; ///< Maximum matrix size
+  int blas3IncFactor; ///< Increment factor
 signals:
   /* Inherited signals:
    * void errorMessage(QString message);

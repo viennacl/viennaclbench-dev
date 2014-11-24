@@ -21,9 +21,9 @@ BenchmarkInstance::BenchmarkInstance()
  */
 void BenchmarkInstance::setSettings(BenchmarkSettings s)
 {
-  this->settings.blas3MatSizeA = s.blas3MatSizeA;
-  this->settings.blas3MatSizeB = s.blas3MatSizeB;
-  this->settings.blas3MatSizeC = s.blas3MatSizeC;
+  this->settings.blas3MinSize = s.blas3MinSize;
+  this->settings.blas3MaxSize = s.blas3MaxSize;
+  this->settings.blas3IncFactor = s.blas3IncFactor;
 
   this->settings.copyIncFactor = s.copyIncFactor;
   this->settings.copyMaxVectorSize = s.copyMaxVectorSize;
@@ -33,8 +33,7 @@ void BenchmarkInstance::setSettings(BenchmarkSettings s)
   this->settings.vectorMaxVectorSize = s.vectorMaxVectorSize;
   this->settings.vectorIncFactor = s.vectorIncFactor;
 
-  this->settings.sparseMatSizeA = s.sparseMatSizeA;
-  this->settings.sparseMatSizeB = s.sparseMatSizeB;
+  this->settings.sparseMatSize = s.sparseMatSize;
   this->settings.sparseCustomMatrix = s.sparseCustomMatrix;
 
 }

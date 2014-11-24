@@ -366,8 +366,7 @@ bool ExpertBenchmark::validateSettings(){
   if(ui->expert_VectorVecMin->value() >= ui->expert_VectorVecMax->value()) return false;
   if(ui->expert_VectorIncFactor->value() <= 1) return false;
 
-  if(ui->expert_SparseAMatSize->value() <= 0) return false;
-  if(ui->expert_SparseBMatSize->value() <= 0) return false;
+  if(ui->expert_SparseMatSize->value() <= 0) return false;
 
   return true;
 }
@@ -380,9 +379,9 @@ BenchmarkSettings ExpertBenchmark::getExpertSettings()
 {
   BenchmarkSettings settings;
 
-  settings.blas3MatSizeA = ui->expert_Blas3AMatSize->value();
-  settings.blas3MatSizeB = ui->expert_Blas3BMatSize->value();
-  settings.blas3MatSizeC = ui->expert_Blas3CMatSize->value();
+  settings.blas3MinSize = ui->expert_Blas3AMatSize->value();
+  settings.blas3MaxSize = ui->expert_Blas3BMatSize->value();
+  settings.blas3IncFactor = ui->expert_Blas3CMatSize->value();
 
   settings.copyIncFactor = ui->expert_CopyIncFactor->value();
   settings.copyMaxVectorSize = ui->expert_CopyVecMax->value() * 1000;
@@ -392,8 +391,7 @@ BenchmarkSettings ExpertBenchmark::getExpertSettings()
   settings.vectorMaxVectorSize = ui->expert_VectorVecMax->value() * 1000;
   settings.vectorIncFactor = ui->expert_VectorIncFactor->value();
 
-  settings.sparseMatSizeA = ui->expert_SparseAMatSize->value();
-  settings.sparseMatSizeB = ui->expert_SparseBMatSize->value();
+  settings.sparseMatSize = ui->expert_SparseMatSize->value();
   settings.sparseCustomMatrix = ui->expert_SparseCustomMatrix->text();
 
   return settings;
@@ -655,9 +653,9 @@ void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCust
 void ExpertBenchmark::loadDefaultSettings(){
   BenchmarkSettings defaultSettings;
 
-  ui->expert_Blas3AMatSize->setValue(defaultSettings.blas3MatSizeA);
-  ui->expert_Blas3BMatSize->setValue(defaultSettings.blas3MatSizeB);
-  ui->expert_Blas3CMatSize->setValue(defaultSettings.blas3MatSizeC);
+  ui->expert_Blas3AMatSize->setValue(defaultSettings.blas3MinSize);
+  ui->expert_Blas3BMatSize->setValue(defaultSettings.blas3MaxSize);
+  ui->expert_Blas3CMatSize->setValue(defaultSettings.blas3IncFactor);
 
   ui->expert_CopyIncFactor->setValue(defaultSettings.copyIncFactor);
   ui->expert_CopyVecMax->setValue(defaultSettings.copyMaxVectorSize / 1000);
@@ -667,7 +665,6 @@ void ExpertBenchmark::loadDefaultSettings(){
   ui->expert_VectorVecMax->setValue(defaultSettings.vectorMaxVectorSize / 1000);
   ui->expert_VectorIncFactor->setValue(defaultSettings.vectorIncFactor);
 
-  ui->expert_SparseAMatSize->setValue(defaultSettings.sparseMatSizeA);
-  ui->expert_SparseBMatSize->setValue(defaultSettings.sparseMatSizeB);
+  ui->expert_SparseMatSize->setValue(defaultSettings.sparseMatSize);
   ui->expert_SparseCustomMatrix->setText(defaultSettings.sparseCustomMatrix);
 }

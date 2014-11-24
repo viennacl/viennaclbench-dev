@@ -21,12 +21,11 @@ void BenchmarkSettings::initBasicDefaults(){
   vectorMaxVectorSize = 5120000;//
   vectorIncFactor = 2; //size x2 each step
 
-  blas3MatSizeA = 2048;
-  blas3MatSizeB = 2048;
-  blas3MatSizeC = 2048;
+  blas3MinSize = 128;
+  blas3MaxSize = 2048;
+  blas3IncFactor = 2;
 
-  sparseMatSizeA = 200;
-  sparseMatSizeB = 200;
+  sparseMatSize = 300*300; // 90k unknowns should be sufficiently large to cover kernel launch latencies
   sparseCustomMatrix = QString("");//empty string for default matrix (generated on the fly)
 }
 
@@ -35,9 +34,9 @@ void BenchmarkSettings::initBasicDefaults(){
  * \param s Settings from which to load
  */
 void BenchmarkSettings::setSettings(BenchmarkSettings s){
-  this->blas3MatSizeA = s.blas3MatSizeA;
-  this->blas3MatSizeB = s.blas3MatSizeB;
-  this->blas3MatSizeC = s.blas3MatSizeC;
+  this->blas3MinSize = s.blas3MinSize;
+  this->blas3MaxSize = s.blas3MaxSize;
+  this->blas3IncFactor = s.blas3IncFactor;
 
   this->copyIncFactor = s.copyIncFactor;
   this->copyMaxVectorSize = s.copyMaxVectorSize;
@@ -47,8 +46,7 @@ void BenchmarkSettings::setSettings(BenchmarkSettings s){
   this->vectorMaxVectorSize = s.vectorMaxVectorSize;
   this->vectorIncFactor = s.vectorIncFactor;
 
-  this->sparseMatSizeA = s.sparseMatSizeA;
-  this->sparseMatSizeB = s.sparseMatSizeB;
+  this->sparseMatSize = s.sparseMatSize;
   this->sparseCustomMatrix = s.sparseCustomMatrix;
 }
 
@@ -80,26 +78,24 @@ void BenchmarkSettings::setVectorSettings(int min, int max, int increment)
 
 /*!
  * \brief Sets Blas3 benchmark settings
- * \param matA Matrix size1
- * \param matB Matrix size2
- * \param matC Matrix size3
+ * \param minSize   Minimum matrix size
+ * \param maxSize   Maximum matrix size
+ * \param incFactor Increment factor (typically 2)
  */
-void BenchmarkSettings::setBlas3Settings(int matA, int matB, int matC)
+void BenchmarkSettings::setBlas3Settings(int minSize, int maxSize, int incFactor)
 {
-  blas3MatSizeA = matA;
-  blas3MatSizeB = matB;
-  blas3MatSizeC = matC;
+  blas3MinSize = minSize;
+  blas3MaxSize = maxSize;
+  blas3IncFactor = incFactor;
 }
 
 /*!
  * \brief Sets Sparse benchmark settings
- * \param matA Matrix size x
- * \param matB Matrix size y
+ * \param size  Approximate size of the sparse matrix (will be rounded to next square number)
  * \param pathToCustomMatrix Absolute path to cusotm matrix
  */
-void BenchmarkSettings::setSparseSettings(int matA, int matB, QString pathToCustomMatrix)
+void BenchmarkSettings::setSparseSettings(int size, QString pathToCustomMatrix)
 {
-  sparseMatSizeA = matA;
-  sparseMatSizeB = matB;
+  sparseMatSize = size;
   sparseCustomMatrix = pathToCustomMatrix;
 }

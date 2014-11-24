@@ -21,18 +21,17 @@ public:
   int vectorMaxVectorSize; ///< MAX_BENCHMARK_VECTOR_SIZE
   int vectorIncFactor; ///< INCREMENT_FACTOR
 
-  int blas3MatSizeA; ///< blas3MatrixSizeA
-  int blas3MatSizeB; ///< blas3MatrixSizeB
-  int blas3MatSizeC; ///< blas3MatrixSizeC
+  int blas3MinSize; ///< blas3MatrixSizeA
+  int blas3MaxSize; ///< blas3MatrixSizeB
+  int blas3IncFactor; ///< blas3MatrixSizeC
 
-  int sparseMatSizeA; ///< xPoints
-  int sparseMatSizeB; ///< yPoints
+  int sparseMatSize; ///< Approximated number of nonzeros in matrix
   QString sparseCustomMatrix; ///< customSparseMatrixPath
 
   void setCopySettings(int min, int max, int increment);
   void setVectorSettings(int min, int max, int increment);
-  void setBlas3Settings(int matA, int matB, int matC);
-  void setSparseSettings(int matA, int matB, QString pathToCustomMatrix);
+  void setBlas3Settings(int minSize, int maxSize, int incFactor);
+  void setSparseSettings(int size, QString pathToCustomMatrix);
   void initBasicDefaults();
 //signals:
 
