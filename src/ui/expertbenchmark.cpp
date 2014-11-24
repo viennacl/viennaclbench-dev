@@ -38,6 +38,7 @@ ExpertBenchmark::~ExpertBenchmark()
  * \brief Initializes all benchmark plots.
  */
 void ExpertBenchmark::initExpert(){
+  loadDefaultSettings();
   //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
   //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
 
@@ -338,7 +339,9 @@ void ExpertBenchmark::setCustomSparseMatrixPath(){
  * \return Returns true if there is enough memory, false if there isn't.
  */
 bool ExpertBenchmark::estimateRequiredVideoMemory(){
-
+//  std::cout << "current device max video memory: " << viennacl::ocl::current_context().current_device().global_mem_size() << std::endl;
+  cl_ulong videoMemory = viennacl::ocl::current_context().current_device().global_mem_size();
+  //TODO calculate memory requirements for each benchmark
   return true;
 }
 
@@ -347,22 +350,22 @@ bool ExpertBenchmark::estimateRequiredVideoMemory(){
  * \return Returns true if settings are valid, otherise false.
  */
 bool ExpertBenchmark::validateSettings(){
-  if(ui->expert_Blas3AMatSize->text().toInt() <= 0) return false;
-  if(ui->expert_Blas3BMatSize->text().toInt() <= 0) return false;
-  if(ui->expert_Blas3CMatSize->text().toInt() <= 0) return false;
+  if(ui->expert_Blas3AMatSize->value() <= 0) return false;
+  if(ui->expert_Blas3BMatSize->value() <= 0) return false;
+  if(ui->expert_Blas3CMatSize->value() <= 0) return false;
 
-  if(ui->expert_CopyVecMin->text().toInt() <= 0) return false;
-  if(ui->expert_CopyVecMax->text().toInt() <= 0) return false;
-  if(ui->expert_CopyVecMin->text().toInt() >= ui->expert_CopyVecMax->text().toInt()) return false;
+  if(ui->expert_CopyVecMin->value() <= 0) return false;
+  if(ui->expert_CopyVecMax->value() <= 0) return false;
+  if(ui->expert_CopyVecMin->value() >= ui->expert_CopyVecMax->value()) return false;
 
-  if(ui->expert_CopyIncFactor->text().toInt() <= 1) return false;
-  if(ui->expert_VectorVecMin->text().toInt() <= 0) return false;
-  if(ui->expert_VectorVecMax->text().toInt() <= 0) return false;
-  if(ui->expert_VectorVecMin->text().toInt() >= ui->expert_VectorVecMax->text().toInt()) return false;
-  if(ui->expert_VectorIncFactor->text().toInt() <= 1) return false;
+  if(ui->expert_CopyIncFactor->value() <= 1) return false;
+  if(ui->expert_VectorVecMin->value() <= 0) return false;
+  if(ui->expert_VectorVecMax->value() <= 0) return false;
+  if(ui->expert_VectorVecMin->value() >= ui->expert_VectorVecMax->value()) return false;
+  if(ui->expert_VectorIncFactor->value() <= 1) return false;
 
-  if(ui->expert_SparseAMatSize->text().toInt() <= 0) return false;
-  if(ui->expert_SparseBMatSize->text().toInt() <= 0) return false;
+  if(ui->expert_SparseAMatSize->value() <= 0) return false;
+  if(ui->expert_SparseBMatSize->value() <= 0) return false;
 
   return true;
 }
@@ -375,20 +378,20 @@ BenchmarkSettings ExpertBenchmark::getExpertSettings()
 {
   BenchmarkSettings settings;
 
-  settings.blas3MatSizeA = ui->expert_Blas3AMatSize->text().toInt();
-  settings.blas3MatSizeB = ui->expert_Blas3BMatSize->text().toInt();
-  settings.blas3MatSizeC = ui->expert_Blas3CMatSize->text().toInt();
+  settings.blas3MatSizeA = ui->expert_Blas3AMatSize->value();
+  settings.blas3MatSizeB = ui->expert_Blas3BMatSize->value();
+  settings.blas3MatSizeC = ui->expert_Blas3CMatSize->value();
 
-  settings.copyIncFactor = ui->expert_CopyIncFactor->text().toInt();
-  settings.copyMaxVectorSize = ui->expert_CopyVecMax->text().toInt() * 1000;
-  settings.copyMinVectorSize = ui->expert_CopyVecMin->text().toInt() * 1000;
+  settings.copyIncFactor = ui->expert_CopyIncFactor->value();
+  settings.copyMaxVectorSize = ui->expert_CopyVecMax->value() * 1000;
+  settings.copyMinVectorSize = ui->expert_CopyVecMin->value() * 1000;
 
-  settings.vectorMinVectorSize = ui->expert_VectorVecMin->text().toInt() * 1000;
-  settings.vectorMaxVectorSize = ui->expert_VectorVecMax->text().toInt() * 1000;
-  settings.vectorIncFactor = ui->expert_VectorIncFactor->text().toInt();
+  settings.vectorMinVectorSize = ui->expert_VectorVecMin->value() * 1000;
+  settings.vectorMaxVectorSize = ui->expert_VectorVecMax->value() * 1000;
+  settings.vectorIncFactor = ui->expert_VectorIncFactor->value();
 
-  settings.sparseMatSizeA = ui->expert_SparseAMatSize->text().toInt();
-  settings.sparseMatSizeB = ui->expert_SparseBMatSize->text().toInt();
+  settings.sparseMatSizeA = ui->expert_SparseAMatSize->value();
+  settings.sparseMatSizeB = ui->expert_SparseBMatSize->value();
   settings.sparseCustomMatrix = ui->expert_SparseCustomMatrix->text();
 
   return settings;
@@ -650,19 +653,19 @@ void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCust
 void ExpertBenchmark::loadDefaultSettings(){
   BenchmarkSettings defaultSettings;
 
-  ui->expert_Blas3AMatSize->setText(QString::number(defaultSettings.blas3MatSizeA));
-  ui->expert_Blas3BMatSize->setText(QString::number(defaultSettings.blas3MatSizeB));
-  ui->expert_Blas3CMatSize->setText(QString::number(defaultSettings.blas3MatSizeC));
+  ui->expert_Blas3AMatSize->setValue(defaultSettings.blas3MatSizeA);
+  ui->expert_Blas3BMatSize->setValue(defaultSettings.blas3MatSizeB);
+  ui->expert_Blas3CMatSize->setValue(defaultSettings.blas3MatSizeC);
 
-  ui->expert_CopyIncFactor->setText(QString::number(defaultSettings.copyIncFactor));
-  ui->expert_CopyVecMax->setText(QString::number(defaultSettings.copyMaxVectorSize / 1000));
-  ui->expert_CopyVecMin->setText(QString::number(defaultSettings.copyMinVectorSize / 1000));
+  ui->expert_CopyIncFactor->setValue(defaultSettings.copyIncFactor);
+  ui->expert_CopyVecMax->setValue(defaultSettings.copyMaxVectorSize / 1000);
+  ui->expert_CopyVecMin->setValue(defaultSettings.copyMinVectorSize / 1000);
 
-  ui->expert_VectorVecMin->setText(QString::number(defaultSettings.vectorMinVectorSize / 1000));
-  ui->expert_VectorVecMax->setText(QString::number(defaultSettings.vectorMaxVectorSize / 1000));
-  ui->expert_VectorIncFactor->setText(QString::number(defaultSettings.vectorIncFactor));
+  ui->expert_VectorVecMin->setValue(defaultSettings.vectorMinVectorSize / 1000);
+  ui->expert_VectorVecMax->setValue(defaultSettings.vectorMaxVectorSize / 1000);
+  ui->expert_VectorIncFactor->setValue(defaultSettings.vectorIncFactor);
 
-  ui->expert_SparseAMatSize->setText(QString::number(defaultSettings.sparseMatSizeA));
-  ui->expert_SparseBMatSize->setText(QString::number(defaultSettings.sparseMatSizeB));
+  ui->expert_SparseAMatSize->setValue(defaultSettings.sparseMatSizeA);
+  ui->expert_SparseBMatSize->setValue(defaultSettings.sparseMatSizeB);
   ui->expert_SparseCustomMatrix->setText(defaultSettings.sparseCustomMatrix);
 }

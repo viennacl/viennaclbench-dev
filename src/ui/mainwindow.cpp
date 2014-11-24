@@ -272,6 +272,20 @@ void MainWindow::startExpertBenchmarkExecution(){
   currentBenchProgress = 0;
   maximumBenchProgress = 0;
   expertProgressBar->setValue(currentBenchProgress);
+
+  if(!ui->expertBenchmark->validateSettings()){
+    showErrorMessageBox(QString("Selected benchmark settings are invalid. Please correct them."));
+    return;
+  }
+
+  switchContext( expertContextComboBox->currentIndex() );//switch to currently selected context
+
+  if(!ui->expertBenchmark->estimateRequiredVideoMemory()){
+
+  }
+
+
+
   expertProgressBar->setFormat("Starting Benchmark...");
   QStringList selectedBenchmarkItems;
   for ( int i = 1; i < expertBenchmarkListWidget->count(); i++ ) {
@@ -302,7 +316,6 @@ void MainWindow::startExpertBenchmarkExecution(){
   basicStopBenchmarkButton->show();
   basicStartBenchmarkButton->hide();
 
-  switchContext( expertContextComboBox->currentIndex() );//switch to currently selected context
   BenchmarkSettings customSettings;
   customSettings.setSettings(ui->expertBenchmark->getExpertSettings());
   benchmarkController.executeSelectedBenchmarks( selectedBenchmarkItems, customSettings, getExpertPrecision(), BENCHMARK_MODE_EXPERT );//start the benchmark
