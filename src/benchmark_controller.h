@@ -50,11 +50,6 @@ static void init_plot(QCustomPlot * plot,
 
   plot->setBackground(backgroundBrush);
 
-  //plot->xAxis->setAutoTicks(false);
-  //plot->xAxis->setAutoTickLabels(false);
-  //plot->xAxis->setAutoTickStep(false);
-  //plot->xAxis->setAutoSubTicks(false);
-
   QFont axisTickFont;
   axisTickFont.setBold(false);
 
@@ -69,6 +64,8 @@ static void init_plot(QCustomPlot * plot,
   plot->xAxis->setLabelFont(axisTickFont);
   plot->xAxis->setTickLabelFont(QFont(axisTickFont));
   plot->xAxis->setRange(xmin, xmax);
+  plot->xAxis->setAutoTickStep(false);
+  plot->xAxis->setSubTickCount(8);
 
 
   if (ylogarithmic)
@@ -81,6 +78,8 @@ static void init_plot(QCustomPlot * plot,
   plot->yAxis->setLabelFont(axisTickFont);
   plot->yAxis->setTickLabelFont(QFont(axisTickFont));
   plot->yAxis->setRange(ymin, ymax);
+  plot->yAxis->setAutoTickStep(false);
+  plot->yAxis->setSubTickCount(8);
 
   plot->yAxis->grid()->setVisible(true);
   plot->yAxis->setTickLabelRotation( 0 );

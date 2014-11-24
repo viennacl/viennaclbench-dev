@@ -150,6 +150,8 @@ void BasicBenchmark::initBasic(){
   ui->basic_FinalResultPlot->xAxis->setNumberFormat("gb"); // e = exponential, b = beautiful decimal powers
   ui->basic_FinalResultPlot->xAxis->setNumberPrecision(0);
   ui->basic_FinalResultPlot->xAxis->setRange( 0.1, 5000.0);
+  ui->basic_FinalResultPlot->xAxis->setAutoTickStep(false);
+  ui->basic_FinalResultPlot->xAxis->setSubTickCount(8);
 
   ui->basic_FinalResultPlot->setBackground(backgroundBrush);
 

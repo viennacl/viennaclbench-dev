@@ -155,6 +155,8 @@ void ExpertBenchmark::initExpert(){
   ui->expert_FinalResultPlot->xAxis->setNumberFormat("gb"); // e = exponential, b = beautiful decimal powers
   ui->expert_FinalResultPlot->xAxis->setNumberPrecision(0);
   ui->expert_FinalResultPlot->xAxis->setRange( 0.1, 5000.0);
+  ui->expert_FinalResultPlot->xAxis->setAutoTickStep(false);
+  ui->expert_FinalResultPlot->xAxis->setSubTickCount(8);
 
   ui->expert_FinalResultPlot->setBackground(backgroundBrush);
 
