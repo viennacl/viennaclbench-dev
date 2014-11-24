@@ -254,20 +254,13 @@ void Benchmark_Sparse::execute()
   emit unitMeasureSignal("GFLOPs - Sparse", Qt::XAxis);
 
   if(getPrecision() == SINGLE_PRECISION)
-  {//Single
     run_benchmark<float>();
-  }
-
-  else if( getPrecision() == DOUBLE_PRECISION)
-  {//Double
+  else if( getPrecision() == DOUBLE_PRECISION
 #ifdef VIENNACL_WITH_OPENCL
-    if( viennacl::ocl::current_device().double_support() )
+           && viennacl::ocl::current_device().double_support()
 #endif
-      //what if current device does not support double precision?
-    {
-      run_benchmark<double>();
-    }
-  }
+           )
+    run_benchmark<double>();
 
   qSort(testResultHolder);//sort test results in ascending order
   emit finalResultSignal("Sparse", testResultHolder[testResultHolder.size()-1]);

@@ -173,23 +173,14 @@ void Benchmark_Copy::execute(){
   emit unitMeasureSignal("GB/s", Qt::YAxis);
   emit unitMeasureSignal("Vector Size", Qt::XAxis);
 
-  //Single Precision
   if(getPrecision() == SINGLE_PRECISION)
-  {
     run_benchmark<float>();
-  }
-
-  //Double Precision
-  else if( getPrecision() == DOUBLE_PRECISION)
-  {
+  else if( getPrecision() == DOUBLE_PRECISION
 #ifdef VIENNACL_WITH_OPENCL
-    if( viennacl::ocl::current_device().double_support() )
+           && viennacl::ocl::current_device().double_support()
 #endif
-      //what if current device does not support double precision?
-    {
-      run_benchmark<double>();
-    }
-  }
+           )
+    run_benchmark<double>();
 
   qSort(testResultHolder);//sort test results in ascending order
   emit finalResultSignal("Copy", testResultHolder[testResultHolder.size()-1]);

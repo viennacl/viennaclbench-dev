@@ -90,8 +90,10 @@ void Benchmark_Controller::stopExecution()
 /*!
  * \brief Starts the next queued benchmark. Emits \ref emptyBenchmarkQ() signal if there are no more queued benchmarks.
  */
-void Benchmark_Controller::startNextBenchmark(){
-  if(!benchmarkQ.isEmpty()){
+void Benchmark_Controller::startNextBenchmark()
+{
+  if(!benchmarkQ.isEmpty())
+  {
     QString nextBenchmarkName;
     nextBenchmarkName = benchmarkQ.dequeue();
 
@@ -166,6 +168,13 @@ void Benchmark_Controller::executeSelectedBenchmarks(QStringList benchmarkNamesL
 
   setPrecision(precision);
   setMode(mode);
+
+#ifdef VIENNACL_WITH_OPENCL
+  if( getPrecision() == DOUBLE_PRECISION && !viennacl::ocl::current_device().double_support() )
+  {
+    emit errorMessage("Cannot run benchmark: The current device does not support double precision.");
+  }
+#endif
 
   if(!benchmarkNamesList.isEmpty()){
     enqueueBenchmarks(benchmarkNamesList);
