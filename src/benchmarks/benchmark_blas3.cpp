@@ -34,9 +34,9 @@ Benchmark_Blas3::Benchmark_Blas3(QObject *parent) :
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
   BenchmarkSettings settings;
-  blas3MatrixSizeA = settings.blas3MatSizeA;
-  blas3MatrixSizeB = settings.blas3MatSizeB;
-  blas3MatrixSizeC = settings.blas3MatSizeC;
+  blas3MinSize = settings.blas3MinSize;
+  blas3MaxSize = settings.blas3MaxSize;
+  blas3IncFactor = settings.blas3IncFactor;
 }
 
 /*!
@@ -48,9 +48,9 @@ Benchmark_Blas3::Benchmark_Blas3(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Blas3();
   setPrecision(precision);
-  blas3MatrixSizeA = settings.blas3MatSizeA;
-  blas3MatrixSizeB = settings.blas3MatSizeB;
-  blas3MatrixSizeC = settings.blas3MatSizeC;
+  blas3MinSize = settings.blas3MinSize;
+  blas3MaxSize = settings.blas3MaxSize;
+  blas3IncFactor = settings.blas3IncFactor;
 }
 
 
@@ -62,45 +62,63 @@ template<typename ScalarType>
  */
 void Benchmark_Blas3::run_benchmark()
 {
-  Timer timer;
-  int testId = 0;
+  run_benchmark_impl<ScalarType>(false, false, 0);
+  run_benchmark_impl<ScalarType>(false, true,  1);
+  run_benchmark_impl<ScalarType>(true,  false, 2);
+  run_benchmark_impl<ScalarType>(true,  true,  3);
+}
 
-  for (std::size_t N=128; N<=blas3MatrixSizeA; N *= 2)
+template<typename ScalarType>
+/*!
+ * \brief Main benchmarking function
+ * Should only be called by the \ref Benchmark_Blas3::execute() function,
+ * since there are certain requirements that need to be fulfilled before starting the benchmarking procedure.
+ */
+void Benchmark_Blas3::run_benchmark_impl(bool trans_A, bool trans_B, int testId)
+{
+  Timer timer;
+
+  for (std::size_t N=blas3MinSize; N<=blas3MaxSize; N *= 2)
   {
-    viennacl::matrix<ScalarType> vcl_A(N, N);
-    viennacl::matrix<ScalarType> vcl_B(N, N);
+    viennacl::matrix<ScalarType> vcl_A = viennacl::scalar_matrix<ScalarType>(N, N, ScalarType(1.0));
+    viennacl::matrix<ScalarType> vcl_B = viennacl::scalar_matrix<ScalarType>(N, N, ScalarType(1.1));
     viennacl::matrix<ScalarType> vcl_C(N, N);
 
-    //
-    // One alternative: Put the matrices into a contiguous block of memory (allows to use viennacl::fast_copy(), avoiding temporary memory)
-    //
-    std::vector<ScalarType> stl_A(vcl_A.internal_size());
-    std::vector<ScalarType> stl_B(vcl_B.internal_size());
+    // warmup:
+    if (!trans_A && !trans_B)
+      vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
+    else if (!trans_A && trans_B)
+      vcl_C = viennacl::linalg::prod(vcl_A, trans(vcl_B));
+    else if (trans_A && !trans_B)
+      vcl_C = viennacl::linalg::prod(trans(vcl_A), vcl_B);
+    else
+      vcl_C = viennacl::linalg::prod(trans(vcl_A), trans(vcl_B));
 
-    //
-    // Fill the matrix
-    //
-    for (unsigned int i = 0; i < N; ++i)
-      for (unsigned int j = 0; j < N; ++j)
-        stl_A[i*N + j] = random<ScalarType>();
-
-    for (unsigned int i = 0; i < N; ++i)
-      for (unsigned int j = 0; j < N; ++j)
-        stl_B[i + j*N] = random<ScalarType>();
-
-    //  std::cout << " ------ Benchmark 1: Matrix-Matrix product ------ " << std::endl;
-
-    viennacl::fast_copy(&(stl_A[0]), &(stl_A[0]) + stl_A.size(), vcl_A);
-    viennacl::fast_copy(&(stl_B[0]), &(stl_B[0]) + stl_B.size(), vcl_B);
-    vcl_C = viennacl::linalg::prod(vcl_A, vcl_B); // warmup
+    ////// Benchmark Start
     viennacl::backend::finish();
     timer.start();
-    vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
+
+    if (!trans_A && !trans_B)
+      vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
+    else if (!trans_A && trans_B)
+      vcl_C = viennacl::linalg::prod(vcl_A, trans(vcl_B));
+    else if (trans_A && !trans_B)
+      vcl_C = viennacl::linalg::prod(trans(vcl_A), vcl_B);
+    else
+      vcl_C = viennacl::linalg::prod(trans(vcl_A), trans(vcl_B));
+
     viennacl::backend::finish();
     double exec_time = timer.get();
+    ////// Benchmark Stop
 
+    std::string line_desc("C = A");
+    if (trans_A)
+      line_desc += "^T";
+    line_desc += " * B";
+    if (trans_B)
+      line_desc += "^T";
     double gflops_per_second = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
-    emit resultSignal("Matrix-Matrix product", N, gflops_per_second, LINE_GRAPH, testId);
+    emit resultSignal(line_desc.c_str(), N, gflops_per_second, LINE_GRAPH, testId);
     testResultHolder.append(gflops_per_second);
     emit testProgress();
 
@@ -109,6 +127,8 @@ void Benchmark_Blas3::run_benchmark()
   }
 
 }
+
+
 
 /*!
  * \brief Begins the benchmark execution.

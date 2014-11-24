@@ -34,8 +34,8 @@ Benchmark_Sparse::Benchmark_Sparse(QObject *parent) :
   testResultHolder.clear();
   setPrecision(DOUBLE_PRECISION);
   BenchmarkSettings settings;
-  xPoints = (viennacl::vcl_size_t) settings.sparseMatSizeA;
-  yPoints = (viennacl::vcl_size_t) settings.sparseMatSizeB;
+  xPoints = static_cast<viennacl::vcl_size_t>(std::sqrt(static_cast<double>(settings.sparseMatSize)));
+  yPoints = static_cast<viennacl::vcl_size_t>(settings.sparseMatSize) / xPoints;  // remaining truncation error is negligible
   customSparseMatrixPath = settings.sparseCustomMatrix;
 }
 
@@ -48,8 +48,8 @@ Benchmark_Sparse::Benchmark_Sparse(bool precision, BenchmarkSettings settings)
 {
   Benchmark_Sparse();
   setPrecision(precision);
-  xPoints = (viennacl::vcl_size_t) settings.sparseMatSizeA;
-  yPoints = (viennacl::vcl_size_t) settings.sparseMatSizeB;
+  xPoints = static_cast<viennacl::vcl_size_t>(std::sqrt(static_cast<double>(settings.sparseMatSize)));
+  yPoints = static_cast<viennacl::vcl_size_t>(settings.sparseMatSize) / xPoints;  // remaining truncation error is negligible
   customSparseMatrixPath = settings.sparseCustomMatrix;
 }
 

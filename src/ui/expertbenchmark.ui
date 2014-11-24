@@ -14,16 +14,7 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item row="0" column="0" colspan="2">
@@ -395,21 +386,21 @@ border-top: 2px groove gray;
           <item row="0" column="1">
            <widget class="QLabel" name="expert_AMatSizeLabel">
             <property name="text">
-             <string>Matrix Size M</string>
+             <string>Min Size</string>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
            <widget class="QLabel" name="expert_BMatSizeLabel">
             <property name="text">
-             <string>Matrix Size N</string>
+             <string>Max Size</string>
             </property>
            </widget>
           </item>
           <item row="0" column="3">
            <widget class="QLabel" name="expert_CMatSizeLabel">
             <property name="text">
-             <string>Matrix Size K</string>
+             <string>Increment Factor</string>
             </property>
            </widget>
           </item>
@@ -476,29 +467,13 @@ border-top: 2px groove gray;
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QSpinBox" name="expert_SparseAMatSize">
+           <widget class="QSpinBox" name="expert_SparseMatSize">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
-            <property name="focusPolicy">
-             <enum>Qt::ClickFocus</enum>
-            </property>
-            <property name="buttonSymbols">
-             <enum>QAbstractSpinBox::NoButtons</enum>
-            </property>
-            <property name="text" stdset="0">
-             <string>0</string>
-            </property>
-            <property name="maximum">
-             <number>9999999</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QSpinBox" name="expert_SparseBMatSize">
             <property name="focusPolicy">
              <enum>Qt::ClickFocus</enum>
             </property>
@@ -532,7 +507,7 @@ border-top: 2px groove gray;
               </property>
               <property name="maximumSize">
                <size>
-                <width>110</width>
+                <width>210</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -904,16 +879,7 @@ border-top: 1px groove gray;
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_9">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
+      <property name="margin">
        <number>0</number>
       </property>
       <property name="spacing">
