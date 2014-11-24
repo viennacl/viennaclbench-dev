@@ -293,9 +293,9 @@ void MainWindow::startExpertBenchmarkExecution(){
       selectedBenchmarkItems.append(expertBenchmarkListWidget->item(i)->text());
       //add each selected benchmark's number of tests to maximumBenchProgress
       switch(i){
-      case 1: maximumBenchProgress += 3; break;//blas3 3 tests
-      case 2: maximumBenchProgress += 6; break;//copy 6 tests
-      case 3: maximumBenchProgress += 6; break;//sparse 6 tests
+      case 1: maximumBenchProgress += 1; break;//blas3 1 tests
+      case 2: maximumBenchProgress += 2; break;//copy 2 tests
+      case 3: maximumBenchProgress += 7; break;//sparse 7 tests
       case 4:
       {
         int maxVectorSize = ui->expertBenchmark->getExpertSettings().vectorMaxVectorSize;
