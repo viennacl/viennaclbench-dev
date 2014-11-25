@@ -120,6 +120,49 @@ void MainWindow::showErrorMessageBox(QString message){
 }
 
 /*!
+ * \brief Implementation of the platform chooser for a particular device type
+ *
+ * \param platform_obj   The ViennaCL platform object
+ * \param platformId     The internal ID used for the platform
+ * \param device_type    One out of CL_DEVICE_TYPE_GPU, CL_DEVICE_TYPE_ACCELERATOR, CL_DEVICE_TYPE_CPU.
+ */
+void MainWindow::initPlatformDeviceChooser_impl(viennacl::ocl::platform & platform_obj, size_t platformId, cl_device_type device_type, long & contextCounter)
+{
+  typedef std::vector< viennacl::ocl::device > devices_type;
+
+  // not using platform_obj.devices() here, since it throws an exception if no device is found.
+  cl_device_id device_ids[VIENNACL_OCL_MAX_DEVICE_NUM];
+  cl_uint num_devices = 0;
+  cl_int err = clGetDeviceIDs(platform_obj.id(), device_type, VIENNACL_OCL_MAX_DEVICE_NUM, device_ids, &num_devices);
+
+  if (err == CL_DEVICE_NOT_FOUND)
+    return;
+
+  devices_type devices;
+  devices.reserve(num_devices);
+  for (cl_uint i=0; i<num_devices; ++i)
+    devices.push_back(viennacl::ocl::device(device_ids[i]));
+
+  //---DEVICES---
+  for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
+  {
+    //Setup contexts; one context per each device/platform combo
+    viennacl::ocl::set_context_platform_index( contextCounter, platformId);
+    viennacl::ocl::setup_context(contextCounter, *iter);
+
+    //Construct a context info string to be shown in the UI
+    QString contextInfo = "[" + QString::number(contextCounter) +
+        "] " + QString::fromStdString(iter->name()) +
+        " | " + QString::fromStdString(platform_obj.info());
+    //Keep track of this context
+    contextMap.insert(contextCounter, contextInfo);
+
+    ++contextCounter;
+  }
+
+}
+
+/*!
  * \brief Inits the platform choose UI component and adds all available ViennaCL contexts to the context map.
  */
 void MainWindow::initPlatformDeviceChooser(){
@@ -133,26 +176,11 @@ void MainWindow::initPlatformDeviceChooser(){
   platforms_type platforms = viennacl::ocl::get_platforms();
   for( size_t platformId = 0; platformId < platforms.size() ; ++platformId )
   {
-    devices_type devices = platforms[platformId].devices(CL_DEVICE_TYPE_ALL);
-
-    //---DEVICES---
-    for(devices_type::iterator iter = devices.begin(); iter != devices.end(); iter++)
-    {
-      //Setup contexts; one context per each device/platform combo
-      viennacl::ocl::set_context_platform_index( contextCounter, platformId);
-      viennacl::ocl::setup_context(contextCounter, *iter);
-
-      //Construct a context info string to be shown in the UI
-      QString contextInfo = "[" + QString::number(contextCounter) +
-          "] " + QString::fromStdString(iter->name()) +
-          " | " + QString::fromStdString(platforms[platformId].info());
-      //Keep track of this context
-      contextMap.insert(contextCounter, contextInfo);
-
-      ++contextCounter;
-    }
-    //END---DEVICES---
-
+    // On MacOS the CPU is returned as first device, but the GPU should be the 'default'.
+    // Therefore, we probe all GPUs first, then all accelerators, then CPUs.
+    initPlatformDeviceChooser_impl(platforms[platformId], platformId, CL_DEVICE_TYPE_GPU,         contextCounter);
+    initPlatformDeviceChooser_impl(platforms[platformId], platformId, CL_DEVICE_TYPE_ACCELERATOR, contextCounter);
+    initPlatformDeviceChooser_impl(platforms[platformId], platformId, CL_DEVICE_TYPE_CPU,         contextCounter);
   }
   //END---PLATFORMS---
 

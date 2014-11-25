@@ -71,6 +71,8 @@ public:
   bool getExpertPrecision();
   void initPlatformDeviceChooser();
 private:
+  void initPlatformDeviceChooser_impl(viennacl::ocl::platform & platform_obj, size_t platformId, cl_device_type device_type, long & contextCounter);
+
   QMap<int, QString> contextMap; ///< Maps available contexts for easier switching.
   Ui::MainWindow *ui;
   Benchmark_Controller benchmarkController; ///< The main controller object
