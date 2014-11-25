@@ -5,9 +5,9 @@
 #include <QTimer>
 
 
-/*! \mainpage ViennaCL Benchmark 1.0.0 source code documentation.
+/*! \mainpage ViennaCLBench 1.0.0 source code documentation.
 
-  \section intro Welcome to ViennaCL Benchmark
+  \section intro Welcome to ViennaCLBench
   This is a cross-platform standalone benchmarking program for the <a href="http://viennacl.sourceforge.net/" target="_blank">ViennaCL</a> library.
   It was developed in Qt and supports two build systems, CMake and QMake.
   Its development began as part of 2014 Google Summer of Code.

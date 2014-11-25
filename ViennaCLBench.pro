@@ -10,7 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
 CONFIG -= console
 
-TARGET = ViennaCL_Benchmark
+TARGET = ViennaCLBench
 TEMPLATE = app
 
 SOURCES += src/main.cpp \

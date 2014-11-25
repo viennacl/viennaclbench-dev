@@ -116,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
  * \param message Received error message to be shown
  */
 void MainWindow::showErrorMessageBox(QString message){
-  QMessageBox::warning(this, QString("ViennaCL Benchmark"), message);
+  QMessageBox::warning(this, QString("ViennaCLBench"), message);
 }
 
 /*!
@@ -221,7 +221,7 @@ void MainWindow::initMatrixMarket(){
  */
 void MainWindow::startMatrixMarketBenchmark(QString matrixFilename)
 {
-//  QMessageBox::information(this, QString("ViennaCL Benchmark"), "MatrixMarket file downloaded successfully. Please select matrix from the advanced benchmark tab to run benchmarks.");
+//  QMessageBox::information(this, QString("ViennaCLBench"), "MatrixMarket file downloaded successfully. Please select matrix from the advanced benchmark tab to run benchmarks.");
 
   ui->mainMenuListWidget->setCurrentRow(1);//switch to benchmark tab
   ui->benchmarkPageTabWidget->setCurrentIndex(1);//switch to expert benchmark tab

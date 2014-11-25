@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 ENDIF()
 
 # Set package properties 
-project(ViennaCL_Benchmark)
+project(ViennaCLBench)
 
 # Disable -rdynamic
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
@@ -95,13 +95,13 @@ include_directories(${OPENCL_INCLUDE_DIR})
 #set ViennaCL to use OpenCL
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVIENNACL_WITH_OPENCL")
 
-file(GLOB ViennaCL_Benchmark_Sources
+file(GLOB ViennaCLBench_Sources
     "src/benchmarks/*.cpp"
     "src/*.cpp"
     "src/ui/*.cpp"
 )
 
-file(GLOB ViennaCL_Benchmark_Headers
+file(GLOB ViennaCLBench_Headers
     "src/benchmarks/*.h"
     "src/benchmarks/*.hpp"
     "src/*.h"
@@ -110,40 +110,40 @@ file(GLOB ViennaCL_Benchmark_Headers
     "src/ui/*.hpp"
 )
 
-file(GLOB ViennaCL_Benchmark_Ui_Files
+file(GLOB ViennaCLBench_Ui_Files
     "src/ui/*.ui"
 )
 
-file(GLOB ViennaCL_Benchmark_Resources
+file(GLOB ViennaCLBench_Resources
     "resources/*.qrc"
 )
 
 #Generate ui headers
 IF(USE_QT5)
-qt5_wrap_ui(wrapped_ui_headers ${ViennaCL_Benchmark_Ui_Files})
+qt5_wrap_ui(wrapped_ui_headers ${ViennaCLBench_Ui_Files})
 ELSE()
-qt4_wrap_ui(wrapped_ui_headers ${ViennaCL_Benchmark_Ui_Files} )
+qt4_wrap_ui(wrapped_ui_headers ${ViennaCLBench_Ui_Files} )
 ENDIF()
 
 #Add the resource files
 IF(USE_QT5)
-qt5_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
+qt5_add_resources(added_resources ${ViennaCLBench_Resources} )
 ELSE()
-qt4_add_resources(added_resources ${ViennaCL_Benchmark_Resources} )
+qt4_add_resources(added_resources ${ViennaCLBench_Resources} )
 ENDIF()
 
-add_executable(ViennaCL_Benchmark ${GUI_TYPE} ${ViennaCL_Benchmark_Sources} ${ViennaCL_Benchmark_Headers} ${wrapped_ui_headers} ${added_resources} )
+add_executable(ViennaCLBench ${GUI_TYPE} ${ViennaCLBench_Sources} ${ViennaCLBench_Headers} ${wrapped_ui_headers} ${added_resources} )
 
 # Link Qt
 IF(USE_QT5)# Qt5
-    target_link_libraries(ViennaCL_Benchmark ${OPENCL_LIBRARIES} )
-    qt5_use_modules(ViennaCL_Benchmark Core Gui Widgets WebKitWidgets)
+    target_link_libraries(ViennaCLBench ${OPENCL_LIBRARIES} )
+    qt5_use_modules(ViennaCLBench Core Gui Widgets WebKitWidgets)
 ELSE()# Qt4
-    target_link_libraries(ViennaCL_Benchmark ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
-    #qt4_use_modules(ViennaCL_Benchmark Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
-    target_link_libraries(ViennaCL_Benchmark Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
+    target_link_libraries(ViennaCLBench ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
+    #qt4_use_modules(ViennaCLBench Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
+    target_link_libraries(ViennaCLBench Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
 ENDIF()
 
 # Link Zlib and Libarchive
-target_link_libraries(ViennaCL_Benchmark ${archive_static_LIBRARY} ${zlibstatic_LIBRARY})
+target_link_libraries(ViennaCLBench ${archive_static_LIBRARY} ${zlibstatic_LIBRARY})
 
