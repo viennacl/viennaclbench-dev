@@ -59,7 +59,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>110</width>
          <height>255</height>
         </size>
        </property>
@@ -815,6 +815,12 @@ color: #404040;
    </item>
    <item row="2" column="0">
     <widget class="QGroupBox" name="expert_PrecisionGroupBox">
+     <property name="minimumSize">
+      <size>
+       <width>110</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="maximumSize">
       <size>
        <width>100</width>
