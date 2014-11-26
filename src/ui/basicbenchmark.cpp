@@ -1,7 +1,7 @@
 #include "basicbenchmark.h"
 #include "ui_basicbenchmark.h"
 
-
+#include <QToolTip>
 
 /*!
  * \brief Default constructor.
@@ -94,7 +94,10 @@ void BasicBenchmark::initBasic(){
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
     //filter each item selection
-    connect(plot, SIGNAL( selectionChangedByUser()), this, SLOT(selectionChanged()) );
+    connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(selectionChanged()) );
+
+    // display value of ticks
+    connect(plot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(showPointToolTip(QMouseEvent*)));
 
     plot->replot();
   }
@@ -261,6 +264,59 @@ void BasicBenchmark::selectionChanged(){
       item->setSelected(true);
       graph->setSelected(true);
     }
+  }
+}
+
+
+/*!
+ * \brief Draws a tooltip onto a plot, highlighting the respective data set
+ */
+void BasicBenchmark::showPointToolTip(QMouseEvent *event)
+{
+  int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
+
+  double x = currentPlot->xAxis->pixelToCoord(event->posF().x());
+  double y = currentPlot->yAxis->pixelToCoord(event->posF().y());
+
+  QCPGraph *closestGraph = NULL;
+  double key = 0;
+  double value = 0;
+  double min_distance = std::numeric_limits<double>::max();
+
+  for (int i=0; i < currentPlot->graphCount(); ++i)
+  {
+    QCPGraph *graph = currentPlot->graph(i);
+
+    foreach(QCPData data, graph->data()->values())
+    {
+      double current_distance = qAbs(x - data.key) + qAbs(y - data.value);
+
+      if (current_distance < min_distance && qAbs(x - data.key) / qAbs(data.key) < 0.5)
+      {
+        closestGraph = graph;
+        min_distance = current_distance;
+        key   = data.key;
+        value = data.value;
+      }
+    }
+  }
+
+  if (closestGraph)
+  {
+    QToolTip::hideText();
+    QToolTip::showText(event->globalPos(),
+                       tr("<table>"
+                            "<tr><th colspan=\"2\">%L1</th></tr>"
+                            "<tr><td>%L2:</td><td>%L3</td></tr>"
+                            "<tr><td>%L4:</td>" "<td>%L5</td></tr>"
+                          "</table>").
+                          arg(closestGraph->name().isEmpty() ? "..." : closestGraph->name()).
+                          arg(closestGraph->keyAxis()->label()).
+                          arg(key).
+                          arg(closestGraph->valueAxis()->label()).
+                          arg(value),
+                       this, this->rect());
   }
 }
 

@@ -75,6 +75,7 @@ public slots:
   void updateFinalResultPlot(QString benchmarkName, double finalResult);
   void graphClicked(QCPAbstractPlottable *plottable);
   void selectionChanged();
+  void showPointToolTip(QMouseEvent *event);
   void updateBenchProgress();
   void updateBenchmarkListWidget(QListWidgetItem *item);
   void resetPlotData(QCustomPlot *benchmarkGraph);
