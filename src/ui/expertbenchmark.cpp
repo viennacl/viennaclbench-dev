@@ -159,7 +159,7 @@ void ExpertBenchmark::initExpert(){
   ui->expert_FinalResultPlot->xAxis->setScaleLogBase(10);
   ui->expert_FinalResultPlot->xAxis->setNumberFormat("gb"); // e = exponential, b = beautiful decimal powers
   ui->expert_FinalResultPlot->xAxis->setNumberPrecision(0);
-  ui->expert_FinalResultPlot->xAxis->setRange( 0.1, 5000.0);
+  ui->expert_FinalResultPlot->xAxis->setRange( 0.1, 10000.0);
   ui->expert_FinalResultPlot->xAxis->setAutoTickStep(false);
   ui->expert_FinalResultPlot->xAxis->setSubTickCount(8);
 
@@ -553,32 +553,51 @@ void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double v
   }
 
   QPen pen;//(QColor("red"));
+  pen.setWidth(2);
+  double scatter_size = 10;
   switch(testId){
-  case 0: pen.setColor("green");
+  case 0:
+    pen.setColor("black");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, scatter_size));
     break;
-  case 1: pen.setColor("blue");
+  case 1:
+    pen.setColor("red");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssSquare, scatter_size));
     break;
-  case 2: pen.setColor("black");
+  case 2:
+    pen.setColor("green");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDiamond, scatter_size));
     break;
-  case 3: pen.setColor("red");
+  case 3:
+    pen.setColor("orange");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssTriangle, scatter_size));
     break;
-  case 4: pen.setColor("cyan");
+  case 4:
+    pen.setColor("magenta");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, scatter_size));
     break;
-  case 5: pen.setColor("magenta");
+  case 5:
+    pen.setColor("darkCyan");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssPlus, scatter_size));
     break;
-  case 6: pen.setColor("gray");
+  case 6:
+    pen.setColor("brown");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssStar, scatter_size));
     break;
-  case 7: pen.setColor("yellow");
+  case 7:
+    pen.setColor("yellow");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssTriangleInverted, scatter_size));
     break;
-  case 8: pen.setColor("pink");
+  case 8:
+    pen.setColor("pink");
+    currentResultGraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, scatter_size));
     break;
-  default: pen.setColor("orange");
+  default: pen.setColor("cyan");
   }
   currentResultGraph->setName(benchmarkName);
   currentResultGraph->addData( key, value );
   currentResultGraph->setPen(pen);
   currentResultGraph->setLineStyle(QCPGraph::lsLine);
-  currentResultGraph->setScatterStyle(QCPScatterStyle::ssCrossSquare);
 
   customPlot->replot();
 }
