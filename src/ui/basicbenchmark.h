@@ -94,6 +94,8 @@ public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
   void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
   void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
+  void showFullscreenDetailedPlot();
+  void showHoverPointToolTip(QMouseEvent *event);
 private:
   int activeBenchmark;
   int currentBenchProgress;

@@ -36,7 +36,13 @@ BasicBenchmark::BasicBenchmark(QWidget *parent) :
   currentBenchProgress = 0;
   connect(ui->basic_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
   connect(ui->basic_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
+  connect(ui->basic_fullscreenButton, SIGNAL(clicked()), this, SLOT(showFullscreenDetailedPlot()) );
   initBasic();
+}
+
+void BasicBenchmark::showFullscreenDetailedPlot(){
+  ui->basic_BenchmarkListWidget->hide();
+  ui->basic_FinalResultPlot->hide();
 }
 
 /*!
@@ -108,8 +114,8 @@ void BasicBenchmark::initBasic(){
     //filter each item selection
     connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(selectionChanged()) );
 
-    // display value of ticks
-    connect(plot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(showPointToolTip(QMouseEvent*)));
+    // display value of ticks on mouse hover
+    connect(plot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(showHoverPointToolTip(QMouseEvent*)));
 
     plot->replot();
   }
@@ -279,6 +285,68 @@ void BasicBenchmark::selectionChanged(){
   }
 }
 
+/*!
+ * \brief Draws a tooltip over a hovered graph point, showing the data values at that point
+ */
+void BasicBenchmark::showHoverPointToolTip(QMouseEvent *event)
+{
+  int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
+  QCPAbstractPlottable *plottable = currentPlot->plottableAt(event->localPos());//get the plottable object under the mouse
+
+  if(plottable)
+  {
+    double x = currentPlot->xAxis->pixelToCoord(event->localPos().x());//convert mouse pixel position to plot coordinates
+
+    QCPGraph *graph = qobject_cast<QCPGraph*>(plottable);//we want a graph, not a bar
+
+    if(graph)
+    {
+      double key = 0;
+      double value = 0;
+
+      QList<double> graphKeys = graph->data()->keys();//get all the keys (x values of all points) of the hovered graph
+
+      bool ok = false;
+      double closestKey = 0;
+      double closestDistance = std::numeric_limits<double>::max();
+
+      //iterate through all points and find the one that's closest to our mouse
+      //we are looking at a single graph,
+      //thus we only need to look at the x-axis values and calculate their distance to our mouse cursor x-axis value;
+      for(int i = 0; i < graphKeys.length(); i++){
+        double distance = qAbs(graphKeys[i] - x);
+        if(distance < closestDistance){
+          closestDistance = distance;
+          closestKey = graphKeys[i];
+          ok = true;
+        }
+      }
+
+      if(ok)
+      {
+        //a valid graph point was found
+        key = closestKey;
+        value = graph->data()->value(key).value;//get the y-axis value
+
+        QToolTip::showText(event->globalPos(),
+                           tr("<table>"
+                              "<tr><th colspan=\"2\">%L1</th></tr>"
+                              "<tr><td>%L2:</td><td>%L3</td></tr>"
+                              "<tr><td>%L4:</td>" "<td>%L5</td></tr>"
+                              "</table>").
+                           arg(graph->name().isEmpty() ? "..." : graph->name()).
+                           arg(graph->keyAxis()->label()).
+                           arg(key).
+                           arg(graph->valueAxis()->label()).
+                           arg(value),
+                           currentPlot, this->rect());
+
+      }//end if(ok)
+
+    }//end if(graph)
+  }//end if(plottable)
+}
 
 /*!
  * \brief Draws a tooltip onto a plot, highlighting the respective data set
@@ -324,15 +392,15 @@ void BasicBenchmark::showPointToolTip(QMouseEvent *event)
     QToolTip::hideText();
     QToolTip::showText(event->globalPos(),
                        tr("<table>"
-                            "<tr><th colspan=\"2\">%L1</th></tr>"
-                            "<tr><td>%L2:</td><td>%L3</td></tr>"
-                            "<tr><td>%L4:</td>" "<td>%L5</td></tr>"
+                          "<tr><th colspan=\"2\">%L1</th></tr>"
+                          "<tr><td>%L2:</td><td>%L3</td></tr>"
+                          "<tr><td>%L4:</td>" "<td>%L5</td></tr>"
                           "</table>").
-                          arg(closestGraph->name().isEmpty() ? "..." : closestGraph->name()).
-                          arg(closestGraph->keyAxis()->label()).
-                          arg(key).
-                          arg(closestGraph->valueAxis()->label()).
-                          arg(value),
+                       arg(closestGraph->name().isEmpty() ? "..." : closestGraph->name()).
+                       arg(closestGraph->keyAxis()->label()).
+                       arg(key).
+                       arg(closestGraph->valueAxis()->label()).
+                       arg(value),
                        this, this->rect());
   }
 }
