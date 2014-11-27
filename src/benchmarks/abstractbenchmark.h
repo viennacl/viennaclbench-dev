@@ -2,6 +2,18 @@
 #ifndef ABSTRACTBENCHMARK_H
 #define ABSTRACTBENCHMARK_H
 
+/* =========================================================================
+   Copyright (c) 2014-2015, Institute for Microelectronics,
+                            Institute for Analysis and Scientific Computing,
+                            TU Wien.
+
+                            -----------------
+                ViennaCLBench - A Free Open-Source Benchmark
+                            -----------------
+
+   License:         MIT (X11), see file LICENSE in the base directory
+============================================================================= */
+
 #include <QObject>
 #include <QString>
 

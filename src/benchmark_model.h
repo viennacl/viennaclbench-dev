@@ -1,5 +1,18 @@
 #ifndef BENCHMARK_MODEL_H
 #define BENCHMARK_MODEL_H
+
+/* =========================================================================
+   Copyright (c) 2014-2015, Institute for Microelectronics,
+                            Institute for Analysis and Scientific Computing,
+                            TU Wien.
+
+                            -----------------
+                ViennaCLBench - A Free Open-Source Benchmark
+                            -----------------
+
+   License:         MIT (X11), see file LICENSE in the base directory
+============================================================================= */
+
 /*
  * Handles benchmark result persistence
  * Saves results to JSON files

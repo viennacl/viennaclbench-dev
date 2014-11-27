@@ -1,5 +1,18 @@
 #ifndef BENCHMARK_CONTROLLER_H
 #define BENCHMARK_CONTROLLER_H
+
+/* =========================================================================
+   Copyright (c) 2014-2015, Institute for Microelectronics,
+                            Institute for Analysis and Scientific Computing,
+                            TU Wien.
+
+                            -----------------
+                ViennaCLBench - A Free Open-Source Benchmark
+                            -----------------
+
+   License:         MIT (X11), see file LICENSE in the base directory
+============================================================================= */
+
 /*
  * Main benchmark execution controller
  * Acts as a central communication hub between the UI and benchmarks

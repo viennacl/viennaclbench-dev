@@ -1,6 +1,18 @@
 #ifndef MATRIXMARKET_WEBVIEW_H
 #define MATRIXMARKET_WEBVIEW_H
 
+/* =========================================================================
+   Copyright (c) 2014-2015, Institute for Microelectronics,
+                            Institute for Analysis and Scientific Computing,
+                            TU Wien.
+
+                            -----------------
+                ViennaCLBench - A Free Open-Source Benchmark
+                            -----------------
+
+   License:         MIT (X11), see file LICENSE in the base directory
+============================================================================= */
+
 #include <QObject>//QObject must be included in order for the next line to work
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
 #include <QtWebKit/QWebView>

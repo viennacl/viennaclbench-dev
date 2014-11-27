@@ -1,6 +1,18 @@
 #ifndef RESULTHISTORY_H
 #define RESULTHISTORY_H
 
+/* =========================================================================
+   Copyright (c) 2014-2015, Institute for Microelectronics,
+                            Institute for Analysis and Scientific Computing,
+                            TU Wien.
+
+                            -----------------
+                ViennaCLBench - A Free Open-Source Benchmark
+                            -----------------
+
+   License:         MIT (X11), see file LICENSE in the base directory
+============================================================================= */
+
 #include <QWidget>
 #include <QAbstractItemModel>
 #include <QDir>

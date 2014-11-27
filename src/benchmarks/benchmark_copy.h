@@ -1,6 +1,18 @@
 #ifndef BENCHMARK_COPY_H
 #define BENCHMARK_COPY_H
 
+/* =========================================================================
+   Copyright (c) 2014-2015, Institute for Microelectronics,
+                            Institute for Analysis and Scientific Computing,
+                            TU Wien.
+
+                            -----------------
+                ViennaCLBench - A Free Open-Source Benchmark
+                            -----------------
+
+   License:         MIT (X11), see file LICENSE in the base directory
+============================================================================= */
+
 #include "abstractbenchmark.h"
 
 #include "viennacl/scalar.hpp"
