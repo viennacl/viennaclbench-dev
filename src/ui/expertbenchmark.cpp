@@ -63,9 +63,9 @@ void ExpertBenchmark::initExpert(){
   expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 200px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
-  init_plot(blas3_DetailedPlot, 100, 10000, true, .1, 10000, true);
+  init_plot(blas3_DetailedPlot, 100, 10000, true, .01, 10000, true);
   copy_DetailedPlot = new QCustomPlot();
-  init_plot(copy_DetailedPlot, 1000, 11000000, true, .1, 100, true);
+  init_plot(copy_DetailedPlot, 1000, 11000000, true, .01, 100, true);
   //  qr_DetailedPlot = new QCustomPlot();
   //  solver_DetailedPlot = new QCustomPlot();
   sparse_DetailedPlot = new QCustomPlot();
@@ -83,7 +83,7 @@ void ExpertBenchmark::initExpert(){
   sparse_DetailedPlot->yAxis->setTickVectorLabels(emptyTickVectorLabels);
 
   vector_DetailedPlot = new QCustomPlot();
-  init_plot(vector_DetailedPlot, 100, 11000000, true, .1, 1000, true);
+  init_plot(vector_DetailedPlot, 100, 11000000, true, .01, 1000, true);
 
   expert_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
   expert_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
