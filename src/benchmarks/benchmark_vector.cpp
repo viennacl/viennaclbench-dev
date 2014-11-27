@@ -17,6 +17,7 @@
 */
 
 #include "benchmark_vector.h"
+#include <stdexcept>
 
 // inner prod
 struct exec_inner_prod_host
@@ -129,14 +130,23 @@ Benchmark_Vector::Benchmark_Vector(bool precision, BenchmarkSettings settings)
 template<typename ScalarType>
 void Benchmark_Vector::run_benchmark()
 {
-  run_benchmark_impl<ScalarType, exec_inner_prod_host  >("Inner Product - Host",   2, 0);
-  run_benchmark_impl<ScalarType, exec_inner_prod_device>("Inner Product - Device", 2, 1);
+  try
+  {
+    run_benchmark_impl<ScalarType, exec_inner_prod_host  >("Inner Product - Host",   2, 0);
+    run_benchmark_impl<ScalarType, exec_inner_prod_device>("Inner Product - Device", 2, 1);
 
-  run_benchmark_impl<ScalarType, exec_addition_host  >("Addition - Host",   3, 2);
-  run_benchmark_impl<ScalarType, exec_addition_device>("Addition - Device", 3, 3);
+    run_benchmark_impl<ScalarType, exec_addition_host  >("Addition - Host",   3, 2);
+    run_benchmark_impl<ScalarType, exec_addition_device>("Addition - Device", 3, 3);
 
-  run_benchmark_impl<ScalarType, exec_multadd_host  >("Multiply&Add - Host",   3, 4);
-  run_benchmark_impl<ScalarType, exec_multadd_device>("Multiply&Add - Device", 3, 5);
+    run_benchmark_impl<ScalarType, exec_multadd_host  >("Multiply&Add - Host",   3, 4);
+    run_benchmark_impl<ScalarType, exec_multadd_device>("Multiply&Add - Device", 3, 5);
+  }
+  catch (std::exception const & e)
+  {
+    emit errorMessage("Execution of vector benchmark failed. Skipping benchmark...");
+  }
+
+
 }
 
 

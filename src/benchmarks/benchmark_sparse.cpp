@@ -11,6 +11,7 @@
 ============================================================================= */
 
 #include "benchmark_sparse.h"
+#include <stdexcept>
 #include <QDebug>
 
 /*!
@@ -108,131 +109,139 @@ void Benchmark_Sparse::run_benchmark()
 
   ///////////// Matrix operations /////////////////
 
-  double tempResultValue;
-
-//  std::cout << "------- Matrix-Vector product with compressed_matrix ----------" << std::endl;
-
-  //when using a custom sparse matrix, the benchmark breaks here
-  vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_1, vcl_vec2); //startup calculation
-  vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_4, vcl_vec2); //startup calculation
-  vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_8, vcl_vec2); //startup calculation
-
-  viennacl::backend::finish();
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+  try
   {
-    vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_1, vcl_vec2);
+    double tempResultValue;
+
+  //  std::cout << "------- Matrix-Vector product with compressed_matrix ----------" << std::endl;
+
+    //when using a custom sparse matrix, the benchmark breaks here
+    vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_1, vcl_vec2); //startup calculation
+    vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_4, vcl_vec2); //startup calculation
+    vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_8, vcl_vec2); //startup calculation
+
+    viennacl::backend::finish();
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_1, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("CSR format (no padding)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
+
+
+    viennacl::backend::finish();
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_4, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("CSR format (padding 4)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
+
+    viennacl::backend::finish();
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_8, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("CSR format (padding 8)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
+
+
+  //  std::cout << "------- Matrix-Vector product with coordinate_matrix ----------" << std::endl;
+
+    vcl_vec1 = viennacl::linalg::prod(vcl_coordinate_matrix_128, vcl_vec2); //startup calculation
+    viennacl::backend::finish();
+
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_coordinate_matrix_128, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("COO format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
+
+  //  std::cout << "------- Matrix-Vector product with ell_matrix ----------" << std::endl;
+
+    vcl_vec1 = viennacl::linalg::prod(vcl_ell_matrix_1, vcl_vec2); //startup calculation
+    viennacl::backend::finish();
+
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_ell_matrix_1, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("ELL format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
+
+    //  std::cout << "------- Matrix-Vector product with sliced_ell_matrix ----------" << std::endl;
+
+    vcl_vec1 = viennacl::linalg::prod(vcl_sliced_ell_matrix_1, vcl_vec2); //startup calculation
+    viennacl::backend::finish();
+
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_sliced_ell_matrix_1, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("Sliced ELL format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
+
+
+  //  std::cout << "------- Matrix-Vector product with hyb_matrix ----------" << std::endl;
+
+    vcl_vec1 = viennacl::linalg::prod(vcl_hyb_matrix_1, vcl_vec2); //startup calculation
+    viennacl::backend::finish();
+
+    timer.start();
+    for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+    {
+      vcl_vec1 = viennacl::linalg::prod(vcl_hyb_matrix_1, vcl_vec2);
+    }
+    viennacl::backend::finish();
+    exec_time = timer.get();
+    tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
+
+    emit resultSignal("HYB (ELL+CCSR)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
+    testResultHolder.append(tempResultValue);
+    emit testProgress();
   }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-
-  emit resultSignal("CSR format (no padding)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
-
-
-  viennacl::backend::finish();
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
+  catch (std::exception const & e)
   {
-    vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_4, vcl_vec2);
+    emit errorMessage("Execution of sparse matrix-vector benchmark failed. Skipping benchmark...");
   }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
 
-  emit resultSignal("CSR format (padding 4)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
-
-  viennacl::backend::finish();
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
-  {
-    vcl_vec1 = viennacl::linalg::prod(vcl_compressed_matrix_8, vcl_vec2);
-  }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-
-  emit resultSignal("CSR format (padding 8)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
-
-
-//  std::cout << "------- Matrix-Vector product with coordinate_matrix ----------" << std::endl;
-
-  vcl_vec1 = viennacl::linalg::prod(vcl_coordinate_matrix_128, vcl_vec2); //startup calculation
-  viennacl::backend::finish();
-
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
-  {
-    vcl_vec1 = viennacl::linalg::prod(vcl_coordinate_matrix_128, vcl_vec2);
-  }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-
-  emit resultSignal("COO format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
-
-//  std::cout << "------- Matrix-Vector product with ell_matrix ----------" << std::endl;
-
-  vcl_vec1 = viennacl::linalg::prod(vcl_ell_matrix_1, vcl_vec2); //startup calculation
-  viennacl::backend::finish();
-
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
-  {
-    vcl_vec1 = viennacl::linalg::prod(vcl_ell_matrix_1, vcl_vec2);
-  }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-
-  emit resultSignal("ELL format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
-
-  //  std::cout << "------- Matrix-Vector product with sliced_ell_matrix ----------" << std::endl;
-
-  vcl_vec1 = viennacl::linalg::prod(vcl_sliced_ell_matrix_1, vcl_vec2); //startup calculation
-  viennacl::backend::finish();
-
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
-  {
-    vcl_vec1 = viennacl::linalg::prod(vcl_sliced_ell_matrix_1, vcl_vec2);
-  }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-
-  emit resultSignal("Sliced ELL format", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
-
-
-//  std::cout << "------- Matrix-Vector product with hyb_matrix ----------" << std::endl;
-
-  vcl_vec1 = viennacl::linalg::prod(vcl_hyb_matrix_1, vcl_vec2); //startup calculation
-  viennacl::backend::finish();
-
-  timer.start();
-  for (int runs=0; runs<BENCHMARK_RUNS; ++runs)
-  {
-    vcl_vec1 = viennacl::linalg::prod(vcl_hyb_matrix_1, vcl_vec2);
-  }
-  viennacl::backend::finish();
-  exec_time = timer.get();
-  tempResultValue = printOps(2.0 * static_cast<double>(vcl_compressed_matrix_1.nnz()), static_cast<double>(exec_time) / static_cast<double>(BENCHMARK_RUNS));
-
-  emit resultSignal("HYB (ELL+CCSR)", testResultHolder.size(), tempResultValue, BAR_GRAPH, testId );
-  testResultHolder.append(tempResultValue);
-  emit testProgress();
 }
 
 /*!

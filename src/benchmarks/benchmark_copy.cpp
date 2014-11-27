@@ -12,6 +12,7 @@
 
 
 #include "benchmark_copy.h"
+#include <stdexcept>
 #include <QDebug>
 
 #ifndef BENCHMARK_RUNS
@@ -106,52 +107,61 @@ void Benchmark_Copy::run_benchmark()
   // Benchmark fast_copy operation:
   //
 
-  //host to device
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
-    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
+  try
+  {
+    //host to device
+    for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
+      resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
-    // warmup operation:
-    viennacl::fast_copy(std_vec1, vcl_vec1);
-    viennacl::backend::finish();
-
-    // timings:
-    timer.start();
-    for (std::size_t i=0; i<BENCHMARK_RUNS; ++i)
-    {
+      // warmup operation:
       viennacl::fast_copy(std_vec1, vcl_vec1);
       viennacl::backend::finish();
+
+      // timings:
+      timer.start();
+      for (std::size_t i=0; i<BENCHMARK_RUNS; ++i)
+      {
+        viennacl::fast_copy(std_vec1, vcl_vec1);
+        viennacl::backend::finish();
+      }
+      exec_time_complete = timer.get();
+
+      tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete * BENCHMARK_RUNS / 1e9;
+      emit resultSignal("Copy Host -> Device", vectorSize, tempResultValue, LINE_GRAPH, testId);
+      testResultHolder.append(tempResultValue);
     }
-    exec_time_complete = timer.get();
+    testId++;
+    emit testProgress();
 
-    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Copy Host -> Device", vectorSize, tempResultValue, LINE_GRAPH, testId);
-    testResultHolder.append(tempResultValue);
-  }
-  testId++;
-  emit testProgress();
+    //device to host
+    for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
+      resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
 
-  //device to host
-  for(int vectorSize = MIN_BENCHMARK_VECTOR_SIZE; vectorSize < MAX_BENCHMARK_VECTOR_SIZE; vectorSize *= INCREMENT_FACTOR){
-    resizeVectors<ScalarType>(vectorSize, std_vec1, std_vec2, vcl_vec1, vcl_vec2);
-
-    // warmup operation:
-    viennacl::fast_copy(vcl_vec1, std_vec1);
-    viennacl::backend::finish();
-
-    timer.start();
-    for (std::size_t i=0; i<BENCHMARK_RUNS; ++i)
-    {
+      // warmup operation:
       viennacl::fast_copy(vcl_vec1, std_vec1);
       viennacl::backend::finish();
-    }
-    exec_time_complete = timer.get();
 
-    tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete * BENCHMARK_RUNS / 1e9;
-    emit resultSignal("Copy Device -> Host", vectorSize, tempResultValue, LINE_GRAPH, testId);
-    testResultHolder.append(tempResultValue);
+      timer.start();
+      for (std::size_t i=0; i<BENCHMARK_RUNS; ++i)
+      {
+        viennacl::fast_copy(vcl_vec1, std_vec1);
+        viennacl::backend::finish();
+      }
+      exec_time_complete = timer.get();
+
+      tempResultValue = vectorSize * sizeof(ScalarType) / exec_time_complete * BENCHMARK_RUNS / 1e9;
+      emit resultSignal("Copy Device -> Host", vectorSize, tempResultValue, LINE_GRAPH, testId);
+      testResultHolder.append(tempResultValue);
+    }
+    testId++;
+    emit testProgress();
+
   }
-  testId++;
-  emit testProgress();
+  catch (std::exception const & e)
+  {
+    emit errorMessage("Execution of copy benchmark failed. Skipping benchmark...");
+  }
+
 
 }
 

@@ -17,6 +17,7 @@
 */
 
 #include "benchmark_blas3.h"
+#include <stdexcept>
 
 /*!
  * \brief Default constructor.
@@ -73,53 +74,60 @@ void Benchmark_Blas3::run_benchmark_impl(bool trans_A, bool trans_B, int testId)
 {
   Timer timer;
 
-  for (std::size_t N=blas3MinSize; N<=blas3MaxSize; N *= 2)
+  try
   {
-    viennacl::matrix<ScalarType> vcl_A = viennacl::scalar_matrix<ScalarType>(N, N, ScalarType(1.0));
-    viennacl::matrix<ScalarType> vcl_B = viennacl::scalar_matrix<ScalarType>(N, N, ScalarType(1.1));
-    viennacl::matrix<ScalarType> vcl_C(N, N);
+    for (std::size_t N=blas3MinSize; N<=blas3MaxSize; N *= 2)
+    {
+      viennacl::matrix<ScalarType> vcl_A = viennacl::scalar_matrix<ScalarType>(N, N, ScalarType(1.0));
+      viennacl::matrix<ScalarType> vcl_B = viennacl::scalar_matrix<ScalarType>(N, N, ScalarType(1.1));
+      viennacl::matrix<ScalarType> vcl_C(N, N);
 
-    // warmup:
-    if (!trans_A && !trans_B)
-      vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
-    else if (!trans_A && trans_B)
-      vcl_C = viennacl::linalg::prod(vcl_A, trans(vcl_B));
-    else if (trans_A && !trans_B)
-      vcl_C = viennacl::linalg::prod(trans(vcl_A), vcl_B);
-    else
-      vcl_C = viennacl::linalg::prod(trans(vcl_A), trans(vcl_B));
+      // warmup:
+      if (!trans_A && !trans_B)
+        vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
+      else if (!trans_A && trans_B)
+        vcl_C = viennacl::linalg::prod(vcl_A, trans(vcl_B));
+      else if (trans_A && !trans_B)
+        vcl_C = viennacl::linalg::prod(trans(vcl_A), vcl_B);
+      else
+        vcl_C = viennacl::linalg::prod(trans(vcl_A), trans(vcl_B));
 
-    ////// Benchmark Start
-    viennacl::backend::finish();
-    timer.start();
+      ////// Benchmark Start
+      viennacl::backend::finish();
+      timer.start();
 
-    if (!trans_A && !trans_B)
-      vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
-    else if (!trans_A && trans_B)
-      vcl_C = viennacl::linalg::prod(vcl_A, trans(vcl_B));
-    else if (trans_A && !trans_B)
-      vcl_C = viennacl::linalg::prod(trans(vcl_A), vcl_B);
-    else
-      vcl_C = viennacl::linalg::prod(trans(vcl_A), trans(vcl_B));
+      if (!trans_A && !trans_B)
+        vcl_C = viennacl::linalg::prod(vcl_A, vcl_B);
+      else if (!trans_A && trans_B)
+        vcl_C = viennacl::linalg::prod(vcl_A, trans(vcl_B));
+      else if (trans_A && !trans_B)
+        vcl_C = viennacl::linalg::prod(trans(vcl_A), vcl_B);
+      else
+        vcl_C = viennacl::linalg::prod(trans(vcl_A), trans(vcl_B));
 
-    viennacl::backend::finish();
-    double exec_time = timer.get();
-    ////// Benchmark Stop
+      viennacl::backend::finish();
+      double exec_time = timer.get();
+      ////// Benchmark Stop
 
-    std::string line_desc("C = A");
-    if (trans_A)
-      line_desc += "^T";
-    line_desc += " * B";
-    if (trans_B)
-      line_desc += "^T";
-    double gflops_per_second = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
-    emit resultSignal(line_desc.c_str(), N, gflops_per_second, LINE_GRAPH, testId);
-    testResultHolder.append(gflops_per_second);
+      std::string line_desc("C = A");
+      if (trans_A)
+        line_desc += "^T";
+      line_desc += " * B";
+      if (trans_B)
+        line_desc += "^T";
+      double gflops_per_second = 2.0 * (vcl_A.size1() / 1000.0) * (vcl_A.size2() / 1000.0) * (vcl_B.size2() / 1000.0) / exec_time ;
+      emit resultSignal(line_desc.c_str(), N, gflops_per_second, LINE_GRAPH, testId);
+      testResultHolder.append(gflops_per_second);
 
-    if (exec_time > 10.0) // we don't want the benchmark to get stuck here. The relevant information can already be obtained with less than 10 seconds of execution time.
-      break;
+      if (exec_time > 10.0) // we don't want the benchmark to get stuck here. The relevant information can already be obtained with less than 10 seconds of execution time.
+        break;
+    }
+    emit testProgress();
   }
-  emit testProgress();
+  catch (std::exception const & e)
+  {
+    emit errorMessage("Execution of matrix-matrix-product benchmark failed. Skipping benchmark...");
+  }
 
 }
 
