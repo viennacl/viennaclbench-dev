@@ -301,8 +301,8 @@ void ExpertBenchmark::showPointToolTip(QMouseEvent *event)
   int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
   QCustomPlot *currentPlot = expert_DetailedPlotsVector[currentPlotIndex];
 
-  double x = currentPlot->xAxis->pixelToCoord(event->posF().x());
-  double y = currentPlot->yAxis->pixelToCoord(event->posF().y());
+  double x = currentPlot->xAxis->pixelToCoord(event->localPos().x());
+  double y = currentPlot->yAxis->pixelToCoord(event->localPos().y());
 
   QCPGraph *closestGraph = NULL;
   double key = 0;

@@ -288,8 +288,8 @@ void BasicBenchmark::showPointToolTip(QMouseEvent *event)
   int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
   QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
 
-  double x = currentPlot->xAxis->pixelToCoord(event->posF().x());
-  double y = currentPlot->yAxis->pixelToCoord(event->posF().y());
+  double x = currentPlot->xAxis->pixelToCoord(event->localPos().x());
+  double y = currentPlot->yAxis->pixelToCoord(event->localPos().y());
 
   QCPGraph *closestGraph = NULL;
   double key = 0;
