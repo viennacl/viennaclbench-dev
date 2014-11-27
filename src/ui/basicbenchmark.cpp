@@ -24,7 +24,6 @@ BasicBenchmark::BasicBenchmark(QWidget *parent) :
   ui(new Ui::BasicBenchmark)
 {
   ui->setupUi(this);
-  ui->basic_FinalResultLabel->hide();
   startBenchmarkButton = ui->basic_StartBenchmarkButton;
   stopBenchmarkButton = ui->basic_StopBenchmarkButton;
   progressBar = ui->basic_ProgressBar;
@@ -36,13 +35,8 @@ BasicBenchmark::BasicBenchmark(QWidget *parent) :
   currentBenchProgress = 0;
   connect(ui->basic_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
   connect(ui->basic_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
-  connect(ui->basic_fullscreenButton, SIGNAL(clicked()), this, SLOT(showFullscreenDetailedPlot()) );
+  connect(ui->basic_toggleFullscreenButton, SIGNAL(clicked()), this, SLOT(toggleFullscreenPlots()) );
   initBasic();
-}
-
-void BasicBenchmark::showFullscreenDetailedPlot(){
-  ui->basic_BenchmarkListWidget->hide();
-  ui->basic_FinalResultPlot->hide();
 }
 
 /*!
@@ -57,7 +51,7 @@ BasicBenchmark::~BasicBenchmark()
  * \brief Initializes all benchmark plots.
  */
 void BasicBenchmark::initBasic(){
-  basic_DetailedPlotTab = new QTabWidget(this);
+  basic_DetailedPlotTab = ui->basic_fullscreenPlotsWidget;
   basic_DetailedPlotTab->setStyleSheet("QTabBar::tab{width:200px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
@@ -87,8 +81,6 @@ void BasicBenchmark::initBasic(){
   vector_DetailedPlot = new QCustomPlot();
   init_plot(vector_DetailedPlot, 100, 11000000, true, .01, 1000, true);
 
-
-
   basic_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
   basic_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
   //  basic_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
@@ -103,9 +95,6 @@ void BasicBenchmark::initBasic(){
   basic_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse Matrix-Vector Product");
   basic_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector Operations");
 
-  ui->basic_CollapseWidget->setChildWidget(basic_DetailedPlotTab);
-  ui->basic_CollapseWidget->setText("Detailed Test Results");
-
   foreach(QCustomPlot* plot, basic_DetailedPlotsVector)
   {
     // connect slot that shows a message in the status bar when a graph is clicked:
@@ -115,7 +104,7 @@ void BasicBenchmark::initBasic(){
     connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(selectionChanged()) );
 
     // display value of ticks on mouse hover
-    connect(plot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(showHoverPointToolTip(QMouseEvent*)));
+    connect(plot, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(showHoverPointToolTip(QMouseEvent*)));
 
     plot->replot();
   }
@@ -727,3 +716,16 @@ void BasicBenchmark::plotFinalResult(QString benchmarkName, double value, QCusto
   //customPlot->xAxis->rescale();
   customPlot->replot();
 }
+
+/*!
+ * \brief Toggles upper benchmark screen UI visibility
+ */
+void BasicBenchmark::toggleFullscreenPlots(){
+  if(ui->basic_upperContainer->isVisible()){
+    ui->basic_upperContainer->hide();
+  }
+  else{
+    ui->basic_upperContainer->show();
+  }
+}
+

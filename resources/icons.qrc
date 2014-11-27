@@ -23,5 +23,7 @@
         <file>icons/empty.png</file>
         <file>icons/cpuIcon.png</file>
         <file>icons/gpuIcon.png</file>
+        <file>icons/upArrow.png</file>
+        <file>icons/downArrow.png</file>
     </qresource>
 </RCC>

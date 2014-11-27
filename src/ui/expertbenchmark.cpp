@@ -37,6 +37,7 @@ ExpertBenchmark::ExpertBenchmark(QWidget *parent) :
 
   connect(ui->expert_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
   connect(ui->expert_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
+  connect(ui->expert_toggleFullscreenButton, SIGNAL(clicked()), this, SLOT(toggleFullscreenPlots()) );
   initExpert();
 }
 
@@ -59,7 +60,7 @@ void ExpertBenchmark::initExpert(){
   QColor backgroundColor(240,240,240);
   QBrush backgroundBrush(backgroundColor);
 
-  expert_DetailedPlotTab = new QTabWidget(this);
+  expert_DetailedPlotTab = ui->expert_fullscreenPlotsWidget;
   expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 200px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
@@ -99,9 +100,6 @@ void ExpertBenchmark::initExpert(){
   expert_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse Matrix-Vector Product");
   expert_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector Operations");
 
-  ui->expert_CollapseWidget->setChildWidget(expert_DetailedPlotTab);
-  ui->expert_CollapseWidget->setText("Detailed Test Results");
-
   //xAxis bottom
   //yAxis left
   //xAxis2 top
@@ -116,7 +114,7 @@ void ExpertBenchmark::initExpert(){
     connect(plot, SIGNAL( selectionChangedByUser()), this, SLOT(selectionChanged()) );
 
     // display value of ticks
-    connect(plot, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(showPointToolTip(QMouseEvent*)));
+    connect(plot, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(showHoverPointToolTip(QMouseEvent*)));
 
     plot->replot();
   }
@@ -291,6 +289,69 @@ void ExpertBenchmark::selectionChanged()
       graph->setSelected(true);
     }
   }
+}
+
+/*!
+ * \brief Draws a tooltip over a hovered graph point, showing the data values at that point
+ */
+void ExpertBenchmark::showHoverPointToolTip(QMouseEvent *event)
+{
+  int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = expert_DetailedPlotsVector[currentPlotIndex];
+  QCPAbstractPlottable *plottable = currentPlot->plottableAt(event->localPos());//get the plottable object under the mouse
+
+  if(plottable)
+  {
+    double x = currentPlot->xAxis->pixelToCoord(event->localPos().x());//convert mouse pixel position to plot coordinates
+
+    QCPGraph *graph = qobject_cast<QCPGraph*>(plottable);//we want a graph, not a bar
+
+    if(graph)
+    {
+      double key = 0;
+      double value = 0;
+
+      QList<double> graphKeys = graph->data()->keys();//get all the keys (x values of all points) of the hovered graph
+
+      bool ok = false;
+      double closestKey = 0;
+      double closestDistance = std::numeric_limits<double>::max();
+
+      //iterate through all points and find the one that's closest to our mouse
+      //we are looking at a single graph,
+      //thus we only need to look at the x-axis values and calculate their distance to our mouse cursor x-axis value;
+      for(int i = 0; i < graphKeys.length(); i++){
+        double distance = qAbs(graphKeys[i] - x);
+        if(distance < closestDistance){
+          closestDistance = distance;
+          closestKey = graphKeys[i];
+          ok = true;
+        }
+      }
+
+      if(ok)
+      {
+        //a valid graph point was found
+        key = closestKey;
+        value = graph->data()->value(key).value;//get the y-axis value
+
+        QToolTip::showText(event->globalPos(),
+                           tr("<table>"
+                              "<tr><th colspan=\"2\">%L1</th></tr>"
+                              "<tr><td>%L2:</td><td>%L3</td></tr>"
+                              "<tr><td>%L4:</td>" "<td>%L5</td></tr>"
+                              "</table>").
+                           arg(graph->name().isEmpty() ? "..." : graph->name()).
+                           arg(graph->keyAxis()->label()).
+                           arg(key).
+                           arg(graph->valueAxis()->label()).
+                           arg(value),
+                           currentPlot, this->rect());
+
+      }//end if(ok)
+
+    }//end if(graph)
+  }//end if(plottable)
 }
 
 /*!
@@ -774,4 +835,16 @@ void ExpertBenchmark::setupCustomSparseMatrix(QString matrixFilePath)
   ui->expert_SparseCustomMatrix->setText(matrixFilePath);//use the custom matrix file
   ui->expert_BenchmarkListWidget->deselectAllItems();
   ui->expert_BenchmarkListWidget->setSelected(3);//only run the sparse benchmark
+}
+
+/*!
+ * \brief Toggles upper benchmark screen UI visibility
+ */
+void ExpertBenchmark::toggleFullscreenPlots(){
+  if(ui->expert_upperContainer->isVisible()){
+    ui->expert_upperContainer->hide();
+  }
+  else{
+    ui->expert_upperContainer->show();
+  }
 }

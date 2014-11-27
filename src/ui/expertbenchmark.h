@@ -100,6 +100,8 @@ public slots:
   void setCustomSparseMatrixPath();
   void loadDefaultSettings();
   void setupCustomSparseMatrix(QString matrixFilePath);
+  void toggleFullscreenPlots();
+  void showHoverPointToolTip(QMouseEvent *event);
 private:
   int activeBenchmark;
   int currentBenchProgress;
