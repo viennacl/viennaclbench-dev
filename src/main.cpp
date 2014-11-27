@@ -75,8 +75,9 @@ int main(int argc, char *argv[])
   QApplication app(argc, argv);
   SplashScreen *splashScreen = new SplashScreen();
 
-  //I really hate attention-seeking apps. There is no need to steal focus from other applications. Unfortunately, this does not seem to work on Windows...
+  //Make sure splash screen is not hidden by other applications:
   splashScreen->setAttribute(Qt::WA_ShowWithoutActivating);
+  splashScreen->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::SplashScreen);
 
   splashScreen->setPixmap(QPixmap(":/resources/images/splash-screen.jpg"));
   splashScreen->show();
