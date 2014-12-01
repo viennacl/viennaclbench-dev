@@ -281,11 +281,19 @@ void BasicBenchmark::showHoverPointToolTip(QMouseEvent *event)
 {
   int currentPlotIndex = basic_DetailedPlotTab->currentIndex();
   QCustomPlot *currentPlot = basic_DetailedPlotsVector[currentPlotIndex];
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+  QCPAbstractPlottable *plottable = currentPlot->plottableAt(event->posF());//get the plottable object under the mouse
+#else
   QCPAbstractPlottable *plottable = currentPlot->plottableAt(event->localPos());//get the plottable object under the mouse
+#endif
 
   if(plottable)
   {
-    double x = currentPlot->xAxis->pixelToCoord(event->localPos().x());//convert mouse pixel position to plot coordinates
+#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
+    double x = currentPlot->xAxis->pixelToCoord(event->posF().x());
+#else
+    double x = currentPlot->xAxis->pixelToCoord(event->localPos().x());
+#endif
 
     QCPGraph *graph = qobject_cast<QCPGraph*>(plottable);//we want a graph, not a bar
 
