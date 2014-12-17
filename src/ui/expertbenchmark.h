@@ -43,8 +43,8 @@
 
 #include "src/qcustomplot/qcustomplot.h"
 #include "../benchmark_controller.h"
-#include "benchmarklistwidget.h"
-#include "collapsewidget.h"
+#include "widgets/benchmarklistwidget.h"
+#include "widgets/collapsewidget.h"
 #include "matrixmarket_widget.h"
 
 #include "viennacl/ocl/device.hpp"

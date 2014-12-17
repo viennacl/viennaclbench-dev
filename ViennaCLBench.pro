@@ -24,10 +24,10 @@ SOURCES += src/main.cpp \
     src/benchmark_controller.cpp \
     src/benchmarks/benchmark_qr.cpp \
     src/ui/mainwindow.cpp \
-    src/ui/menulistwidget.cpp \
     src/qcustomplot/qcustomplot.cpp \
-    src/ui/benchmarklistwidget.cpp \
-    src/ui/collapsewidget.cpp \
+    src/ui/widgets/menulistwidget.cpp \
+    src/ui/widgets/benchmarklistwidget.cpp \
+    src/ui/widgets/collapsewidget.cpp \
     src/ui/matrixmarket_webview.cpp \
     src/ui/splashscreen.cpp \
     src/ui/matrixmarket_widget.cpp \
@@ -54,9 +54,9 @@ HEADERS  +=    src/benchmark_controller.h \
     src/benchmarks/abstractbenchmark.h \
     src/ui/mainwindow.h \
     src/qcustomplot/qcustomplot.h \
-    src/ui/menulistwidget.h \
-    src/ui/benchmarklistwidget.h \
-    src/ui/collapsewidget.h \
+    src/ui/widgets/menulistwidget.h \
+    src/ui/widgets/benchmarklistwidget.h \
+    src/ui/widgets/collapsewidget.h \
     src/ui/matrixmarket_webview.h \
     src/ui/splashscreen.h \
     src/ui/matrixmarket_widget.h \
@@ -70,7 +70,7 @@ HEADERS  +=    src/benchmark_controller.h \
     src/ui/resulthistory.h
 
 FORMS    += src/ui/mainwindow.ui \
-    src/ui/collapsewidget.ui \
+    src/ui/widgets/collapsewidget.ui \
     src/ui/matrixmarket_widget.ui \
     src/ui/homescreen.ui \
     src/ui/systeminfoscreen.ui \

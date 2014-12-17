@@ -1040,7 +1040,7 @@ color: #404040;
   <customwidget>
    <class>BenchmarkListWidget</class>
    <extends>QListWidget</extends>
-   <header>src/ui/benchmarklistwidget.h</header>
+   <header>src/ui/widgets/benchmarklistwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -485,7 +485,7 @@ QMenuBar:item:selected{
   <customwidget>
    <class>MenuListWidget</class>
    <extends>QListWidget</extends>
-   <header>src/ui/menulistwidget.h</header>
+   <header>src/ui/widgets/menulistwidget.h</header>
   </customwidget>
   <customwidget>
    <class>MatrixMarket_Widget</class>
