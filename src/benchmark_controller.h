@@ -36,7 +36,7 @@
 #include "benchmarkinstance.h"
 #include "benchmark_model.h"
 
-#include "ui/qcustomplot.h"
+#include "src/qcustomplot/qcustomplot.h"
 
 
 /// common initialization for plots. Avoids code duplication */

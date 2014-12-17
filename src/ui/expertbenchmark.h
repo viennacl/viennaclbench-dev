@@ -41,7 +41,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "qcustomplot.h"
+#include "src/qcustomplot/qcustomplot.h"
 #include "../benchmark_controller.h"
 #include "benchmarklistwidget.h"
 #include "collapsewidget.h"

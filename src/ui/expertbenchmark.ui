@@ -1034,7 +1034,7 @@ color: #404040;
   <customwidget>
    <class>QCustomPlot</class>
    <extends>QWidget</extends>
-   <header>src/ui/qcustomplot.h</header>
+   <header>src/qcustomplot/qcustomplot.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

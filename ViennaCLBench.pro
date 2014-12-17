@@ -25,7 +25,7 @@ SOURCES += src/main.cpp \
     src/benchmarks/benchmark_qr.cpp \
     src/ui/mainwindow.cpp \
     src/ui/menulistwidget.cpp \
-    src/ui/qcustomplot.cpp \
+    src/qcustomplot/qcustomplot.cpp \
     src/ui/benchmarklistwidget.cpp \
     src/ui/collapsewidget.cpp \
     src/ui/matrixmarket_webview.cpp \
@@ -53,7 +53,7 @@ HEADERS  +=    src/benchmark_controller.h \
     src/benchmarks/benchmark_qr.h \
     src/benchmarks/abstractbenchmark.h \
     src/ui/mainwindow.h \
-    src/ui/qcustomplot.h \
+    src/qcustomplot/qcustomplot.h \
     src/ui/menulistwidget.h \
     src/ui/benchmarklistwidget.h \
     src/ui/collapsewidget.h \
