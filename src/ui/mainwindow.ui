@@ -31,7 +31,16 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="mainGridLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item row="0" column="0">
@@ -248,7 +257,16 @@ background:#F0F0F0;
 </string>
          </property>
          <layout class="QGridLayout" name="gridLayout">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <property name="spacing">
@@ -286,7 +304,7 @@ border-top: 1px groove gray;*/
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="basic_BenchmarkTab">
              <property name="sizePolicy">
@@ -313,7 +331,7 @@ QTabBar::tab:selected{
              </attribute>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
-               <widget class="BasicBenchmark" name="basicBenchmark" native="true"/>
+               <widget class="BenchmarkScreen" name="basicBenchmark" native="true"/>
               </item>
              </layout>
             </widget>
@@ -323,7 +341,7 @@ QTabBar::tab:selected{
              </attribute>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <item>
-               <widget class="ExpertBenchmark" name="expertBenchmark" native="true"/>
+               <widget class="ExpertBenchmarkScreen" name="expertBenchmark" native="true"/>
               </item>
              </layout>
             </widget>
@@ -410,7 +428,16 @@ QTabBar::tab:selected{
         </widget>
         <widget class="QWidget" name="matrixMarketPage">
          <layout class="QGridLayout" name="gridLayout_8">
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item row="0" column="0">
@@ -437,7 +464,7 @@ QTabBar::tab:selected{
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -506,21 +533,21 @@ QMenuBar:item:selected{
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>BasicBenchmark</class>
+   <class>ExpertBenchmarkScreen</class>
    <extends>QWidget</extends>
-   <header>src/ui/basicbenchmark.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>ExpertBenchmark</class>
-   <extends>QWidget</extends>
-   <header>src/ui/expertbenchmark.h</header>
+   <header>src/ui/expertbenchmarkscreen.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ResultHistory</class>
    <extends>QWidget</extends>
    <header>src/ui/resulthistory.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BenchmarkScreen</class>
+   <extends>QWidget</extends>
+   <header>src/ui/benchmarkscreen.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

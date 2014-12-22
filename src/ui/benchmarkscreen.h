@@ -1,5 +1,5 @@
-#ifndef EXPERTBENCHMARK_H
-#define EXPERTBENCHMARK_H
+#ifndef BENCHMARKSCREEN_H
+#define BENCHMARKSCREEN_H
 
 /* =========================================================================
    Copyright (c) 2014-2015, Institute for Microelectronics,
@@ -50,30 +50,29 @@
 #include "viennacl/ocl/device.hpp"
 #include "viennacl/ocl/platform.hpp"
 
+
 namespace Ui {
-  class ExpertBenchmark;
+  class BenchmarkScreen;
 }
 
-/*! \class ExpertBenchmark
- * \brief The expert (advanced) benchmark user interface is implemented here.
- * Handles benchmark selecting, progress updating, result plotting, starting\stopping, and changing benchmark settings.
+/*! \class BenchmarkScreen
+ * \brief Parent UI form class for basic & expert benchmark UI screens
+ * Handles common features used by both benchmark screens: benchmark selecting, progress updating, result plotting, starting\stopping.
  */
-class ExpertBenchmark : public QWidget
+class BenchmarkScreen : public QWidget
 {
   Q_OBJECT
 
 public:
-  explicit ExpertBenchmark(QWidget *parent = 0);
-  ~ExpertBenchmark();
+  explicit BenchmarkScreen(QWidget *parent = 0);
+  ~BenchmarkScreen();
 
-  void initExpert();
+  void init();
   void plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot);
   void plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId);
   void plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot);
   void resetAllPlots();
-  bool validateSettings();
   bool estimateRequiredVideoMemory();
-  BenchmarkSettings getExpertSettings();
 
   QPushButton *startBenchmarkButton; ///< Exposes the start button
   QPushButton *stopBenchmarkButton; ///< Exposes the stop button
@@ -82,6 +81,7 @@ public:
   BenchmarkListWidget *benchmarkListWidget; ///< Exposes the benchmark selection list widget
   QComboBox *contextComboBox; ///< Exposes the context chooser
 
+  void selectSparseBenchmark();
 public slots:
   void hideStopButton();
   void showBenchmarkStartButton();
@@ -97,18 +97,16 @@ public slots:
   void resetPlotData(QCustomPlot *benchmarkGraph);
   void updateBenchmarkUnitMeasure(QString unitMeasureName, int axis);
   void parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId);
-  void setCustomSparseMatrixPath();
-  void loadDefaultSettings();
-  void setupCustomSparseMatrix(QString matrixFilePath);
   void toggleFullscreenPlots();
   void showHoverPointToolTip(QMouseEvent *event);
-private:
+protected:
+  QWidget *expertConfigPlaceholder;
   int activeBenchmark;
   int currentBenchProgress;
   int maximumBenchProgress;
 
-  QTabWidget *expert_DetailedPlotTab;
-  QVector<QCustomPlot*> expert_DetailedPlotsVector;
+  QTabWidget *detailedPlotTab;
+  QVector<QCustomPlot*> detailedPlotsVector;
   QCustomPlot *blas3_DetailedPlot;
   QCustomPlot *copy_DetailedPlot;
   //  QCustomPlot *qr_DetailedPlot;
@@ -116,7 +114,7 @@ private:
   QCustomPlot *sparse_DetailedPlot;
   QCustomPlot *vector_DetailedPlot;
 
-  Ui::ExpertBenchmark *ui;
+  Ui::BenchmarkScreen *ui;
 };
 
-#endif // EXPERTBENCHMARK_H
+#endif // BENCHMARKSCREEN_H

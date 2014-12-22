@@ -10,8 +10,8 @@
    License:         MIT (X11), see file LICENSE in the base directory
 ============================================================================= */
 
-#include "expertbenchmark.h"
-#include "ui_expertbenchmark.h"
+#include "benchmarkscreen.h"
+#include "ui_benchmarkscreen.h"
 
 #include <QToolTip>
 
@@ -19,32 +19,33 @@
  * \brief Default constructor.
  * \param parent Optional parent object.
  */
-ExpertBenchmark::ExpertBenchmark(QWidget *parent) :
+BenchmarkScreen::BenchmarkScreen(QWidget *parent) :
   QWidget(parent),
-  ui(new Ui::ExpertBenchmark)
+  ui(new Ui::BenchmarkScreen)
 {
   ui->setupUi(this);
+  expertConfigPlaceholder = ui->expert_configBoxPlaceholder;
 
-  startBenchmarkButton = ui->expert_StartBenchmarkButton;
-  stopBenchmarkButton = ui->expert_StopBenchmarkButton;
-  progressBar = ui->expert_ProgressBar;
-  benchmarkListWidget = ui->expert_BenchmarkListWidget;
-  contextComboBox = ui->expert_contextComboBox;
-  singlePrecisionButton = ui->expert_SingleButton;
+  startBenchmarkButton = ui->startBenchmarkButton;
+  stopBenchmarkButton = ui->stopBenchmarkButton;
+  progressBar = ui->progressBar;
+  benchmarkListWidget = ui->benchmarkListWidget;
+  contextComboBox = ui->contextComboBox;
+  singlePrecisionButton = ui->singlePrecisionButton;
 
   maximumBenchProgress = 0;
   currentBenchProgress = 0;
 
-  connect(ui->expert_DoubleButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
-  connect(ui->expert_SingleButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
-  connect(ui->expert_toggleFullscreenButton, SIGNAL(clicked()), this, SLOT(toggleFullscreenPlots()) );
-  initExpert();
+  connect(ui->doublePrecisionButton, SIGNAL(clicked()), this, SLOT(updateDoublePrecisionButtons()) );
+  connect(ui->singlePrecisionButton, SIGNAL(clicked()), this, SLOT(updateSinglePrecisionButtons()) );
+  connect(ui->toggleFullscreenButton, SIGNAL(clicked()), this, SLOT(toggleFullscreenPlots()) );
+  init();
 }
 
 /*!
  * \brief Destructor
  */
-ExpertBenchmark::~ExpertBenchmark()
+BenchmarkScreen::~BenchmarkScreen()
 {
   delete ui;
 }
@@ -52,16 +53,15 @@ ExpertBenchmark::~ExpertBenchmark()
 /*!
  * \brief Initializes all benchmark plots.
  */
-void ExpertBenchmark::initExpert(){
-  loadDefaultSettings();
-  //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->expert_BenchmarkListWidget, SLOT() );
-  //  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+void BenchmarkScreen::init(){
+  //  connect(ui->benchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), ui->benchmarkListWidget, SLOT() );
+  //  connect(ui->benchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
 
   QColor backgroundColor(240,240,240);
   QBrush backgroundBrush(backgroundColor);
 
-  expert_DetailedPlotTab = ui->expert_fullscreenPlotsWidget;
-  expert_DetailedPlotTab->setStyleSheet("QTabBar::tab{width: 200px;height: 25px;}");
+  detailedPlotTab = ui->fullscreenPlotsWidget;
+  detailedPlotTab->setStyleSheet("QTabBar::tab{width: 200px;height: 25px;}");
 
   blas3_DetailedPlot = new QCustomPlot();
   init_plot(blas3_DetailedPlot, 100, 10000, true, .01, 10000, true);
@@ -86,26 +86,26 @@ void ExpertBenchmark::initExpert(){
   vector_DetailedPlot = new QCustomPlot();
   init_plot(vector_DetailedPlot, 100, 11000000, true, .01, 1000, true);
 
-  expert_DetailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
-  expert_DetailedPlotsVector.insert(COPY, copy_DetailedPlot);
-  //  expert_DetailedPlotsVector.insert(QR, qr_DetailedPlot);
-  //  expert_DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
-  expert_DetailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
-  expert_DetailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
+  detailedPlotsVector.insert(BLAS3, blas3_DetailedPlot);
+  detailedPlotsVector.insert(COPY, copy_DetailedPlot);
+  //  DetailedPlotsVector.insert(QR, qr_DetailedPlot);
+  //  DetailedPlotsVector.insert(SOLVER, solver_DetailedPlot);
+  detailedPlotsVector.insert(SPARSE, sparse_DetailedPlot);
+  detailedPlotsVector.insert(VECTOR, vector_DetailedPlot);
 
-  expert_DetailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Dense Matrix-Matrix-Products");
-  expert_DetailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Host-Device Copy");
-  //  expert_DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
-  //  expert_DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
-  expert_DetailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse Matrix-Vector Product");
-  expert_DetailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector Operations");
+  detailedPlotTab->insertTab(BLAS3, blas3_DetailedPlot,"Dense Matrix-Matrix-Products");
+  detailedPlotTab->insertTab(COPY, copy_DetailedPlot,"Host-Device Copy");
+  //  DetailedPlotTab->insertTab(QR, qr_DetailedPlot,"Qr");
+  //  DetailedPlotTab->insertTab(SOLVER, solver_DetailedPlot,"Solver");
+  detailedPlotTab->insertTab(SPARSE, sparse_DetailedPlot,"Sparse Matrix-Vector Product");
+  detailedPlotTab->insertTab(VECTOR, vector_DetailedPlot,"Vector Operations");
 
   //xAxis bottom
   //yAxis left
   //xAxis2 top
   //yAxis2 right
 
-  foreach(QCustomPlot* plot, expert_DetailedPlotsVector)
+  foreach(QCustomPlot* plot, detailedPlotsVector)
   {
     // connect slot that shows a message in the status bar when a graph is clicked:
     connect(plot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
@@ -120,18 +120,18 @@ void ExpertBenchmark::initExpert(){
   }
 
 
-  //ui->expert_FinalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
-  //ui->expert_FinalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
-  ui->expert_FinalResultPlot->axisRect()->setupFullAxesBox();
+  //ui->finalResultPlot->axisRect()->setAutoMargins(QCP::msNone);
+  //ui->finalResultPlot->axisRect()->setMargins(QMargins( 100, 15, 60, 40 ));
+  ui->finalResultPlot->axisRect()->setupFullAxesBox();
   //Disable secondary axes & legend
-  ui->expert_FinalResultPlot->yAxis2->setVisible(false);
-  ui->expert_FinalResultPlot->xAxis2->setVisible(false);
-  ui->expert_FinalResultPlot->legend->setVisible(false);
+  ui->finalResultPlot->yAxis2->setVisible(false);
+  ui->finalResultPlot->xAxis2->setVisible(false);
+  ui->finalResultPlot->legend->setVisible(false);
   //Enable selecting plots
-  ui->expert_FinalResultPlot->setInteractions(QCP::iSelectPlottables);
+  ui->finalResultPlot->setInteractions(QCP::iSelectPlottables);
 
   // connect slot that shows a message in the status bar when a graph is clicked:
-  connect(ui->expert_FinalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
+  connect(ui->finalResultPlot, SIGNAL(plottableClick(QCPAbstractPlottable*,QMouseEvent*)), this, SLOT(graphClicked(QCPAbstractPlottable*)));
 
   QVector<QString> finalResultPlotLabels;
   finalResultPlotLabels.append("Vector - GB/sec");
@@ -153,73 +153,69 @@ void ExpertBenchmark::initExpert(){
   finalResultPlotTicks.append(3);
   finalResultPlotTicks.append(4);
 
-  ui->expert_FinalResultPlot->yAxis->setAutoTickLabels(false);
-  ui->expert_FinalResultPlot->yAxis->setAutoTicks(false);
-  ui->expert_FinalResultPlot->yAxis->setTickVectorLabels(finalResultPlotLabels);
-  ui->expert_FinalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
-  ui->expert_FinalResultPlot->yAxis->setSubTickCount( 0 );
-  ui->expert_FinalResultPlot->yAxis->setTickLength( 0, 2);
-  ui->expert_FinalResultPlot->yAxis->setRange( 0.5, 5.0);
-  ui->expert_FinalResultPlot->yAxis->grid()->setVisible(true);
-  ui->expert_FinalResultPlot->yAxis->setTickLabelRotation( 0 );
+  ui->finalResultPlot->yAxis->setAutoTickLabels(false);
+  ui->finalResultPlot->yAxis->setAutoTicks(false);
+  ui->finalResultPlot->yAxis->setTickVectorLabels(finalResultPlotLabels);
+  ui->finalResultPlot->yAxis->setTickVector(finalResultPlotTicks);
+  ui->finalResultPlot->yAxis->setSubTickCount( 0 );
+  ui->finalResultPlot->yAxis->setTickLength( 0, 2);
+  ui->finalResultPlot->yAxis->setRange( 0.5, 5.0);
+  ui->finalResultPlot->yAxis->grid()->setVisible(true);
+  ui->finalResultPlot->yAxis->setTickLabelRotation( 0 );
 
 
-  ui->expert_FinalResultPlot->xAxis->grid()->setSubGridVisible(true);
-  ui->expert_FinalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
-  ui->expert_FinalResultPlot->xAxis->setScaleLogBase(10);
-  ui->expert_FinalResultPlot->xAxis->setNumberFormat("gb"); // e = exponential, b = beautiful decimal powers
-  ui->expert_FinalResultPlot->xAxis->setNumberPrecision(0);
-  ui->expert_FinalResultPlot->xAxis->setRange( 0.1, 10000.0);
-  ui->expert_FinalResultPlot->xAxis->setAutoTickStep(false);
-  ui->expert_FinalResultPlot->xAxis->setSubTickCount(8);
+  ui->finalResultPlot->xAxis->grid()->setSubGridVisible(true);
+  ui->finalResultPlot->xAxis->setScaleType(QCPAxis::stLogarithmic);
+  ui->finalResultPlot->xAxis->setScaleLogBase(10);
+  ui->finalResultPlot->xAxis->setNumberFormat("gb"); // e = exponential, b = beautiful decimal powers
+  ui->finalResultPlot->xAxis->setNumberPrecision(0);
+  ui->finalResultPlot->xAxis->setRange( 0.1, 10000.0);
+  ui->finalResultPlot->xAxis->setAutoTickStep(false);
+  ui->finalResultPlot->xAxis->setSubTickCount(8);
 
-  ui->expert_FinalResultPlot->setBackground(backgroundBrush);
+  ui->finalResultPlot->setBackground(backgroundBrush);
 
-  ui->expert_StopBenchmarkButton->hide();
+  ui->stopBenchmarkButton->hide();
 
-  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-  connect(ui->expert_BenchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
-  for ( int i = 0; i < ui->expert_BenchmarkListWidget->count(); i++ ) {
-    ui->expert_BenchmarkListWidget->item(i)->setSelected(true);
+  connect(ui->benchmarkListWidget, SIGNAL(itemPressed(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+  connect(ui->benchmarkListWidget, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(updateBenchmarkListWidget(QListWidgetItem*)) );
+  for ( int i = 0; i < ui->benchmarkListWidget->count(); i++ ) {
+    ui->benchmarkListWidget->item(i)->setSelected(true);
   }
-  connect(ui->expert_CustomMatrixBrowsebutton, SIGNAL(clicked()), this, SLOT(setCustomSparseMatrixPath()) );
-  connect(ui->expert_CustomMatrixDefaultButton, SIGNAL(clicked()), ui->expert_SparseCustomMatrix, SLOT(clear()) );
-
-  connect(ui->expert_ResetSettingsButton, SIGNAL(clicked()), this, SLOT(loadDefaultSettings()) );
 }
 
 /*!
  * \brief Shows the start button, hides the stop button, writes "Done" in progressbar.
  * Used after a benchmark seesion is completed.
  */
-void ExpertBenchmark::showBenchmarkStartButton(){
-  ui->expert_StopBenchmarkButton->hide();
-  ui->expert_StartBenchmarkButton->show();
-  ui->expert_ProgressBar->setFormat("Done");
+void BenchmarkScreen::showBenchmarkStartButton(){
+  ui->stopBenchmarkButton->hide();
+  ui->startBenchmarkButton->show();
+  ui->progressBar->setFormat("Done");
   currentBenchProgress = 0;
 }
 
 /*!
  * \brief Changes state of the precision buttons. Single precision - checked, double - unchecked.
  */
-void ExpertBenchmark::updateSinglePrecisionButtons(){
-  ui->expert_SingleButton->setChecked(true);
-  ui->expert_SingleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
+void BenchmarkScreen::updateSinglePrecisionButtons(){
+  ui->singlePrecisionButton->setChecked(true);
+  ui->singlePrecisionButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
-  ui->expert_DoubleButton->setChecked(false);
-  ui->expert_DoubleButton->setIcon(QIcon(":/icons/icons/empty.png"));
+  ui->doublePrecisionButton->setChecked(false);
+  ui->doublePrecisionButton->setIcon(QIcon(":/icons/icons/empty.png"));
 
 }
 
 /*!
  * \brief Changes state of the precision buttons. Double precision - checked, single - unchecked.
  */
-void ExpertBenchmark::updateDoublePrecisionButtons(){
-  ui->expert_DoubleButton->setChecked(true);
-  ui->expert_DoubleButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
+void BenchmarkScreen::updateDoublePrecisionButtons(){
+  ui->doublePrecisionButton->setChecked(true);
+  ui->doublePrecisionButton->setIcon(QIcon(":/icons/icons/checkTrue.png"));
 
-  ui->expert_SingleButton->setChecked(false);
-  ui->expert_SingleButton->setIcon(QIcon(":/icons/icons/empty.png"));
+  ui->singlePrecisionButton->setChecked(false);
+  ui->singlePrecisionButton->setIcon(QIcon(":/icons/icons/empty.png"));
 
 }
 
@@ -227,8 +223,8 @@ void ExpertBenchmark::updateDoublePrecisionButtons(){
  * \brief Changes focus of detailed plots to the currently running benchmark.
  * \param benchmarkIdNumber Id number of the currently active benchmark
  */
-void ExpertBenchmark::setActiveBenchmarkPlot(int benchmarkIdNumber){
-  expert_DetailedPlotTab->setCurrentIndex(benchmarkIdNumber);
+void BenchmarkScreen::setActiveBenchmarkPlot(int benchmarkIdNumber){
+  detailedPlotTab->setCurrentIndex(benchmarkIdNumber);
   activeBenchmark = benchmarkIdNumber;
 }
 
@@ -237,47 +233,47 @@ void ExpertBenchmark::setActiveBenchmarkPlot(int benchmarkIdNumber){
  * \param benchmarkName Benchmark name
  * \param finalResult Benchmark result
  */
-void ExpertBenchmark::updateFinalResultPlot(QString benchmarkName, double finalResult){
-  plotFinalResult(benchmarkName, finalResult, ui->expert_FinalResultPlot);
+void BenchmarkScreen::updateFinalResultPlot(QString benchmarkName, double finalResult){
+  plotFinalResult(benchmarkName, finalResult, ui->finalResultPlot);
 }
 
 /*!
  * \brief Shows the appropriate detailed graph when a result was clicked on in the final plot.
  * \param plottable Plot result that was clicked
  */
-void ExpertBenchmark::graphClicked(QCPAbstractPlottable *plottable)
+void BenchmarkScreen::graphClicked(QCPAbstractPlottable *plottable)
 {
   QString clickedBenchmarkBar = plottable->name();
   if(clickedBenchmarkBar == "Blas3"){
-    expert_DetailedPlotTab->setCurrentIndex(BLAS3);
+    detailedPlotTab->setCurrentIndex(BLAS3);
   }
   else if(clickedBenchmarkBar == "Copy"){
-    expert_DetailedPlotTab->setCurrentIndex(COPY);
+    detailedPlotTab->setCurrentIndex(COPY);
   }
   else if(clickedBenchmarkBar == "Qr"){
-    expert_DetailedPlotTab->setCurrentIndex(QR);
+    detailedPlotTab->setCurrentIndex(QR);
   }
   else if(clickedBenchmarkBar == "Scheduler"){
-    expert_DetailedPlotTab->setCurrentIndex(SCHEDULER);
+    detailedPlotTab->setCurrentIndex(SCHEDULER);
   }
   else if(clickedBenchmarkBar == "Solver"){
-    expert_DetailedPlotTab->setCurrentIndex(SOLVER);
+    detailedPlotTab->setCurrentIndex(SOLVER);
   }
   else if(clickedBenchmarkBar == "Sparse"){
-    expert_DetailedPlotTab->setCurrentIndex(SPARSE);
+    detailedPlotTab->setCurrentIndex(SPARSE);
   }
   else if(clickedBenchmarkBar == "Vector"){
-    expert_DetailedPlotTab->setCurrentIndex(VECTOR);
+    detailedPlotTab->setCurrentIndex(VECTOR);
   }
 }
 
 /*!
  * \brief Detailed plot selection event filter. Highlights a clicked plot on the legend and vice versa.
  */
-void ExpertBenchmark::selectionChanged()
+void BenchmarkScreen::selectionChanged()
 {
-  int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
-  QCustomPlot *currentPlot = expert_DetailedPlotsVector[currentPlotIndex];
+  int currentPlotIndex = detailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = detailedPlotsVector[currentPlotIndex];
   // synchronize selection of graphs with selection of corresponding legend items:
   for (int i=0; i< currentPlot->graphCount(); ++i)
   {
@@ -294,10 +290,10 @@ void ExpertBenchmark::selectionChanged()
 /*!
  * \brief Draws a tooltip over a hovered graph point, showing the data values at that point
  */
-void ExpertBenchmark::showHoverPointToolTip(QMouseEvent *event)
+void BenchmarkScreen::showHoverPointToolTip(QMouseEvent *event)
 {
-  int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
-  QCustomPlot *currentPlot = expert_DetailedPlotsVector[currentPlotIndex];
+  int currentPlotIndex = detailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = detailedPlotsVector[currentPlotIndex];
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
   QCPAbstractPlottable *plottable = currentPlot->plottableAt(event->posF());//get the plottable object under the mouse
 #else
@@ -365,10 +361,10 @@ void ExpertBenchmark::showHoverPointToolTip(QMouseEvent *event)
 /*!
  * \brief Draws a tooltip onto a plot, highlighting the respective data set
  */
-void ExpertBenchmark::showPointToolTip(QMouseEvent *event)
+void BenchmarkScreen::showPointToolTip(QMouseEvent *event)
 {
-  int currentPlotIndex = expert_DetailedPlotTab->currentIndex();
-  QCustomPlot *currentPlot = expert_DetailedPlotsVector[currentPlotIndex];
+  int currentPlotIndex = detailedPlotTab->currentIndex();
+  QCustomPlot *currentPlot = detailedPlotsVector[currentPlotIndex];
 
 #if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
   double x = currentPlot->xAxis->pixelToCoord(event->posF().x());
@@ -422,35 +418,35 @@ void ExpertBenchmark::showPointToolTip(QMouseEvent *event)
 /*!
  * \brief Updates the progressbar.
  */
-void ExpertBenchmark::updateBenchProgress(){
+void BenchmarkScreen::updateBenchProgress(){
   currentBenchProgress++;
-  ui->expert_ProgressBar->setValue(currentBenchProgress);
-  ui->expert_ProgressBar->setFormat("Running Benchmark %v of %m");
+  ui->progressBar->setValue(currentBenchProgress);
+  ui->progressBar->setFormat("Running Benchmark %v of %m");
 }
 
 /*!
  * \brief Handles list widget's selection events. Called whenever a list item was selected. Checks all items and updates their selected/deselected status appropriately.
  * \param item The item that was clicked.
  */
-void ExpertBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
+void BenchmarkScreen::updateBenchmarkListWidget(QListWidgetItem *item)
 {
   //item(0) is the 'All' benchmarks selection option
-  if(ui->expert_BenchmarkListWidget->row(item) == 0){
+  if(ui->benchmarkListWidget->row(item) == 0){
     if(item->isSelected()){
-      ui->expert_BenchmarkListWidget->selectAllItems();
+      ui->benchmarkListWidget->selectAllItems();
     }
     else{
-      ui->expert_BenchmarkListWidget->deselectAllItems();
+      ui->benchmarkListWidget->deselectAllItems();
     }
   }
   else{
     if(item->isSelected()){
       item->setIcon(QIcon(":/icons/icons/checkTrue.png"));
-      ui->expert_BenchmarkListWidget->checkSelectedItems();
+      ui->benchmarkListWidget->checkSelectedItems();
     }
     else{
-      ui->expert_BenchmarkListWidget->item(0)->setSelected(false);
-      ui->expert_BenchmarkListWidget->item(0)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
+      ui->benchmarkListWidget->item(0)->setSelected(false);
+      ui->benchmarkListWidget->item(0)->setIcon(QIcon(":/icons/icons/checkFalse.png"));
       item->setIcon(QIcon(":/icons/icons/checkFalse.png"));
     }
   }
@@ -459,10 +455,10 @@ void ExpertBenchmark::updateBenchmarkListWidget(QListWidgetItem *item)
 /*!
  * \brief Resets plot data and tick vectors of all plots.
  */
-void ExpertBenchmark::resetAllPlots(){
-  resetPlotData(ui->expert_FinalResultPlot);
+void BenchmarkScreen::resetAllPlots(){
+  resetPlotData(ui->finalResultPlot);
   //reset all plots
-  foreach(QCustomPlot* plot, expert_DetailedPlotsVector){
+  foreach(QCustomPlot* plot, detailedPlotsVector){
     resetPlotData(plot);
     plot->yAxis->setTickVector(QVector<double>() ); // for BarPlots
     plot->yAxis->setTickVectorLabels(QVector<QString>() ); // for BarPlots
@@ -471,21 +467,10 @@ void ExpertBenchmark::resetAllPlots(){
 }
 
 /*!
- * \brief Opens a file dialog to choose a custom matrix for the sparse benchmark.
- */
-void ExpertBenchmark::setCustomSparseMatrixPath(){
-  ui->expert_SparseCustomMatrix->setText( QFileDialog::getOpenFileName(this,
-                                                                       QString("Select a Custom Sparse Matrix"),
-                                                                       ArchiveExtractor::getMatrixMarketUserFolder(),
-                                                                       "Matrix Market Files (*.mtx)" )
-                                          );
-}
-
-/*!
  * \brief Determines if there is enough available video memory to complete the benchmark with selected settings.
  * \return Returns true if there is enough memory, false if there isn't.
  */
-bool ExpertBenchmark::estimateRequiredVideoMemory(){
+bool BenchmarkScreen::estimateRequiredVideoMemory(){
 //  std::cout << "current device max video memory: " << viennacl::ocl::current_context().current_device().global_mem_size() << std::endl;
   cl_ulong videoMemory = viennacl::ocl::current_context().current_device().global_mem_size();
   //TODO calculate memory requirements for each benchmark
@@ -493,69 +478,19 @@ bool ExpertBenchmark::estimateRequiredVideoMemory(){
 }
 
 /*!
- * \brief Ensures all specified expert benchmark settings are valid.
- * \return Returns true if settings are valid, otherise false.
- */
-bool ExpertBenchmark::validateSettings(){
-  if(ui->expert_Blas3AMatSize->value() <= 0) return false;
-  if(ui->expert_Blas3BMatSize->value() <= 0) return false;
-  if(ui->expert_Blas3CMatSize->value() <= 0) return false;
-
-  if(ui->expert_CopyVecMin->value() <= 0) return false;
-  if(ui->expert_CopyVecMax->value() <= 0) return false;
-  if(ui->expert_CopyVecMin->value() >= ui->expert_CopyVecMax->value()) return false;
-
-  if(ui->expert_CopyIncFactor->value() <= 1) return false;
-  if(ui->expert_VectorVecMin->value() <= 0) return false;
-  if(ui->expert_VectorVecMax->value() <= 0) return false;
-  if(ui->expert_VectorVecMin->value() >= ui->expert_VectorVecMax->value()) return false;
-  if(ui->expert_VectorIncFactor->value() <= 1) return false;
-
-  if(ui->expert_SparseMatSize->value() <= 0) return false;
-
-  return true;
-}
-
-/*!
- * \brief Collects expert benchmark settings from the UI.
- * \return Returns a \ref BenchmarkSettings object containing all expert settings.
- */
-BenchmarkSettings ExpertBenchmark::getExpertSettings()
-{
-  BenchmarkSettings settings;
-
-  settings.blas3MinSize = ui->expert_Blas3AMatSize->value();
-  settings.blas3MaxSize = ui->expert_Blas3BMatSize->value();
-  settings.blas3IncFactor = ui->expert_Blas3CMatSize->value();
-
-  settings.copyIncFactor = ui->expert_CopyIncFactor->value();
-  settings.copyMaxVectorSize = ui->expert_CopyVecMax->value() * 1000;
-  settings.copyMinVectorSize = ui->expert_CopyVecMin->value() * 1000;
-
-  settings.vectorMinVectorSize = ui->expert_VectorVecMin->value() * 1000;
-  settings.vectorMaxVectorSize = ui->expert_VectorVecMax->value() * 1000;
-  settings.vectorIncFactor = ui->expert_VectorIncFactor->value();
-
-  settings.sparseMatSize = ui->expert_SparseMatSize->value();
-  settings.sparseCustomMatrix = ui->expert_SparseCustomMatrix->text();
-
-  return settings;
-}
-
-/*!
  * \brief Hides the stop button, shows the start button. Kinda unnecessary, but oh well.
  */
-void ExpertBenchmark::hideStopButton()
+void BenchmarkScreen::hideStopButton()
 {
-  ui->expert_StopBenchmarkButton->hide();
-  ui->expert_StartBenchmarkButton->show();
+  ui->stopBenchmarkButton->hide();
+  ui->startBenchmarkButton->show();
 }
 
 /*!
  * \brief Resets plot data of a selected graph.
  * \param benchmarkGraph The graph to be reset
  */
-void ExpertBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
+void BenchmarkScreen::resetPlotData(QCustomPlot *benchmarkGraph)
 {
   benchmarkGraph->clearGraphs();
   benchmarkGraph->clearPlottables();
@@ -568,16 +503,16 @@ void ExpertBenchmark::resetPlotData(QCustomPlot *benchmarkGraph)
  * \param unitMeasureName Measure name
  * \param axis Axis on which to show the measure
  */
-void ExpertBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
+void BenchmarkScreen::updateBenchmarkUnitMeasure(QString unitMeasureName, int axis)
 {
   switch(axis){
   case Qt::XAxis:
     qDebug()<<""<<unitMeasureName;
-    expert_DetailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
+    detailedPlotsVector[activeBenchmark]->xAxis->setLabel(unitMeasureName);
     break;
   case Qt::YAxis:
     qDebug()<<""<<unitMeasureName;
-    expert_DetailedPlotsVector[activeBenchmark]->yAxis->setLabel(unitMeasureName);
+    detailedPlotsVector[activeBenchmark]->yAxis->setLabel(unitMeasureName);
     break;
   default:
     break;
@@ -593,12 +528,12 @@ void ExpertBenchmark::updateBenchmarkUnitMeasure(QString unitMeasureName, int ax
  * \param graphType See \ref GraphType
  * \param testId Test id number
  */
-void ExpertBenchmark::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
+void BenchmarkScreen::parseBenchmarkResult(QString benchmarkName, double key, double resultValue, int graphType, int testId){
   if(graphType == BAR_GRAPH){
-    plotBarResult(benchmarkName, key, resultValue, expert_DetailedPlotsVector[activeBenchmark]);
+    plotBarResult(benchmarkName, key, resultValue, detailedPlotsVector[activeBenchmark]);
   }
   else if(graphType == LINE_GRAPH){
-    plotLineResult(benchmarkName, key, resultValue, expert_DetailedPlotsVector[activeBenchmark], testId);
+    plotLineResult(benchmarkName, key, resultValue, detailedPlotsVector[activeBenchmark], testId);
   }
 }
 
@@ -611,7 +546,7 @@ void ExpertBenchmark::parseBenchmarkResult(QString benchmarkName, double key, do
  * \param customPlot Which plot is to be used to draw the graph
  * \param testId Id of the graph to be plotted, used to give different colors to graphs.
  */
-void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
+void BenchmarkScreen::plotLineResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot, int testId){
   if(customPlot->legend->visible() == false){
     customPlot->plotLayout()->addElement(0,1, customPlot->legend);
     customPlot->legend->setVisible(true);
@@ -696,7 +631,7 @@ void ExpertBenchmark::plotLineResult(QString benchmarkName, double key, double v
  * \param value Result value
  * \param customPlot Plot on which the graph is to be drawn
  */
-void ExpertBenchmark::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
+void BenchmarkScreen::plotBarResult(QString benchmarkName, double key, double value, QCustomPlot *customPlot){
 
   customPlot->axisRect()->setAutoMargins(QCP::msLeft);
   QMargins margins = customPlot->axisRect()->margins();
@@ -752,7 +687,7 @@ void ExpertBenchmark::plotBarResult(QString benchmarkName, double key, double va
  * \param value Result value
  * \param customPlot Plot on which to draw the graph
  */
-void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
+void BenchmarkScreen::plotFinalResult(QString benchmarkName, double value, QCustomPlot *customPlot){
   //  Plot mapping
   //  Vector - 1
   //  Sparse - 2
@@ -814,45 +749,22 @@ void ExpertBenchmark::plotFinalResult(QString benchmarkName, double value, QCust
   customPlot->replot();
 }
 
-void ExpertBenchmark::loadDefaultSettings(){
-  BenchmarkSettings defaultSettings;
-
-  ui->expert_Blas3AMatSize->setValue(defaultSettings.blas3MinSize);
-  ui->expert_Blas3BMatSize->setValue(defaultSettings.blas3MaxSize);
-  ui->expert_Blas3CMatSize->setValue(defaultSettings.blas3IncFactor);
-
-  ui->expert_CopyIncFactor->setValue(defaultSettings.copyIncFactor);
-  ui->expert_CopyVecMax->setValue(defaultSettings.copyMaxVectorSize / 1000);
-  ui->expert_CopyVecMin->setValue(defaultSettings.copyMinVectorSize / 1000);
-
-  ui->expert_VectorVecMin->setValue(defaultSettings.vectorMinVectorSize / 1000);
-  ui->expert_VectorVecMax->setValue(defaultSettings.vectorMaxVectorSize / 1000);
-  ui->expert_VectorIncFactor->setValue(defaultSettings.vectorIncFactor);
-
-  ui->expert_SparseMatSize->setValue(defaultSettings.sparseMatSize);
-  ui->expert_SparseCustomMatrix->setText(defaultSettings.sparseCustomMatrix);
-}
-
 /*!
- * \brief Prepares the benchmark for execution with a custom sparse matrix
- * \param matrixFilePath Absolute path to the selected matrix file
+ * \brief Toggles upper benchmark screen UI visibility. Used to make th detailed plot graphs fullscreen.
  */
-void ExpertBenchmark::setupCustomSparseMatrix(QString matrixFilePath)
-{
-  loadDefaultSettings();//use the default settings for custom matrix benchmarking
-  ui->expert_SparseCustomMatrix->setText(matrixFilePath);//use the custom matrix file
-  ui->expert_BenchmarkListWidget->deselectAllItems();
-  ui->expert_BenchmarkListWidget->setSelected(3);//only run the sparse benchmark
-}
-
-/*!
- * \brief Toggles upper benchmark screen UI visibility
- */
-void ExpertBenchmark::toggleFullscreenPlots(){
-  if(ui->expert_upperContainer->isVisible()){
-    ui->expert_upperContainer->hide();
+void BenchmarkScreen::toggleFullscreenPlots(){
+  if(ui->upperContainer->isVisible()){
+    ui->upperContainer->hide();
   }
   else{
-    ui->expert_upperContainer->show();
+    ui->upperContainer->show();
   }
+}
+
+/*!
+ * \brief Selects only sparse benchmark.
+ */
+void BenchmarkScreen::selectSparseBenchmark(){
+  ui->benchmarkListWidget->deselectAllItems();
+  ui->benchmarkListWidget->setSelected(3);//only run the sparse benchmark
 }

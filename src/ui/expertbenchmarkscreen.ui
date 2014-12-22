@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ExpertBenchmark</class>
+ <widget class="QWidget" name="ExpertBenchmark">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>224</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="expert_configGroupBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>400</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>400</width>
+       <height>255</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Benchmark Config</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1,1,1">
+        <item row="0" column="1">
+         <widget class="QLabel" name="expert_AMatSizeLabel">
+          <property name="text">
+           <string>Min Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="expert_BMatSizeLabel">
+          <property name="text">
+           <string>Max Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="expert_CMatSizeLabel">
+          <property name="text">
+           <string>Increment Factor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="expert_Blas3Label">
+          <property name="text">
+           <string>Blas3</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="expert_Blas3AMatSize">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QSpinBox" name="expert_Blas3BMatSize">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QSpinBox" name="expert_Blas3CMatSize">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="expert_SparseLabel">
+          <property name="text">
+           <string>Sparse</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="expert_SparseMatSize">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QPushButton" name="expert_ResetSettingsButton">
+          <property name="text">
+           <string>Reset Setttings</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="4">
+         <layout class="QHBoxLayout" name="expert_layout_config_custom_matrix">
+          <item>
+           <widget class="QLabel" name="expert_CustomMatrixLabel">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>210</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Custom Sparse Matrix:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QToolButton" name="expert_CustomMatrixBrowsebutton">
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="expert_CustomMatrixDefaultButton">
+            <property name="text">
+             <string>Default</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="4" column="0" colspan="4">
+         <widget class="QLineEdit" name="expert_SparseCustomMatrix">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,1,1,1">
+        <item row="0" column="1">
+         <widget class="QLabel" name="expert_VecMinLabel">
+          <property name="text">
+           <string>Min Size x1000</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLabel" name="expert_VecMaxLabel">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>10</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Max Size x1000</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="expert_IncFactorLabel">
+          <property name="text">
+           <string>Increment Factor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="expert_CopyLabel">
+          <property name="text">
+           <string>Copy</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="expert_CopyVecMin">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QSpinBox" name="expert_CopyVecMax">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QSpinBox" name="expert_CopyIncFactor">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="expert_VectorLabel">
+          <property name="text">
+           <string>Vector</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QSpinBox" name="expert_VectorVecMin">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QSpinBox" name="expert_VectorVecMax">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="frame">
+           <bool>true</bool>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QSpinBox" name="expert_VectorIncFactor">
+          <property name="focusPolicy">
+           <enum>Qt::ClickFocus</enum>
+          </property>
+          <property name="buttonSymbols">
+           <enum>QAbstractSpinBox::NoButtons</enum>
+          </property>
+          <property name="text" stdset="0">
+           <string>0</string>
+          </property>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ExpertBenchmark</class>
- <widget class="QWidget" name="ExpertBenchmark">
+ <class>BenchmarkScreen</class>
+ <widget class="QWidget" name="BenchmarkScreen">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
-    <widget class="QWidget" name="expert_upperContainer" native="true">
+    <widget class="QWidget" name="upperContainer" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -36,9 +36,9 @@
        <number>0</number>
       </property>
       <item row="0" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="expert_contextLayout" stretch="0,4">
+       <layout class="QHBoxLayout" name="contextLayout" stretch="0,4">
         <item>
-         <widget class="QLabel" name="expert_contextLabel">
+         <widget class="QLabel" name="contextLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -51,7 +51,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="expert_contextComboBox">
+         <widget class="QComboBox" name="contextComboBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -63,12 +63,12 @@
        </layout>
       </item>
       <item row="1" column="0" colspan="2">
-       <layout class="QHBoxLayout" name="expert_layout_top">
+       <layout class="QHBoxLayout" name="layout_top">
         <property name="topMargin">
          <number>0</number>
         </property>
         <item>
-         <widget class="BenchmarkListWidget" name="expert_BenchmarkListWidget">
+         <widget class="BenchmarkListWidget" name="benchmarkListWidget">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
@@ -232,364 +232,10 @@ border-top: 2px groove gray;
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="expert_configGroupBox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>400</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>400</width>
-            <height>255</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Benchmark Config</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,1,1,1">
-             <item row="0" column="1">
-              <widget class="QLabel" name="expert_VecMinLabel">
-               <property name="text">
-                <string>Min Size x1000</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="expert_VecMaxLabel">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>10</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Max Size x1000</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLabel" name="expert_IncFactorLabel">
-               <property name="text">
-                <string>Increment Factor</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="expert_CopyLabel">
-               <property name="text">
-                <string>Copy</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="expert_CopyVecMin">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QSpinBox" name="expert_CopyVecMax">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QSpinBox" name="expert_CopyIncFactor">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="expert_VectorLabel">
-               <property name="text">
-                <string>Vector</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QSpinBox" name="expert_VectorVecMin">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QSpinBox" name="expert_VectorVecMax">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="frame">
-                <bool>true</bool>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
-              <widget class="QSpinBox" name="expert_VectorIncFactor">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0">
-            <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1,1,1">
-             <item row="0" column="1">
-              <widget class="QLabel" name="expert_AMatSizeLabel">
-               <property name="text">
-                <string>Min Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="expert_BMatSizeLabel">
-               <property name="text">
-                <string>Max Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="3">
-              <widget class="QLabel" name="expert_CMatSizeLabel">
-               <property name="text">
-                <string>Increment Factor</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="expert_Blas3Label">
-               <property name="text">
-                <string>Blas3</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="expert_Blas3AMatSize">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="2">
-              <widget class="QSpinBox" name="expert_Blas3BMatSize">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QSpinBox" name="expert_Blas3CMatSize">
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="expert_SparseLabel">
-               <property name="text">
-                <string>Sparse</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QSpinBox" name="expert_SparseMatSize">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::ClickFocus</enum>
-               </property>
-               <property name="buttonSymbols">
-                <enum>QAbstractSpinBox::NoButtons</enum>
-               </property>
-               <property name="text" stdset="0">
-                <string>0</string>
-               </property>
-               <property name="maximum">
-                <number>9999999</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="3">
-              <widget class="QPushButton" name="expert_ResetSettingsButton">
-               <property name="text">
-                <string>Reset Setttings</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0" colspan="4">
-              <layout class="QHBoxLayout" name="expert_layout_config_custom_matrix">
-               <item>
-                <widget class="QLabel" name="expert_CustomMatrixLabel">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>210</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>Custom Sparse Matrix:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QToolButton" name="expert_CustomMatrixBrowsebutton">
-                 <property name="text">
-                  <string>Browse</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="expert_CustomMatrixDefaultButton">
-                 <property name="text">
-                  <string>Default</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="4" column="0" colspan="4">
-              <widget class="QLineEdit" name="expert_SparseCustomMatrix">
-               <property name="readOnly">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="2" column="0">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
+         <widget class="QWidget" name="expert_configBoxPlaceholder" native="true"/>
         </item>
         <item>
-         <widget class="QCustomPlot" name="expert_FinalResultPlot" native="true">
+         <widget class="QCustomPlot" name="finalResultPlot" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
@@ -613,7 +259,7 @@ border-top: 2px groove gray;
        </layout>
       </item>
       <item row="2" column="0">
-       <widget class="QGroupBox" name="expert_PrecisionGroupBox">
+       <widget class="QGroupBox" name="precisionGroupBox">
         <property name="minimumSize">
          <size>
           <width>110</width>
@@ -700,7 +346,7 @@ border-top: 1px groove gray;
           <number>0</number>
          </property>
          <item row="1" column="0">
-          <widget class="QPushButton" name="expert_DoubleButton">
+          <widget class="QPushButton" name="doublePrecisionButton">
            <property name="minimumSize">
             <size>
              <width>96</width>
@@ -735,7 +381,7 @@ border-top: 1px groove gray;
           </widget>
          </item>
          <item row="0" column="0">
-          <widget class="QPushButton" name="expert_SingleButton">
+          <widget class="QPushButton" name="singlePrecisionButton">
            <property name="minimumSize">
             <size>
              <width>96</width>
@@ -773,9 +419,9 @@ border-top: 1px groove gray;
        </widget>
       </item>
       <item row="2" column="1">
-       <layout class="QHBoxLayout" name="expert_startStopProgressLayout">
+       <layout class="QHBoxLayout" name="startStopProgressLayout">
         <item>
-         <widget class="QPushButton" name="expert_StartBenchmarkButton">
+         <widget class="QPushButton" name="startBenchmarkButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -854,7 +500,7 @@ color: #404040;
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="expert_StopBenchmarkButton">
+         <widget class="QPushButton" name="stopBenchmarkButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -933,7 +579,7 @@ color: #404040;
          </widget>
         </item>
         <item>
-         <widget class="QProgressBar" name="expert_ProgressBar">
+         <widget class="QProgressBar" name="progressBar">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -995,9 +641,9 @@ color: #404040;
     </widget>
    </item>
    <item row="1" column="0">
-    <layout class="QHBoxLayout" name="expert_layoutToggle">
+    <layout class="QHBoxLayout" name="layoutToggle">
      <item>
-      <widget class="QPushButton" name="expert_toggleFullscreenButton">
+      <widget class="QPushButton" name="toggleFullscreenButton">
        <property name="text">
         <string>Toggle Fullscreen</string>
        </property>
@@ -1026,7 +672,7 @@ color: #404040;
     </layout>
    </item>
    <item row="2" column="0">
-    <widget class="QTabWidget" name="expert_fullscreenPlotsWidget"/>
+    <widget class="QTabWidget" name="fullscreenPlotsWidget"/>
    </item>
   </layout>
  </widget>

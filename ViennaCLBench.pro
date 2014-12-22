@@ -35,10 +35,11 @@ SOURCES += src/main.cpp \
     src/benchmarkinstance.cpp \
     src/ui/homescreen.cpp \
     src/ui/systeminfoscreen.cpp \
-    src/ui/basicbenchmark.cpp \
-    src/ui/expertbenchmark.cpp \
     src/benchmarksettings.cpp \
-    src/ui/resulthistory.cpp
+    src/ui/resulthistory.cpp \
+    src/ui/systeminfoscreen_test.cpp \
+    src/ui/expertbenchmarkscreen.cpp \
+    src/ui/benchmarkscreen.cpp
 
 HEADERS  +=    src/benchmark_controller.h \
     src/archiveextractor.h \
@@ -64,19 +65,21 @@ HEADERS  +=    src/benchmark_controller.h \
     src/benchmarkinstance.h \
     src/ui/homescreen.h \
     src/ui/systeminfoscreen.h \
-    src/ui/basicbenchmark.h \
-    src/ui/expertbenchmark.h \
     src/benchmarksettings.h \
-    src/ui/resulthistory.h
+    src/ui/resulthistory.h \
+    src/ui/systeminfoscreen_test.h \
+    src/ui/expertbenchmarkscreen.h \
+    src/ui/benchmarkscreen.h
 
 FORMS    += src/ui/mainwindow.ui \
     src/ui/widgets/collapsewidget.ui \
     src/ui/matrixmarket_widget.ui \
     src/ui/homescreen.ui \
     src/ui/systeminfoscreen.ui \
-    src/ui/basicbenchmark.ui \
-    src/ui/expertbenchmark.ui \
-    src/ui/resulthistory.ui
+    src/ui/resulthistory.ui \
+    src/ui/systeminfoscreen_test.ui \
+    src/ui/expertbenchmarkscreen.ui \
+    src/ui/benchmarkscreen.ui
 
 RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
