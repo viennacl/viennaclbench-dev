@@ -218,6 +218,18 @@ border-bottom: 2px groove gray;
         </item>
         <item>
          <property name="text">
+          <string>MatrixMarket2</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/icons.qrc">
+           <normaloff>:/icons/icons/matrix.gif</normaloff>:/icons/icons/matrix.gif</iconset>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>System Info</string>
          </property>
          <property name="textAlignment">
@@ -233,7 +245,7 @@ border-bottom: 2px groove gray;
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="homePage">
          <property name="styleSheet">
@@ -445,6 +457,13 @@ QTabBar::tab:selected{
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="matrixMarket_AlternativePage">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="MatrixMarket_Alternative" name="matrixMarket_Alternative" native="true"/>
+          </item>
+         </layout>
+        </widget>
         <widget class="QWidget" name="systemInfoPage">
          <layout class="QGridLayout" name="gridLayout_7" rowstretch="0" columnstretch="0">
           <item row="0" column="0">
@@ -550,10 +569,16 @@ QMenuBar:item:selected{
    <header>src/ui/benchmarkscreen.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>MatrixMarket_Alternative</class>
+   <extends>QWidget</extends>
+   <header>src/ui/matrixmarket_alternative.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../resources/icons.qrc"/>
   <include location="../../resources/otherFiles.qrc"/>
+  <include location="../../resources/icons.qrc"/>
  </resources>
  <connections/>
  <slots>

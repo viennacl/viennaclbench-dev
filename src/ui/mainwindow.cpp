@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   ui->mainMenuListWidget->item(2)->setHidden(true);//my results
   ui->mainMenuListWidget->item(3)->setHidden(true);//result database
+  //5 matrixMarket2
   //normalize size of each main menu item
   //otherwise items would not be centered
   for ( int i = 0; i < ui->mainMenuListWidget->count(); i++ ) {
@@ -253,6 +254,9 @@ void MainWindow::initMatrixMarket(){
 
 //  connect(ui->matrixMarket_Widget->webView, SIGNAL(loadProgress(int)), this, SLOT(modifyMatrixMarketWeb()) );
   connect(ui->matrixMarket_Widget->webView, SIGNAL(fileReadyForBenchmark(QString)), this, SLOT( startMatrixMarketBenchmark(QString) ) );
+
+  //do a benchmark with the downloaded matrix file
+  connect(ui->matrixMarket_Alternative, SIGNAL(fileReadyForBenchmark(QString)), this, SLOT(startMatrixMarketBenchmark(QString)) );
 }
 
 /*!

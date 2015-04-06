@@ -39,7 +39,8 @@ SOURCES += src/main.cpp \
     src/ui/resulthistory.cpp \
     src/ui/systeminfoscreen_test.cpp \
     src/ui/expertbenchmarkscreen.cpp \
-    src/ui/benchmarkscreen.cpp
+    src/ui/benchmarkscreen.cpp \
+    src/ui/matrixmarket_alternative.cpp
 
 HEADERS  +=    src/benchmark_controller.h \
     src/archiveextractor.h \
@@ -69,7 +70,8 @@ HEADERS  +=    src/benchmark_controller.h \
     src/ui/resulthistory.h \
     src/ui/systeminfoscreen_test.h \
     src/ui/expertbenchmarkscreen.h \
-    src/ui/benchmarkscreen.h
+    src/ui/benchmarkscreen.h \
+    src/ui/matrixmarket_alternative.h
 
 FORMS    += src/ui/mainwindow.ui \
     src/ui/widgets/collapsewidget.ui \
@@ -79,7 +81,8 @@ FORMS    += src/ui/mainwindow.ui \
     src/ui/resulthistory.ui \
     src/ui/systeminfoscreen_test.ui \
     src/ui/expertbenchmarkscreen.ui \
-    src/ui/benchmarkscreen.ui
+    src/ui/benchmarkscreen.ui \
+    src/ui/matrixmarket_alternative.ui
 
 RESOURCES += resources/otherFiles.qrc \
     resources/icons.qrc \
