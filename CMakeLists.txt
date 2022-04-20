@@ -77,9 +77,10 @@ find_package(zlibstatic REQUIRED)
 
 
 IF(USE_QT5)# Find the Qt5 libraries
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui REQUIRED)
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Network REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Gui REQUIRED)
 
 ELSE()# Find the Qt4 libraries and set required variables
 # Note that it's Qt4, not QT4 or qt4
@@ -137,7 +138,7 @@ add_executable(ViennaCLBench ${GUI_TYPE} ${ViennaCLBench_Sources} ${ViennaCLBenc
 # Link Qt
 IF(USE_QT5)# Qt5
     target_link_libraries(ViennaCLBench ${OPENCL_LIBRARIES} )
-    qt5_use_modules(ViennaCLBench Core Gui Widgets WebKitWidgets)
+    target_link_libraries(ViennaCLBench Qt5::Core Qt5::Gui Qt5::Network Qt5::Widgets Qt5::WebKitWidgets)
 ELSE()# Qt4
     target_link_libraries(ViennaCLBench ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES} )
     #qt4_use_modules(ViennaCLBench Core Gui)     #Does not work with CMake 2.8.7, was introduced in CMake 2.8.11. See discussion here: http://comments.gmane.org/gmane.comp.programming.tools.cmake.devel/6002
