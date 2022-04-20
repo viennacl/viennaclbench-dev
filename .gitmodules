@@ -1,6 +1,3 @@
-[submodule "external/libarchive"]
-	path = external/libarchive
-	url = https://github.com/libarchive/libarchive.git
 [submodule "external/viennacl-dev"]
 	path = external/viennacl-dev
 	url = https://github.com/viennacl/viennacl-dev
