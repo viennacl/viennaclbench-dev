@@ -1,13 +1,4 @@
-#USE_QT5 variable determines which qt will be used for building
-#ON - uses Qt5 (default)
-#OFF - uses Qt4
-set(USE_QT5 ON CACHE BOOL "Use Qt5 is ON by default, set to OFF to use Qt4")
-
-if(USE_QT5)
-    cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
-else()
-    cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-endif()
+cmake_minimum_required(VERSION 2.8.11 FATAL_ERROR)
 
 # Set package properties 
 project(ViennaCLBench)
@@ -96,18 +87,11 @@ else()
     find_package(LibArchive REQUIRED)
 endif()
 
-if(USE_QT5)# Find the Qt5 libraries
-    find_package(Qt5 COMPONENTS Core REQUIRED)
-    find_package(Qt5 COMPONENTS Network REQUIRED)
-    find_package(Qt5 COMPONENTS WebKitWidgets REQUIRED)
-    find_package(Qt5 COMPONENTS Widgets REQUIRED)
-    find_package(Qt5 COMPONENTS Gui REQUIRED)
-else()# Find the Qt4 libraries and set required variables
-    # Note that it's Qt4, not QT4 or qt4
-    find_package(Qt4 REQUIRED)
-    # (QT_USE_FILE is a variable defined by FIND_PACKAGE( Qt4 ) that contains a path to CMake script)
-    include(${QT_USE_FILE})
-endif()
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Network REQUIRED)
+find_package(Qt5 COMPONENTS WebKitWidgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Gui REQUIRED)
 
 #find OpenCL
 find_package(OpenCL REQUIRED)
@@ -143,18 +127,10 @@ file(GLOB ViennaCLBench_Resources
 )
 
 #Generate ui headers
-if(USE_QT5)
-    qt5_wrap_ui(wrapped_ui_headers ${ViennaCLBench_Ui_Files})
-else()
-    qt4_wrap_ui(wrapped_ui_headers ${ViennaCLBench_Ui_Files})
-endif()
+qt5_wrap_ui(wrapped_ui_headers ${ViennaCLBench_Ui_Files})
 
 #Add the resource files
-if(USE_QT5)
-    qt5_add_resources(added_resources ${ViennaCLBench_Resources})
-else()
-    qt4_add_resources(added_resources ${ViennaCLBench_Resources})
-endif()
+qt5_add_resources(added_resources ${ViennaCLBench_Resources})
 
 set(QCustomPlot_Sources
     src/qcustomplot/qcustomplot.cpp
@@ -164,13 +140,8 @@ set(QCustomPlot_Sources
 add_executable(ViennaCLBench ${GUI_TYPE} ${ViennaCLBench_Sources} ${ViennaCLBench_Headers} ${wrapped_ui_headers} ${QCustomPlot_Sources} ${added_resources})
 
 # Link Qt
-if(USE_QT5)# Qt5
-    target_link_libraries(ViennaCLBench ${OPENCL_LIBRARIES})
-    target_link_libraries(ViennaCLBench Qt5::Core Qt5::Gui Qt5::Network Qt5::Widgets Qt5::WebKitWidgets)
-else()# Qt4
-    target_link_libraries(ViennaCLBench ${QT_QTMAIN_LIBRARY} ${QT_LIBRARIES} ${OPENCL_LIBRARIES})
-    target_link_libraries(ViennaCLBench Qt4::QtGui Qt4::QtCore Qt4::QtWebKit)
-endif()
+target_link_libraries(ViennaCLBench ${OPENCL_LIBRARIES})
+target_link_libraries(ViennaCLBench Qt5::Core Qt5::Gui Qt5::Network Qt5::Widgets Qt5::WebKitWidgets)
 
 if(BUILD_STATIC_LIBARCHIVE)
     set(LIBARCHIVE_LIBRARY archive_static)
