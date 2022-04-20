@@ -44,7 +44,7 @@
 #include <QtWebKit/QWebFrame>
 #else
 #include <QtWebKitWidgets/QWebView>
-#include <QWebFrame>
+#include <QtWebKitWidgets/QWebFrame>
 #endif
 
 #include <cstdlib>

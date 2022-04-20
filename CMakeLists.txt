@@ -79,6 +79,7 @@ find_package(zlibstatic REQUIRED)
 IF(USE_QT5)# Find the Qt5 libraries
 find_package(Qt5 COMPONENTS Core REQUIRED)
 find_package(Qt5 COMPONENTS Network REQUIRED)
+find_package(Qt5 COMPONENTS WebKitWidgets REQUIRED)
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt5 COMPONENTS Gui REQUIRED)
 
