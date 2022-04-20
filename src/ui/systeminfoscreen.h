@@ -20,6 +20,7 @@
 #include <QTableWidgetItem>
 #include <QSpacerItem>
 #include <QSplitter>
+#include <QHeaderView>
 
 #include "viennacl/ocl/device.hpp"
 #include "viennacl/ocl/platform.hpp"
