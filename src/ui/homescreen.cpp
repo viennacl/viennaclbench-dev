@@ -38,28 +38,7 @@ HomeScreen::HomeScreen(QWidget *parent) :
   for(platforms_type::iterator platform_iter = platforms.begin(); platform_iter != platforms.end(); ++platform_iter){
     QVBoxLayout *platformLayout = new QVBoxLayout();
 
-
     QString platformName( QString::fromStdString(platform_iter->info()) );
-    QPixmap *platformIcon;
-
-    if(platformName.contains("Advanced Micro Devices")){
-      //set AMD icon
-      platformIcon = new QPixmap( QString(":/icons/icons/amdLogoGreen.png") );
-    }
-    else if(platformName.contains("Intel(R) Corporation")){
-      //set Intel icon
-      platformIcon = new QPixmap( QString(":/icons/icons/intelLogo.png") );
-    }
-    else{
-      //set nVidia icon
-      platformIcon = new QPixmap( QString(":/icons/icons/nvidiaLogoBlack.png") );
-    }
-
-    QLabel *platformIconLabel = new QLabel();
-    platformIconLabel->setAlignment(Qt::AlignHCenter);
-    platformIconLabel->setPixmap( platformIcon->scaledToHeight(50, Qt::SmoothTransformation) );
-
-    platformLayout->addWidget( platformIconLabel );
 
     QGroupBox *platformBox = new QGroupBox( platformName );
 
