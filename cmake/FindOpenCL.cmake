@@ -68,7 +68,7 @@ endif(ENV_OPENCLROOT)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(
-  OPENCL
+  OpenCL
   DEFAULT_MSG
   OPENCL_LIBRARY OPENCL_INCLUDE_DIR
   )
